@@ -10,14 +10,14 @@ name: SonarQube
 on:
   pull_request:
     branches:
+      - main
       - dev
 
 permissions:
   contents: read
 
 jobs:
-  build:
-    name: Build
+  code-analysis:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
