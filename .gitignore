@@ -39,4 +39,3 @@ out/
 ### Custom ###
 **/generated/
 **/resources/application-local.yml
-**/resources/application-dev.yml
