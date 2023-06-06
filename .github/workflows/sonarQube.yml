@@ -44,12 +44,13 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
         restore-keys: ${{ runner.os }}-gradle
         
-    - name: Build and analyze
+    - name: Run an analysis of the ${{ github.REF }} branch ${{ github.BASE_REF }} base
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      run: cd ./clean-architecture/hexagonal && ./gradlew build sonar --info -Dsonar.pullrequest.key=${{ github.event.pull_request.number }} -Dsonar.pullrequest.branch=${{ github.event.pull_request.head.ref }} -Dsonar.pullrequest.base=main
+#       run: cd ./clean-architecture/hexagonal && ./gradlew build sonar --info -Dsonar.pullrequest.key=${{ github.event.pull_request.number }} -Dsonar.pullrequest.branch=${{ github.event.pull_request.head.ref }} -Dsonar.pullrequest.base=main
+      uses: sonarsource/sonarqube-scan-action@master
     
     - name: SonarQube Quality Gate check
       id: sonarqube-quality-gate-check
