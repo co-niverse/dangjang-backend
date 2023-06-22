@@ -1,8 +1,8 @@
 package dangjang.challenge.global.dto.content;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import java.util.List;
 
 /**
  * 반환할 객체가 여러 개일 때 사용한다.

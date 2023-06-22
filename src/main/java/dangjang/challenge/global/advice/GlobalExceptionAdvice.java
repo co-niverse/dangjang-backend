@@ -1,16 +1,20 @@
 package dangjang.challenge.global.advice;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.MissingRequestHeaderException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.HttpServerErrorException;
-
 import dangjang.challenge.global.dto.ErrorResponse;
 import dangjang.challenge.global.exception.BusinessException;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpServerErrorException;
 
 /**
  * AOP를 적용하여 전역적으로 발생하는 예외를 처리한다.
@@ -50,8 +54,7 @@ public class GlobalExceptionAdvice {
 	}
 
 	/**
-	 * {@link org.springframework.web.bind.annotation.RequestBody}의 데이터가
-	 * {@link jakarta.validation.Valid}의 유효성 검증에 실패할 때 발생하는 예외를 처리한다.
+	 * {@link RequestBody}의 데이터가 {@link Valid}의 유효성 검증에 실패할 때 발생하는 예외를 처리한다.
 	 *
 	 * @param e {@link MethodArgumentNotValidException}
 	 * @since 1.0
@@ -64,9 +67,8 @@ public class GlobalExceptionAdvice {
 	}
 
 	/**
-	 * {@link org.springframework.web.bind.annotation.RequestParam} 또는
-	 * {@link org.springframework.web.bind.annotation.PathVariable}의 데이터가
-	 * {@link org.springframework.validation.annotation.Validated}의 유효성 검증에 실패할 때 발생하는 예외를 처리한다.
+	 * {@link RequestParam} 또는 {@link PathVariable}의 데이터가
+	 * {@link Validated}의 유효성 검증에 실패할 때 발생하는 예외를 처리한다.
 	 * 기본적으로 HTTP status code 500(Internal Server Error)로 처리하기 때문에 400(Bad Request)로 변경한다.
 	 *
 	 * @param e {@link ConstraintViolationException}

@@ -1,14 +1,14 @@
 package dangjang.challenge.global.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import org.springframework.validation.BindingResult;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-import jakarta.validation.ConstraintViolation;
 
 /**
  * 공통된 에러 응답을 보내기 위해 사용한다.
@@ -32,7 +32,7 @@ public record ErrorResponse(boolean success, int errorCode, String message,
 	}
 
 	/**
-	 * {@link org.springframework.web.bind.MethodArgumentNotValidException}에서 발생한 fieldError를 binding한다.
+	 * {@link MethodArgumentNotValidException}에서 발생한 fieldError를 binding한다.
 	 *
 	 * @since 1.0
 	 */
@@ -48,7 +48,7 @@ public record ErrorResponse(boolean success, int errorCode, String message,
 	}
 
 	/**
-	 * {@link jakarta.validation.ConstraintViolationException}에서 발생한 constraintViolation을 binding한다.
+	 * {@link ConstraintViolationException}에서 발생한 constraintViolation을 binding한다.
 	 *
 	 * @since 1.0
 	 */
