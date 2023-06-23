@@ -6,6 +6,7 @@
 
 ## Check List ☑️
 - [ ] 테스트 코드를 통과했다.
+- [ ] merge할 브랜치의 위치를 확인했다. (main ❌)
 - [ ] Assignee를 지정했다.
 - [ ] Label을 지정했다.
 
