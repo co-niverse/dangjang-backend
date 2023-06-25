@@ -50,7 +50,7 @@ public class GlobalExceptionAdvice {
 	@ExceptionHandler(MissingRequestHeaderException.class)
 	public ResponseEntity<ErrorResponse> handleMissingRequestHeaderException(MissingRequestHeaderException e) {
 		log.error(e.getMessage());
-		ErrorResponse errorResponse = new ErrorResponse(e.getStatusCode().value(), "잘못된 요청입니다.");
+		ErrorResponse errorResponse = new ErrorResponse(e.getStatusCode().value(), "올바르지 못한 요청입니다.");
 		return ResponseEntity.badRequest().body(errorResponse);
 	}
 
@@ -63,7 +63,7 @@ public class GlobalExceptionAdvice {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
 		log.error(e.getMessage());
-		ErrorResponse errorResponse = new ErrorResponse(e.getStatusCode().value(), "잘못된 데이터입니다.", e);
+		ErrorResponse errorResponse = new ErrorResponse(e.getStatusCode().value(), "올바르지 못한 데이터입니다.", e);
 		return ResponseEntity.badRequest().body(errorResponse);
 	}
 
@@ -78,7 +78,7 @@ public class GlobalExceptionAdvice {
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException e) {
 		log.error(e.getMessage());
-		ErrorResponse errorResponse = new ErrorResponse(400, "잘못된 데이터입니다.", e.getConstraintViolations());
+		ErrorResponse errorResponse = new ErrorResponse(400, "올바르지 못한 데이터입니다.", e.getConstraintViolations());
 		return ResponseEntity.badRequest().body(errorResponse);
 	}
 
