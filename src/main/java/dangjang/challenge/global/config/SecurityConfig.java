@@ -1,5 +1,6 @@
 package dangjang.challenge.global.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,6 +24,9 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity(debug = true)
 public class SecurityConfig {
+	@Value("${cors.allowed-origins}")
+	private String allowedOrigins;
+
 	/**
 	 * SecurityFilterChain 설정
 	 * <p>
@@ -61,7 +65,7 @@ public class SecurityConfig {
 	@Bean
 	public CorsConfigurationSource configurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(List.of("*"));
+		configuration.setAllowedOrigins(List.of(allowedOrigins));
 		configuration.setAllowedMethods(List.of("*"));
 		configuration.setAllowedHeaders(List.of("*", "Authorization"));
 		configuration.setAllowCredentials(true);
