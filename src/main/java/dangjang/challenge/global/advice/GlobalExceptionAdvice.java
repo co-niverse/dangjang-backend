@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 /**
  * AOP를 적용하여 전역적으로 발생하는 예외를 처리한다.
@@ -92,5 +93,19 @@ public class GlobalExceptionAdvice {
 		log.error(e.getMessage());
 		ErrorResponse errorResponse = new ErrorResponse(500, "알 수 없는 에러가 발생했습니다.");
 		return ResponseEntity.internalServerError().body(errorResponse);
+	}
+
+	/**
+	 * 잘못된 endpoint로 요청이 전달됐을 때 발생하는 예외를 처리한다.
+	 *
+	 * @param e {@link NoHandlerFoundException}
+	 * @since 1.0
+	 */
+	@ExceptionHandler(NoHandlerFoundException.class)
+	public ResponseEntity<ErrorResponse> handleNoHandlerFoundException(NoHandlerFoundException e) {
+		log.warn(e.getMessage());
+		int errorCode = e.getStatusCode().value();
+		ErrorResponse errorResponse = new ErrorResponse(errorCode, "올바르지 못한 URL 요청입니다.");
+		return ResponseEntity.status(errorCode).body(errorResponse);
 	}
 }
