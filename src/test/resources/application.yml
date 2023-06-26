@@ -60,3 +60,13 @@ spring:
     hibernate:
       ddl-auto: create
     defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+
+---
+spring:
+  config:
+    activate:
+      on-profile: performance
+  # ...
