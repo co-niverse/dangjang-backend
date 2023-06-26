@@ -8,7 +8,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * 공통된 에러 응답을 보내기 위해 사용한다.
@@ -43,7 +42,7 @@ public record ErrorResponse(boolean success, int errorCode, String message,
 					error.getField(),
 					error.getRejectedValue() == null ? "" : error.getRejectedValue().toString(),
 					error.getDefaultMessage()))
-				.collect(Collectors.toList());
+				.toList();
 		}
 	}
 
@@ -59,7 +58,7 @@ public record ErrorResponse(boolean success, int errorCode, String message,
 					constraintViolation.getPropertyPath().toString(),
 					constraintViolation.getInvalidValue().toString(),
 					constraintViolation.getMessage()))
-				.collect(Collectors.toList());
+				.toList();
 		}
 	}
 }
