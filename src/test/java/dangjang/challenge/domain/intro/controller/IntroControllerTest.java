@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Teo
  * @since 1.0
  */
-public class IntroControllerTest extends ControllerTest {
+class IntroControllerTest extends ControllerTest {
 	private final String URI = "/api/v1/intro";
 	@MockBean
 	private IntroService introService;
