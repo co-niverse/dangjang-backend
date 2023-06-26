@@ -16,7 +16,7 @@ configurations {
 }
 sonarqube {
     properties {
-        property "sonar.projectKey", "co-niverse_co-niverse-backend_AYiROA4IXK3Sz4IwHG2U"
+        property "sonar.projectKey", "co-niverse_dangjang-backend_AYj2jZJELehUZAlqDvRk"
     }
 }
 
