@@ -22,7 +22,7 @@ import java.util.List;
  * @since 1.0
  */
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class SecurityConfig {
 	@Value("${cors.allowed-origins}")
 	private String allowedOrigins;
