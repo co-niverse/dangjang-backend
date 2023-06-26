@@ -36,8 +36,8 @@ public class IntroControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isOk(),
 			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
-			jsonPath("$.data.minVersion").value(Content.minVersion),
-			jsonPath("$.data.latestVersion").value(Content.latestVersion)
+			jsonPath("$.data.minVersion").value(content.getMinVersion()),
+			jsonPath("$.data.latestVersion").value(content.getLatestVersion())
 		);
 	}
 
