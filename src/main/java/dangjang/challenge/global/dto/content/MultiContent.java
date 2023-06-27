@@ -10,19 +10,14 @@ import java.util.List;
  * @author Teo
  * @since 1.0
  */
-public record MultiContent<T>(int minVersion, int latestVersion,
-							  @JsonInclude(JsonInclude.Include.NON_NULL) List<T> contents) implements Content {
-	public MultiContent(List<T> contents) {
-		this(Content.MIN_VERSION, Content.LATEST_VERSION, contents);
-	}
-
+public record MultiContent<T>(@JsonInclude(JsonInclude.Include.NON_NULL) List<T> contents) implements Content {
 	@Override
 	public int getMinVersion() {
-		return this.minVersion;
+		return Content.MIN_VERSION;
 	}
 
 	@Override
 	public int getLatestVersion() {
-		return this.latestVersion;
+		return Content.LATEST_VERSION;
 	}
 }

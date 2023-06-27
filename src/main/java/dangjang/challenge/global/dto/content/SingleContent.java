@@ -8,19 +8,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * @author Teo
  * @since 1.0
  */
-public record SingleContent<T>(int minVersion, int latestVersion, @JsonInclude(JsonInclude.Include.NON_NULL) T content)
-	implements Content {
-	public SingleContent(T content) {
-		this(Content.MIN_VERSION, Content.LATEST_VERSION, content);
-	}
-
+public record SingleContent<T>(@JsonInclude(JsonInclude.Include.NON_NULL) T content) implements Content {
 	@Override
 	public int getMinVersion() {
-		return this.minVersion;
+		return Content.MIN_VERSION;
 	}
 
 	@Override
 	public int getLatestVersion() {
-		return this.latestVersion;
+		return Content.LATEST_VERSION;
 	}
 }
