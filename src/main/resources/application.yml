@@ -1,0 +1,38 @@
+spring:
+  profiles:
+    active: local
+  jpa:
+    properties:
+      hibernate: # TODO 추후 주석 제거
+      #        batch_fetch_style: padded # preparedstatement 쿼리 캐싱 최적화 전략 제어
+      #        default_batch_fetch_size: 100 # in절 query batch size
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    open-in-view: false # OSIV
+  datasource:
+    hikari:
+      connection-timeout: 3000 # connection을 얻기까지 기다리는 최대 시간 (ms)
+      maximum-pool-size: 5 # pool에 유지시킬 수 있는 최대 connection 개수
+    #      auto-commit: false # TODO 추후 주석 제거
+  mvc:
+    throw-exception-if-no-handler-found: true # 요청을 처리할 handler가 존재하지 않을 경우 NoHandlerFoundException
+  web:
+    resources:
+      add-mappings: false # NoHandlerFoundException이 발생했을 때 static resource를 찾지 않음 -> @ExceptionHandler에서 처리
+  lifecycle:
+    timeout-per-shutdown-phase: 20s # graceful하게 요청을 처리하기 위해 서버 종료 시간 유예
+
+server:
+  shutdown: graceful # 남은 요청을 모두 처리하고 서버 종료
+  tomcat: # TODO default 설정 후 부하 테스트하면서 튜닝
+    threads:
+      max: 200 # 동시에 처리할 수 있는 최대 thread 개수
+    accept-count: 100 # max-connections에 도달했을 때 초과된 요청이 쌓이는 queue 사이즈
+    max-connections: 8192 # 서버가 유지할 수 있는 최대 connection 개수
+    max-http-form-post-size: 2MB # POST request body size
+
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+  access:
+    exp: ${JWT_ACCESS_EXP} # Access Token 만료 시간 (ms)
+  refresh:
+    exp: ${JWT_REFRESH_EXP} # Refresh Token 만료 시간 (ms)
