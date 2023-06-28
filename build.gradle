@@ -3,6 +3,7 @@ plugins {
     id 'org.springframework.boot' version '3.1.0'
     id 'io.spring.dependency-management' version '1.1.0'
     id "org.sonarqube" version "3.4.0.2513"
+    id "jacoco"
 }
 
 group = 'dangjang'
@@ -12,11 +13,6 @@ sourceCompatibility = '17'
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
-    }
-}
-sonarqube {
-    properties {
-        property "sonar.projectKey", "co-niverse_dangjang-backend_AYj2jZJELehUZAlqDvRk"
     }
 }
 
@@ -41,4 +37,80 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+    finalizedBy 'jacocoTestReport'
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "co-niverse_dangjang-backend_AYj2jZJELehUZAlqDvRk"
+        property "sonar.language", "java"
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.sources", "src/main/java"
+        property "sonar.tests", "src/test/java"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+        property "sonar.java.binaries", "${buildDir}/classes"
+        property "sonar.test.inclusions", "**/*Test.java"
+        property "sonar.exclusions", "**/*Application*, **/*Exception*, **/dto/**, **/global/advice/**, **/global/config/**, **/global/support/**"
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.10"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled true
+        csv.enabled false
+
+        html.destination file("${buildDir}/jacoco/jacoco.html")
+    }
+    afterEvaluate {
+        classDirectories.setFrom(
+                files(classDirectories.files.collect {
+                    fileTree(dir: it, exclude: [
+                            '**/*Application*',
+                            '**/*Exception*',
+                            '**/dto/**',
+                            '**/global/advice/**',
+                            '**/global/config/**',
+                            '**/global/support/**'
+                    ])
+                })
+        )
+    }
+    finalizedBy 'jacocoTestCoverageVerification'
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            enabled = true
+            element = 'CLASS'
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 0.70
+            }
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.70
+            }
+            limit {
+                counter = 'LINE'
+                value = 'TOTALCOUNT'
+                maximum = 300
+            }
+            excludes = [
+                    '*.*Application',
+                    '*.*Exception*',
+                    '*.dto.*',
+                    '*.global.advice.*',
+                    '*.global.config.*',
+                    '*.global.support.*'
+            ]
+        }
+    }
 }
