@@ -36,3 +36,16 @@ jwt:
     exp: ${JWT_ACCESS_EXP} # Access Token 만료 시간 (ms)
   refresh:
     exp: ${JWT_REFRESH_EXP} # Refresh Token 만료 시간 (ms)
+
+oauth:
+  kakao:
+    client-id: 160cd4f66fc928d2b279d78999d6d018
+    url:
+      auth: https://kauth.kakao.com
+      api: https://kapi.kakao.com
+  naver:
+    secret: Gv8B2TpjWl
+    client-id: AD0J0UR1K4qcsVGtC77O
+    url:
+      auth: https://nid.naver.com
+      api: https://openapi.naver.com
