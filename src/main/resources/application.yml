@@ -39,7 +39,7 @@ jwt:
 
 oauth:
   kakao:
-    client-id: 160cd4f66fc928d2b279d78999d6d018
+    client-id: 42b797f38055d5010e2f10ea8da80522
     url:
       auth: https://kauth.kakao.com
       api: https://kapi.kakao.com
@@ -49,3 +49,4 @@ oauth:
     url:
       auth: https://nid.naver.com
       api: https://openapi.naver.com
+

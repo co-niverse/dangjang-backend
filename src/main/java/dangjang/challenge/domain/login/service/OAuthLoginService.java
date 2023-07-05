@@ -19,6 +19,7 @@ public class OAuthLoginService {
     private final RequestOAuthInfoService requestOAuthInfoService;
 
     public AuthTokens login(OAuthLoginParams params) {
+        System.out.println("OAuthLoginParams : " + params);
         //프로필 정보 가져오기
         OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
         //유저 존재 확인 , 첫 유저 회원가입

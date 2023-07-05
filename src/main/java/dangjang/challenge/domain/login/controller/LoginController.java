@@ -20,6 +20,8 @@ public class LoginController {
     //카카오 로그인
     @PostMapping("/kakao")
     public ResponseEntity<AuthTokens> loginKakao(@RequestBody KakaoLoginParams params) {
+        System.out.println("params" + params.getAccessToken());
+//        return "ResponseEntity.ok(oAuthLoginService.login(params))";
         return ResponseEntity.ok(oAuthLoginService.login(params));
     }
 
@@ -29,5 +31,4 @@ public class LoginController {
         return ResponseEntity.ok(oAuthLoginService.login(params));
     }
 }
-
 
