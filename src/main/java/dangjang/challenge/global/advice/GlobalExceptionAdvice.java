@@ -1,10 +1,5 @@
 package dangjang.challenge.global.advice;
 
-import dangjang.challenge.global.dto.ErrorResponse;
-import dangjang.challenge.global.exception.BusinessException;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,6 +11,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+
+import dangjang.challenge.global.dto.ErrorResponse;
+import dangjang.challenge.global.exception.BusinessException;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * AOP를 적용하여 전역적으로 발생하는 예외를 처리한다.

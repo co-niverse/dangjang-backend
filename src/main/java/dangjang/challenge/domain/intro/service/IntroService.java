@@ -1,10 +1,11 @@
 package dangjang.challenge.domain.intro.service;
 
+import org.springframework.stereotype.Service;
+
 import dangjang.challenge.global.dto.content.Content;
 import dangjang.challenge.global.dto.content.SingleContent;
 import dangjang.challenge.global.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor

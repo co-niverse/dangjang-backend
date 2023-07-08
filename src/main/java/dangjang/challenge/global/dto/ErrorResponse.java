@@ -1,13 +1,15 @@
 package dangjang.challenge.global.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
+import java.util.List;
+import java.util.Set;
+
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import java.util.List;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 
 /**
  * 공통된 에러 응답을 보내기 위해 사용한다.
