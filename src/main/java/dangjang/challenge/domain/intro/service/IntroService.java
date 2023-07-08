@@ -2,8 +2,7 @@ package dangjang.challenge.domain.intro.service;
 
 import org.springframework.stereotype.Service;
 
-import dangjang.challenge.global.dto.content.Content;
-import dangjang.challenge.global.dto.content.SingleContent;
+import dangjang.challenge.domain.intro.dto.IntroInfo;
 import dangjang.challenge.global.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 
@@ -12,11 +11,12 @@ import lombok.RequiredArgsConstructor;
 public class IntroService {
 	private int error = -1;
 
-	public Content getIntro() {
-		Content content = new SingleContent<>(null);
+	public IntroInfo getIntroInfoV1() {
+
+		IntroInfo introInfo = new IntroInfo("1.0.0", "1.0.0");
 		error += 1;
 		if (error % 2 == 0) {
-			return content;
+			return introInfo;
 		}
 		throw new BadRequestException();
 	}

@@ -1,18 +1,18 @@
 package dangjang.challenge.domain.intro.controller;
 
-import dangjang.challenge.ControllerTest;
-import dangjang.challenge.domain.intro.service.IntroService;
-import dangjang.challenge.global.dto.content.Content;
-import dangjang.challenge.global.dto.content.SingleContent;
-import dangjang.challenge.global.exception.BadRequestException;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import dangjang.challenge.ControllerTest;
+import dangjang.challenge.domain.intro.dto.IntroInfo;
+import dangjang.challenge.domain.intro.service.IntroService;
+import dangjang.challenge.global.exception.BadRequestException;
 
 /**
  * @author Teo
@@ -26,8 +26,8 @@ class IntroControllerTest extends ControllerTest {
 	@Test
 	void 성공한_응답을_반환한다() throws Exception {
 		// given
-		Content content = new SingleContent<>(null);
-		given(introService.getIntro()).willReturn(content);
+		IntroInfo introInfo = new IntroInfo("1.0.0", "1.2.0");
+		given(introService.getIntroInfoV1()).willReturn(introInfo);
 
 		// when
 		ResultActions resultActions = get(URI);
@@ -36,15 +36,15 @@ class IntroControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isOk(),
 			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
-			jsonPath("$.data.minVersion").value(content.getMinVersion()),
-			jsonPath("$.data.latestVersion").value(content.getLatestVersion())
+			jsonPath("$.data.minVersion").value(introInfo.minVersion()),
+			jsonPath("$.data.latestVersion").value(introInfo.latestVersion())
 		);
 	}
 
 	@Test
 	void 실패한_응답을_반환한다() throws Exception {
 		// given
-		given(introService.getIntro()).willThrow(new BadRequestException());
+		given(introService.getIntroInfoV1()).willThrow(new BadRequestException());
 
 		// when
 		ResultActions resultActions = get(URI);

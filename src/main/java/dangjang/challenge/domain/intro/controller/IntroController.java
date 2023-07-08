@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import dangjang.challenge.domain.intro.dto.IntroInfo;
 import dangjang.challenge.domain.intro.service.IntroService;
-import dangjang.challenge.global.dto.SuccessResponse;
-import dangjang.challenge.global.dto.content.Content;
+import dangjang.challenge.global.dto.SuccessSingleResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -18,8 +18,8 @@ public class IntroController {
 	private final IntroService introService;
 
 	@GetMapping
-	public ResponseEntity<SuccessResponse> getIntro() {
-		Content content = introService.getIntro();
-		return ResponseEntity.ok().body(new SuccessResponse(HttpStatus.OK.getReasonPhrase(), content));
+	public ResponseEntity<SuccessSingleResponse<IntroInfo>> getIntro() {
+		IntroInfo introInfo = introService.getIntroInfoV1();
+		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), introInfo));
 	}
 }
