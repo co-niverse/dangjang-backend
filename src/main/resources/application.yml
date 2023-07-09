@@ -36,3 +36,7 @@ jwt:
     exp: ${JWT_ACCESS_EXP} # Access Token 만료 시간 (ms)
   refresh:
     exp: ${JWT_REFRESH_EXP} # Refresh Token 만료 시간 (ms)
+
+springdoc:
+  api-docs:
+    path: /api-docs
