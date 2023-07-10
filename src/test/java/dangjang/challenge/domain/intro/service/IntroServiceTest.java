@@ -1,13 +1,14 @@
 package dangjang.challenge.domain.intro.service;
 
-import dangjang.challenge.global.dto.content.Content;
-import dangjang.challenge.global.exception.BadRequestException;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import dangjang.challenge.global.dto.content.Content;
+import dangjang.challenge.global.exception.BadRequestException;
 
 @SpringBootTest
 class IntroServiceTest {

@@ -1,5 +1,7 @@
 package dangjang.challenge;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -30,6 +32,7 @@ public class ControllerTest {
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(content)
+				.with(csrf())
 		);
 	}
 
@@ -58,7 +61,8 @@ public class ControllerTest {
 		);
 	}
 
-	public ResultActions get(final String uri, final MultiValueMap<String, String> params, final Object... pathVariables) throws Exception {
+	public ResultActions get(final String uri, final MultiValueMap<String, String> params,
+		final Object... pathVariables) throws Exception {
 		return mockMvc.perform(
 			MockMvcRequestBuilders.get(uri, pathVariables)
 				.params(params)

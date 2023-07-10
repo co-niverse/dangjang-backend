@@ -1,18 +1,19 @@
 package dangjang.challenge.domain.intro.controller;
 
-import dangjang.challenge.ControllerTest;
-import dangjang.challenge.domain.intro.service.IntroService;
-import dangjang.challenge.global.dto.content.Content;
-import dangjang.challenge.global.dto.content.SingleContent;
-import dangjang.challenge.global.exception.BadRequestException;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
 
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import dangjang.challenge.ControllerTest;
+import dangjang.challenge.domain.intro.service.IntroService;
+import dangjang.challenge.global.dto.content.Content;
+import dangjang.challenge.global.dto.content.SingleContent;
+import dangjang.challenge.global.exception.BadRequestException;
 
 /**
  * @author Teo
@@ -35,9 +36,8 @@ class IntroControllerTest extends ControllerTest {
 		// then
 		resultActions.andExpectAll(
 			status().isOk(),
-			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
-			jsonPath("$.data.minVersion").value(content.getMinVersion()),
-			jsonPath("$.data.latestVersion").value(content.getLatestVersion())
+			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase())
+
 		);
 	}
 

@@ -18,7 +18,7 @@ spring:
       add-mappings: false
 
 jwt:
-  secret-key: coniverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverse
+  secret-key: coniverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverse
   access:
     exp: 1800000
   refresh:
@@ -70,3 +70,12 @@ spring:
     activate:
       on-profile: performance
   # ...
+---
+oauth:
+  kakao:
+    url:
+      api: https://kapi.kakao.com
+    exID: ${kakaoOAuthID} #사용자ID
+  naver:
+    url:
+      api: https://openapi.naver.com
