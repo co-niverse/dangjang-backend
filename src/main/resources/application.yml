@@ -33,10 +33,9 @@ server:
 jwt:
   secret-key: ${JWT_SECRET_KEY}
   access:
-    exp: ${JWT_ACCESS_EXP} # Access Token 만료 시간 (ms) 30분
+    exp: ${JWT_ACCESS_EXP} # Access Token 만료 시간 (ms)
   refresh:
-    exp: ${JWT_REFRESH_EXP} # Refresh Token 만료 시간 (ms) 7일
-
+    exp: ${JWT_REFRESH_EXP} # Refresh Token 만료 시간 (ms)
 oauth:
   kakao:
     url:
