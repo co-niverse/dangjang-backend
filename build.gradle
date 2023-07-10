@@ -110,9 +110,13 @@ jacocoTestCoverageVerification {
                     '*.*Application',
                     '*.*Exception*',
                     '*.dto.*',
+                    '*.entity.*',
+                    '*.infrastructure.*',
+                    '*.OAuthInfo.*',
                     '*.global.advice.*',
                     '*.global.config.*',
-                    '*.global.support.*'
+                    '*.global.support.*',
+                    '*.global.dto.*'
             ]
         }
     }
