@@ -18,7 +18,7 @@ public class AuthTokenGeneratorTest {
 	@Autowired
 	private AuthTokensGenerator authTokensGenerator;
 
-	@Value("${oauth.kakao.exID}")
+	@Value("${oauth.kakao.sample-id}")
 	private Long exID;
 
 	@Test

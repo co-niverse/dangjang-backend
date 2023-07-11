@@ -27,6 +27,15 @@ jwt:
 cors:
   allowed-origins: "*"
 
+oauth:
+  kakao:
+    url:
+      api: https://kapi.kakao.com
+    sample-id: 1234
+  naver:
+    url:
+      api: https://openapi.naver.com
+
 logging:
   level:
     org:
@@ -70,12 +79,3 @@ spring:
     activate:
       on-profile: performance
   # ...
----
-oauth:
-  kakao:
-    url:
-      api: https://kapi.kakao.com
-    exID: ${kakaoOAuthID} #사용자ID
-  naver:
-    url:
-      api: https://openapi.naver.com
