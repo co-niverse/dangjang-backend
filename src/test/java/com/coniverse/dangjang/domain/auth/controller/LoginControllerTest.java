@@ -1,5 +1,6 @@
 package com.coniverse.dangjang.domain.auth.controller;
 
+import static com.coniverse.dangjang.support.SimpleMockMvc.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -20,7 +21,7 @@ public class LoginControllerTest extends ControllerTest {
 	void 카카오_로그인_성공() throws Exception {
 
 		// when
-		ResultActions resultActions = post(URI + "/kakao",
+		ResultActions resultActions = post(mockMvc, URI + "/kakao",
 			"{\"accessToken\" : \"accessToken123456789\"}");
 
 		// then
@@ -35,7 +36,7 @@ public class LoginControllerTest extends ControllerTest {
 	void 네이버_로그인_성공() throws Exception {
 
 		// when
-		ResultActions resultActions = post(URI + "/naver",
+		ResultActions resultActions = post(mockMvc, URI + "/naver",
 			"{\"accessToken\" : \"accessToken123456789\"}");
 
 		// then

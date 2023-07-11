@@ -5,12 +5,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.util.MultiValueMap;
 
 import com.coniverse.dangjang.domain.auth.controller.LoginController;
 import com.coniverse.dangjang.domain.auth.service.OAuthLoginService;
@@ -18,9 +14,11 @@ import com.coniverse.dangjang.domain.intro.controller.IntroController;
 import com.coniverse.dangjang.domain.intro.service.IntroService;
 
 /**
- * WebMvcTest용 공통 메서드이다. 상속하여 사용한다.
+ * WebMvc Test parent class
+ * <br/>
+ * contollers에 테스트할 controller를 등록하고, controller에서 주입하는 bean들을 MockBean으로 등록한다.
  *
- * @author Teo
+ * @author TEO
  * @since 1.0
  */
 @WebMvcTest(
@@ -32,59 +30,9 @@ import com.coniverse.dangjang.domain.intro.service.IntroService;
 @MockBean(JpaMetamodelMappingContext.class)
 public class ControllerTest {
 	@Autowired
-	private MockMvc mockMvc;
-	@MockBean
-	private OAuthLoginService oAuthLoginService;
+	protected MockMvc mockMvc;
 	@MockBean
 	private IntroService introService;
-
-	public ResultActions post(final String uri, final String content, final Object... pathVariables) throws Exception {
-		return mockMvc.perform(
-			MockMvcRequestBuilders.post(uri, pathVariables)
-				.accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(content)
-		);
-	}
-
-	public ResultActions put(final String uri, final String content, final Object... pathVariables) throws Exception {
-		return mockMvc.perform(
-			MockMvcRequestBuilders.put(uri, pathVariables)
-				.accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(content)
-		);
-	}
-
-	public ResultActions patch(final String uri, final String content, final Object... pathVariables) throws Exception {
-		return mockMvc.perform(
-			MockMvcRequestBuilders.patch(uri, pathVariables)
-				.accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(content)
-		);
-	}
-
-	public ResultActions get(final String uri, final Object... pathVariables) throws Exception {
-		return mockMvc.perform(
-			MockMvcRequestBuilders.get(uri, pathVariables)
-				.accept(MediaType.APPLICATION_JSON)
-		);
-	}
-
-	public ResultActions get(final String uri, final MultiValueMap<String, String> params,
-		final Object... pathVariables) throws Exception {
-		return mockMvc.perform(
-			MockMvcRequestBuilders.get(uri, pathVariables)
-				.params(params)
-				.accept(MediaType.APPLICATION_JSON)
-		);
-	}
-
-	public ResultActions delete(final String uri, final Object... pathVariables) throws Exception {
-		return mockMvc.perform(
-			MockMvcRequestBuilders.delete(uri, pathVariables)
-				.accept(MediaType.APPLICATION_JSON)
-		);
-	}
+	@MockBean
+	private OAuthLoginService oAuthLoginService;
 }

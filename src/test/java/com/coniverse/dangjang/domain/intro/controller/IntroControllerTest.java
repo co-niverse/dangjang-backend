@@ -1,5 +1,6 @@
 package com.coniverse.dangjang.domain.intro.controller;
 
+import static com.coniverse.dangjang.support.SimpleMockMvc.get;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,7 +31,7 @@ class IntroControllerTest extends ControllerTest {
 		given(introService.getIntroInfoV1()).willReturn(introInfo);
 
 		// when
-		ResultActions resultActions = get(URI);
+		ResultActions resultActions = get(mockMvc, URI);
 
 		// then
 		resultActions.andExpectAll(
@@ -47,7 +48,7 @@ class IntroControllerTest extends ControllerTest {
 		given(introService.getIntroInfoV1()).willThrow(new BadRequestException());
 
 		// when
-		ResultActions resultActions = get(URI);
+		ResultActions resultActions = get(mockMvc, URI);
 
 		// then
 		resultActions.andExpectAll(
