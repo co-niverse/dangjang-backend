@@ -5,7 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -20,7 +20,7 @@ import com.coniverse.dangjang.global.exception.BadRequestException;
  */
 class IntroControllerTest extends ControllerTest {
 	private final String URI = "/api/v1/intro";
-	@MockBean
+	@Autowired
 	private IntroService introService;
 
 	@Test

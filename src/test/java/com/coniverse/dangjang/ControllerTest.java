@@ -1,7 +1,5 @@
 package com.coniverse.dangjang;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -14,17 +12,31 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.util.MultiValueMap;
 
+import com.coniverse.dangjang.domain.auth.controller.LoginController;
+import com.coniverse.dangjang.domain.auth.service.OAuthLoginService;
+import com.coniverse.dangjang.domain.intro.controller.IntroController;
+import com.coniverse.dangjang.domain.intro.service.IntroService;
+
 /**
  * WebMvcTest용 공통 메서드이다. 상속하여 사용한다.
  *
  * @author Teo
  * @since 1.0
  */
-@WebMvcTest(includeFilters = @ComponentScan.Filter(classes = {EnableWebSecurity.class}))
+@WebMvcTest(
+	controllers = {
+		IntroController.class,
+		LoginController.class
+	},
+	includeFilters = @ComponentScan.Filter(classes = {EnableWebSecurity.class}))
 @MockBean(JpaMetamodelMappingContext.class)
 public class ControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
+	@MockBean
+	private OAuthLoginService oAuthLoginService;
+	@MockBean
+	private IntroService introService;
 
 	public ResultActions post(final String uri, final String content, final Object... pathVariables) throws Exception {
 		return mockMvc.perform(
@@ -32,7 +44,6 @@ public class ControllerTest {
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(content)
-				.with(csrf())
 		);
 	}
 
