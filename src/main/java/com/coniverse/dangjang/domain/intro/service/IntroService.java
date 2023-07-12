@@ -14,8 +14,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class IntroService {
-	private final String MINVERSION = "1.0.0";
-	private final String LATESTVERSION = "1.0.0";
+	private static final String MIN_VERSION = "1.0.0";
+	private static final String LATEST_VERSION = "1.0.0";
 	private int error = -1;
 
 	/**
@@ -25,11 +25,23 @@ public class IntroService {
 	 * @since 1.0.0
 	 */
 	public IntroResponse<?> getTestIntroResponse() {
-		IntroResponse<?> introResponse = new IntroResponse<>(MINVERSION, LATESTVERSION, null);
+		IntroResponse<?> introResponse = new IntroResponse<>(MIN_VERSION, LATEST_VERSION, null);
 		error += 1;
 		if (error % 2 == 0) {
 			return introResponse;
 		}
 		throw new BadRequestException();
+	}
+
+	/**
+	 * TODO
+	 *
+	 * @return IntroResponse
+	 * @since 1.0.0
+	 */
+	public IntroResponse<?> getProdIntroResponse() {
+		IntroResponse<?> introResponse = new IntroResponse<>(MIN_VERSION, LATEST_VERSION, null);
+
+		return introResponse;
 	}
 }
