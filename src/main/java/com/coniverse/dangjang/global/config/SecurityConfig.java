@@ -18,8 +18,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 /**
  * Spring Security를 설정한다.
  *
- * @author Teo
- * @since 1.0
+ * @author TEO
+ * @since 1.0.0
  */
 @Configuration
 @EnableWebSecurity
@@ -38,7 +38,7 @@ public class SecurityConfig {
 	 * <br/>
 	 * SessionCreationPolicy.STATELESS : 세션을 생성하지 않는다.
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -60,7 +60,7 @@ public class SecurityConfig {
 	/**
 	 * CORS 설정
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	@Bean
 	public CorsConfigurationSource configurationSource() {

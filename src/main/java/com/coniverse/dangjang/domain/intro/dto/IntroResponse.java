@@ -5,6 +5,8 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
+ * 버전 정보, splash 정보를 담는다.
+ *
  * @author TEO
  * @since 1.0.0
  */

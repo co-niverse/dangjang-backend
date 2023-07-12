@@ -9,8 +9,8 @@ import jakarta.annotation.PostConstruct;
 /**
  * 서버 시간 동기화
  *
- * @author Teo
- * @since 1.0
+ * @author TEO
+ * @since 1.0.0
  */
 @Configuration
 public class TimeConfig {

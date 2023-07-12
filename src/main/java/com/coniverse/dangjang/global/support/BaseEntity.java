@@ -14,8 +14,8 @@ import lombok.Getter;
 /**
  * Entity 공통 매핑 정보
  *
- * @author Teo
- * @since 1.0
+ * @author TEO
+ * @since 1.0.0
  */
 @Getter
 @MappedSuperclass

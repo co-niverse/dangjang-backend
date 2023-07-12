@@ -11,6 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.coniverse.dangjang.domain.intro.dto.IntroResponse;
 import com.coniverse.dangjang.global.exception.BadRequestException;
 
+/**
+ * @author TEO
+ * @since 1.0.0
+ */
 @SpringBootTest
 class IntroServiceTest {
 	@Autowired

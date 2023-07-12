@@ -22,8 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * AOP를 적용하여 전역적으로 발생하는 예외를 처리한다.
  *
- * @author Teo
- * @since 1.0
+ * @author TEO
+ * @since 1.0.0
  */
 @Slf4j
 @RestControllerAdvice
@@ -33,7 +33,7 @@ public class GlobalExceptionAdvice {
 	 * 커스텀 예외를 처리한다.
 	 *
 	 * @param e {@link BusinessException}
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	@ExceptionHandler(BusinessException.class)
 	public ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
@@ -47,7 +47,7 @@ public class GlobalExceptionAdvice {
 	 * 요청 헤더가 없을 때 발생하는 예외를 처리한다.
 	 *
 	 * @param e {@link MissingRequestHeaderException}
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	@ExceptionHandler(MissingRequestHeaderException.class)
 	public ResponseEntity<ErrorResponse> handleMissingRequestHeaderException(MissingRequestHeaderException e) {
@@ -60,7 +60,7 @@ public class GlobalExceptionAdvice {
 	 * {@link RequestBody}의 데이터가 {@link Valid}의 유효성 검증에 실패할 때 발생하는 예외를 처리한다.
 	 *
 	 * @param e {@link MethodArgumentNotValidException}
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
@@ -75,7 +75,7 @@ public class GlobalExceptionAdvice {
 	 * 기본적으로 HTTP status code 500(Internal Server Error)로 처리하기 때문에 400(Bad Request)로 변경한다.
 	 *
 	 * @param e {@link ConstraintViolationException}
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException e) {
@@ -88,7 +88,7 @@ public class GlobalExceptionAdvice {
 	 * 서버 내에서 예기치 못한 예외를 처리한다.
 	 *
 	 * @param e {@link HttpServerErrorException}
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	@ExceptionHandler({RuntimeException.class, HttpServerErrorException.class, Exception.class})
 	public ResponseEntity<ErrorResponse> handleServerErrorException(Exception e) {
@@ -101,7 +101,7 @@ public class GlobalExceptionAdvice {
 	 * 잘못된 endpoint로 요청이 전달됐을 때 발생하는 예외를 처리한다.
 	 *
 	 * @param e {@link NoHandlerFoundException}
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	@ExceptionHandler(NoHandlerFoundException.class)
 	public ResponseEntity<ErrorResponse> handleNoHandlerFoundException(NoHandlerFoundException e) {

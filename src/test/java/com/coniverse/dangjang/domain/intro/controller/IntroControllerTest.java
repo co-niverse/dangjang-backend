@@ -16,8 +16,8 @@ import com.coniverse.dangjang.domain.intro.service.IntroService;
 import com.coniverse.dangjang.global.exception.BadRequestException;
 
 /**
- * @author Teo
- * @since 1.0
+ * @author TEO
+ * @since 1.0.0
  */
 class IntroControllerTest extends ControllerTest {
 	private final String URI = "/api/intro";
