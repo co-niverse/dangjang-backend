@@ -8,6 +8,12 @@ import com.coniverse.dangjang.domain.healthMetric.exception.HealthMetricCodeNotF
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * 건강지표 코드
+ *
+ * @author TEO
+ * @since 1.0.0
+ */
 @Getter
 @AllArgsConstructor
 public enum HealthMetricCode {
@@ -24,6 +30,14 @@ public enum HealthMetricCode {
 	private final String title;
 	private final List<HealthMetricType> typeList;
 
+	/**
+	 * 건강지표 타입으로 건강지표 코드를 찾는다.
+	 *
+	 * @param type 건강지표 타입
+	 * @return HealthMetricCode 건강지표 코드
+	 * @see HealthMetricType
+	 * @since 1.0.0
+	 */
 	public static HealthMetricCode findByHealthMetricsType(HealthMetricType type) {
 		return Arrays.stream(HealthMetricCode.values())
 			.filter(code -> code.hasType(type))
@@ -31,6 +45,14 @@ public enum HealthMetricCode {
 			.orElseThrow(HealthMetricCodeNotFoundException::new);
 	}
 
+	/**
+	 * 건강지표 타입이 건강지표 코드에 포함되어 있는지 확인한다.
+	 *
+	 * @param type 건강지표 타입
+	 * @return boolean 건강지표 타입 포함 여부
+	 * @see HealthMetricType
+	 * @since 1.0.0
+	 */
 	private boolean hasType(HealthMetricType type) {
 		return typeList.stream().anyMatch(t -> t.equals(type));
 	}

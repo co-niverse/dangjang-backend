@@ -3,6 +3,12 @@ package com.coniverse.dangjang.domain.healthMetric.entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * 건강지표 타입
+ *
+ * @author TEO
+ * @since 1.0.0
+ */
 @Getter
 @AllArgsConstructor
 public enum HealthMetricType {
