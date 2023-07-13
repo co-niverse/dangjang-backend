@@ -7,7 +7,6 @@ import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.dto.request.OAuthLoginParams;
 import com.coniverse.dangjang.domain.user.dto.UserInfo;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
-import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.domain.user.service.UserService;
 import com.coniverse.dangjang.global.exception.NonExistentUserException;
 
@@ -20,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 @Service("OAuthLoginService")
 @RequiredArgsConstructor
 public class OAuthLoginService {
-	private final UserRepository userRepository;
 	private final AuthTokensGenerator authTokensGenerator;
 	private final OAuthInfoService OAuthInfoService;
 	private final UserService userService;
@@ -32,6 +30,7 @@ public class OAuthLoginService {
 	 * @since 1.0
 	 */
 	public LoginResponse login(OAuthLoginParams params) {
+
 		/**
 		 * 카카오,네이버 사용자 정보 조회
 		 * @since 1.0
