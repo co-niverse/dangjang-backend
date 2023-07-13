@@ -11,4 +11,9 @@ public class LoginAPiConfig {
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
+
+	// @Bean
+	// public OAuthInfoService oAuthInfoService() {
+	// 	return new ProductOAuthInfoService();
+	// }
 }

@@ -1,6 +1,7 @@
 package com.coniverse.dangjang.domain.auth.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 import java.util.Date;
 
@@ -8,14 +9,19 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithAnonymousUser;
-import org.springframework.web.client.HttpClientErrorException;
 
 import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthTokens;
+import com.coniverse.dangjang.domain.auth.dto.OAuthProvider;
+import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginParams;
 import com.coniverse.dangjang.domain.user.dto.UserInfo;
+import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.infrastructure.KakaoInfoResponse;
+import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.domain.user.service.UserService;
+import com.coniverse.dangjang.global.config.TestConfig;
 import com.coniverse.dangjang.global.exception.NonExistentUserException;
 
 /**
@@ -23,9 +29,12 @@ import com.coniverse.dangjang.global.exception.NonExistentUserException;
  * @since 1.0
  */
 @SpringBootTest
+@Import(TestConfig.class)
 public class OAuthLoginServiceTest {
 	@Autowired
 	private OAuthLoginService oAuthLoginService;
+	@Autowired
+	private UserRepository userRepository;
 	@Autowired
 	private AuthTokensGenerator authTokensGenerator;
 	@Autowired
@@ -33,27 +42,51 @@ public class OAuthLoginServiceTest {
 
 	@Test
 	@WithAnonymousUser
-	void 로그인_실패() throws Exception { //처음부터 오류가 발생해서 coverage 낮은 듯
+	void 로그인_실패한다() throws Exception {
 
 		//given
 		KakaoLoginParams kakaoLoginParams = new KakaoLoginParams();
-		kakaoLoginParams.setAccessToken("4J-zgwK68lN3RIm8iy1Qv0EGE54mbyOrVc-X1cf1CinJXgAAAYk1SMch");
+		kakaoLoginParams.setAccessToken("4J-zgwK68lN3RIm8iy1Qv0EGE54mbyOrVc-X1cf1CinJXgAAAYk1SMchfail");
 
-		Assertions.assertThrows(HttpClientErrorException.Unauthorized.class, () -> {
+		//then
+		Assertions.assertThrows(NonExistentUserException.class, () -> {
 			oAuthLoginService.login(kakaoLoginParams);
 		});
 
 	}
 
 	@Test
+	void 로그인을_성공한다() {
+
+		//given
+		KakaoLoginParams kakaoLoginParams = new KakaoLoginParams();
+		kakaoLoginParams.setAccessToken("4J-zgwK68lN3RIm8iy1Qv0EGE54mbyOrVc-X1cf1CinJXgAAAYk1SMch");
+		//User user = User.builder().oauth(5555L).nickname("nickname").oAuthProvider(OAuthProvider.KAKAO).build();
+		User user = User.builder().oauth(5555L).nickname("nickname").oAuthProvider(OAuthProvider.KAKAO).build();
+		userRepository.save(user);
+		LoginResponse loginResponse = mock(LoginResponse.class);
+		// System.out.println("countLogin : " + oAuthLoginService.login(kakaoLoginParams).getNickname());
+		;
+		// given(oAuthLoginService.login(kakaoLoginParams)).willReturn(loginResponse);
+		// when(oAuthLoginService.login(kakaoLoginParams)).thenReturn(loginResponse);
+
+		//when
+		LoginResponse actual = oAuthLoginService.login(kakaoLoginParams);
+		// //
+		// // //then
+		assertThat(actual).isNotNull();
+	}
+
+	@Test
 	@WithAnonymousUser
-	void JWT_반환() throws Exception {
+	void JWT_반환한다() throws Exception {
 		// given
-		//유저 생성
 		KakaoInfoResponse kakaoInfoResponse = new KakaoInfoResponse();
-		kakaoInfoResponse.setId(2878733655L);
+		kakaoInfoResponse.setId(287873365589L);
 		kakaoInfoResponse.setConnected_at(new Date());
-		Long userId = userService.newMember(kakaoInfoResponse);
+		//유저 생성
+		User user = User.builder().oauth(287873365589L).nickname("nickname").oAuthProvider(OAuthProvider.KAKAO).build();
+		userRepository.save(user);
 
 		//유저 존재 확인
 		UserInfo userInfo = userService.findUser(kakaoInfoResponse);
@@ -64,7 +97,7 @@ public class OAuthLoginServiceTest {
 	}
 
 	@Test()
-	void 새로운_유저_추가() throws Exception {
+	void 새로운_유저를_추가한다() {
 		//given
 		KakaoInfoResponse kakaoInfoResponse = new KakaoInfoResponse();
 		kakaoInfoResponse.setId(2878733655L);
@@ -79,7 +112,6 @@ public class OAuthLoginServiceTest {
 		KakaoInfoResponse kakaoInfoResponse = new KakaoInfoResponse();
 		kakaoInfoResponse.setId(2878733654L);
 		kakaoInfoResponse.setConnected_at(new Date());
-		// UserInfo userInfo = oAuthLoginService.findUser(kakaoInfoResponse);
 
 		Assertions.assertThrows(NonExistentUserException.class, () -> {
 			userService.findUser(kakaoInfoResponse);

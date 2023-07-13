@@ -16,7 +16,7 @@ public class KakaoApiClientTest {
 	private KakaoApiClient kakaoApiClient;
 
 	@Test
-	public void 카카오_사용자_정보_가져오기_실패() throws Exception {
+	public void 카카오_사용자_정보_가져오기_실패한다() throws Exception {
 
 		assertThrows(Exception.class, () -> {
 			kakaoApiClient.requestOauthInfo("");

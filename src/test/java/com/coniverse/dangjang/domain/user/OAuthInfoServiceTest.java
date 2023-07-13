@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginParams;
-import com.coniverse.dangjang.domain.auth.service.OAuthInfoService;
+import com.coniverse.dangjang.domain.auth.service.ProductOAuthInfoService;
 
 @SpringBootTest
 public class OAuthInfoServiceTest {
 	@Autowired
-	private OAuthInfoService oAuthInfoService;
+	private ProductOAuthInfoService oAuthInfoService;
 
 	@Test
 	public void accessToken으로_사용자정보_가져오기() {

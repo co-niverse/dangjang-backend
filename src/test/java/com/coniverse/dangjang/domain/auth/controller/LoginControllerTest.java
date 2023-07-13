@@ -12,13 +12,13 @@ import com.coniverse.dangjang.ControllerTest;
 
 /**
  * @author EVE
- * @since 1.0
+ * @since 1.0.0
  */
 public class LoginControllerTest extends ControllerTest {
 	private final String URI = "/api/auth";
 
 	@Test
-	void 카카오_로그인_성공() throws Exception {
+	void 카카오_로그인_성공한다() throws Exception {
 
 		// when
 		ResultActions resultActions = post(mockMvc, URI + "/kakao",
@@ -33,7 +33,7 @@ public class LoginControllerTest extends ControllerTest {
 	}
 
 	@Test
-	void 네이버_로그인_성공() throws Exception {
+	void 네이버_로그인_성공한다() throws Exception {
 
 		// when
 		ResultActions resultActions = post(mockMvc, URI + "/naver",

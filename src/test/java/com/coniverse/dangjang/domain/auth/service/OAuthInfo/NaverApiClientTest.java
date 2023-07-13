@@ -16,7 +16,7 @@ public class NaverApiClientTest {
 	private NaverApiClient naverApiClient;
 
 	@Test
-	public void 네이버_사용자_정보_가져오기_실패() throws Exception {
+	public void 네이버_사용자_정보_가져오기_실패한다() throws Exception {
 		assertThrows(Exception.class, () -> {
 			naverApiClient.requestOauthInfo("");
 			;

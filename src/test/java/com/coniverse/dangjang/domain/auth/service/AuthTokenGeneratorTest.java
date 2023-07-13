@@ -22,13 +22,13 @@ public class AuthTokenGeneratorTest {
 	private Long exID;
 
 	@Test
-	void 토큰_생성() {
+	void 토큰을_생성한다() {
 
 		assertThat(authTokensGenerator.generate(exID)).isNotNull();
 	}
 
 	@Test
-	void 유저_id_추출() {
+	void 유저_id를_추출한다() {
 		//given
 		AuthTokens authTokens = authTokensGenerator.generate(exID);
 		assertThat(authTokensGenerator.extractMemberId(authTokens.getAccessToken())).isNotNull();
