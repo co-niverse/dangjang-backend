@@ -23,7 +23,6 @@ import lombok.RequiredArgsConstructor;
  */
 @Component
 @RequiredArgsConstructor
-//@Profile("dev")
 public class KakaoInfoRequestService implements OAuthInfoRequestService {
 
 	private static final String GRANT_TYPE = "authorization_code";
