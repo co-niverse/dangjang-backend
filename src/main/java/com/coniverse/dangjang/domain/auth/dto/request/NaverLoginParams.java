@@ -17,12 +17,12 @@ public class NaverLoginParams implements OAuthLoginParams {
 	private String accessToken;
 
 	@Override
-	public OAuthProvider oAuthProvider() {
+	public OAuthProvider takeOauthProvider() {
 		return OAuthProvider.NAVER;
 	}
 
 	@Override
-	public String oAuthToken() {
+	public String takeOauthToken() {
 		return accessToken;
 	}
 

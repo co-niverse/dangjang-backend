@@ -18,15 +18,13 @@ import lombok.Setter;
 public class KakaoLoginParams implements OAuthLoginParams {
 	private String accessToken;
 
-	//provider 전달
 	@Override
-	public OAuthProvider oAuthProvider() {
+	public OAuthProvider takeOauthProvider() {
 		return OAuthProvider.KAKAO;
 	}
 
-	//accessToken 가져오기
 	@Override
-	public String oAuthToken() {
+	public String takeOauthToken() {
 		return accessToken;
 	}
 

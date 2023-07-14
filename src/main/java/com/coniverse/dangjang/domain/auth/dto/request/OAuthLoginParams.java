@@ -10,9 +10,9 @@ import com.coniverse.dangjang.domain.auth.dto.OAuthProvider;
  */
 public interface OAuthLoginParams {
 	//provider 반환
-	OAuthProvider oAuthProvider();
+	OAuthProvider takeOauthProvider();
 
-	String oAuthToken();
+	String takeOauthToken();
 
 }
 
