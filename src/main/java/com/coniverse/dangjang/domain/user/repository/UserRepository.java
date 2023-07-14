@@ -9,7 +9,7 @@ import com.coniverse.dangjang.domain.user.entity.User;
 /**
  * USER Repository
  *
- * @author Eve
+ * @author EVE
  * @since 1.0
  */
 public interface UserRepository extends JpaRepository<User, Long> {

@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * 네이 사용자 정보 조회
  *
- * @author Eve
+ * @author EVE
  * @since 1.0
  */
 @Component

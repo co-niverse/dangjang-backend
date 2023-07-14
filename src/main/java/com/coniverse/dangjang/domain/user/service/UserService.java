@@ -10,6 +10,12 @@ import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.global.exception.NonExistentUserException;
 
+/**
+ * USER Service
+ *
+ * @author EVE
+ * @since 1.0
+ */
 @Service
 public class UserService {
 	private final UserRepository userRepository;

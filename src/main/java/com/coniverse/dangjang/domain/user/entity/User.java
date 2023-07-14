@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * @author Eve
+ * @author EVE
  * @since 1.0
  */
 @Getter

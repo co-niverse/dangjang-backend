@@ -9,7 +9,7 @@ import lombok.Getter;
 /**
  * 네이버 사용자 정보 조회시 필요한 RESPONSE
  *
- * @author Eve
+ * @author EVE
  * @since 1.0
  */
 @Getter

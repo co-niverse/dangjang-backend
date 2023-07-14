@@ -13,7 +13,7 @@ import com.coniverse.dangjang.domain.auth.service.oauthInfoRequest.OAuthInfoRequ
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
 
 /**
- * @author Eve
+ * @author EVE
  * @since 1.0
  */
 

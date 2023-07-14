@@ -17,7 +17,7 @@ import com.coniverse.dangjang.global.exception.NonExistentUserException;
 import lombok.RequiredArgsConstructor;
 
 /**
- * @author Eve
+ * @author EVE
  * @since 1.0
  */
 @RestController
