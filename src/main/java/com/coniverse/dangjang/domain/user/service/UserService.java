@@ -27,7 +27,7 @@ public class UserService {
 	 * @since 1.0
 	 */
 
-	public UserInfo findUser(OAuthInfoResponse oAuthInfoResponse) {
+	public UserInfo findUser(OAuthInfoResponse oAuthInfoResponse) throws NonExistentUserException {
 		/**
 		 * 기존 유저 여부 확인
 		 * @since 1.0
