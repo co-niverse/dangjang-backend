@@ -24,17 +24,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
 public class LoginController {
-	private final OauthLoginService oAuthLoginService;
+	private final OauthLoginService oauthLoginService;
 
 	/**
 	 * @param params 카카오 accessToken을 받아온다.
 	 * @return ResponseEntity 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, authID)를 전달한다.
-	 * @throws NonExistentUserException 회원가입된 유저가 아닐때 발생하는 오류
+	 * @throws NonExistentUserException 회원가입된 유저가 아닐때 발생하는 오류 (oAuthLoginService.login에서 throw)
 	 * @since 1.0
 	 */
 	@PostMapping("/kakao")
 	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginKakao(@RequestBody KakaoLoginParams params) {
-		LoginResponse loginResponse = oAuthLoginService.login(params);
+		LoginResponse loginResponse = oauthLoginService.login(params);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
 	}
 
@@ -46,7 +46,7 @@ public class LoginController {
 	 */
 	@PostMapping("/naver")
 	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginNaver(@RequestBody NaverLoginParams params) {
-		LoginResponse loginResponse = oAuthLoginService.login(params);
+		LoginResponse loginResponse = oauthLoginService.login(params);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
 	}
 }
