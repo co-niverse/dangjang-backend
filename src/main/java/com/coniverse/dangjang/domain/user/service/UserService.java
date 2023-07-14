@@ -28,22 +28,12 @@ public class UserService {
 	 */
 
 	public UserInfo findUser(OAuthInfoResponse oAuthInfoResponse) throws NonExistentUserException {
-		/**
-		 * 기존 유저 여부 확인
-		 * @since 1.0
-		 */
+
 		Optional<User> user = userRepository.findByOauth(oAuthInfoResponse.getUserId());
-		/**
-		 * 유저일 때, 유저 정보 return
-		 * @since 1.0
-		 */
+
 		if (user.isPresent()) {
 			return new UserInfo(user.get().getOauth(), user.get().getNickname());
 		} else {
-			/**
-			 * 기존 유저가 아닐 때, 404ERR
-			 * @since 1.0
-			 */
 			throw new NonExistentUserException();
 		}
 	}
