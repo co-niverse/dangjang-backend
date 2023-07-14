@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthTokens;
+import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthToken;
 
 /**
  * @author EVE
@@ -30,8 +30,8 @@ class AuthTokenGeneratorTest {
 	@Test
 	void 유저_id를_추출한다() {
 		//given
-		AuthTokens authTokens = authTokensGenerator.generate(exID);
-		assertThat(authTokensGenerator.extractMemberId(authTokens.getAccessToken())).isNotNull();
+		AuthToken authToken = authTokensGenerator.generate(exID);
+		assertThat(authTokensGenerator.extractMemberId(authToken.getAccessToken())).isNotNull();
 	}
 
 }

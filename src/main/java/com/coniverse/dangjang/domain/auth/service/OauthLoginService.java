@@ -2,7 +2,7 @@ package com.coniverse.dangjang.domain.auth.service;
 
 import org.springframework.stereotype.Service;
 
-import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthTokens;
+import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.dto.request.OauthLoginParams;
 import com.coniverse.dangjang.domain.auth.service.authToken.AuthTokensGenerator;
@@ -47,13 +47,13 @@ public class OauthLoginService {
 		 * AuthToken 반환 (JWT)
 		 * @since 1.0
 		 */
-		AuthTokens authTokens = authTokensGenerator.generate(user.getOauthId());
+		AuthToken authToken = authTokensGenerator.generate(user.getOauthId());
 		/**
 		 * 로그인 요청 response 객체 생성
 		 * @since 1.0
 		 */
 		return new LoginResponse(user.getOauthId(), user.getNickname(),
-			authTokens.getAccessToken(), authTokens.getRefreshToken(), authTokens.getExpiresIn());
+			authToken.getAccessToken(), authToken.getRefreshToken(), authToken.getExpiresIn());
 	}
 
 }

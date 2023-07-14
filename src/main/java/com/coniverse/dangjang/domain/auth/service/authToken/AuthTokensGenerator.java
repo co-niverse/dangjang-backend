@@ -5,7 +5,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthTokens;
+import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthToken;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,7 +34,7 @@ public class AuthTokensGenerator {
 	 * @return AuthTokens JWT TOKEN 반환
 	 * @since 1.0
 	 */
-	public AuthTokens generate(Long memberId) {
+	public AuthToken generate(Long memberId) {
 		long now = (new Date()).getTime();
 		Date accessTokenExpiredAt = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
 		Date refreshTokenExpiredAt = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
@@ -43,7 +43,7 @@ public class AuthTokensGenerator {
 		String accessToken = jwtTokenProvider.generate(subject, accessTokenExpiredAt);
 		String refreshToken = jwtTokenProvider.generate(subject, refreshTokenExpiredAt);
 
-		return AuthTokens.of(accessToken, refreshToken, BEARER_TYPE, ACCESS_TOKEN_EXPIRE_TIME / 1000L);
+		return AuthToken.of(accessToken, refreshToken, BEARER_TYPE, ACCESS_TOKEN_EXPIRE_TIME / 1000L);
 	}
 
 	/**

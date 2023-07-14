@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
  * @author EVE
  * @since 1.0
  */
-class AuthTokensTest {
+class AuthTokenTest {
 	@Test
 	void AuthToken_객체_생성() {
-		AuthTokens token = new AuthTokens("accessToken", "refreshToken", "B", 1800L);
+		AuthToken token = new AuthToken("accessToken", "refreshToken", "B", 1800L);
 		assertThat(token).isNotNull();
 	}
 }

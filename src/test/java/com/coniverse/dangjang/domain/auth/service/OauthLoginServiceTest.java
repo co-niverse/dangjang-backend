@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 
-import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthTokens;
+import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginParams;
@@ -87,8 +87,8 @@ class OauthLoginServiceTest {
 		//유저 존재 확인
 		UserInfo userInfo = userService.findUser(kakaoInfoResponse);
 		if (userInfo != null) {
-			AuthTokens authTokens = authTokensGenerator.generate(userInfo.getOauthId());
-			assertThat(authTokens).isNotNull();
+			AuthToken authToken = authTokensGenerator.generate(userInfo.getOauthId());
+			assertThat(authToken).isNotNull();
 		}
 	}
 
