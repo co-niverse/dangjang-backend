@@ -1,6 +1,6 @@
 package com.coniverse.dangjang.domain.user.infrastructure;
 
-import com.coniverse.dangjang.domain.auth.dto.OAuthProvider;
+import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 
 /**
  * 사용자 정보 조회시 필요한 RESPONSE INTERFACE
@@ -11,5 +11,5 @@ import com.coniverse.dangjang.domain.auth.dto.OAuthProvider;
 public interface OAuthInfoResponse {
 	Long getUserId();
 
-	OAuthProvider getOAuthProvider();
+	OauthProvider getOAuthProvider();
 }

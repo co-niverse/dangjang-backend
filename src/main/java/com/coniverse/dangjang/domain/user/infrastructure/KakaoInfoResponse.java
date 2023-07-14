@@ -2,7 +2,7 @@ package com.coniverse.dangjang.domain.user.infrastructure;
 
 import java.util.Date;
 
-import com.coniverse.dangjang.domain.auth.dto.OAuthProvider;
+import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Getter;
@@ -27,8 +27,8 @@ public class KakaoInfoResponse implements OAuthInfoResponse {
 	}
 
 	@Override
-	public OAuthProvider getOAuthProvider() {
-		return OAuthProvider.KAKAO;
+	public OauthProvider getOAuthProvider() {
+		return OauthProvider.KAKAO;
 	}
 }
 

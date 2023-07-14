@@ -1,6 +1,6 @@
 package com.coniverse.dangjang.domain.auth.dto.request;
 
-import com.coniverse.dangjang.domain.auth.dto.OAuthProvider;
+import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 
 /**
  * 로그인 parm interface
@@ -8,9 +8,9 @@ import com.coniverse.dangjang.domain.auth.dto.OAuthProvider;
  * @author EVE
  * @since 1.0
  */
-public interface OAuthLoginParams {
+public interface OauthLoginParams {
 	//provider 반환
-	OAuthProvider takeOauthProvider();
+	OauthProvider takeOauthProvider();
 
 	String takeOauthToken();
 

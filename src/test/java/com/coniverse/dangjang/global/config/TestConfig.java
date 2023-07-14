@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Bean;
 
 import com.coniverse.dangjang.domain.auth.service.AuthTokensGenerator;
 import com.coniverse.dangjang.domain.auth.service.JwtTokenProvider;
-import com.coniverse.dangjang.domain.auth.service.OAuthLoginService;
-import com.coniverse.dangjang.domain.auth.service.TestOAuthInfoService;
+import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
+import com.coniverse.dangjang.domain.auth.service.TestOauthInfoService;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.domain.user.service.UserService;
 
@@ -20,9 +20,9 @@ public class TestConfig {
 	public UserRepository userRepository;
 
 	@Bean
-	public OAuthLoginService oAuthLoginService() {
-		return new OAuthLoginService(new AuthTokensGenerator(new JwtTokenProvider(secretKey)),
-			new TestOAuthInfoService(userRepository), new UserService(userRepository));
+	public OauthLoginService oAuthLoginService() {
+		return new OauthLoginService(new AuthTokensGenerator(new JwtTokenProvider(secretKey)),
+			new TestOauthInfoService(userRepository), new UserService(userRepository));
 	}
 
 }

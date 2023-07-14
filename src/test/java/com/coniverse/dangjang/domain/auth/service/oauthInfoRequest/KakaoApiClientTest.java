@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.auth.service.oauthInfo;
+package com.coniverse.dangjang.domain.auth.service.oauthInfoRequest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class KakaoApiClientTest {
 	@Autowired
-	private KakaoApiClient kakaoApiClient;
+	private KakaoInfoRequestService kakaoApiClient;
 
 	@Test
 	void 카카오_사용자_정보_가져오기_실패한다() throws Exception {

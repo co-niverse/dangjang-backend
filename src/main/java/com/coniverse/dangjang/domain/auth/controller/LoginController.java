@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginParams;
 import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginParams;
-import com.coniverse.dangjang.domain.auth.service.OAuthLoginService;
+import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 import com.coniverse.dangjang.global.exception.NonExistentUserException;
 
@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
 public class LoginController {
-	private final OAuthLoginService oAuthLoginService;
+	private final OauthLoginService oAuthLoginService;
 
 	/**
 	 * @param params 카카오 accessToken을 받아온다.

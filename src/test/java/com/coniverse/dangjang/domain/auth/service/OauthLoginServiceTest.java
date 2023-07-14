@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 
 import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthTokens;
-import com.coniverse.dangjang.domain.auth.dto.OAuthProvider;
+import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginParams;
 import com.coniverse.dangjang.domain.user.dto.UserInfo;
@@ -30,9 +30,9 @@ import com.coniverse.dangjang.global.exception.NonExistentUserException;
  */
 @SpringBootTest
 @Import(TestConfig.class)
-class OAuthLoginServiceTest {
+class OauthLoginServiceTest {
 	@Autowired
-	private OAuthLoginService oAuthLoginService;
+	private OauthLoginService oAuthLoginService;
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -62,7 +62,7 @@ class OAuthLoginServiceTest {
 		KakaoLoginParams kakaoLoginParams = new KakaoLoginParams();
 		kakaoLoginParams.setAccessToken("4J-zgwK68lN3RIm8iy1Qv0EGE54mbyOrVc-X1cf1CinJXgAAAYk1SMch");
 		//User user = User.builder().oauth(5555L).nickname("nickname").oAuthProvider(OAuthProvider.KAKAO).build();
-		User user = User.builder().oauth(5555L).nickname("nickname").oAuthProvider(OAuthProvider.KAKAO).build();
+		User user = User.builder().oauth(5555L).nickname("nickname").oAuthProvider(OauthProvider.KAKAO).build();
 		userRepository.save(user);
 		LoginResponse loginResponse = mock(LoginResponse.class);
 
@@ -80,7 +80,7 @@ class OAuthLoginServiceTest {
 		kakaoInfoResponse.setId(287873365589L);
 		kakaoInfoResponse.setConnected_at(new Date());
 		//유저 생성
-		User user = User.builder().oauth(287873365589L).nickname("nickname").oAuthProvider(OAuthProvider.KAKAO).build();
+		User user = User.builder().oauth(287873365589L).nickname("nickname").oAuthProvider(OauthProvider.KAKAO).build();
 		userRepository.save(user);
 
 		//유저 존재 확인

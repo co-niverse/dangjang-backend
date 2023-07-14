@@ -1,6 +1,6 @@
 package com.coniverse.dangjang.domain.auth.dto.request;
 
-import com.coniverse.dangjang.domain.auth.dto.OAuthProvider;
+import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
  */
 @Getter
 @NoArgsConstructor
-public class NaverLoginParams implements OAuthLoginParams {
+public class NaverLoginParams implements OauthLoginParams {
 	private String accessToken;
 
 	@Override
-	public OAuthProvider takeOauthProvider() {
-		return OAuthProvider.NAVER;
+	public OauthProvider takeOauthProvider() {
+		return OauthProvider.NAVER;
 	}
 
 	@Override

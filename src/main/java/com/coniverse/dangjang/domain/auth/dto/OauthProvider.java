@@ -6,6 +6,6 @@ package com.coniverse.dangjang.domain.auth.dto;
  * @author EVE
  * @since 1.0
  */
-public enum OAuthProvider {
+public enum OauthProvider {
 	KAKAO, NAVER
 }

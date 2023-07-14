@@ -1,6 +1,6 @@
 package com.coniverse.dangjang.domain.user.entity;
 
-import com.coniverse.dangjang.domain.auth.dto.OAuthProvider;
+import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,10 +30,10 @@ public class User {
 	 */
 	private Long oauth;
 	private String nickname;
-	private OAuthProvider oAuthProvider;
+	private OauthProvider oAuthProvider;
 
 	@Builder
-	public User(Long oauth, String nickname, OAuthProvider oAuthProvider) {
+	public User(Long oauth, String nickname, OauthProvider oAuthProvider) {
 		this.oauth = oauth;
 		this.nickname = nickname;
 		this.oAuthProvider = oAuthProvider;

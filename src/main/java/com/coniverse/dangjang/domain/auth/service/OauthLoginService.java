@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthTokens;
 import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
-import com.coniverse.dangjang.domain.auth.dto.request.OAuthLoginParams;
+import com.coniverse.dangjang.domain.auth.dto.request.OauthLoginParams;
 import com.coniverse.dangjang.domain.user.dto.UserInfo;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.user.service.UserService;
@@ -18,9 +18,9 @@ import lombok.RequiredArgsConstructor;
  */
 @Service("OAuthLoginService")
 @RequiredArgsConstructor
-public class OAuthLoginService {
+public class OauthLoginService {
 	private final AuthTokensGenerator authTokensGenerator;
-	private final OAuthInfoService OauthInfoService;
+	private final com.coniverse.dangjang.domain.auth.service.OauthInfoService OauthInfoService;
 	private final UserService userService;
 
 	/**
@@ -29,7 +29,7 @@ public class OAuthLoginService {
 	 * @throws NonExistentUserException 회원가입된 유저가 아닐때 발생하는 오류
 	 * @since 1.0
 	 */
-	public LoginResponse login(OAuthLoginParams params) {
+	public LoginResponse login(OauthLoginParams params) {
 
 		/**
 		 * 카카오,네이버 사용자 정보 조회

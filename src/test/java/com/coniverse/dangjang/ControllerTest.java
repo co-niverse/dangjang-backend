@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.coniverse.dangjang.domain.auth.controller.LoginController;
-import com.coniverse.dangjang.domain.auth.service.OAuthLoginService;
+import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
 import com.coniverse.dangjang.domain.intro.controller.IntroController;
 import com.coniverse.dangjang.domain.intro.service.IntroService;
 
@@ -34,5 +34,5 @@ public class ControllerTest {
 	@MockBean
 	private IntroService introService;
 	@MockBean
-	private OAuthLoginService oAuthLoginService;
+	private OauthLoginService oAuthLoginService;
 }

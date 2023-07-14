@@ -1,6 +1,6 @@
 package com.coniverse.dangjang.domain.user.infrastructure;
 
-import com.coniverse.dangjang.domain.auth.dto.OAuthProvider;
+import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -31,7 +31,7 @@ public class NaverInfoResponse implements OAuthInfoResponse {
 	}
 
 	@Override
-	public OAuthProvider getOAuthProvider() {
-		return OAuthProvider.NAVER;
+	public OauthProvider getOAuthProvider() {
+		return OauthProvider.NAVER;
 	}
 }

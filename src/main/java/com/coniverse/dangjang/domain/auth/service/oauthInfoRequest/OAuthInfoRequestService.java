@@ -1,6 +1,6 @@
-package com.coniverse.dangjang.domain.auth.service.oauthInfo;
+package com.coniverse.dangjang.domain.auth.service.oauthInfoRequest;
 
-import com.coniverse.dangjang.domain.auth.dto.OAuthProvider;
+import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
 
 /**
@@ -9,8 +9,8 @@ import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
  * @author EVE
  * @since 1.0
  */
-public interface OAuthApiClient {
-	OAuthProvider oAuthProvider();
+public interface OAuthInfoRequestService {
+	OauthProvider oAuthProvider();
 
 	OAuthInfoResponse requestOauthInfo(String accessToken);
 }

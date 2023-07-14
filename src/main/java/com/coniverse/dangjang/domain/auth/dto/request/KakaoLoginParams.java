@@ -1,6 +1,6 @@
 package com.coniverse.dangjang.domain.auth.dto.request;
 
-import com.coniverse.dangjang.domain.auth.dto.OAuthProvider;
+import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,12 +15,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class KakaoLoginParams implements OAuthLoginParams {
+public class KakaoLoginParams implements OauthLoginParams {
 	private String accessToken;
 
 	@Override
-	public OAuthProvider takeOauthProvider() {
-		return OAuthProvider.KAKAO;
+	public OauthProvider takeOauthProvider() {
+		return OauthProvider.KAKAO;
 	}
 
 	@Override
