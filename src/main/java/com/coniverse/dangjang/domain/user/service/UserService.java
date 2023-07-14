@@ -41,16 +41,16 @@ public class UserService {
 	/**
 	 * 새로운 유저 회원가입
 	 *
-	 * @param oAuthInfoResponse 카카오,네이버에서 사용자 정보 조회한 데이터 (authID ,Provider)
+	 * @param oauthInfoResponse 카카오,네이버에서 사용자 정보 조회한 데이터 (authID ,Provider)
 	 * @return 새로 가입된 유저 회원가입
 	 * @since 1.0
 	 */
 
-	public Long signUp(OAuthInfoResponse oAuthInfoResponse) {
+	public Long signUp(OAuthInfoResponse oauthInfoResponse) {
 		User user = User.builder()
-			.oauthId(oAuthInfoResponse.getUserId())
+			.oauthId(oauthInfoResponse.getUserId())
 			.nickname("nickname")
-			.oAuthProvider(oAuthInfoResponse.getOAuthProvider())
+			.oAuthProvider(oauthInfoResponse.getOAuthProvider())
 			.build();
 
 		return userRepository.save(user).getId();
