@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 class AuthTokenTest {
 	@Test
 	void AuthToken_객체_생성() {
-		AuthToken token = new AuthToken("accessToken", "refreshToken", "B", 1800L);
+		AuthToken token = AuthToken.of("accessToken", "refreshToken", "B", 1800L);
 		assertThat(token).isNotNull();
 	}
 }
