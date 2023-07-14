@@ -39,7 +39,7 @@ jwt:
 oauth:
   kakao:
     url:
-      api: https://kapi.kakao.com
+      api: https://kapi.kakao.com  # 카카오 사용자 정보 요청 api
   naver:
     url:
-      api: https://openapi.naver.com
+      api: https://openapi.naver.com # 네이버 사용자 정보 요청 api
