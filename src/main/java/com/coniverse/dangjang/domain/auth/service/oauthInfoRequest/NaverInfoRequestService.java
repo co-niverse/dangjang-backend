@@ -25,8 +25,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NaverInfoRequestService implements OAuthInfoRequestService {
 
-	private static final String GRANT_TYPE = "authorization_code";
-
 	@Value("${oauth.naver.url.api}")
 	private String apiUrl;
 
