@@ -2,6 +2,7 @@ package com.coniverse.dangjang.domain.auth.service;
 
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthTokens;
@@ -19,8 +20,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthTokensGenerator {
 	private static final String BEARER_TYPE = "Bearer";
-	private static final long ACCESS_TOKEN_EXPIRE_TIME = (long)1000 * 60 * 30;            // 30분
-	private static final long REFRESH_TOKEN_EXPIRE_TIME = (long)1000 * 60 * 60 * 24 * 7;  // 7일
+	@Value("${jwt.access-token.expire-time}")
+	private long ACCESS_TOKEN_EXPIRE_TIME; // 30분
+	@Value("${jwt.refresh-token.expire-time}")
+	private long REFRESH_TOKEN_EXPIRE_TIME;  // 7일
 
 	private final JwtTokenProvider jwtTokenProvider;
 
