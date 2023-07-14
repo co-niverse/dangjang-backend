@@ -50,7 +50,7 @@ public class AuthTokensGenerator {
 	 * JWT에서 유저 ID 추출
 	 *
 	 * @param accessToken JWT 토큰
-	 * @return Long.valueOf() 유저ID 반환
+	 * @return Long 유저ID 반환
 	 * @since 1.0
 	 */
 	public Long extractMemberId(String accessToken) {
