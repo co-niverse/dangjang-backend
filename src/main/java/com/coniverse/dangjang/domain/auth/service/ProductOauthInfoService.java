@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.auth.dto.request.OauthLoginParam;
@@ -17,7 +17,7 @@ import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
  * @since 1.0
  */
 
-@Component
+@Service
 public class ProductOauthInfoService implements OauthInfoService {
 	private final Map<OauthProvider, OAuthInfoRequestService> clients;
 

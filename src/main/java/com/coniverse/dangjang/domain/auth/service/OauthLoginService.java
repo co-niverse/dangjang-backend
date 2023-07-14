@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
  * @author Eve
  * @since 1.0
  */
-@Service("OAuthLoginService")
+@Service
 @RequiredArgsConstructor
 public class OauthLoginService {
 	private final AuthTokensGenerator authTokensGenerator;
