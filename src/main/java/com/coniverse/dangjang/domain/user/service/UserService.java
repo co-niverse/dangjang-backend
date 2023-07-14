@@ -46,7 +46,7 @@ public class UserService {
 	 * @since 1.0
 	 */
 
-	public Long newMember(OAuthInfoResponse oAuthInfoResponse) {
+	public Long signUp(OAuthInfoResponse oAuthInfoResponse) {
 		User user = User.builder()
 			.oauthId(oAuthInfoResponse.getUserId())
 			.nickname("nickname")

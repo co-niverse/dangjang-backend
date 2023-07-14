@@ -98,7 +98,7 @@ class OauthLoginServiceTest {
 		KakaoInfoResponse kakaoInfoResponse = new KakaoInfoResponse();
 		kakaoInfoResponse.setId(2878733655L);
 		kakaoInfoResponse.setConnected_at(new Date());
-		Long userId = userService.newMember(kakaoInfoResponse);
+		Long userId = userService.signUp(kakaoInfoResponse);
 		assertThat(userId).isNotNull();
 	}
 
