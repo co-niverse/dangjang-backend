@@ -15,7 +15,7 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
-import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginParams;
+import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginParam;
 import com.coniverse.dangjang.domain.auth.service.authToken.AuthTokensGenerator;
 import com.coniverse.dangjang.domain.user.dto.UserInfo;
 import com.coniverse.dangjang.domain.user.entity.User;
@@ -46,7 +46,7 @@ class OauthLoginServiceTest {
 	void 로그인_실패한다() throws Exception {
 
 		//given
-		KakaoLoginParams kakaoLoginParams = new KakaoLoginParams();
+		KakaoLoginParam kakaoLoginParams = new KakaoLoginParam();
 		kakaoLoginParams.setAccessToken("4J-zgwK68lN3RIm8iy1Qv0EGE54mbyOrVc-X1cf1CinJXgAAAYk1SMchfail");
 
 		//then
@@ -60,7 +60,7 @@ class OauthLoginServiceTest {
 	void 로그인을_성공한다() {
 
 		//given
-		KakaoLoginParams kakaoLoginParams = new KakaoLoginParams();
+		KakaoLoginParam kakaoLoginParams = new KakaoLoginParam();
 		kakaoLoginParams.setAccessToken("4J-zgwK68lN3RIm8iy1Qv0EGE54mbyOrVc-X1cf1CinJXgAAAYk1SMch");
 		//User user = User.builder().oauth(5555L).nickname("nickname").oAuthProvider(OAuthProvider.KAKAO).build();
 		User user = User.builder().oauth(5555L).nickname("nickname").oAuthProvider(OauthProvider.KAKAO).build();

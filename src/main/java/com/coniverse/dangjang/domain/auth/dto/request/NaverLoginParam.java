@@ -4,23 +4,21 @@ import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
- * 카카오 로그인 parm
+ * 네이버 로그인 parm
  *
  * @author EVE
  * @since 1.0
  */
 @Getter
-@Setter
 @NoArgsConstructor
-public class KakaoLoginParams implements OauthLoginParams {
+public class NaverLoginParam implements OauthLoginParam {
 	private String accessToken;
 
 	@Override
 	public OauthProvider takeOauthProvider() {
-		return OauthProvider.KAKAO;
+		return OauthProvider.NAVER;
 	}
 
 	@Override

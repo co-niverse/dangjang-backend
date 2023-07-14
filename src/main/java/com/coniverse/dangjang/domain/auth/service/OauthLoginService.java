@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
-import com.coniverse.dangjang.domain.auth.dto.request.OauthLoginParams;
+import com.coniverse.dangjang.domain.auth.dto.request.OauthLoginParam;
 import com.coniverse.dangjang.domain.auth.service.authToken.AuthTokensGenerator;
 import com.coniverse.dangjang.domain.user.dto.UserInfo;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
@@ -30,7 +30,7 @@ public class OauthLoginService {
 	 * @throws NonExistentUserException 회원가입된 유저가 아닐때 발생하는 오류
 	 * @since 1.0
 	 */
-	public LoginResponse login(OauthLoginParams params) {
+	public LoginResponse login(OauthLoginParam params) {
 
 		/**
 		 * 카카오,네이버 사용자 정보 조회

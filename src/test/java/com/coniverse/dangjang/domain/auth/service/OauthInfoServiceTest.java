@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginParams;
+import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginParam;
 
 @SpringBootTest
 class OauthInfoServiceTest {
@@ -14,7 +14,7 @@ class OauthInfoServiceTest {
 
 	@Test
 	void accessToken으로_사용자정보_가져오기() {
-		KakaoLoginParams kakaoLoginParams = new KakaoLoginParams();
+		KakaoLoginParam kakaoLoginParams = new KakaoLoginParam();
 		kakaoLoginParams.setAccessToken("4J-zgwK68lN3RIm8iy1Qv0EGE54mbyOrVc-X1cf1CinJXgAAAYk1SMch");
 		kakaoLoginParams.takeOauthProvider();
 		Assertions.assertThrows(Exception.class, () -> {

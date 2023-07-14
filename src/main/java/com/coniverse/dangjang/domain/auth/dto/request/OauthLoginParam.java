@@ -8,7 +8,7 @@ import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
  * @author EVE
  * @since 1.0
  */
-public interface OauthLoginParams {
+public interface OauthLoginParam {
 	//provider 반환
 	OauthProvider takeOauthProvider();
 
