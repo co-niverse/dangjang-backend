@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.auth.service.OauthInfo;
+package com.coniverse.dangjang.domain.auth.service.oauthInfo;
 
 import com.coniverse.dangjang.domain.auth.dto.OAuthProvider;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;

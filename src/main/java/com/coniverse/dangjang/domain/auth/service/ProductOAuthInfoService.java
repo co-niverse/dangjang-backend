@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.coniverse.dangjang.domain.auth.dto.OAuthProvider;
 import com.coniverse.dangjang.domain.auth.dto.request.OAuthLoginParams;
-import com.coniverse.dangjang.domain.auth.service.OauthInfo.OAuthApiClient;
+import com.coniverse.dangjang.domain.auth.service.oauthInfo.OAuthApiClient;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
 
 /**
