@@ -32,26 +32,9 @@ public class OauthLoginService {
 	 */
 	public LoginResponse login(OauthLoginParam params) {
 
-		/**
-		 * 카카오,네이버 사용자 정보 조회
-		 * @since 1.0
-		 */
 		OAuthInfoResponse oAuthInfoResponse = OauthInfoService.request(params);
-		/**
-		 * 유저 존재 여부
-		 * @since 1.0
-		 */
 		UserInfo user = userService.findUser(oAuthInfoResponse);
-
-		/**
-		 * AuthToken 반환 (JWT)
-		 * @since 1.0
-		 */
 		AuthToken authToken = authTokensGenerator.generate(user.getOauthId());
-		/**
-		 * 로그인 요청 response 객체 생성
-		 * @since 1.0
-		 */
 		return new LoginResponse(user.getOauthId(), user.getNickname(),
 			authToken.getAccessToken(), authToken.getRefreshToken(), authToken.getExpiresIn());
 	}
