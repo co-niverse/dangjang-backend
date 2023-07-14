@@ -33,7 +33,7 @@ public class KakaoInfoRequestService implements OAuthInfoRequestService {
 	private final RestTemplate restTemplate;
 
 	@Override
-	public OauthProvider oAuthProvider() {
+	public OauthProvider getOauthProvider() {
 		return OauthProvider.KAKAO;
 	}
 

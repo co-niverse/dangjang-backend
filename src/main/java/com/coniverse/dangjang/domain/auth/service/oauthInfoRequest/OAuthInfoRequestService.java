@@ -10,7 +10,7 @@ import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
  * @since 1.0
  */
 public interface OAuthInfoRequestService {
-	OauthProvider oAuthProvider();
+	OauthProvider getOauthProvider();
 
 	OAuthInfoResponse requestOauthInfo(String accessToken);
 }

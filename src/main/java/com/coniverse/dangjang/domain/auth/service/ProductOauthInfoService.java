@@ -23,7 +23,7 @@ public class ProductOauthInfoService implements OauthInfoService {
 
 	public ProductOauthInfoService(List<OAuthInfoRequestService> clients) {
 		this.clients = clients.stream().collect(
-			Collectors.toUnmodifiableMap(OAuthInfoRequestService::oAuthProvider, Function.identity())
+			Collectors.toUnmodifiableMap(OAuthInfoRequestService::getOauthProvider, Function.identity())
 		);
 	}
 
