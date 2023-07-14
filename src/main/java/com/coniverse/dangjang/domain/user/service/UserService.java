@@ -29,10 +29,10 @@ public class UserService {
 
 	public UserInfo findUser(OAuthInfoResponse oAuthInfoResponse) throws NonExistentUserException {
 
-		Optional<User> user = userRepository.findByOauth(oAuthInfoResponse.getUserId());
+		Optional<User> user = userRepository.findByOauthId(oAuthInfoResponse.getUserId());
 
 		if (user.isPresent()) {
-			return new UserInfo(user.get().getOauth(), user.get().getNickname());
+			return new UserInfo(user.get().getOauthId(), user.get().getNickname());
 		} else {
 			throw new NonExistentUserException();
 		}
@@ -48,7 +48,7 @@ public class UserService {
 
 	public Long newMember(OAuthInfoResponse oAuthInfoResponse) {
 		User user = User.builder()
-			.oauth(oAuthInfoResponse.getUserId())
+			.oauthId(oAuthInfoResponse.getUserId())
 			.nickname("nickname")
 			.oAuthProvider(oAuthInfoResponse.getOAuthProvider())
 			.build();

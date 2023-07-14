@@ -28,13 +28,13 @@ public class User {
 	 *
 	 * @since 1.0
 	 */
-	private Long oauth;
+	private Long oauthId;
 	private String nickname;
 	private OauthProvider oAuthProvider;
 
 	@Builder
-	public User(Long oauth, String nickname, OauthProvider oAuthProvider) {
-		this.oauth = oauth;
+	public User(Long oauthId, String nickname, OauthProvider oAuthProvider) {
+		this.oauthId = oauthId;
 		this.nickname = nickname;
 		this.oAuthProvider = oAuthProvider;
 	}

@@ -63,7 +63,7 @@ class OauthLoginServiceTest {
 		KakaoLoginParam kakaoLoginParams = new KakaoLoginParam();
 		kakaoLoginParams.setAccessToken("4J-zgwK68lN3RIm8iy1Qv0EGE54mbyOrVc-X1cf1CinJXgAAAYk1SMch");
 		//User user = User.builder().oauth(5555L).nickname("nickname").oAuthProvider(OAuthProvider.KAKAO).build();
-		User user = User.builder().oauth(5555L).nickname("nickname").oAuthProvider(OauthProvider.KAKAO).build();
+		User user = User.builder().oauthId(5555L).nickname("nickname").oAuthProvider(OauthProvider.KAKAO).build();
 		userRepository.save(user);
 		LoginResponse loginResponse = mock(LoginResponse.class);
 
@@ -81,7 +81,7 @@ class OauthLoginServiceTest {
 		kakaoInfoResponse.setId(287873365589L);
 		kakaoInfoResponse.setConnected_at(new Date());
 		//유저 생성
-		User user = User.builder().oauth(287873365589L).nickname("nickname").oAuthProvider(OauthProvider.KAKAO).build();
+		User user = User.builder().oauthId(287873365589L).nickname("nickname").oAuthProvider(OauthProvider.KAKAO).build();
 		userRepository.save(user);
 
 		//유저 존재 확인
