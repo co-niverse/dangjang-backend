@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OAuthLoginService {
 	private final AuthTokensGenerator authTokensGenerator;
-	private final OAuthInfoService OAuthInfoService;
+	private final OAuthInfoService OauthInfoService;
 	private final UserService userService;
 
 	/**
@@ -35,7 +35,7 @@ public class OAuthLoginService {
 		 * 카카오,네이버 사용자 정보 조회
 		 * @since 1.0
 		 */
-		OAuthInfoResponse oAuthInfoResponse = OAuthInfoService.request(params);
+		OAuthInfoResponse oAuthInfoResponse = OauthInfoService.request(params);
 		/**
 		 * 유저 존재 여부
 		 * @since 1.0
@@ -51,9 +51,8 @@ public class OAuthLoginService {
 		 * 로그인 요청 response 객체 생성
 		 * @since 1.0
 		 */
-		LoginResponse loginResponse = new LoginResponse(user.getOauthId(), user.getNickname(),
+		return new LoginResponse(user.getOauthId(), user.getNickname(),
 			authTokens.getAccessToken(), authTokens.getRefreshToken(), authTokens.getExpiresIn());
-		return loginResponse;
 	}
 
 }

@@ -1,7 +1,7 @@
 package com.coniverse.dangjang.domain.auth.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import java.util.Date;
 
@@ -30,7 +30,7 @@ import com.coniverse.dangjang.global.exception.NonExistentUserException;
  */
 @SpringBootTest
 @Import(TestConfig.class)
-public class OAuthLoginServiceTest {
+class OAuthLoginServiceTest {
 	@Autowired
 	private OAuthLoginService oAuthLoginService;
 	@Autowired
@@ -65,15 +65,10 @@ public class OAuthLoginServiceTest {
 		User user = User.builder().oauth(5555L).nickname("nickname").oAuthProvider(OAuthProvider.KAKAO).build();
 		userRepository.save(user);
 		LoginResponse loginResponse = mock(LoginResponse.class);
-		// System.out.println("countLogin : " + oAuthLoginService.login(kakaoLoginParams).getNickname());
-		;
-		// given(oAuthLoginService.login(kakaoLoginParams)).willReturn(loginResponse);
-		// when(oAuthLoginService.login(kakaoLoginParams)).thenReturn(loginResponse);
 
 		//when
 		LoginResponse actual = oAuthLoginService.login(kakaoLoginParams);
-		// //
-		// // //then
+		//then
 		assertThat(actual).isNotNull();
 	}
 

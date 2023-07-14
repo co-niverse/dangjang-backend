@@ -1,8 +1,7 @@
 package com.coniverse.dangjang.domain.auth.controller;
 
-import static com.coniverse.dangjang.support.SimpleMockMvc.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static com.coniverse.dangjang.support.SimpleMockMvc.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -14,7 +13,7 @@ import com.coniverse.dangjang.ControllerTest;
  * @author EVE
  * @since 1.0.0
  */
-public class LoginControllerTest extends ControllerTest {
+class LoginControllerTest extends ControllerTest {
 	private final String URI = "/api/auth";
 
 	@Test

@@ -38,8 +38,7 @@ public class UserService {
 		 * @since 1.0
 		 */
 		if (user.isPresent()) {
-			UserInfo userInfo = new UserInfo(user.get().getOauth(), user.get().getNickname());
-			return userInfo;
+			return new UserInfo(user.get().getOauth(), user.get().getNickname());
 		} else {
 			/**
 			 * 기존 유저가 아닐 때, 404ERR

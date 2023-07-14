@@ -1,6 +1,6 @@
 package com.coniverse.dangjang.domain.auth.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthTokens;
  * @since 1.0
  */
 @SpringBootTest
-public class AuthTokenGeneratorTest {
+class AuthTokenGeneratorTest {
 	@Autowired
 	private AuthTokensGenerator authTokensGenerator;
 

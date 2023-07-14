@@ -1,6 +1,6 @@
-package com.coniverse.dangjang.domain.auth.service.OAuthInfo;
+package com.coniverse.dangjang.domain.auth.service.OauthInfo;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +11,12 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @since 1.0
  */
 @SpringBootTest
-public class KakaoApiClientTest {
+class KakaoApiClientTest {
 	@Autowired
 	private KakaoApiClient kakaoApiClient;
 
 	@Test
-	public void 카카오_사용자_정보_가져오기_실패한다() throws Exception {
+	void 카카오_사용자_정보_가져오기_실패한다() throws Exception {
 
 		assertThrows(Exception.class, () -> {
 			kakaoApiClient.requestOauthInfo("");

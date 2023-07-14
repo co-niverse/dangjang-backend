@@ -18,5 +18,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	 *
 	 * @since 1.0
 	 */
-	Optional<User> findByOauth(Long OauthId);
+	Optional<User> findByOauth(Long oauthId);
 }

@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.auth.service.OAuthInfo;
+package com.coniverse.dangjang.domain.auth.service.OauthInfo;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
