@@ -11,15 +11,14 @@ import org.springframework.boot.test.context.SpringBootTest;
  * @since 1.0
  */
 @SpringBootTest
-class KakaoApiClientTest {
+class NaverInfoRequestServiceTest {
 	@Autowired
-	private KakaoInfoRequestService kakaoApiClient;
+	private NaverInfoRequestService naverApiClient;
 
 	@Test
-	void 카카오_사용자_정보_가져오기_실패한다() throws Exception {
-
+	void 네이버_사용자_정보_가져오기_실패한다() throws Exception {
 		assertThrows(Exception.class, () -> {
-			kakaoApiClient.requestOauthInfo("");
+			naverApiClient.requestOauthInfo("");
 			;
 		});
 	}

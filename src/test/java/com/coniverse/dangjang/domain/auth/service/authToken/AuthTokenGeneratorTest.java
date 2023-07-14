@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.auth.service;
+package com.coniverse.dangjang.domain.auth.service.authToken;
 
 import static org.assertj.core.api.Assertions.*;
 

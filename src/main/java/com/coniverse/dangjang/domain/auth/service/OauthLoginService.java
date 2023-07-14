@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthTokens;
 import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.dto.request.OauthLoginParams;
+import com.coniverse.dangjang.domain.auth.service.authToken.AuthTokensGenerator;
 import com.coniverse.dangjang.domain.user.dto.UserInfo;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.user.service.UserService;
