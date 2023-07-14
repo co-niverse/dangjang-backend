@@ -39,8 +39,9 @@ public class JwtTokenProvider {
 	/**
 	 * JWT Token 생성
 	 *
-	 * @param subject userID String으로 변환한 값 ,expiredAt JWT 유효 기간
+	 * @param subject userID String으로 변환한 값
 	 * @return Jwts.builder() JWT TOKEN
+	 * @Parm expiredAt JWT 유효 기간
 	 * @since 1.0
 	 */
 	public String generate(String subject, Date expiredAt) {
