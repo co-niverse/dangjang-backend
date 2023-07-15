@@ -1,0 +1,9 @@
+FROM bellsoft/liberica-openjdk-alpine
+
+USER root
+COPY ./script/start.sh /start.sh
+COPY ./build/libs/*SNAPSHOT.jar /app.jar
+RUN mkdir /log
+RUN ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime && echo 'Asia/Seoul' >/etc/timezone
+VOLUME ["/log"]
+CMD ["./start.sh"]
