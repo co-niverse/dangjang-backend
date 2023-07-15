@@ -9,6 +9,9 @@ ERROR_LOG="$ROOT_PATH/error.log"
 DEPLOY_LOG="$ROOT_PATH/deploy.log"
 TIME_NOW=$(date +%c)
 
+echo "-------------------------------------------------------" >> $DEPLOY_LOG
+echo "Start deployment on the development environment server." >> $DEPLOY_LOG
+
 # jar 파일 이동
 echo "$TIME_NOW > $JAR_FILE_NAME 파일 이동" >> $DEPLOY_LOG
 mv $JAR_FILE_PATH $ROOT_PATH
