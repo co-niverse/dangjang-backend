@@ -7,8 +7,8 @@ on:
 
 env:
   AWS_REGION: ap-northeast-2
-  ECR_REGISTRY: public.ecr.aws/y6g9l5x9
-  ECR_REPOSITORY: dev
+  REGISTRY_ALIAS: ${{ secrets.ECR_REGISTRY_ALIAS }}
+  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
   IMAGE_TAG: ${{ github.sha }}
 
 jobs:
@@ -43,13 +43,16 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
-        id: login-ecr
+        id: login-ecr-public
         uses: aws-actions/amazon-ecr-login@v1
+        with:
+          registry-type: public
 
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
-          IMAGE: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE: ${{ env.ECR_REGISTRY }}/${{ env.REGISTRY_ALIAS }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
         run: |
           docker build -t $IMAGE -f Dockerfile-dev .
           docker push $IMAGE
