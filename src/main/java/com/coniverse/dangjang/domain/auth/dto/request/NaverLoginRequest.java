@@ -4,6 +4,7 @@ import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * 네이버 로그인 parm
@@ -12,17 +13,18 @@ import lombok.NoArgsConstructor;
  * @since 1.0
  */
 @Getter
+@Setter
 @NoArgsConstructor
-public class NaverLoginParam implements OauthLoginParam {
+public class NaverLoginRequest implements OauthLoginRequest {
 	private String accessToken;
 
 	@Override
-	public OauthProvider takeOauthProvider() {
+	public OauthProvider getOauthProvider() {
 		return OauthProvider.NAVER;
 	}
 
 	@Override
-	public String takeOauthToken() {
+	public String getOauthToken() {
 		return accessToken;
 	}
 
