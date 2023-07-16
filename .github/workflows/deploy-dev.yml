@@ -1,11 +1,9 @@
 name: deploy on the development environment server with Dockerizing to AWS ECR
 
 on:
-  pull_request:
-    types:
-      - closed # Trigger the workflow on pull request merge to dev branch
+  push:
     branches:
-      - dev
+      - dev-ci-cd-test
 
 env:
   AWS_REGION: ap-northeast-2
@@ -13,7 +11,6 @@ env:
 
 jobs:
   deploy-dev:
-    if: ${{ github.event.pull_request.merged }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
