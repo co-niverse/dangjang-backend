@@ -21,9 +21,9 @@ import lombok.RequiredArgsConstructor;
 public class AuthTokensGenerator {
 	private static final String BEARER_TYPE = "Bearer";
 	@Value("${jwt.access.exp}")
-	private long ACCESS_TOKEN_EXPIRE_TIME;
+	private long accessTokenExpireTime;
 	@Value("${jwt.refresh.exp}")
-	private long REFRESH_TOKEN_EXPIRE_TIME;
+	private long refreshTokenExpireTime;
 
 	private final JwtTokenProvider jwtTokenProvider;
 
@@ -36,14 +36,14 @@ public class AuthTokensGenerator {
 	 */
 	public AuthToken generate(Long memberId) {
 		long now = (new Date()).getTime();
-		Date accessTokenExpiredAt = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
-		Date refreshTokenExpiredAt = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
+		Date accessTokenExpiredAt = new Date(now + accessTokenExpireTime);
+		Date refreshTokenExpiredAt = new Date(now + refreshTokenExpireTime);
 
 		String subject = memberId.toString();
 		String accessToken = jwtTokenProvider.generate(subject, accessTokenExpiredAt);
 		String refreshToken = jwtTokenProvider.generate(subject, refreshTokenExpiredAt);
 
-		return AuthToken.of(accessToken, refreshToken, BEARER_TYPE, ACCESS_TOKEN_EXPIRE_TIME / 1000L);
+		return AuthToken.of(accessToken, refreshToken, BEARER_TYPE, accessTokenExpireTime / 1000L);
 	}
 
 	/**
