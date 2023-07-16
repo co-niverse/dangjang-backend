@@ -43,7 +43,7 @@ class OauthLoginServiceTest {
 
 	@Test
 	@WithAnonymousUser
-	void 로그인_실패한다() throws Exception {
+	void 로그인_실패한다() throws NonExistentUserException {
 
 		//given
 		KakaoLoginRequest kakaoLoginParams = new KakaoLoginRequest();
@@ -74,11 +74,11 @@ class OauthLoginServiceTest {
 
 	@Test
 	@WithAnonymousUser
-	void JWT_반환한다() throws Exception {
+	void JWT_반환한다() throws NonExistentUserException {
 		// given
 		KakaoInfoResponse kakaoInfoResponse = new KakaoInfoResponse();
 		kakaoInfoResponse.setId(287873365589L);
-		kakaoInfoResponse.setConnected_at(new Date());
+		kakaoInfoResponse.setConnectedAt(new Date());
 		//유저 생성
 		User user = User.builder().oauthId(287873365589L).nickname("nickname").oAuthProvider(OauthProvider.KAKAO).build();
 		userRepository.save(user);
@@ -96,7 +96,7 @@ class OauthLoginServiceTest {
 		//given
 		KakaoInfoResponse kakaoInfoResponse = new KakaoInfoResponse();
 		kakaoInfoResponse.setId(2878733655L);
-		kakaoInfoResponse.setConnected_at(new Date());
+		kakaoInfoResponse.setConnectedAt(new Date());
 		Long userId = userService.signUp(kakaoInfoResponse);
 		assertThat(userId).isNotNull();
 	}
@@ -106,7 +106,7 @@ class OauthLoginServiceTest {
 		//given
 		KakaoInfoResponse kakaoInfoResponse = new KakaoInfoResponse();
 		kakaoInfoResponse.setId(2878733654L);
-		kakaoInfoResponse.setConnected_at(new Date());
+		kakaoInfoResponse.setConnectedAt(new Date());
 
 		Assertions.assertThrows(NonExistentUserException.class, () -> {
 			userService.findUser(kakaoInfoResponse);
