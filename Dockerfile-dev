@@ -1,4 +1,4 @@
-FROM bellsoft/liberica-openjdk-alpine
+FROM bellsoft/liberica-openjdk-alpine:latest-aarch64
 
 USER root
 COPY ./build/libs/*SNAPSHOT.jar /app.jar
