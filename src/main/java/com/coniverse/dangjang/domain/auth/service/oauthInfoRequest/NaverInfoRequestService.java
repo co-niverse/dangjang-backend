@@ -16,7 +16,7 @@ import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 네이 사용자 정보 조회
+ * 네이버 사용자 정보 조회
  *
  * @author EVE
  * @since 1.0
