@@ -61,7 +61,7 @@ jobs:
           key: ${{ secrets.DEV_SERVER_SSH_KEY }}
           host: ${{ secrets.DEV_SERVER_HOST }}
           username: ${{ secrets.DEV_SERVER_USER }}
-        run: |
-          docker pull ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
-          docker stop dev-container && docker rm dev-container
-          docker run -d --name dev-container -p 8080:8080 --restart unless-stopped ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+          script: |
+            docker pull ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+            docker stop dev-container && docker rm dev-container
+            docker run -d --name dev-container -p 8080:8080 --restart unless-stopped ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
