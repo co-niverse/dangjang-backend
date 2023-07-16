@@ -8,9 +8,6 @@ on:
 env:
   #  AWS_REGION: ap-northeast-2
   AWS_REGION: us-east-1
-  REGISTRY_ALIAS: ${{ secrets.ECR_REGISTRY_ALIAS }}
-  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
-  IMAGE_TAG: ${{ github.sha }}
 
 jobs:
   deploy-dev:
@@ -53,7 +50,8 @@ jobs:
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}
-          IMAGE: ${{ env.ECR_REGISTRY }}/${{ env.REGISTRY_ALIAS }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+          IMAGE_TAG: ${{ github.sha }}
+          IMAGE: ${{ env.ECR_REGISTRY }}/${{ secrets.ECR_REGISTRY_ALIAS }}/${{ secrets.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
         run: |
           docker build -t $IMAGE -f Dockerfile-dev .
           docker push $IMAGE
