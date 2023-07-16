@@ -1,5 +1,6 @@
 package com.coniverse.dangjang.domain.auth.dto.Response;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
@@ -8,19 +9,12 @@ import lombok.Getter;
  * @author EVE
  * @since 1.0
  */
+@AllArgsConstructor
 @Getter
 public class LoginResponse {
-	private Long OauthId;
+	private Long oauthId;
 	private String nickname;
 	private String accessToken;
 	private String refreshToken;
 	private Long expiresIn;
-
-	public LoginResponse(Long OauthId, String nickname, String accessToken, String refreshToken, Long expiresIn) {
-		this.OauthId = OauthId;
-		this.nickname = nickname;
-		this.accessToken = accessToken;
-		this.refreshToken = refreshToken;
-		this.expiresIn = expiresIn;
-	}
 }
