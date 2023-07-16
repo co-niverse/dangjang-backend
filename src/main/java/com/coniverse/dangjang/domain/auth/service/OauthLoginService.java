@@ -4,12 +4,11 @@ import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
-import com.coniverse.dangjang.domain.auth.dto.request.OauthLoginParam;
+import com.coniverse.dangjang.domain.auth.dto.request.OauthLoginRequest;
 import com.coniverse.dangjang.domain.auth.service.authToken.AuthTokensGenerator;
 import com.coniverse.dangjang.domain.user.dto.UserInfo;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.user.service.UserService;
-import com.coniverse.dangjang.global.exception.NonExistentUserException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,10 +26,9 @@ public class OauthLoginService {
 	/**
 	 * @param params 카카오,네이버 accessToken을 받아온다.
 	 * @return Content 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, authID)를 전달한다.
-	 * @throws NonExistentUserException 회원가입된 유저가 아닐때 발생하는 오류
 	 * @since 1.0
 	 */
-	public LoginResponse login(OauthLoginParam params) {
+	public LoginResponse login(OauthLoginRequest params) {
 
 		OAuthInfoResponse oAuthInfoResponse = OauthInfoService.request(params);
 		UserInfo user = userService.findUser(oAuthInfoResponse);

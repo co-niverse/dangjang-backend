@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
-import com.coniverse.dangjang.domain.auth.dto.request.OauthLoginParam;
+import com.coniverse.dangjang.domain.auth.dto.request.OauthLoginRequest;
 import com.coniverse.dangjang.domain.auth.service.oauthInfoRequest.OAuthInfoRequestService;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
 
@@ -33,9 +33,9 @@ public class ProductOauthInfoService implements OauthInfoService {
 	 * @since 1.0.0
 	 */
 	@Override
-	public OAuthInfoResponse request(OauthLoginParam params) {
-		OAuthInfoRequestService client = clients.get(params.takeOauthProvider());
-		String accessToken = params.takeOauthToken();
+	public OAuthInfoResponse request(OauthLoginRequest params) {
+		OAuthInfoRequestService client = clients.get(params.getOauthProvider());
+		String accessToken = params.getOauthToken();
 		return client.requestOauthInfo(accessToken);
 	}
 }

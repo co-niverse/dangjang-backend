@@ -15,15 +15,15 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
-import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginParam;
+import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.service.authToken.AuthTokensGenerator;
 import com.coniverse.dangjang.domain.user.dto.UserInfo;
 import com.coniverse.dangjang.domain.user.entity.User;
+import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
 import com.coniverse.dangjang.domain.user.infrastructure.KakaoInfoResponse;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.domain.user.service.UserService;
 import com.coniverse.dangjang.global.config.TestConfig;
-import com.coniverse.dangjang.global.exception.NonExistentUserException;
 
 /**
  * @author EVE
@@ -46,7 +46,7 @@ class OauthLoginServiceTest {
 	void 로그인_실패한다() throws Exception {
 
 		//given
-		KakaoLoginParam kakaoLoginParams = new KakaoLoginParam();
+		KakaoLoginRequest kakaoLoginParams = new KakaoLoginRequest();
 		kakaoLoginParams.setAccessToken("4J-zgwK68lN3RIm8iy1Qv0EGE54mbyOrVc-X1cf1CinJXgAAAYk1SMchfail");
 
 		//then
@@ -60,9 +60,8 @@ class OauthLoginServiceTest {
 	void 로그인을_성공한다() {
 
 		//given
-		KakaoLoginParam kakaoLoginParams = new KakaoLoginParam();
+		KakaoLoginRequest kakaoLoginParams = new KakaoLoginRequest();
 		kakaoLoginParams.setAccessToken("4J-zgwK68lN3RIm8iy1Qv0EGE54mbyOrVc-X1cf1CinJXgAAAYk1SMch");
-		//User user = User.builder().oauth(5555L).nickname("nickname").oAuthProvider(OAuthProvider.KAKAO).build();
 		User user = User.builder().oauthId(5555L).nickname("nickname").oAuthProvider(OauthProvider.KAKAO).build();
 		userRepository.save(user);
 		LoginResponse loginResponse = mock(LoginResponse.class);
@@ -103,7 +102,7 @@ class OauthLoginServiceTest {
 	}
 
 	@Test()
-	void 유저_여부_확인하기() throws Exception {
+	void 존재하지_않는_유저_여부_확인하기() throws NonExistentUserException {
 		//given
 		KakaoInfoResponse kakaoInfoResponse = new KakaoInfoResponse();
 		kakaoInfoResponse.setId(2878733654L);

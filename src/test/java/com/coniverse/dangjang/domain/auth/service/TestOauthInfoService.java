@@ -2,7 +2,7 @@ package com.coniverse.dangjang.domain.auth.service;
 
 import java.util.Date;
 
-import com.coniverse.dangjang.domain.auth.dto.request.OauthLoginParam;
+import com.coniverse.dangjang.domain.auth.dto.request.OauthLoginRequest;
 import com.coniverse.dangjang.domain.user.infrastructure.KakaoInfoResponse;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
@@ -18,7 +18,7 @@ public class TestOauthInfoService implements OauthInfoService {
 	}
 
 	@Override
-	public OAuthInfoResponse request(OauthLoginParam params) {
+	public OAuthInfoResponse request(OauthLoginRequest params) {
 
 		KakaoInfoResponse kakaoInfoResponse = new KakaoInfoResponse();
 		kakaoInfoResponse.setId(5555L);

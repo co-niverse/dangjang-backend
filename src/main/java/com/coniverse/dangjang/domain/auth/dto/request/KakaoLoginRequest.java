@@ -15,16 +15,16 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class KakaoLoginParam implements OauthLoginParam {
+public class KakaoLoginRequest implements OauthLoginRequest {
 	private String accessToken;
 
 	@Override
-	public OauthProvider takeOauthProvider() {
+	public OauthProvider getOauthProvider() {
 		return OauthProvider.KAKAO;
 	}
 
 	@Override
-	public String takeOauthToken() {
+	public String getOauthToken() {
 		return accessToken;
 	}
 
