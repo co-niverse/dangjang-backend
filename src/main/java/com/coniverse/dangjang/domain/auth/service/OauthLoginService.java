@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OauthLoginService {
 	private final AuthTokensGenerator authTokensGenerator;
-	private final com.coniverse.dangjang.domain.auth.service.OauthInfoService OauthInfoService;
+	private final com.coniverse.dangjang.domain.auth.service.OauthInfoService oauthInfoService;
 	private final UserService userService;
 
 	/**
@@ -30,7 +30,7 @@ public class OauthLoginService {
 	 */
 	public LoginResponse login(OauthLoginRequest params) {
 
-		OAuthInfoResponse oAuthInfoResponse = OauthInfoService.request(params);
+		OAuthInfoResponse oAuthInfoResponse = oauthInfoService.request(params);
 		UserInfo user = userService.findUser(oAuthInfoResponse);
 		AuthToken authToken = authTokensGenerator.generate(user.getOauthId());
 		return new LoginResponse(user.getOauthId(), user.getNickname(),
