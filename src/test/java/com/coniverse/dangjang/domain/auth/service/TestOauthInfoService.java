@@ -22,7 +22,7 @@ public class TestOauthInfoService implements OauthInfoService {
 
 		KakaoInfoResponse kakaoInfoResponse = new KakaoInfoResponse();
 		kakaoInfoResponse.setId(5555L);
-		kakaoInfoResponse.setConnected_at(new Date());
+		kakaoInfoResponse.setConnectedAt(new Date());
 
 		return kakaoInfoResponse;
 	}
