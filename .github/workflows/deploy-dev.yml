@@ -6,7 +6,8 @@ on:
       - dev-ci-cd-test
 
 env:
-  AWS_REGION: ap-northeast-2
+  #  AWS_REGION: ap-northeast-2
+  AWS_REGION: us-east-1
   REGISTRY_ALIAS: ${{ secrets.ECR_REGISTRY_ALIAS }}
   ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
   IMAGE_TAG: ${{ github.sha }}
