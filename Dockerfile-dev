@@ -3,5 +3,4 @@ FROM bellsoft/liberica-openjdk-alpine:latest-aarch64
 USER root
 COPY ./build/libs/*SNAPSHOT.jar /app.jar
 VOLUME var/log
-RUN ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime && echo 'Asia/Seoul' >/etc/timezone
 ENTRYPOINT ["java","-jar","-Dspring.profiles.active=dev","/app.jar"]
