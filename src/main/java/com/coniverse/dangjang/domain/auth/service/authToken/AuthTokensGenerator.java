@@ -21,9 +21,9 @@ import lombok.RequiredArgsConstructor;
 public class AuthTokensGenerator {
 	private static final String BEARER_TYPE = "Bearer";
 	@Value("${jwt.access.exp}")
-	private long ACCESS_TOKEN_EXPIRE_TIME; // 30분
+	private long ACCESS_TOKEN_EXPIRE_TIME;
 	@Value("${jwt.refresh.exp}")
-	private long REFRESH_TOKEN_EXPIRE_TIME;  // 7일
+	private long REFRESH_TOKEN_EXPIRE_TIME;
 
 	private final JwtTokenProvider jwtTokenProvider;
 
