@@ -1,0 +1,6 @@
+FROM bellsoft/liberica-openjdk-alpine:latest-aarch64
+
+USER root
+COPY ./build/libs/*SNAPSHOT.jar /app.jar
+VOLUME var/log
+ENTRYPOINT ["java","-jar","-Dspring.profiles.active=dev","/app.jar"]
