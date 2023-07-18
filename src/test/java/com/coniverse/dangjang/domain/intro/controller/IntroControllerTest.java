@@ -1,11 +1,12 @@
 package com.coniverse.dangjang.domain.intro.controller;
 
+import static com.coniverse.dangjang.support.SimpleMockMvc.get;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -20,7 +21,7 @@ import com.coniverse.dangjang.global.exception.BadRequestException;
  */
 class IntroControllerTest extends ControllerTest {
 	private final String URI = "/api/v1/intro";
-	@MockBean
+	@Autowired
 	private IntroService introService;
 
 	@Test
@@ -30,7 +31,7 @@ class IntroControllerTest extends ControllerTest {
 		given(introService.getIntroInfoV1()).willReturn(introInfo);
 
 		// when
-		ResultActions resultActions = get(URI);
+		ResultActions resultActions = get(mockMvc, URI);
 
 		// then
 		resultActions.andExpectAll(
@@ -47,7 +48,7 @@ class IntroControllerTest extends ControllerTest {
 		given(introService.getIntroInfoV1()).willThrow(new BadRequestException());
 
 		// when
-		ResultActions resultActions = get(URI);
+		ResultActions resultActions = get(mockMvc, URI);
 
 		// then
 		resultActions.andExpectAll(

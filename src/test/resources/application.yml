@@ -18,7 +18,7 @@ spring:
       add-mappings: false
 
 jwt:
-  secret-key: coniverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverse
+  secret-key: coniverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverse
   access:
     exp: 1800000
   refresh:
@@ -26,6 +26,15 @@ jwt:
 
 cors:
   allowed-origins: "*"
+
+oauth:
+  kakao:
+    url:
+      api: https://kapi.kakao.com
+    sample-id: 1234
+  naver:
+    url:
+      api: https://openapi.naver.com
 
 logging:
   level:
