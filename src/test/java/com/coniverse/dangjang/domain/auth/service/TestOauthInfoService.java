@@ -21,7 +21,7 @@ public class TestOauthInfoService implements OauthInfoService {
 	public OAuthInfoResponse request(OauthLoginRequest params) {
 
 		KakaoInfoResponse kakaoInfoResponse = new KakaoInfoResponse();
-		kakaoInfoResponse.setId(5555L);
+		kakaoInfoResponse.setId("A1234567");
 		kakaoInfoResponse.setConnectedAt(new Date());
 
 		return kakaoInfoResponse;

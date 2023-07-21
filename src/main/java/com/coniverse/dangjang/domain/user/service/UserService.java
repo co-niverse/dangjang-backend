@@ -4,11 +4,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
-import com.coniverse.dangjang.domain.user.dto.Status;
-import com.coniverse.dangjang.domain.user.dto.UserInfo;
+import com.coniverse.dangjang.domain.user.dto.UserResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
-import com.coniverse.dangjang.domain.user.entity.UserId;
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
@@ -36,41 +33,26 @@ public class UserService {
 	 * @since 1.0
 	 */
 
-	public UserInfo findUser(OAuthInfoResponse oAuthInfoResponse) throws NonExistentUserException {
-
-		Optional<User> user = userRepository.findByOauthId(oAuthInfoResponse.getUserId());
-
-		if (user.isPresent()) {
-			return new UserInfo(user.get().getUserId().getOauthId(), user.get().getNickName());
-		} else {
-			throw new NonExistentUserException();
-		}
+	public UserResponse findUser(OAuthInfoResponse oAuthInfoResponse) throws NonExistentUserException {
+		Optional<User> user = userRepository.findByUserId(oAuthInfoResponse.getUserId(), oAuthInfoResponse.getOAuthProvider());
+		return new UserResponse(user.orElseThrow(NonExistentUserException::new).getOauthId(), user.get().getNickname());
 	}
 
 	/**
 	 * 새로운 유저 회원가입
 	 *
-	 * @param signUpRequest 카카오,네이버에서 사용자 정보 조회한 데이터 (authID ,Provider)
+	 * @param oauthInfoResponse 카카오,네이버에서 사용자 정보 조회한 데이터 (authID ,Provider)
 	 * @return 새로 가입된 유저 회원가입
 	 * @since 1.0
 	 */
 
-	public UserId signUp(SignUpRequest signUpRequest) {
+	public String signUp(OAuthInfoResponse oauthInfoResponse) {
 		User user = User.builder()
-			.userId(new UserId("", "kakao"))
-			.nickname(signUpRequest.getNickname())
-			.activityAmount(signUpRequest.getActivityAmount())
-			.birthday(signUpRequest.getBirthday())
-			.diabetes(signUpRequest.getDiabetes())
-			.diabetes_year(signUpRequest.getDiabetes_year())
-			.height(signUpRequest.getHeight())
-			.injection(signUpRequest.getInjection())
-			.medicine(signUpRequest.getMedicine())
-			.recommended_calorie(signUpRequest.getRecommended_calorie())
-			.status(Status.ACTIVE)
-			.imagePath("")
+			.oauthId(oauthInfoResponse.getUserId())
+			.nickname("nickname")
+			.oauthProvider(oauthInfoResponse.getOAuthProvider())
 			.build();
 
-		return userRepository.save(user).getUserId();
+		return userRepository.save(user).getOauthId();
 	}
 }

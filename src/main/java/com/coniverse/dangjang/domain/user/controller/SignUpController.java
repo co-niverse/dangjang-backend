@@ -22,7 +22,7 @@ public class SignUpController {
 
 	@PostMapping("/signUp")
 	public ResponseEntity<SuccessSingleResponse<UserId>> signUp(@RequestBody SignUpRequest params) {
-		UserId userId = userService.signUp(params);
+		UserId userId = new UserId();
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), userId));
 	}
 }

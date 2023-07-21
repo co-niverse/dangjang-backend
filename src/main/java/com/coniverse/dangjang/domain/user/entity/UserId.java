@@ -2,18 +2,29 @@ package com.coniverse.dangjang.domain.user.entity;
 
 import java.io.Serializable;
 
-import jakarta.persistence.Column;
+import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
+
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
 @Embeddable
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 public class UserId implements Serializable {
-	@Column(name = "oauth_id")
 	private String oauthId;
-	private String provider;
+	@Enumerated(EnumType.STRING)
+	private OauthProvider oauthProvider;
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof UserId) {
+			return this.oauthId.equals(((UserId)obj).oauthId) && this.oauthProvider.equals(((UserId)obj).oauthProvider);
+		}
+		return false;
+	}
 }

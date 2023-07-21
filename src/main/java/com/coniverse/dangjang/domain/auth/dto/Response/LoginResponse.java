@@ -12,7 +12,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class LoginResponse {
-	private Long oauthId;
+	private String oauthId;
 	private String nickname;
 	private String accessToken;
 	private String refreshToken;

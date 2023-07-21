@@ -2,16 +2,19 @@ package com.coniverse.dangjang.domain.user.entity;
 
 import java.util.Date;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import com.coniverse.dangjang.domain.user.dto.Status;
+import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
+import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
+import com.coniverse.dangjang.domain.user.entity.enums.Gender;
+import com.coniverse.dangjang.domain.user.entity.enums.Status;
+import com.coniverse.dangjang.global.support.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,58 +23,60 @@ import lombok.NoArgsConstructor;
  * @author EVE
  * @since 1.0
  */
-@EntityListeners(AuditingEntityListener.class)
-@Getter
 @Entity
-@NoArgsConstructor
 @Table(name = "users")
-public class User {
-	/**
-	 * UserId : 복합키 클래스
-	 *
-	 * @since 1.0
-	 */
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class User extends BaseEntity {
 	@EmbeddedId
 	private UserId userId;
-	private String nickName;
+	@Column(nullable = false, unique = true, length = 15)
+	private String nickname;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false, length = 1)
+	private Gender gender;
+	@Column(nullable = false)
 	private Date birthday;
-
-	@Column(name = "activity_amount", length = 10)
-	private String activityAmount;
-
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private ActivityAmount activityAmount;
+	@Column(nullable = false, length = 3)
 	private int height;
-	private int recommended_calorie;
-
+	@Column(nullable = false)
+	private int recommendedCalorie;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
 	private Status status;
-
-	@CreatedDate
-	private Date created_at;
-
-	private Date updated_at;
-
-	@Column(name = "image_path", length = 10)
-	private String imagePath;
-
-	private Boolean diabetes;
-	private int diabetes_year;
-	private Boolean medicine;
-	private Boolean injection;
+	private String profileImagePath;
 
 	@Builder
-	public User(UserId userId, Status status, String nickname, Date birthday, String activityAmount, int height, int recommended_calorie,
-		Date updated_at, String imagePath, Boolean diabetes, int diabetes_year, Boolean medicine, Boolean injection) {
-		this.userId = userId;
-		this.nickName = nickname;
+	private User(String oauthId, OauthProvider oauthProvider, String nickname, Gender gender, Date birthday, ActivityAmount activityAmount, int height,
+		int recommendedCalorie, Status status,
+		String profileImagePath) {
+		this.userId = new UserId(oauthId, oauthProvider);
+		this.nickname = nickname;
+		this.gender = gender;
 		this.birthday = birthday;
 		this.activityAmount = activityAmount;
 		this.height = height;
-		this.recommended_calorie = recommended_calorie;
-		this.updated_at = updated_at;
-		this.imagePath = imagePath;
-		this.diabetes = diabetes;
-		this.diabetes_year = diabetes_year;
-		this.medicine = medicine;
-		this.injection = injection;
+		this.recommendedCalorie = recommendedCalorie;
 		this.status = status;
+		this.profileImagePath = profileImagePath;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof User) {
+			return this.userId.equals(((User)obj).userId);
+		}
+		return false;
+	}
+
+	public String getOauthId() {
+		return this.userId.getOauthId();
+	}
+
+	public OauthProvider getOauthProvider() {
+		return this.userId.getOauthProvider();
 	}
 }
