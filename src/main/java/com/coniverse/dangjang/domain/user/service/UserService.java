@@ -34,7 +34,7 @@ public class UserService {
 	 */
 
 	public UserResponse findUser(OAuthInfoResponse oAuthInfoResponse) throws NonExistentUserException {
-		Optional<User> user = userRepository.findByOauthId(oAuthInfoResponse.getUserId());
+		Optional<User> user = userRepository.findByUserId(oAuthInfoResponse.getUserId(), oAuthInfoResponse.getOAuthProvider());
 		return new UserResponse(user.orElseThrow(NonExistentUserException::new).getOauthId(), user.get().getNickname());
 	}
 
