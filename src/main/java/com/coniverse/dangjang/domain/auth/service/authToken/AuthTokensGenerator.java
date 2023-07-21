@@ -34,12 +34,12 @@ public class AuthTokensGenerator {
 	 * @return AuthTokens JWT TOKEN 반환
 	 * @since 1.0
 	 */
-	public AuthToken generate(Long memberId) {
+	public AuthToken generate(String memberId) {
 		long now = (new Date()).getTime();
 		Date accessTokenExpiredAt = new Date(now + accessTokenExpireTime);
 		Date refreshTokenExpiredAt = new Date(now + refreshTokenExpireTime);
 
-		String subject = memberId.toString();
+		String subject = memberId;
 		String accessToken = jwtTokenProvider.generate(subject, accessTokenExpiredAt);
 		String refreshToken = jwtTokenProvider.generate(subject, refreshTokenExpiredAt);
 
