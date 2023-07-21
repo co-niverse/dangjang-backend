@@ -4,8 +4,11 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
+import com.coniverse.dangjang.domain.user.dto.Status;
 import com.coniverse.dangjang.domain.user.dto.UserInfo;
 import com.coniverse.dangjang.domain.user.entity.User;
+import com.coniverse.dangjang.domain.user.entity.UserId;
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
@@ -38,7 +41,7 @@ public class UserService {
 		Optional<User> user = userRepository.findByOauthId(oAuthInfoResponse.getUserId());
 
 		if (user.isPresent()) {
-			return new UserInfo(user.get().getOauthId(), user.get().getNickname());
+			return new UserInfo(user.get().getUserId().getOauthId(), user.get().getNickName());
 		} else {
 			throw new NonExistentUserException();
 		}
@@ -47,18 +50,27 @@ public class UserService {
 	/**
 	 * 새로운 유저 회원가입
 	 *
-	 * @param oauthInfoResponse 카카오,네이버에서 사용자 정보 조회한 데이터 (authID ,Provider)
+	 * @param signUpRequest 카카오,네이버에서 사용자 정보 조회한 데이터 (authID ,Provider)
 	 * @return 새로 가입된 유저 회원가입
 	 * @since 1.0
 	 */
 
-	public Long signUp(OAuthInfoResponse oauthInfoResponse) {
+	public UserId signUp(SignUpRequest signUpRequest) {
 		User user = User.builder()
-			.oauthId(oauthInfoResponse.getUserId())
-			.nickname("nickname")
-			.oAuthProvider(oauthInfoResponse.getOAuthProvider())
+			.userId(new UserId("", "kakao"))
+			.nickname(signUpRequest.getNickname())
+			.activityAmount(signUpRequest.getActivityAmount())
+			.birthday(signUpRequest.getBirthday())
+			.diabetes(signUpRequest.getDiabetes())
+			.diabetes_year(signUpRequest.getDiabetes_year())
+			.height(signUpRequest.getHeight())
+			.injection(signUpRequest.getInjection())
+			.medicine(signUpRequest.getMedicine())
+			.recommended_calorie(signUpRequest.getRecommended_calorie())
+			.status(Status.ACTIVE)
+			.imagePath("")
 			.build();
 
-		return userRepository.save(user).getId();
+		return userRepository.save(user).getUserId();
 	}
 }

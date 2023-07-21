@@ -17,8 +17,10 @@ import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.service.authToken.AuthTokensGenerator;
+import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
 import com.coniverse.dangjang.domain.user.dto.UserInfo;
 import com.coniverse.dangjang.domain.user.entity.User;
+import com.coniverse.dangjang.domain.user.entity.UserId;
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
 import com.coniverse.dangjang.domain.user.infrastructure.KakaoInfoResponse;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
@@ -80,7 +82,7 @@ class OauthLoginServiceTest {
 		kakaoInfoResponse.setId(287873365589L);
 		kakaoInfoResponse.setConnectedAt(new Date());
 		//유저 생성
-		User user = User.builder().oauthId(287873365589L).nickname("nickname").oAuthProvider(OauthProvider.KAKAO).build();
+		User user = User.builder().userId(new UserId("dsfsfxwxe", "kakao")).nickname("nickname").build();
 		userRepository.save(user);
 
 		//유저 존재 확인
@@ -94,10 +96,15 @@ class OauthLoginServiceTest {
 	@Test()
 	void 새로운_유저를_추가한다() {
 		//given
-		KakaoInfoResponse kakaoInfoResponse = new KakaoInfoResponse();
-		kakaoInfoResponse.setId(2878733655L);
-		kakaoInfoResponse.setConnectedAt(new Date());
-		Long userId = userService.signUp(kakaoInfoResponse);
+		SignUpRequest signUpRequest = new SignUpRequest();
+		signUpRequest.setNickname("nickname");
+		signUpRequest.setDiabetes(false);
+		signUpRequest.setBirthday(new Date());
+		signUpRequest.setHeight(180);
+		signUpRequest.setInjection(true);
+		signUpRequest.setMedicine(true);
+		signUpRequest.setActivityAmount("HIGH");
+		UserId userId = userService.signUp(signUpRequest);
 		assertThat(userId).isNotNull();
 	}
 
