@@ -9,7 +9,7 @@ import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
  * @since 1.0
  */
 public interface OAuthInfoResponse {
-	Long getUserId();
+	String getUserId();
 
 	OauthProvider getOAuthProvider();
 }
