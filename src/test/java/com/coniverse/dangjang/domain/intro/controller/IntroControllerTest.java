@@ -1,12 +1,12 @@
 package com.coniverse.dangjang.domain.intro.controller;
 
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static com.coniverse.dangjang.support.SimpleMockMvc.*;
+import static org.mockito.BDDMockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -20,8 +20,8 @@ import com.coniverse.dangjang.global.exception.BadRequestException;
  * @since 1.0.0
  */
 class IntroControllerTest extends ControllerTest {
-	private final String URI = "/api/intro";
-	@MockBean
+	private static final String URI = "/api/intro";
+	@Autowired
 	private IntroService introService;
 
 	@Nested
@@ -33,7 +33,7 @@ class IntroControllerTest extends ControllerTest {
 			given(introService.getTestIntroResponse()).willReturn(introResponse);
 
 			// when
-			ResultActions resultActions = get(URI + "/test");
+			ResultActions resultActions = get(mockMvc, URI + "/test");
 
 			// then
 			resultActions.andExpectAll(
@@ -50,7 +50,7 @@ class IntroControllerTest extends ControllerTest {
 			given(introService.getTestIntroResponse()).willThrow(new BadRequestException());
 
 			// when
-			ResultActions resultActions = get(URI + "/test");
+			ResultActions resultActions = get(mockMvc, URI + "/test");
 
 			// then
 			resultActions.andExpectAll(
