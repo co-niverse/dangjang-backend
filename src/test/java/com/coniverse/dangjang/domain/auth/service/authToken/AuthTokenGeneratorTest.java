@@ -19,7 +19,7 @@ class AuthTokenGeneratorTest {
 	private AuthTokensGenerator authTokensGenerator;
 
 	@Value("${oauth.kakao.sample-id}")
-	private Long exID;
+	private String exID;
 
 	@Test
 	void 토큰을_생성한다() {

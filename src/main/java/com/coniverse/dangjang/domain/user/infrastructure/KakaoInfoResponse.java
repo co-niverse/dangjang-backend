@@ -19,12 +19,12 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class KakaoInfoResponse implements OAuthInfoResponse {
-	private Long id;
+	private String id;
 	@JsonProperty("connected_at")
 	private Date connectedAt;
 
 	@Override
-	public Long getUserId() {
+	public String getUserId() {
 		return id;
 	}
 

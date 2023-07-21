@@ -22,11 +22,11 @@ public class NaverInfoResponse implements OAuthInfoResponse {
 	@Getter
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	static class Response {
-		private Long id;
+		private String id;
 	}
 
 	@Override
-	public Long getUserId() {
+	public String getUserId() {
 		return response.id;
 	}
 

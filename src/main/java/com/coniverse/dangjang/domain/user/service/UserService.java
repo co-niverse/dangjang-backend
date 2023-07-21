@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.coniverse.dangjang.domain.user.dto.UserInfo;
+import com.coniverse.dangjang.domain.user.dto.UserResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
@@ -33,15 +33,9 @@ public class UserService {
 	 * @since 1.0
 	 */
 
-	public UserInfo findUser(OAuthInfoResponse oAuthInfoResponse) throws NonExistentUserException {
-
-		Optional<User> user = userRepository.findByOauthId(oAuthInfoResponse.getUserId());
-
-		if (user.isPresent()) {
-			return new UserInfo(user.get().getOauthId(), user.get().getNickname());
-		} else {
-			throw new NonExistentUserException();
-		}
+	public UserResponse findUser(OAuthInfoResponse oAuthInfoResponse) throws NonExistentUserException {
+		Optional<User> user = userRepository.findByUserId(oAuthInfoResponse.getUserId(), oAuthInfoResponse.getOAuthProvider());
+		return new UserResponse(user.orElseThrow(NonExistentUserException::new).getOauthId(), user.get().getNickname());
 	}
 
 	/**
@@ -52,13 +46,13 @@ public class UserService {
 	 * @since 1.0
 	 */
 
-	public Long signUp(OAuthInfoResponse oauthInfoResponse) {
+	public String signUp(OAuthInfoResponse oauthInfoResponse) {
 		User user = User.builder()
 			.oauthId(oauthInfoResponse.getUserId())
 			.nickname("nickname")
-			.oAuthProvider(oauthInfoResponse.getOAuthProvider())
+			.oauthProvider(oauthInfoResponse.getOAuthProvider())
 			.build();
 
-		return userRepository.save(user).getId();
+		return userRepository.save(user).getOauthId();
 	}
 }
