@@ -10,10 +10,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.coniverse.dangjang.domain.auth.controller.LoginController;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
-import com.coniverse.dangjang.domain.healthMetric.controller.HealthMetricController;
-import com.coniverse.dangjang.domain.healthMetric.service.BloodSugarService;
+import com.coniverse.dangjang.domain.healthMetric.controller.HealthMetricRegistrationController;
+import com.coniverse.dangjang.domain.healthMetric.service.BloodSugarRegistrationService;
 import com.coniverse.dangjang.domain.intro.controller.IntroController;
 import com.coniverse.dangjang.domain.intro.service.IntroService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * WebMvc Test parent class
@@ -27,17 +28,19 @@ import com.coniverse.dangjang.domain.intro.service.IntroService;
 	controllers = {
 		IntroController.class,
 		LoginController.class,
-		HealthMetricController.class
+		HealthMetricRegistrationController.class
 	},
 	includeFilters = @ComponentScan.Filter(classes = {EnableWebSecurity.class}))
 @MockBean(JpaMetamodelMappingContext.class)
 public class ControllerTest {
 	@Autowired
 	protected MockMvc mockMvc;
+	@Autowired
+	protected ObjectMapper objectMapper;
 	@MockBean
 	private IntroService introService;
 	@MockBean
 	private OauthLoginService oAuthLoginService;
 	@MockBean
-	private BloodSugarService bloodSugarService;
+	private BloodSugarRegistrationService bloodSugarService;
 }
