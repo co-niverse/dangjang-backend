@@ -13,8 +13,7 @@ import org.springframework.util.MultiValueMap;
  * @since 1.0
  */
 public class SimpleMockMvc {
-	public static ResultActions post(final MockMvc mockMvc, final String uri, final String content,
-		final Object... pathVariables) throws Exception {
+	public static ResultActions post(final MockMvc mockMvc, final String uri, final String content, final Object... pathVariables) throws Exception {
 		return mockMvc.perform(
 			MockMvcRequestBuilders.post(uri, pathVariables)
 				.accept(MediaType.APPLICATION_JSON)
@@ -23,8 +22,7 @@ public class SimpleMockMvc {
 		);
 	}
 
-	public static ResultActions put(final MockMvc mockMvc, final String uri, final String content,
-		final Object... pathVariables) throws Exception {
+	public static ResultActions put(final MockMvc mockMvc, final String uri, final String content, final Object... pathVariables) throws Exception {
 		return mockMvc.perform(
 			MockMvcRequestBuilders.put(uri, pathVariables)
 				.accept(MediaType.APPLICATION_JSON)
@@ -33,8 +31,7 @@ public class SimpleMockMvc {
 		);
 	}
 
-	public static ResultActions patch(final MockMvc mockMvc, final String uri, final String content,
-		final Object... pathVariables) throws Exception {
+	public static ResultActions patch(final MockMvc mockMvc, final String uri, final String content, final Object... pathVariables) throws Exception {
 		return mockMvc.perform(
 			MockMvcRequestBuilders.patch(uri, pathVariables)
 				.accept(MediaType.APPLICATION_JSON)
@@ -43,16 +40,15 @@ public class SimpleMockMvc {
 		);
 	}
 
-	public static ResultActions get(final MockMvc mockMvc, final String uri, final Object... pathVariables) throws
-		Exception {
+	public static ResultActions get(final MockMvc mockMvc, final String uri, final Object... pathVariables) throws Exception {
 		return mockMvc.perform(
 			MockMvcRequestBuilders.get(uri, pathVariables)
 				.accept(MediaType.APPLICATION_JSON)
 		);
 	}
 
-	public static ResultActions get(final MockMvc mockMvc, final String uri, final MultiValueMap<String, String> params,
-		final Object... pathVariables) throws Exception {
+	public static ResultActions get(final MockMvc mockMvc, final String uri, final MultiValueMap<String, String> params, final Object... pathVariables) throws
+		Exception {
 		return mockMvc.perform(
 			MockMvcRequestBuilders.get(uri, pathVariables)
 				.params(params)
@@ -60,8 +56,7 @@ public class SimpleMockMvc {
 		);
 	}
 
-	public static ResultActions delete(final MockMvc mockMvc, final String uri, final Object... pathVariables) throws
-		Exception {
+	public static ResultActions delete(final MockMvc mockMvc, final String uri, final Object... pathVariables) throws Exception {
 		return mockMvc.perform(
 			MockMvcRequestBuilders.delete(uri, pathVariables)
 				.accept(MediaType.APPLICATION_JSON)
