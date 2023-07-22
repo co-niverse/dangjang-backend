@@ -1,6 +1,6 @@
 package com.coniverse.dangjang.domain.user.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
@@ -36,7 +36,7 @@ public class User extends BaseEntity {
 	@Column(nullable = false, length = 1)
 	private Gender gender;
 	@Column(nullable = false)
-	private Date birthday;
+	private LocalDate birthday;
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private ActivityAmount activityAmount;
@@ -50,7 +50,7 @@ public class User extends BaseEntity {
 	private String profileImagePath;
 
 	@Builder
-	private User(String oauthId, OauthProvider oauthProvider, String nickname, Gender gender, Date birthday, ActivityAmount activityAmount, int height,
+	private User(String oauthId, OauthProvider oauthProvider, String nickname, Gender gender, LocalDate birthday, ActivityAmount activityAmount, int height,
 		int recommendedCalorie, Status status,
 		String profileImagePath) {
 		this.userId = new UserId(oauthId, oauthProvider);
