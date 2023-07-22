@@ -6,7 +6,7 @@ import com.coniverse.dangjang.domain.healthMetric.entity.HealthMetricCode;
 import com.coniverse.dangjang.domain.healthMetric.entity.HealthMetricType;
 
 /**
- * 건강지표 response dto abstract class이다. 건강지표 response dto class는 이 class를 상속받아야 한다.
+ * 건강지표 response dto abstract class이다.
  *
  * @author TEO
  * @since 1.0.0

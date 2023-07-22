@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
 /**
- * 건강지표 request dto abstract class이다. 건강지표 request dto class는 이 class를 상속받아야 한다.
+ * 건강지표 request dto abstract class이다.
  *
  * @author TEO
  * @since 1.0.0
