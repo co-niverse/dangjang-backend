@@ -35,6 +35,7 @@ public enum HealthMetricCode {
 	 *
 	 * @param type 건강지표 타입
 	 * @return HealthMetricCode 건강지표 코드
+	 * @throws HealthMetricCodeNotFoundException 건강지표 코드를 찾을 수 없을 때 발생하는 예외
 	 * @see HealthMetricType
 	 * @since 1.0.0
 	 */
