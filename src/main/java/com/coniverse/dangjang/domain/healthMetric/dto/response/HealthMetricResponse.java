@@ -1,6 +1,6 @@
 package com.coniverse.dangjang.domain.healthMetric.dto.response;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -17,5 +17,5 @@ import lombok.Getter;
 public abstract class HealthMetricResponse {
 	private final String healthMetricCode;
 	private final String healthMetricType;
-	private final LocalDateTime createdAt;
+	private final LocalDate createdAt;
 }

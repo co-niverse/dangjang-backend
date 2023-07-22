@@ -1,6 +1,6 @@
 package com.coniverse.dangjang.domain.healthMetric.dto.request;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -18,7 +18,7 @@ public class BloodSugarRequest extends HealthMetricRequest {
 	@NotNull(message = "혈당 단위는 null일 수 없습니다.")
 	private final Integer unit;
 
-	public BloodSugarRequest(final String healthMetricType, final LocalDateTime createdAt, final int unit) {
+	public BloodSugarRequest(final String healthMetricType, final LocalDate createdAt, final int unit) {
 		super(healthMetricType, createdAt);
 		this.unit = unit;
 	}

@@ -1,6 +1,6 @@
 package com.coniverse.dangjang.domain.healthMetric.dto.request;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,5 +20,5 @@ public abstract class HealthMetricRequest {
 	@NotBlank(message = "건강지표 타입은 null이거나 공백일 수 없습니다.")
 	private final String healthMetricType;
 	@NotNull(message = "건강지표 생성일은 null일 수 없습니다.")
-	private final LocalDateTime createdAt;
+	private final LocalDate createdAt;
 }
