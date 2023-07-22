@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.global.config;
+package com.coniverse.dangjang.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

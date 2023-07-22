@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 
+import com.coniverse.dangjang.config.TestConfig;
 import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
@@ -23,7 +24,6 @@ import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
 import com.coniverse.dangjang.domain.user.infrastructure.KakaoInfoResponse;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.domain.user.service.UserService;
-import com.coniverse.dangjang.global.config.TestConfig;
 
 /**
  * @author EVE
