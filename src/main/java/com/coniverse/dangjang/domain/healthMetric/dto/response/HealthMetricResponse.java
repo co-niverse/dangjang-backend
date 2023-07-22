@@ -1,15 +1,21 @@
 package com.coniverse.dangjang.domain.healthMetric.dto.response;
 
+import java.time.LocalDateTime;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
- * 건강지표 response dto abstract class이다.
+ * 건강지표 response dto abstract class이다. 건강지표 response dto class는 이 class를 상속받아야 한다.
  *
  * @author TEO
  * @since 1.0.0
  */
 @Getter
-@Setter
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class HealthMetricResponse {
+	private final String healthMetricCode;
+	private final String healthMetricType;
+	private final LocalDateTime createdAt;
 }
