@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.coniverse.dangjang.domain.auth.controller.LoginController;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
 import com.coniverse.dangjang.domain.healthMetric.controller.HealthMetricRegistrationController;
-import com.coniverse.dangjang.domain.healthMetric.service.BloodSugarRegistrationService;
+import com.coniverse.dangjang.domain.healthMetric.service.bloodSugar.BloodSugarRegistrationService;
 import com.coniverse.dangjang.domain.intro.controller.IntroController;
 import com.coniverse.dangjang.domain.intro.service.IntroService;
 import com.fasterxml.jackson.databind.ObjectMapper;
