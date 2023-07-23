@@ -1,6 +1,5 @@
 package com.coniverse.dangjang.domain.user.service;
 
-import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -18,7 +17,6 @@ import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
 import com.coniverse.dangjang.domain.user.entity.enums.Status;
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
-import com.coniverse.dangjang.domain.user.infrastructure.KakaoInfoResponse;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
@@ -67,12 +65,8 @@ public class UserService {
 		if (signUpRequest.getProvider().equals("kakao")) {
 			KakaoLoginRequest kakaoLoginRequest = new KakaoLoginRequest();
 			kakaoLoginRequest.setAccessToken(signUpRequest.getAccessToken());
-			System.out.println("kakaoLoginRequest : " + kakaoLoginRequest);
-			// oAuthInfoResponse = productOauthInfoService.request(kakaoLoginRequest);
-			oAuthInfoResponse = new KakaoInfoResponse();
-			((KakaoInfoResponse)oAuthInfoResponse).setId("123");
-			((KakaoInfoResponse)oAuthInfoResponse).setConnectedAt(new Date());
-			System.out.println("kakaoLoginRequest : " + kakaoLoginRequest);
+			oAuthInfoResponse = productOauthInfoService.request(kakaoLoginRequest);
+
 		} else if (signUpRequest.getProvider().equals("naver")) {
 			NaverLoginRequest naverLoginRequest = new NaverLoginRequest();
 			naverLoginRequest.setAccessToken(signUpRequest.getAccessToken());
@@ -116,7 +110,7 @@ public class UserService {
 			.status(Status.ACTIVE)
 			.recommendedCalorie(recommendedCalorie)
 			.build();
-		
+
 		return login(new UserResponse(userRepository.save(user).getOauthId(), user.getNickname()));
 	}
 
