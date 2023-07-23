@@ -29,12 +29,10 @@ public class OauthLoginService {
 	 * @since 1.0
 	 */
 	public LoginResponse login(OauthLoginRequest params) {
-
 		OAuthInfoResponse oAuthInfoResponse = oauthInfoService.request(params);
 		UserResponse user = userService.findUser(oAuthInfoResponse);
 		AuthToken authToken = authTokensGenerator.generate(user.oauthId());
-		return new LoginResponse(user.oauthId(), user.nickname(),
-			authToken.getAccessToken(), authToken.getRefreshToken(), authToken.getExpiresIn());
+		return new LoginResponse(user.nickname(), authToken.getAccessToken(), authToken.getRefreshToken(), false, false);
 	}
 
 }

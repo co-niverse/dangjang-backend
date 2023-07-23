@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.coniverse.dangjang.domain.auth.service.ProductOauthInfoService;
 import com.coniverse.dangjang.domain.user.dto.UserResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
@@ -19,9 +20,11 @@ import com.coniverse.dangjang.domain.user.repository.UserRepository;
 @Service
 public class UserService {
 	private final UserRepository userRepository;
+	private final ProductOauthInfoService productOauthInfoService;
 
-	public UserService(UserRepository userRepository) {
+	public UserService(UserRepository userRepository, ProductOauthInfoService productOauthInfoService) {
 		this.userRepository = userRepository;
+		this.productOauthInfoService = productOauthInfoService;
 	}
 
 	/**
@@ -46,13 +49,14 @@ public class UserService {
 	 * @since 1.0
 	 */
 
-	public String signUp(OAuthInfoResponse oauthInfoResponse) {
-		User user = User.builder()
-			.oauthId(oauthInfoResponse.getUserId())
-			.nickname("nickname")
-			.oauthProvider(oauthInfoResponse.getOAuthProvider())
-			.build();
-
-		return userRepository.save(user).getOauthId();
-	}
+	// 	public String signUp(SignUpRequest signUpRequest) {
+	//
+	// 		User user = User.builder()
+	// 			.oauthId(oauthInfoResponse.getUserId())
+	// 			.nickname("nickname")
+	// 			.oauthProvider(oauthInfoResponse.getOAuthProvider())
+	// 			.build();
+	//
+	// 		return userRepository.save(user).getOauthId();
+	// 	}
 }

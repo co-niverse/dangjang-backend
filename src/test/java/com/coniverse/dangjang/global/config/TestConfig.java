@@ -22,7 +22,7 @@ public class TestConfig {
 	@Bean
 	public OauthLoginService oAuthLoginService() {
 		return new OauthLoginService(new AuthTokensGenerator(new JwtTokenProvider(secretKey)),
-			new TestOauthInfoService(userRepository), new UserService(userRepository));
+			new TestOauthInfoService(userRepository), new UserService(userRepository, productOauthInfoService));
 	}
 
 }
