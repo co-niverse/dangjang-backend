@@ -33,7 +33,7 @@ public class User extends BaseEntity {
 	@Column(nullable = false, unique = true, length = 15)
 	private String nickname;
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, length = 1)
+	@Column(nullable = false)
 	private Gender gender;
 	@Column(nullable = false)
 	private Date birthday;
