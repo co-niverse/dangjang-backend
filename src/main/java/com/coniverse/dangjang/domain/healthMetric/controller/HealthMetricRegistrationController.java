@@ -5,8 +5,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.coniverse.dangjang.domain.healthMetric.dto.request.HealthMetricRegistrationRequest;
-import com.coniverse.dangjang.domain.healthMetric.dto.response.HealthMetricRegistrationResponse;
+import com.coniverse.dangjang.domain.healthMetric.dto.request.HealthMetricRequest;
+import com.coniverse.dangjang.domain.healthMetric.dto.response.HealthMetricResponse;
 import com.coniverse.dangjang.global.dto.SuccessMultiResponse;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
@@ -27,25 +27,25 @@ public interface HealthMetricRegistrationController {
 	 *
 	 * @since 1.0.0
 	 */
-	ResponseEntity<SuccessSingleResponse<HealthMetricRegistrationResponse>> post(@Positive @PathVariable(value = "month") int month,
+	ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> post(@Positive @PathVariable(value = "month") int month,
 		@Positive @PathVariable(name = "day") int day,
-		@Valid @RequestBody HealthMetricRegistrationRequest requestBody);
+		@Valid @RequestBody HealthMetricRequest requestBody);
 
 	/**
 	 * HTTP PATCH METHOD
 	 *
 	 * @since 1.0.0
 	 */
-	ResponseEntity<SuccessSingleResponse<HealthMetricRegistrationResponse>> patch(@Positive @PathVariable(value = "month") int month,
+	ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> patch(@Positive @PathVariable(value = "month") int month,
 		@Positive @PathVariable(name = "day") int day,
-		@Valid @RequestBody HealthMetricRegistrationRequest requestBody);
+		@Valid @RequestBody HealthMetricRequest requestBody);
 
 	/**
 	 * HTTP GET METHOD
 	 *
 	 * @since 1.0.0
 	 */
-	ResponseEntity<SuccessMultiResponse<HealthMetricRegistrationResponse>> get(@Positive @PathVariable(value = "month") int month,
+	ResponseEntity<SuccessMultiResponse<HealthMetricResponse>> get(@Positive @PathVariable(value = "month") int month,
 		@Positive @PathVariable(name = "day") int day);
 
 }

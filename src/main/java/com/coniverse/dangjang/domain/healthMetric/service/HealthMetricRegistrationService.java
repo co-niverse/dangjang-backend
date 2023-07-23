@@ -1,7 +1,7 @@
 package com.coniverse.dangjang.domain.healthMetric.service;
 
-import com.coniverse.dangjang.domain.healthMetric.dto.request.HealthMetricRegistrationRequest;
-import com.coniverse.dangjang.domain.healthMetric.dto.response.HealthMetricRegistrationResponse;
+import com.coniverse.dangjang.domain.healthMetric.dto.request.HealthMetricRequest;
+import com.coniverse.dangjang.domain.healthMetric.dto.response.HealthMetricResponse;
 
 /**
  * 건강지표 등록 service interface이다.
@@ -16,5 +16,12 @@ public interface HealthMetricRegistrationService {
 	 *
 	 * @since 1.0.0
 	 */
-	HealthMetricRegistrationResponse save(HealthMetricRegistrationRequest request);
+	HealthMetricResponse save(HealthMetricRequest request);
+
+	/**
+	 * 건강지표를 수정한다.
+	 *
+	 * @since 1.0.0
+	 */
+	HealthMetricResponse update(HealthMetricRequest request);
 }

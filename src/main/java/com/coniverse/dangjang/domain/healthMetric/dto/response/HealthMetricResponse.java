@@ -11,5 +11,5 @@ import com.coniverse.dangjang.domain.healthMetric.entity.HealthMetricType;
  * @author TEO
  * @since 1.0.0
  */
-public record HealthMetricRegistrationResponse(HealthMetricCode healthMetricCode, HealthMetricType healthMetricType, LocalDate createdAt, String unit) {
+public record HealthMetricResponse(HealthMetricCode healthMetricCode, HealthMetricType healthMetricType, LocalDate createdAt, String unit) {
 }
