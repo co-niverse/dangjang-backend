@@ -72,4 +72,3 @@ public class HealthMetric {
 		return this.healthMetricId.getHealthMetricType();
 	}
 }
-
