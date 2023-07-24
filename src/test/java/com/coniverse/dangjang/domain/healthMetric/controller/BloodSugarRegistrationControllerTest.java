@@ -34,7 +34,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class BloodSugarRegistrationControllerTest extends ControllerTest {
 	private final HealthMetricResponse bloodSugarResponse = 혈당_등록_응답();
-	private String content;
+	private String postContent;
+	private String patchContent;
 	@Autowired
 	private BloodSugarRegistrationService bloodSugarService;
 
@@ -48,17 +49,18 @@ class BloodSugarRegistrationControllerTest extends ControllerTest {
 
 	@BeforeAll
 	void setUp() throws JsonProcessingException {
-		content = objectMapper.writeValueAsString(혈당_등록_요청());
+		postContent = objectMapper.writeValueAsString(혈당_등록_요청());
+		patchContent = objectMapper.writeValueAsString(혈당_수정_요청());
 	}
 
 	@Order(100)
 	@Test
 	void 혈당을_등록하면_성공_메시지를_반환한다() throws Exception {
 		// given
-		given(bloodSugarService.save(any(), anyInt(), anyInt())).willReturn(bloodSugarResponse);
+		given(bloodSugarService.save(any(), any())).willReturn(bloodSugarResponse);
 
 		// when
-		ResultActions resultActions = post(mockMvc, "/api/health-metric/blood-sugar/{month}/{day}", content, 7, 8);
+		ResultActions resultActions = post(mockMvc, "/api/health-metric/blood-sugar/{month}/{day}", postContent, 7, 8);
 
 		// then
 		resultActions.andExpectAll(
@@ -71,29 +73,12 @@ class BloodSugarRegistrationControllerTest extends ControllerTest {
 		);
 	}
 
-	@Order(150)
-	@Test
-	void 혈당을_수정하면_성공_메시지를_반환한다() throws Exception {
-		// given
-		given(bloodSugarService.update(any(), anyInt(), anyInt())).willReturn(bloodSugarResponse);
-
-		// when
-		ResultActions resultActions = patch(mockMvc, "/api/health-metric/blood-sugar/{month}/{day}", content, 7, 8);
-
-		// then
-		resultActions.andExpectAll(
-			status().isOk(),
-			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
-			jsonPath("$.data.createdAt").value(bloodSugarResponse.createdAt().toString())
-		);
-	}
-
 	@Order(200)
 	@ParameterizedTest
 	@ValueSource(ints = {-1, 0, 13})
 	void 범위를_벗어나는_PathVariable_month를_입력하면_예외가_발생한다(int month) throws Exception {
 		// when
-		ResultActions resultActions = post(mockMvc, "/api/health-metric/blood-sugar/{month}/{day}", content, month, 1);
+		ResultActions resultActions = post(mockMvc, "/api/health-metric/blood-sugar/{month}/{day}", postContent, month, 1);
 
 		// then
 		resultActions.andExpectAll(
@@ -108,10 +93,10 @@ class BloodSugarRegistrationControllerTest extends ControllerTest {
 	@MethodSource("provideMonth")
 	void 올바른_PathVariable_month를_입력하면_성공메시지를_반환한다(int month) throws Exception {
 		// given
-		given(bloodSugarService.save(any(), anyInt(), anyInt())).willReturn(bloodSugarResponse);
+		given(bloodSugarService.save(any(), any())).willReturn(bloodSugarResponse);
 
 		// when
-		ResultActions resultActions = post(mockMvc, "/api/health-metric/blood-sugar/{month}/{day}", content, month, 8);
+		ResultActions resultActions = post(mockMvc, "/api/health-metric/blood-sugar/{month}/{day}", postContent, month, 8);
 
 		// then
 		resultActions.andExpectAll(
@@ -125,7 +110,7 @@ class BloodSugarRegistrationControllerTest extends ControllerTest {
 	@ValueSource(ints = {-1, 0, 32})
 	void 범위를_벗어나는_PathVariable_day를_입력하면_예외가_발생한다(int day) throws Exception {
 		// when
-		ResultActions resultActions = post(mockMvc, "/api/health-metric/blood-sugar/{month}/{day}", content, 1, day);
+		ResultActions resultActions = post(mockMvc, "/api/health-metric/blood-sugar/{month}/{day}", postContent, 1, day);
 
 		// then
 		resultActions.andExpectAll(
@@ -140,10 +125,10 @@ class BloodSugarRegistrationControllerTest extends ControllerTest {
 	@MethodSource("provideDay")
 	void 올바른_PathVariable_day를_입력하면_성공메시지를_반환한다(int day) throws Exception {
 		// given
-		given(bloodSugarService.save(any(), anyInt(), anyInt())).willReturn(bloodSugarResponse);
+		given(bloodSugarService.save(any(), any())).willReturn(bloodSugarResponse);
 
 		// when
-		ResultActions resultActions = post(mockMvc, "/api/health-metric/blood-sugar/{month}/{day}", content, 1, day);
+		ResultActions resultActions = post(mockMvc, "/api/health-metric/blood-sugar/{month}/{day}", postContent, 1, day);
 
 		// then
 		resultActions.andExpectAll(
@@ -187,6 +172,23 @@ class BloodSugarRegistrationControllerTest extends ControllerTest {
 			jsonPath("$.errorCode").value(400),
 			jsonPath("$.fieldErrors[0].field").value("unit"),
 			jsonPath("$.fieldErrors[0].rejectedValue").value(" ")
+		);
+	}
+
+	@Order(800)
+	@Test
+	void 혈당을_수정하면_성공_메시지를_반환한다() throws Exception {
+		// given
+		given(bloodSugarService.update(any(), any())).willReturn(bloodSugarResponse);
+
+		// when
+		ResultActions resultActions = patch(mockMvc, "/api/health-metric/blood-sugar/{month}/{day}", patchContent, 7, 8);
+
+		// then
+		resultActions.andExpectAll(
+			status().isOk(),
+			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
+			jsonPath("$.data.createdAt").value(bloodSugarResponse.createdAt().toString())
 		);
 	}
 }

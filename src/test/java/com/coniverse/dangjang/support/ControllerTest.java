@@ -12,6 +12,7 @@ import com.coniverse.dangjang.domain.auth.controller.LoginController;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
 import com.coniverse.dangjang.domain.healthMetric.controller.HealthMetricRegistrationController;
 import com.coniverse.dangjang.domain.healthMetric.service.bloodSugar.BloodSugarRegistrationService;
+import com.coniverse.dangjang.domain.healthMetric.util.CreatedAtUtil;
 import com.coniverse.dangjang.domain.intro.controller.IntroController;
 import com.coniverse.dangjang.domain.intro.service.IntroService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,4 +44,6 @@ public class ControllerTest {
 	private OauthLoginService oAuthLoginService;
 	@MockBean
 	private BloodSugarRegistrationService bloodSugarService;
+	@MockBean
+	private CreatedAtUtil createdAtUtil;
 }
