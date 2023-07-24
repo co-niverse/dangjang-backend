@@ -16,12 +16,12 @@ public interface HealthMetricRegistrationService {
 	 *
 	 * @since 1.0.0
 	 */
-	HealthMetricResponse save(HealthMetricRequest request);
+	HealthMetricResponse save(HealthMetricRequest request, int month, int day);
 
 	/**
 	 * 건강지표를 수정한다.
 	 *
 	 * @since 1.0.0
 	 */
-	HealthMetricResponse update(HealthMetricRequest request);
+	HealthMetricResponse update(HealthMetricRequest request, int month, int day);
 }

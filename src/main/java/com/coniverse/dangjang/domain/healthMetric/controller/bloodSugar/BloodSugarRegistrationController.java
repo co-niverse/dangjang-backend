@@ -30,14 +30,14 @@ public class BloodSugarRegistrationController implements HealthMetricRegistratio
 	@Override
 	@PostMapping("/{month}/{day}")
 	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> post(int month, int day, HealthMetricRequest bloodSugarRequest) {
-		HealthMetricResponse bloodSugarResponse = bloodSugarRegistrationService.save(bloodSugarRequest);
+		HealthMetricResponse bloodSugarResponse = bloodSugarRegistrationService.save(bloodSugarRequest, month, day);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), bloodSugarResponse));
 	}
 
 	@Override
 	@PatchMapping("/{month}/{day}")
-	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> patch(int month, int day,
-		HealthMetricRequest bloodSugarRequest) {
-		return null;
+	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> patch(int month, int day, HealthMetricRequest bloodSugarRequest) {
+		HealthMetricResponse bloodSugarResponse = bloodSugarRegistrationService.update(bloodSugarRequest, month, day);
+		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), bloodSugarResponse));
 	}
 }

@@ -38,11 +38,11 @@ class BloodSugarRegistrationControllerTest extends ControllerTest {
 	@Autowired
 	private BloodSugarRegistrationService bloodSugarService;
 
-	private static IntStream getMonth() {
+	private static IntStream provideMonth() {
 		return IntStream.range(1, 13);
 	}
 
-	private static IntStream getDay() {
+	private static IntStream provideDay() {
 		return IntStream.range(1, 32);
 	}
 
@@ -55,7 +55,7 @@ class BloodSugarRegistrationControllerTest extends ControllerTest {
 	@Test
 	void 혈당을_등록하면_성공_메시지를_반환한다() throws Exception {
 		// given
-		given(bloodSugarService.save(any())).willReturn(bloodSugarResponse);
+		given(bloodSugarService.save(any(), anyInt(), anyInt())).willReturn(bloodSugarResponse);
 
 		// when
 		ResultActions resultActions = post(mockMvc, "/api/health-metric/blood-sugar/{month}/{day}", content, 7, 8);
@@ -89,10 +89,10 @@ class BloodSugarRegistrationControllerTest extends ControllerTest {
 
 	@Order(300)
 	@ParameterizedTest
-	@MethodSource("getMonth")
+	@MethodSource("provideMonth")
 	void 올바른_PathVariable_month를_입력하면_성공메시지를_반환한다(int month) throws Exception {
 		// given
-		given(bloodSugarService.save(any())).willReturn(bloodSugarResponse);
+		given(bloodSugarService.save(any(), anyInt(), anyInt())).willReturn(bloodSugarResponse);
 
 		// when
 		ResultActions resultActions = post(mockMvc, "/api/health-metric/blood-sugar/{month}/{day}", content, month, 8);
@@ -122,10 +122,10 @@ class BloodSugarRegistrationControllerTest extends ControllerTest {
 
 	@Order(500)
 	@ParameterizedTest
-	@MethodSource("getDay")
+	@MethodSource("provideDay")
 	void 올바른_PathVariable_day를_입력하면_성공메시지를_반환한다(int day) throws Exception {
 		// given
-		given(bloodSugarService.save(any())).willReturn(bloodSugarResponse);
+		given(bloodSugarService.save(any(), anyInt(), anyInt())).willReturn(bloodSugarResponse);
 
 		// when
 		ResultActions resultActions = post(mockMvc, "/api/health-metric/blood-sugar/{month}/{day}", content, 1, day);
