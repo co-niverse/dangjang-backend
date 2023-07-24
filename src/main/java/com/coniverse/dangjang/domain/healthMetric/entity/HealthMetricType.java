@@ -1,5 +1,7 @@
 package com.coniverse.dangjang.domain.healthMetric.entity;
 
+import java.util.Arrays;
+
 import com.coniverse.dangjang.domain.healthMetric.exception.HealthMetricTypeNotFoundException;
 
 import lombok.AllArgsConstructor;
@@ -11,7 +13,6 @@ import lombok.Getter;
  * @author TEO
  * @since 1.0.0
  */
-@Getter
 @AllArgsConstructor
 public enum HealthMetricType {
 	BED_TIME("취침시간"),
@@ -32,6 +33,7 @@ public enum HealthMetricType {
 	MODERATE_INTENSITY_MINUTES("중강도운동"),
 	STEP_COUNT("걸음수");
 
+	@Getter
 	private final String title;
 
 	/**
@@ -43,11 +45,9 @@ public enum HealthMetricType {
 	 * @since 1.0.0
 	 */
 	public static HealthMetricType findByTitle(String title) {
-		try {
-			return HealthMetricType.valueOf(title);
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-			throw new HealthMetricTypeNotFoundException();
-		}
+		return Arrays.stream(HealthMetricType.values())
+			.filter(type -> type.getTitle().equals(title))
+			.findAny()
+			.orElseThrow(HealthMetricTypeNotFoundException::new);
 	}
 }
