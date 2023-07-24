@@ -12,6 +12,9 @@ import com.coniverse.dangjang.domain.auth.controller.LoginController;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
 import com.coniverse.dangjang.domain.intro.controller.IntroController;
 import com.coniverse.dangjang.domain.intro.service.IntroService;
+import com.coniverse.dangjang.domain.user.controller.SignUpController;
+import com.coniverse.dangjang.domain.user.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * WebMvc Test parent class
@@ -24,7 +27,8 @@ import com.coniverse.dangjang.domain.intro.service.IntroService;
 @WebMvcTest(
 	controllers = {
 		IntroController.class,
-		LoginController.class
+		LoginController.class,
+		SignUpController.class
 	},
 	includeFilters = @ComponentScan.Filter(classes = {EnableWebSecurity.class}))
 @MockBean(JpaMetamodelMappingContext.class)
@@ -35,4 +39,9 @@ public class ControllerTest {
 	private IntroService introService;
 	@MockBean
 	private OauthLoginService oAuthLoginService;
+	@MockBean
+	private UserService userService;
+	@Autowired
+	protected ObjectMapper objectMapper;
+
 }
