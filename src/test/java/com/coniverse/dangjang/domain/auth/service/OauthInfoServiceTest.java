@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.web.client.HttpClientErrorException;
 
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
+import com.coniverse.dangjang.domain.auth.exception.InvalidAuthenticationException;
 
 @SpringBootTest
 class OauthInfoServiceTest {
@@ -20,7 +20,7 @@ class OauthInfoServiceTest {
 		kakaoLoginParams.setAccessToken("access_token");
 		kakaoLoginParams.getOauthProvider();
 		//연결이 되었을 땐 , 잘못된 accessToken으로 요청을 보냈기 때문에 401 Unauthorized 에러가 발생한다.
-		Assertions.assertThrows(HttpClientErrorException.Unauthorized.class, () -> {
+		Assertions.assertThrows(InvalidAuthenticationException.class, () -> {
 			oAuthInfoService.request(kakaoLoginParams);
 		});
 	}
@@ -31,7 +31,7 @@ class OauthInfoServiceTest {
 		naverLoginRequest.setAccessToken("access_token");
 		naverLoginRequest.getOauthProvider();
 		//연결이 되었을 땐 , 잘못된 accessToken으로 요청을 보냈기 때문에 401 Unauthorized 에러가 발생한다.
-		Assertions.assertThrows(HttpClientErrorException.Unauthorized.class, () -> {
+		Assertions.assertThrows(InvalidAuthenticationException.class, () -> {
 			oAuthInfoService.request(naverLoginRequest);
 		});
 	}
