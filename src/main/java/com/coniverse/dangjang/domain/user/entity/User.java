@@ -9,10 +9,10 @@ import com.coniverse.dangjang.domain.user.entity.enums.Status;
 import com.coniverse.dangjang.global.support.BaseEntity;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -28,19 +28,23 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
-	@EmbeddedId
-	private UserId userId;
+	// @EmbeddedId
+	// private UserId userId;
+	@Id
+	private String oauthId;
+	@Enumerated(EnumType.STRING)
+	private OauthProvider oauthProvider;
 	@Column(nullable = false, unique = true, length = 15)
 	private String nickname;
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, length = 1)
+	@Column(nullable = false, length = 5)
 	private Gender gender;
 	@Column(nullable = false)
 	private LocalDate birthday;
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private ActivityAmount activityAmount;
-	@Column(nullable = false, length = 3)
+	@Column(nullable = false)
 	private int height;
 	@Column(nullable = false)
 	private int recommendedCalorie;
@@ -53,7 +57,9 @@ public class User extends BaseEntity {
 	private User(String oauthId, OauthProvider oauthProvider, String nickname, Gender gender, LocalDate birthday, ActivityAmount activityAmount, int height,
 		int recommendedCalorie, Status status,
 		String profileImagePath) {
-		this.userId = new UserId(oauthId, oauthProvider);
+		// this.userId = new UserId(oauthId, oauthProvider);
+		this.oauthId = oauthId;
+		this.oauthProvider = oauthProvider;
 		this.nickname = nickname;
 		this.gender = gender;
 		this.birthday = birthday;
@@ -64,19 +70,19 @@ public class User extends BaseEntity {
 		this.profileImagePath = profileImagePath;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof User) {
-			return this.userId.equals(((User)obj).userId);
-		}
-		return false;
-	}
+	// @Override
+	// public boolean equals(Object obj) {
+	// 	if (obj instanceof User) {
+	// 		return this.userId.equals(((User)obj).userId);
+	// 	}
+	// 	return false;
+	// }
 
-	public String getOauthId() {
-		return this.userId.getOauthId();
-	}
-
-	public OauthProvider getOauthProvider() {
-		return this.userId.getOauthProvider();
-	}
+	// public String getOauthId() {
+	// 	return this.userId.getOauthId();
+	// }
+	//
+	// public OauthProvider getOauthProvider() {
+	// 	return this.userId.getOauthProvider();
+	// }
 }
