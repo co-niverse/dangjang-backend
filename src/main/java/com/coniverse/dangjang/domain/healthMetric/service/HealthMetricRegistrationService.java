@@ -21,7 +21,7 @@ public interface HealthMetricRegistrationService {
 	 * @param createdAt 건강지표 생성일
 	 * @since 1.0.0
 	 */
-	HealthMetricResponse save(HealthMetricPostRequest request, LocalDate createdAt);
+	HealthMetricResponse register(HealthMetricPostRequest request, LocalDate createdAt);
 
 	/**
 	 * 건강지표를 수정한다.

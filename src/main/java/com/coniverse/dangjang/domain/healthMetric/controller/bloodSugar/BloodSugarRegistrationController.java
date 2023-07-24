@@ -36,7 +36,7 @@ public class BloodSugarRegistrationController implements HealthMetricRegistratio
 	@PostMapping("/{month}/{day}")
 	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> post(int month, int day, HealthMetricPostRequest postRequest) {
 		LocalDate createdAt = createdAtUtil.generateCreatedAt(month, day);
-		HealthMetricResponse bloodSugarResponse = bloodSugarRegistrationService.save(postRequest, createdAt);
+		HealthMetricResponse bloodSugarResponse = bloodSugarRegistrationService.register(postRequest, createdAt);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), bloodSugarResponse));
 	}
 
