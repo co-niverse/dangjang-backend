@@ -10,6 +10,10 @@ import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
 import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
 import com.coniverse.dangjang.domain.user.dto.TestDto;
 
+/**
+ * @author EVE
+ * @since 1.0.0
+ */
 @SpringBootTest
 public class UserServiceTest {
 	@Autowired

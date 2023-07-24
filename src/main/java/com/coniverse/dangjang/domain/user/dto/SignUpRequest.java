@@ -5,6 +5,12 @@ import java.util.List;
 
 import lombok.Data;
 
+/**
+ * 회원가입 Request Parm
+ *
+ * @author EVE
+ * @since 1.0
+ */
 @Data
 public class SignUpRequest {
 	private String accessToken;

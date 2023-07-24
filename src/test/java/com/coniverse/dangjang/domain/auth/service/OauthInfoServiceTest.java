@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
-import com.coniverse.dangjang.domain.auth.exception.InvalidAuthenticationException;
+import com.coniverse.dangjang.domain.user.exception.InvalidAuthenticationException;
 
 @SpringBootTest
 class OauthInfoServiceTest {

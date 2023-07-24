@@ -2,6 +2,10 @@ package com.coniverse.dangjang.domain.user.dto;
 
 import java.util.Date;
 
+/**
+ * @author EVE
+ * @since 1.0.0
+ */
 public class TestDto {
 	public static SignUpRequest getSignUpRequest() {
 		SignUpRequest signUpRequest = new SignUpRequest();

@@ -1,11 +1,11 @@
-package com.coniverse.dangjang.domain.auth.exception;
+package com.coniverse.dangjang.domain.user.exception;
 
 import com.coniverse.dangjang.global.exception.BusinessException;
 
 /**
- * NonExistentUserException
- * 존재하는 유저가 아닐때 발생하는 오류
- * findUser()에서 발생한다.
+ * InvalidAuthenticationException
+ * 카카오, 네이버 oauth 인증이 유효하지 않을 때 발생한다.
+ * ProductOauthInfoService에서 발생
  *
  * @author EVE
  * @since 1.0

@@ -10,8 +10,8 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.auth.dto.request.OauthLoginRequest;
-import com.coniverse.dangjang.domain.auth.exception.InvalidAuthenticationException;
 import com.coniverse.dangjang.domain.auth.service.oauthInfoRequest.OAuthInfoRequestService;
+import com.coniverse.dangjang.domain.user.exception.InvalidAuthenticationException;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
 
 /**
