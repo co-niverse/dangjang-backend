@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.healthMetric.entity;
+package com.coniverse.dangjang.domain.healthMetric.enums;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,7 +39,7 @@ public enum HealthMetricCode {
 	 * @see HealthMetricType
 	 * @since 1.0.0
 	 */
-	public static HealthMetricCode findByHealthMetricsType(HealthMetricType type) {
+	public static HealthMetricCode findByHealthMetricType(HealthMetricType type) {
 		return Arrays.stream(HealthMetricCode.values())
 			.filter(code -> code.hasType(type))
 			.findAny()

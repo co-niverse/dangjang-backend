@@ -5,8 +5,8 @@ import java.time.LocalDate;
 import com.coniverse.dangjang.domain.healthMetric.dto.request.HealthMetricRequest;
 import com.coniverse.dangjang.domain.healthMetric.dto.response.HealthMetricResponse;
 import com.coniverse.dangjang.domain.healthMetric.entity.HealthMetric;
-import com.coniverse.dangjang.domain.healthMetric.entity.HealthMetricCode;
-import com.coniverse.dangjang.domain.healthMetric.entity.HealthMetricType;
+import com.coniverse.dangjang.domain.healthMetric.enums.HealthMetricCode;
+import com.coniverse.dangjang.domain.healthMetric.enums.HealthMetricType;
 import com.coniverse.dangjang.domain.user.entity.User;
 
 /**

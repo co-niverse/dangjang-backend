@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.healthMetric.entity;
+package com.coniverse.dangjang.domain.healthMetric.enums;
 
 import java.util.Arrays;
 
