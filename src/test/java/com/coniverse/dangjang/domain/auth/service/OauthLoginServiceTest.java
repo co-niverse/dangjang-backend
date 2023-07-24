@@ -9,10 +9,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 
-import com.coniverse.dangjang.config.TestConfig;
 import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
@@ -30,7 +28,6 @@ import com.coniverse.dangjang.domain.user.service.UserService;
  * @since 1.0
  */
 @SpringBootTest
-@Import(TestConfig.class)
 class OauthLoginServiceTest {
 	@Autowired
 	private OauthLoginService oAuthLoginService;
