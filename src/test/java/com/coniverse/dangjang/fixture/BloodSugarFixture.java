@@ -17,7 +17,7 @@ import com.coniverse.dangjang.domain.user.entity.User;
  */
 public class BloodSugarFixture {
 	public static HealthMetricRequest 혈당_등록_요청() {
-		return new HealthMetricRequest("아침 식전", "140");
+		return new HealthMetricRequest("아침식전", "140");
 	}
 
 	public static HealthMetricResponse 혈당_등록_응답() {
