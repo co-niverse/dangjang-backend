@@ -29,7 +29,7 @@ import jakarta.persistence.EntityManager;
  */
 @RepositoryTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class BloodSugarRepositoryTest {
+class HealthMetricRepositoryTest {
 	@Autowired
 	private HealthMetricRepository healthMetricRepository;
 	@Autowired
