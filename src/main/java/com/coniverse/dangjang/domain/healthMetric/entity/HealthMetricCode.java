@@ -21,7 +21,7 @@ public enum HealthMetricCode {
 	BLOOD_PRESSURE("혈압", List.of(HealthMetricType.SYSTOLIC, HealthMetricType.DIASTOLIC)),
 	BLOOD_SUGAR("혈당", List.of(
 		HealthMetricType.EMPTY_STOMACH, HealthMetricType.BEFORE_BREAKFAST, HealthMetricType.AFTER_BREAKFAST, HealthMetricType.BEFORE_LUNCH,
-		HealthMetricType.AFTER_LUNCH, HealthMetricType.BEFORE_DINNER, HealthMetricType.AFTER_DINNER, HealthMetricType.BEFORE_SLEEP)
+		HealthMetricType.AFTER_LUNCH, HealthMetricType.BEFORE_DINNER, HealthMetricType.AFTER_DINNER, HealthMetricType.BEFORE_SLEEP, HealthMetricType.ETC)
 	),
 	WEIGHT("체중", List.of(HealthMetricType.MEASUREMENT)),
 	EXERCISE("운동", List.of(HealthMetricType.HIGH_INTENSITY_MINUTES, HealthMetricType.MODERATE_INTENSITY_MINUTES, HealthMetricType.STEP_COUNT)),

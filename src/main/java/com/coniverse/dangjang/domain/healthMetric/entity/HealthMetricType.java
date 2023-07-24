@@ -25,6 +25,7 @@ public enum HealthMetricType {
 	BEFORE_DINNER("저녁식전"),
 	AFTER_DINNER("저녁식후"),
 	BEFORE_SLEEP("취침전"),
+	ETC("기타"),
 	SYSTOLIC("수축"),
 	DIASTOLIC("이완"),
 	MEASUREMENT("몸무게"),
