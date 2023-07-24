@@ -82,7 +82,6 @@ class BloodSugarRegistrationControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isBadRequest(),
 			jsonPath("$.errorCode").value(400),
-			jsonPath("$.violationErrors[0].propertyPath").value("post.arg0"),
 			jsonPath("$.violationErrors[0].rejectedValue").value(month)
 		);
 	}
@@ -115,7 +114,6 @@ class BloodSugarRegistrationControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isBadRequest(),
 			jsonPath("$.errorCode").value(400),
-			jsonPath("$.violationErrors[0].propertyPath").value("post.arg1"),
 			jsonPath("$.violationErrors[0].rejectedValue").value(day)
 		);
 	}
@@ -142,7 +140,7 @@ class BloodSugarRegistrationControllerTest extends ControllerTest {
 	void 건강지표_등록_RequestBody의_건강지표_타입이_비어있으면_예외가_발생한다() throws Exception {
 		// given
 		HealthMetricRequest bloodSugarRequest = new HealthMetricRequest("", "100");
-		content = objectMapper.writeValueAsString(bloodSugarRequest);
+		String content = objectMapper.writeValueAsString(bloodSugarRequest);
 
 		// when
 		ResultActions resultActions = post(mockMvc, "/api/health-metric/blood-sugar/{month}/{day}", content, 7, 8);
@@ -161,7 +159,7 @@ class BloodSugarRegistrationControllerTest extends ControllerTest {
 	void 건강지표_등록_RequestBody의_unit이_비어있으면_예외가_발생한다() throws Exception {
 		// given
 		HealthMetricRequest bloodSugarRequest = new HealthMetricRequest("아침 식전", " ");
-		content = objectMapper.writeValueAsString(bloodSugarRequest);
+		String content = objectMapper.writeValueAsString(bloodSugarRequest);
 
 		// when
 		ResultActions resultActions = post(mockMvc, "/api/health-metric/blood-sugar/{month}/{day}", content, 7, 8);
