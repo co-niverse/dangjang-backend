@@ -71,6 +71,23 @@ class BloodSugarRegistrationControllerTest extends ControllerTest {
 		);
 	}
 
+	@Order(150)
+	@Test
+	void 혈당을_수정하면_성공_메시지를_반환한다() throws Exception {
+		// given
+		given(bloodSugarService.update(any(), anyInt(), anyInt())).willReturn(bloodSugarResponse);
+
+		// when
+		ResultActions resultActions = patch(mockMvc, "/api/health-metric/blood-sugar/{month}/{day}", content, 7, 8);
+
+		// then
+		resultActions.andExpectAll(
+			status().isOk(),
+			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
+			jsonPath("$.data.createdAt").value(bloodSugarResponse.createdAt().toString())
+		);
+	}
+
 	@Order(200)
 	@ParameterizedTest
 	@ValueSource(ints = {-1, 0, 13})
