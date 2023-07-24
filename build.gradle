@@ -62,7 +62,7 @@ sonarqube {
         property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
         property "sonar.java.binaries", "${buildDir}/classes"
         property "sonar.test.inclusions", "**/*Test.java"
-        property "sonar.exclusions", "**/*Application*, **/*Exception*, **/dto/**, **/global/advice/**, **/global/config/**, **/global/support/**"
+        property "sonar.exclusions", "**/*Application*, **/*Exception*, **/dto/**, **/entity/**, **/infrastructure/**, **/global/advice/**, **/global/config/**, **/global/support/**"
     }
 }
 
@@ -85,6 +85,8 @@ jacocoTestReport {
                             '**/*Application*',
                             '**/*Exception*',
                             '**/dto/**',
+                            '**/entity/**',
+                            '**/infrastructure/**',
                             '**/global/advice/**',
                             '**/global/config/**',
                             '**/global/support/**'
@@ -115,17 +117,21 @@ jacocoTestCoverageVerification {
                 value = 'TOTALCOUNT'
                 maximum = 300
             }
+            limit {
+                counter = 'METHOD'
+                value = 'TOTALCOUNT'
+                maximum = 20
+            }
             excludes = [
                     '*.*Application',
                     '*.*Exception*',
                     '*.dto.*',
                     '*.entity.*',
                     '*.infrastructure.*',
-                    '*.OAuthInfo.*',
+                    '*.OAuthInfo.*', // TODO: OAuthInfo 제거
                     '*.global.advice.*',
                     '*.global.config.*',
-                    '*.global.support.*',
-                    '*.global.dto.*'
+                    '*.global.support.*'
             ]
         }
     }
