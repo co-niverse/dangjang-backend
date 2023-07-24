@@ -10,6 +10,7 @@ import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
 import com.coniverse.dangjang.domain.auth.service.OauthInfoService;
 import com.coniverse.dangjang.domain.auth.service.authToken.AuthTokensGenerator;
+import com.coniverse.dangjang.domain.user.dto.DuplicateNicknameResponse;
 import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
 import com.coniverse.dangjang.domain.user.dto.UserResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
@@ -114,6 +115,17 @@ public class UserService {
 	public LoginResponse login(UserResponse userResponse) {
 		AuthToken authToken = authTokensGenerator.generate(userResponse.oauthId());
 		return new LoginResponse(userResponse.nickname(), authToken.getAccessToken(), authToken.getRefreshToken(), false, false);
+	}
+
+	public DuplicateNicknameResponse checkDublicateNickname(String nickname) {
+		System.out.println("nickname : " + nickname);
+		Integer countNickname = userRepository.countByNickname(nickname);
+		System.out.println("count : " + countNickname);
+		if (countNickname > 0) {
+			return new DuplicateNicknameResponse(false);
+		} else {
+			return new DuplicateNicknameResponse(true);
+		}
 	}
 
 }

@@ -23,4 +23,7 @@ public interface UserRepository extends JpaRepository<User, UserId> {
 	 */
 	@Query("SELECT u FROM User u WHERE u.userId.oauthId = ?1 AND u.userId.oauthProvider = ?2")
 	Optional<User> findByUserId(String oauthId, OauthProvider oauthProvider);
+
+	@Query("SELECT count(u) FROM User u WHERE u.nickname = ?1 ")
+	Integer countByNickname(String nickname);
 }
