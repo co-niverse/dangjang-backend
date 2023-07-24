@@ -8,7 +8,7 @@ import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
-import com.coniverse.dangjang.domain.auth.service.ProductOauthInfoService;
+import com.coniverse.dangjang.domain.auth.service.OauthInfoService;
 import com.coniverse.dangjang.domain.auth.service.authToken.AuthTokensGenerator;
 import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
 import com.coniverse.dangjang.domain.user.dto.UserResponse;
@@ -20,6 +20,8 @@ import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
+import lombok.AllArgsConstructor;
+
 /**
  * USER Service
  *
@@ -27,16 +29,11 @@ import com.coniverse.dangjang.domain.user.repository.UserRepository;
  * @since 1.0
  */
 @Service
+@AllArgsConstructor
 public class UserService {
-	private UserRepository userRepository;
-	private final ProductOauthInfoService productOauthInfoService;
+	private final UserRepository userRepository;
+	private final OauthInfoService productOauthInfoService;
 	private final AuthTokensGenerator authTokensGenerator;
-
-	public UserService(UserRepository userRepository, ProductOauthInfoService productOauthInfoService, AuthTokensGenerator authTokensGenerator) {
-		this.productOauthInfoService = productOauthInfoService;
-		this.userRepository = userRepository;
-		this.authTokensGenerator = authTokensGenerator;
-	}
 
 	/**
 	 * 기존 유저 확인
@@ -86,7 +83,7 @@ public class UserService {
 		}
 
 		int recommendedCalorie = 0;
-		ActivityAmount activityAmount = null;
+		ActivityAmount activityAmount = ActivityAmount.LOW;
 		if (signUpRequest.getActivityAmount().equals("LOW")) {
 			activityAmount = ActivityAmount.LOW;
 			recommendedCalorie = (int)(standardWeight * 25);
