@@ -10,7 +10,7 @@ import org.springframework.util.MultiValueMap;
  * Methods for WebMvc Test
  *
  * @author TEO
- * @since 1.0
+ * @since 1.0.0
  */
 public class SimpleMockMvc {
 	public static ResultActions post(final MockMvc mockMvc, final String uri, final String content, final Object... pathVariables) throws Exception {

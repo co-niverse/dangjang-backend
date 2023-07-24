@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * contollers에 테스트할 controller를 등록하고, controller에서 주입하는 bean들을 MockBean으로 등록한다.
  *
  * @author TEO
- * @since 1.0
+ * @since 1.0.0
  */
 @WebMvcTest(
 	controllers = {
