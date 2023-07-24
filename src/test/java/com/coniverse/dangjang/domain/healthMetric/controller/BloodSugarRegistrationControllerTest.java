@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.coniverse.dangjang.domain.healthMetric.dto.request.HealthMetricRequest;
+import com.coniverse.dangjang.domain.healthMetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthMetric.dto.response.HealthMetricResponse;
 import com.coniverse.dangjang.domain.healthMetric.service.bloodSugar.BloodSugarRegistrationService;
 import com.coniverse.dangjang.support.ControllerTest;
@@ -156,7 +156,7 @@ class BloodSugarRegistrationControllerTest extends ControllerTest {
 	@Test
 	void 건강지표_등록_RequestBody의_건강지표_타입이_비어있으면_예외가_발생한다() throws Exception {
 		// given
-		HealthMetricRequest bloodSugarRequest = new HealthMetricRequest("", "100");
+		HealthMetricPostRequest bloodSugarRequest = new HealthMetricPostRequest("", "100");
 		String content = objectMapper.writeValueAsString(bloodSugarRequest);
 
 		// when
@@ -175,7 +175,7 @@ class BloodSugarRegistrationControllerTest extends ControllerTest {
 	@Test
 	void 건강지표_등록_RequestBody의_unit이_비어있으면_예외가_발생한다() throws Exception {
 		// given
-		HealthMetricRequest bloodSugarRequest = new HealthMetricRequest("아침 식전", " ");
+		HealthMetricPostRequest bloodSugarRequest = new HealthMetricPostRequest("아침 식전", " ");
 		String content = objectMapper.writeValueAsString(bloodSugarRequest);
 
 		// when

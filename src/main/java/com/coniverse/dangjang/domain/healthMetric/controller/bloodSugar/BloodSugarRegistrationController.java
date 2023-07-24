@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coniverse.dangjang.domain.healthMetric.controller.HealthMetricRegistrationController;
-import com.coniverse.dangjang.domain.healthMetric.dto.request.HealthMetricRequest;
+import com.coniverse.dangjang.domain.healthMetric.dto.request.HealthMetricPatchRequest;
+import com.coniverse.dangjang.domain.healthMetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthMetric.dto.response.HealthMetricResponse;
 import com.coniverse.dangjang.domain.healthMetric.service.bloodSugar.BloodSugarRegistrationService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
@@ -29,15 +30,15 @@ public class BloodSugarRegistrationController implements HealthMetricRegistratio
 
 	@Override
 	@PostMapping("/{month}/{day}")
-	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> post(int month, int day, HealthMetricRequest bloodSugarRequest) {
-		HealthMetricResponse bloodSugarResponse = bloodSugarRegistrationService.save(bloodSugarRequest, month, day);
+	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> post(int month, int day, HealthMetricPostRequest postRequest) {
+		HealthMetricResponse bloodSugarResponse = bloodSugarRegistrationService.save(postRequest, month, day);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), bloodSugarResponse));
 	}
 
 	@Override
 	@PatchMapping("/{month}/{day}")
-	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> patch(int month, int day, HealthMetricRequest bloodSugarRequest) {
-		HealthMetricResponse bloodSugarResponse = bloodSugarRegistrationService.update(bloodSugarRequest, month, day);
+	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> patch(int month, int day, HealthMetricPatchRequest patchRequest) {
+		HealthMetricResponse bloodSugarResponse = bloodSugarRegistrationService.update(patchRequest, month, day);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), bloodSugarResponse));
 	}
 }

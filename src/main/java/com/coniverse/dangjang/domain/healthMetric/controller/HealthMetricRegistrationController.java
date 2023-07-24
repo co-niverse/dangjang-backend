@@ -6,7 +6,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.coniverse.dangjang.domain.healthMetric.dto.request.HealthMetricRequest;
+import com.coniverse.dangjang.domain.healthMetric.dto.request.HealthMetricPatchRequest;
+import com.coniverse.dangjang.domain.healthMetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthMetric.dto.response.HealthMetricResponse;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
@@ -28,7 +29,7 @@ public interface HealthMetricRegistrationController {
 	 */
 	ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> post(@Range(min = 1, max = 12) @PathVariable(value = "month") int month,
 		@Range(min = 1, max = 31) @PathVariable(name = "day") int day,
-		@Valid @RequestBody HealthMetricRequest requestBody);
+		@Valid @RequestBody HealthMetricPostRequest postRequest);
 
 	/**
 	 * HTTP PATCH METHOD
@@ -37,6 +38,6 @@ public interface HealthMetricRegistrationController {
 	 */
 	ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> patch(@Range(min = 1, max = 12) @PathVariable(value = "month") int month,
 		@Range(min = 1, max = 31) @PathVariable(name = "day") int day,
-		@Valid @RequestBody HealthMetricRequest requestBody);
+		@Valid @RequestBody HealthMetricPatchRequest patchRequest);
 }
 

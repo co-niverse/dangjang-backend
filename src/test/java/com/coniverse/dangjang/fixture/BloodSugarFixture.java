@@ -2,7 +2,7 @@ package com.coniverse.dangjang.fixture;
 
 import java.time.LocalDate;
 
-import com.coniverse.dangjang.domain.healthMetric.dto.request.HealthMetricRequest;
+import com.coniverse.dangjang.domain.healthMetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthMetric.dto.response.HealthMetricResponse;
 import com.coniverse.dangjang.domain.healthMetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.healthMetric.enums.HealthMetricCode;
@@ -16,8 +16,8 @@ import com.coniverse.dangjang.domain.user.entity.User;
  * @since 1.0.0
  */
 public class BloodSugarFixture {
-	public static HealthMetricRequest 혈당_등록_요청() {
-		return new HealthMetricRequest("아침식전", "140");
+	public static HealthMetricPostRequest 혈당_등록_요청() {
+		return new HealthMetricPostRequest("아침식전", "140");
 	}
 
 	public static HealthMetricResponse 혈당_등록_응답() {
