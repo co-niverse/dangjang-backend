@@ -117,6 +117,14 @@ public class UserService {
 		return new LoginResponse(userResponse.nickname(), authToken.getAccessToken(), authToken.getRefreshToken(), false, false);
 	}
 
+	/**
+	 * 중복된 닉네임 확인
+	 *
+	 * @param nickname 확인이 필요한 닉네임
+	 * @return 중복된 닉네임이면 false, 중복되지 않았으면 true를 담은 DuplicateNicknameResponse 객체 리턴
+	 * @since 1.0
+	 */
+
 	public DuplicateNicknameResponse checkDublicateNickname(String nickname) {
 		System.out.println("nickname : " + nickname);
 		Integer countNickname = userRepository.countByNickname(nickname);

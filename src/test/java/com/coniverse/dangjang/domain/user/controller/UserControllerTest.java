@@ -13,6 +13,10 @@ import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
 import com.coniverse.dangjang.domain.user.dto.TestDto;
 import com.coniverse.dangjang.domain.user.service.UserService;
 
+/**
+ * @author EVE
+ * @since 1.0
+ */
 public class UserControllerTest extends ControllerTest {
 	private final String URI = "/api/duplicateNickname?nickname=";
 	@Autowired
@@ -47,7 +51,7 @@ public class UserControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isOk(),
 			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase())
-			
+
 		);
 
 	}

@@ -13,12 +13,21 @@ import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * @author EVE
+ * @since 1.0
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class UserController {
 	private final UserService userService;
 
+	/**
+	 * @param nickname 확인이 필요한 닉네임을 담아온다.
+	 * @return 닉네임이 중복되지 않았으면 true, 중복된 닉네임이면 false를 담은 DuplicateNicknameResponse 객체를 반환한다.
+	 * @since 1.0
+	 */
 	@GetMapping("/duplicateNickname")
 	public ResponseEntity<SuccessSingleResponse<DuplicateNicknameResponse>> checkDuplicateNickname(@RequestParam String nickname) {
 		DuplicateNicknameResponse duplicateNicknameResponse = userService.checkDublicateNickname(nickname);
