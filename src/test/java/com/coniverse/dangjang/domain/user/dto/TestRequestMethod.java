@@ -3,10 +3,12 @@ package com.coniverse.dangjang.domain.user.dto;
 import java.time.LocalDate;
 
 /**
+ * 테스트에서 필요한 Request를 반환해주는 메소드를 가진 클래스
+ *
  * @author EVE
  * @since 1.0.0
  */
-public class TestDto {
+public class TestRequestMethod {
 	public static SignUpRequest getSignUpRequest() {
 		SignUpRequest signUpRequest = new SignUpRequest();
 		signUpRequest.setNickname("test");

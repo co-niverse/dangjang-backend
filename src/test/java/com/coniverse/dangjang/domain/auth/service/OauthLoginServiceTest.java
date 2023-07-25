@@ -15,7 +15,7 @@ import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.service.authToken.AuthTokensGenerator;
 import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
-import com.coniverse.dangjang.domain.user.dto.TestDto;
+import com.coniverse.dangjang.domain.user.dto.TestRequestMethod;
 import com.coniverse.dangjang.domain.user.dto.UserResponse;
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
 import com.coniverse.dangjang.domain.user.infrastructure.KakaoInfoResponse;
@@ -54,7 +54,7 @@ public class OauthLoginServiceTest {
 	void 로그인을_성공한다() {
 
 		//given 회원가입
-		SignUpRequest signUpRequest = TestDto.getSignUpRequest();
+		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequest();
 		userService.signUp(signUpRequest);
 
 		KakaoLoginRequest kakaoLoginParams = new KakaoLoginRequest();
@@ -71,7 +71,7 @@ public class OauthLoginServiceTest {
 	void JWT_반환한다() throws NonExistentUserException {
 		// given
 
-		SignUpRequest signUpRequest = TestDto.getSignUpRequest();
+		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequest();
 		userService.signUp(signUpRequest);
 
 		KakaoInfoResponse kakaoInfoResponse = new KakaoInfoResponse();

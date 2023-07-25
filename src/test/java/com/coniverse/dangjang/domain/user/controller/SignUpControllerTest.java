@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
 import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
-import com.coniverse.dangjang.domain.user.dto.TestDto;
+import com.coniverse.dangjang.domain.user.dto.TestRequestMethod;
 import com.coniverse.dangjang.domain.user.service.UserService;
 import com.coniverse.dangjang.support.ControllerTest;
 
@@ -26,7 +26,7 @@ public class SignUpControllerTest extends ControllerTest {
 
 	@Test
 	void 회원가입_성공한다() throws Exception {
-		SignUpRequest signUpRequest = TestDto.getSignUpRequest();
+		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequest();
 		LoginResponse loginResponse = new LoginResponse("test", "accessToken", "refreshToken", false, false);
 		given(userService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);

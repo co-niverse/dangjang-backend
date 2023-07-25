@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
 import com.coniverse.dangjang.domain.user.dto.DuplicateNicknameResponse;
 import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
-import com.coniverse.dangjang.domain.user.dto.TestDto;
+import com.coniverse.dangjang.domain.user.dto.TestRequestMethod;
 
 /**
  * @author EVE
@@ -23,7 +23,7 @@ public class UserServiceTest {
 	@Test()
 	void 새로운_유저를_추가한다_카카오() {
 		//given
-		SignUpRequest signUpRequest = TestDto.getSignUpRequest();
+		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequest();
 
 		//when
 		LoginResponse loginResponse = userService.signUp(signUpRequest);
@@ -34,7 +34,7 @@ public class UserServiceTest {
 	@Test()
 	void 새로운_유저를_추가한다_네이버() {
 		//given
-		SignUpRequest signUpRequest = TestDto.getSignUpRequest();
+		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequest();
 		signUpRequest.setActivityAmount("MEDIUM");
 		signUpRequest.setProvider("naver");
 		//when
@@ -46,7 +46,7 @@ public class UserServiceTest {
 	@Test()
 	void 중복된_닉네임을_확인한다() {
 		//given
-		SignUpRequest signUpRequest = TestDto.getSignUpRequest();
+		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequest();
 		signUpRequest.setActivityAmount("MEDIUM");
 		signUpRequest.setProvider("naver");
 		userService.signUp(signUpRequest);

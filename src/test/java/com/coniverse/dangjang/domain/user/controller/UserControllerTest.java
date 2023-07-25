@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
-import com.coniverse.dangjang.domain.user.dto.TestDto;
+import com.coniverse.dangjang.domain.user.dto.TestRequestMethod;
 import com.coniverse.dangjang.domain.user.service.UserService;
 import com.coniverse.dangjang.support.ControllerTest;
 
@@ -40,7 +40,7 @@ public class UserControllerTest extends ControllerTest {
 	@Test
 	void 중복된_닉네임_확인을_성공한다() throws Exception {
 		// given
-		SignUpRequest signUpRequest = TestDto.getSignUpRequest();
+		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequest();
 		signUpRequest.setActivityAmount("MEDIUM");
 		signUpRequest.setProvider("naver");
 		userService.signUp(signUpRequest);
