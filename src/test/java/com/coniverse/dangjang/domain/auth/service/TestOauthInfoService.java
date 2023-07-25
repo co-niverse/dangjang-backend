@@ -5,11 +5,8 @@ import java.util.Date;
 import com.coniverse.dangjang.domain.auth.dto.request.OauthLoginRequest;
 import com.coniverse.dangjang.domain.user.infrastructure.KakaoInfoResponse;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
-import com.coniverse.dangjang.support.annotation.FakeBean;
+import com.coniverse.dangjang.support.FakeBean;
 
-import jakarta.transaction.Transactional;
-
-@Transactional
 @FakeBean
 public class TestOauthInfoService implements OauthInfoService {
 	@Override

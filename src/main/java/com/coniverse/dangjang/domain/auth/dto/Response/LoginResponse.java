@@ -12,9 +12,9 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class LoginResponse {
-	private String oauthId;
 	private String nickname;
 	private String accessToken;
 	private String refreshToken;
-	private Long expiresIn;
+	private Boolean premium;
+	private Boolean healthConnect;
 }
