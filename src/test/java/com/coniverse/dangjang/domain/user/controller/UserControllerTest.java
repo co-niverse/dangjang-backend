@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.coniverse.dangjang.ControllerTest;
 import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
 import com.coniverse.dangjang.domain.user.dto.TestDto;
 import com.coniverse.dangjang.domain.user.service.UserService;
+import com.coniverse.dangjang.support.ControllerTest;
 
 /**
  * @author EVE

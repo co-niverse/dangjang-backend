@@ -1,6 +1,6 @@
 package com.coniverse.dangjang.domain.user.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * @author EVE
@@ -15,7 +15,7 @@ public class TestDto {
 		signUpRequest.setInjection(true);
 		signUpRequest.setMedicine(true);
 		signUpRequest.setProvider("kakao");
-		signUpRequest.setBirthday(new Date());
+		signUpRequest.setBirthday(LocalDate.now());
 		signUpRequest.setDiabetes(true);
 		signUpRequest.setHeight(158);
 		signUpRequest.setWeight(50);
@@ -24,9 +24,4 @@ public class TestDto {
 		return signUpRequest;
 	}
 
-	public static Object getWrongSignUpRequest() {
-		Object loginResponse = new Object();
-
-		return loginResponse;
-	}
 }
