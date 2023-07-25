@@ -73,11 +73,10 @@ public class BloodSugarRegistrationService implements HealthMetricRegistrationSe
 	 *
 	 * @since 1.0.0
 	 */
-	private HealthMetric generateHealthMetric(LocalDate createdAt, HealthMetricCode healthMetricCode, HealthMetricType healthMetricType, String unit,
+	private HealthMetric generateHealthMetric(LocalDate createdAt, HealthMetricType healthMetricType, String unit,
 		User user) {
 		return HealthMetric.builder()
 			.createdAt(createdAt)
-			.healthMetricCode(healthMetricCode)
 			.healthMetricType(healthMetricType)
 			.unit(unit)
 			.user(user)
@@ -106,17 +105,15 @@ public class BloodSugarRegistrationService implements HealthMetricRegistrationSe
 	 * 이전 건강지표를 삭제한다.
 	 *
 	 * @param createdAt        생성일
-	 * @param healthMetricCode 건강지표 코드
 	 * @param healthMetricType 건강지표 타입
 	 * @param oauthId          oauthId
 	 * @return HealthMetric 이전 건강지표
 	 * @throws HealthMetricNotFoundException 이전 건강지표가 존재하지 않을 경우 발생한다.
 	 * @since 1.0.0
 	 */
-	private HealthMetric findPreviousHealthMetric(LocalDate createdAt, HealthMetricCode healthMetricCode, HealthMetricType healthMetricType, String oauthId) {
+	private HealthMetric findPreviousHealthMetric(LocalDate createdAt, HealthMetricType healthMetricType, String oauthId) {
 		HealthMetricId id = HealthMetricId.builder()
 			.createdAt(createdAt)
-			.healthMetricCode(healthMetricCode)
 			.healthMetricType(healthMetricType)
 			.oauthId(oauthId)
 			.build();
@@ -128,11 +125,10 @@ public class BloodSugarRegistrationService implements HealthMetricRegistrationSe
 	 *
 	 * @since 1.0.0
 	 */
-	private HealthMetric saveCurrentHealthMetric(LocalDate createdAt, HealthMetricCode healthMetricCode, HealthMetricType healthMetricType, String unit,
+	private HealthMetric saveCurrentHealthMetric(LocalDate createdAt, HealthMetricType healthMetricType, String unit,
 		User user) {
 		HealthMetricId id = HealthMetricId.builder()
 			.createdAt(createdAt)
-			.healthMetricCode(healthMetricCode)
 			.healthMetricType(healthMetricType)
 			.oauthId(user.getOauthId())
 			.build();
@@ -140,7 +136,7 @@ public class BloodSugarRegistrationService implements HealthMetricRegistrationSe
 		if (healthMetricRepository.findByHealthMetricId(id).isPresent()) {
 			throw new HealthMetricAlreadyExistentException();
 		}
-		HealthMetric healthMetric = generateHealthMetric(createdAt, healthMetricCode, healthMetricType, unit, user);
+		HealthMetric healthMetric = generateHealthMetric(createdAt, healthMetricType, unit, user);
 		return healthMetricRepository.save(healthMetric);
 	}
 }
