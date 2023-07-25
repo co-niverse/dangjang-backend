@@ -14,18 +14,18 @@ import lombok.Getter;
 /**
  * Entity 공통 매핑 정보
  *
- * @author Teo
- * @since 1.0
+ * @author TEO
+ * @since 1.0.0
  */
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
 	@CreatedDate
-	@Column(name = "CREATED_AT", updatable = false)
+	@Column(name = "CREATED_AT", updatable = false, nullable = false)
 	private LocalDateTime createdAt;
 
 	@LastModifiedDate
-	@Column(name = "MODIFIED_AT")
-	private LocalDateTime modifiedAt;
+	@Column(name = "UPDATED_AT", nullable = false)
+	private LocalDateTime updatedAt;
 }
