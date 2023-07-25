@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.coniverse.dangjang.ControllerTest;
+import com.coniverse.dangjang.support.ControllerTest;
 
 /**
  * @author EVE

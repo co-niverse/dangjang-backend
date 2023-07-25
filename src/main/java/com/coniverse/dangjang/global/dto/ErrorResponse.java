@@ -14,8 +14,8 @@ import jakarta.validation.ConstraintViolationException;
 /**
  * 공통된 에러 응답을 보내기 위해 사용한다.
  *
- * @author Teo
- * @since 1.0
+ * @author TEO
+ * @since 1.0.0
  */
 public record ErrorResponse(boolean success, int errorCode, String message,
 							@JsonInclude(JsonInclude.Include.NON_NULL) List<FieldError> fieldErrors,
@@ -35,7 +35,7 @@ public record ErrorResponse(boolean success, int errorCode, String message,
 	/**
 	 * {@link MethodArgumentNotValidException}에서 발생한 fieldError를 binding한다.
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	private record FieldError(String field, Object rejectedValue, String reason) {
 		private static List<FieldError> of(BindingResult bindingResult) {
@@ -51,7 +51,7 @@ public record ErrorResponse(boolean success, int errorCode, String message,
 	/**
 	 * {@link ConstraintViolationException}에서 발생한 constraintViolation을 binding한다.
 	 *
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	private record ConstraintViolationError(String propertyPath, Object rejectedValue, String reason) {
 		private static List<ConstraintViolationError> of(Set<ConstraintViolation<?>> constraintViolations) {
