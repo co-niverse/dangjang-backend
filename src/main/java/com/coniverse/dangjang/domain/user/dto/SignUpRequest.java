@@ -11,6 +11,6 @@ import java.util.List;
  */
 
 public record SignUpRequest(String accessToken, String provider, String nickname, Boolean gender, LocalDate birthday, int height, int weight,
-							String activityAmount, Boolean diabetes, int diabetes_year, Boolean medicine, Boolean injection, List<String> diseases) {
+							String activityAmount, Boolean diabetes, int diabetesYear, Boolean medicine, Boolean injection, List<String> diseases) {
 
 }
