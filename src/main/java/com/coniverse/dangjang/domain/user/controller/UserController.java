@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/duplicateNickname")
 public class UserController {
 	private final UserService userService;
 
@@ -28,7 +28,7 @@ public class UserController {
 	 * @return 닉네임이 중복되지 않았으면 true, 중복된 닉네임이면 false를 담은 DuplicateNicknameResponse 객체를 반환한다.
 	 * @since 1.0
 	 */
-	@GetMapping("/duplicateNickname")
+	@GetMapping("")
 	public ResponseEntity<SuccessSingleResponse<DuplicateNicknameResponse>> checkDuplicateNickname(@RequestParam String nickname) {
 		DuplicateNicknameResponse duplicateNicknameResponse = userService.checkDublicateNickname(nickname);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), duplicateNicknameResponse));
