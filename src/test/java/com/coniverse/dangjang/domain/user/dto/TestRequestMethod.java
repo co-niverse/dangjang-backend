@@ -9,20 +9,13 @@ import java.time.LocalDate;
  * @since 1.0.0
  */
 public class TestRequestMethod {
-	public static SignUpRequest getSignUpRequest() {
-		SignUpRequest signUpRequest = new SignUpRequest();
-		signUpRequest.setNickname("test");
-		signUpRequest.setAccessToken("287873365589");
-		signUpRequest.setGender(false);
-		signUpRequest.setInjection(true);
-		signUpRequest.setMedicine(true);
-		signUpRequest.setProvider("kakao");
-		signUpRequest.setBirthday(LocalDate.now());
-		signUpRequest.setDiabetes(true);
-		signUpRequest.setHeight(158);
-		signUpRequest.setWeight(50);
-		signUpRequest.setDiabetes_year(2);
-		signUpRequest.setActivityAmount("LOW");
+	public static SignUpRequest getSignUpRequestKakao() {
+		SignUpRequest signUpRequest = new SignUpRequest("287873365589", "kakao", "test", false, LocalDate.now(), 158, 50, "LOW", true, 2, true, true, null);
+		return signUpRequest;
+	}
+
+	public static SignUpRequest getSignUpRequestNaver() {
+		SignUpRequest signUpRequest = new SignUpRequest("287873365589", "naver", "test", true, LocalDate.now(), 158, 50, "MEDIUM", true, 2, true, true, null);
 		return signUpRequest;
 	}
 
