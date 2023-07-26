@@ -104,6 +104,13 @@ public class UserService {
 		}
 	}
 
+	/**
+	 * 회원가입
+	 *
+	 * @param signUpRequest 회원가입 정보
+	 * @return LoginResponse 로그인 응답
+	 * @since 1.0
+	 */
 	public LoginResponse signUp(SignUpRequest signUpRequest) {
 		OAuthInfoResponse oAuthInfoResponse = getOauthInfo(OauthProvider.of(signUpRequest.provider()), signUpRequest.accessToken());
 
@@ -127,10 +134,17 @@ public class UserService {
 			.recommendedCalorie(recommendedCalorie)
 			.build();
 
-		return login(new UserResponse(userRepository.save(user).getOauthId(), user.getNickname()));
+		return signupAfterLogin(new UserResponse(userRepository.save(user).getOauthId(), user.getNickname()));
 	}
 
-	public LoginResponse login(UserResponse userResponse) {
+	/**
+	 * 회원가입 후 로그인
+	 *
+	 * @param userResponse 사용자 정보
+	 * @return LoginResponse 로그인 정보
+	 * @since 1.0
+	 */
+	public LoginResponse signupAfterLogin(UserResponse userResponse) {
 		AuthToken authToken = authTokensGenerator.generate(userResponse.oauthId());
 		return new LoginResponse(userResponse.nickname(), authToken.getAccessToken(), authToken.getRefreshToken(), false, false);
 	}
