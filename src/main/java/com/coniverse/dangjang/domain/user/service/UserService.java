@@ -21,7 +21,7 @@ import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * USER Service
@@ -30,7 +30,7 @@ import lombok.AllArgsConstructor;
  * @since 1.0
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserService {
 	private final UserRepository userRepository;
 	private final OauthInfoService productOauthInfoService;
@@ -52,48 +52,54 @@ public class UserService {
 	}
 
 	/**
-	 * 새로운 유저 회원가입
+	 * 새로운 유저 Oauth 사용자 정보 가져오기
 	 *
-	 * @param signUpRequest 카카오,네이버에서 사용자 정보 조회한 데이터 (authID ,Provider)
-	 * @return 새로 가입된 유저 회원가입
+	 * @param provider    카카오,네이버
+	 * @param accessToken Oauth 토큰
+	 * @return OAuthInfoResponse 유저 정보
+	 * @throws IllegalArgumentException 잘못된 provider 일때 발생하는 오류
 	 * @since 1.0
 	 */
 
-	public LoginResponse signUp(SignUpRequest signUpRequest) {
-		OAuthInfoResponse oAuthInfoResponse = null;
-		if (signUpRequest.provider().equals("kakao")) {
+	public OAuthInfoResponse getOauthInfo(String provider, String accessToken) {
+		if (provider.equals("kakao")) {
 			KakaoLoginRequest kakaoLoginRequest = new KakaoLoginRequest();
-			kakaoLoginRequest.setAccessToken(signUpRequest.accessToken());
-			oAuthInfoResponse = productOauthInfoService.request(kakaoLoginRequest);
+			kakaoLoginRequest.setAccessToken(accessToken);
+			return productOauthInfoService.request(kakaoLoginRequest);
 
-		} else if (signUpRequest.provider().equals("naver")) {
+		} else if (provider.equals("naver")) {
 			NaverLoginRequest naverLoginRequest = new NaverLoginRequest();
-			naverLoginRequest.setAccessToken(signUpRequest.accessToken());
-			oAuthInfoResponse = productOauthInfoService.request(naverLoginRequest);
+			naverLoginRequest.setAccessToken(accessToken);
+			return productOauthInfoService.request(naverLoginRequest);
+		} else {
+			throw new IllegalArgumentException("잘못된 provider 입니다.");
 		}
+	}
 
-		Gender gender = null;
+	public int calCulateRecommendedCalorie(Gender gender, int height, ActivityAmount activityAmount) {
 		Double standardWeight = 0.0;
-		if (signUpRequest.gender().equals(false)) {
-			gender = Gender.M;
-			standardWeight = (Double)(Math.pow(signUpRequest.height() / 100, 2.0) * 22);
+		if (gender.equals(false)) {
+			standardWeight = (Double)(Math.pow(height / 100, 2.0) * 22);
 		} else {
-			gender = Gender.F;
-			standardWeight = (Double)(Math.pow(signUpRequest.height() / 100, 2.0) * 21);
+			standardWeight = (Double)(Math.pow(height / 100, 2.0) * 21);
 		}
 
-		int recommendedCalorie = 0;
-		ActivityAmount activityAmount = ActivityAmount.LOW;
-		if (signUpRequest.activityAmount().equals("LOW")) {
-			activityAmount = ActivityAmount.LOW;
-			recommendedCalorie = (int)(standardWeight * 25);
-		} else if (signUpRequest.activityAmount().equals("MEDIUM")) {
-			activityAmount = ActivityAmount.MEDIUM;
-			recommendedCalorie = (int)(standardWeight * 30);
+		if (activityAmount.equals(ActivityAmount.LOW)) {
+			return (int)(standardWeight * 25);
+		} else if (activityAmount.equals(ActivityAmount.MEDIUM)) {
+			return (int)(standardWeight * 30);
 		} else {
-			activityAmount = ActivityAmount.HIGH;
-			recommendedCalorie = (int)(standardWeight * 35);
+			return (int)(standardWeight * 35);
 		}
+	}
+
+	public LoginResponse signUp(SignUpRequest signUpRequest) {
+		OAuthInfoResponse oAuthInfoResponse = getOauthInfo(signUpRequest.provider(), signUpRequest.accessToken());
+		ActivityAmount activityAmount = ActivityAmount.of(signUpRequest.activityAmount());
+
+		Gender gender = Gender.of(signUpRequest.gender());
+		int recommendedCalorie = calCulateRecommendedCalorie(Gender.of(signUpRequest.gender()), signUpRequest.height(),
+			ActivityAmount.of(signUpRequest.activityAmount()));
 
 		User user = User.builder()
 			.oauthId(oAuthInfoResponse.getUserId())
