@@ -23,7 +23,7 @@ public class UserServiceTest {
 	@Test()
 	void 새로운_유저를_추가한다_카카오() {
 		//given
-		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequest();
+		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequestKakao();
 
 		//when
 		LoginResponse loginResponse = userService.signUp(signUpRequest);
@@ -34,9 +34,8 @@ public class UserServiceTest {
 	@Test()
 	void 새로운_유저를_추가한다_네이버() {
 		//given
-		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequest();
-		signUpRequest.setActivityAmount("MEDIUM");
-		signUpRequest.setProvider("naver");
+		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequestNaver();
+
 		//when
 		LoginResponse loginResponse = userService.signUp(signUpRequest);
 		//that
@@ -46,14 +45,13 @@ public class UserServiceTest {
 	@Test()
 	void 중복된_닉네임을_확인한다() {
 		//given
-		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequest();
-		signUpRequest.setActivityAmount("MEDIUM");
-		signUpRequest.setProvider("naver");
+		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequestNaver();
+
 		userService.signUp(signUpRequest);
 		//when
-		DuplicateNicknameResponse isDuplicated = userService.checkDublicateNickname(signUpRequest.getNickname());
+		DuplicateNicknameResponse isDuplicated = userService.checkDublicateNickname(signUpRequest.nickname());
 		//then
-		assertThat(isDuplicated.isDuplicate()).isEqualTo(false);
+		assertThat(isDuplicated.duplicate()).isEqualTo(false);
 	}
 
 	@Test()
@@ -63,6 +61,6 @@ public class UserServiceTest {
 		//when
 		DuplicateNicknameResponse isDuplicated = userService.checkDublicateNickname(nickname);
 		//then
-		assertThat(isDuplicated.isDuplicate()).isEqualTo(true);
+		assertThat(isDuplicated.duplicate()).isEqualTo(true);
 	}
 }

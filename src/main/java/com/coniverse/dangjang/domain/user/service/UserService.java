@@ -61,35 +61,33 @@ public class UserService {
 
 	public LoginResponse signUp(SignUpRequest signUpRequest) {
 		OAuthInfoResponse oAuthInfoResponse = null;
-		if (signUpRequest.getProvider().equals("kakao")) {
+		if (signUpRequest.provider().equals("kakao")) {
 			KakaoLoginRequest kakaoLoginRequest = new KakaoLoginRequest();
-			kakaoLoginRequest.setAccessToken(signUpRequest.getAccessToken());
+			kakaoLoginRequest.setAccessToken(signUpRequest.accessToken());
 			oAuthInfoResponse = productOauthInfoService.request(kakaoLoginRequest);
 
-		} else if (signUpRequest.getProvider().equals("naver")) {
+		} else if (signUpRequest.provider().equals("naver")) {
 			NaverLoginRequest naverLoginRequest = new NaverLoginRequest();
-			naverLoginRequest.setAccessToken(signUpRequest.getAccessToken());
+			naverLoginRequest.setAccessToken(signUpRequest.accessToken());
 			oAuthInfoResponse = productOauthInfoService.request(naverLoginRequest);
-		} else {
-
 		}
 
 		Gender gender = null;
-		Float standardWeight = 0f;
-		if (signUpRequest.getGender().equals(false)) {
+		Double standardWeight = 0.0;
+		if (signUpRequest.gender().equals(false)) {
 			gender = Gender.M;
-			standardWeight = (float)(Math.pow(signUpRequest.getHeight() / 100, 2.0) * 22f);
+			standardWeight = (Double)(Math.pow(signUpRequest.height() / 100, 2.0) * 22);
 		} else {
 			gender = Gender.F;
-			standardWeight = (float)(Math.pow(signUpRequest.getHeight() / 100, 2.0) * 21f);
+			standardWeight = (Double)(Math.pow(signUpRequest.height() / 100, 2.0) * 21);
 		}
 
 		int recommendedCalorie = 0;
 		ActivityAmount activityAmount = ActivityAmount.LOW;
-		if (signUpRequest.getActivityAmount().equals("LOW")) {
+		if (signUpRequest.activityAmount().equals("LOW")) {
 			activityAmount = ActivityAmount.LOW;
 			recommendedCalorie = (int)(standardWeight * 25);
-		} else if (signUpRequest.getActivityAmount().equals("MEDIUM")) {
+		} else if (signUpRequest.activityAmount().equals("MEDIUM")) {
 			activityAmount = ActivityAmount.MEDIUM;
 			recommendedCalorie = (int)(standardWeight * 30);
 		} else {
@@ -100,11 +98,11 @@ public class UserService {
 		User user = User.builder()
 			.oauthId(oAuthInfoResponse.getUserId())
 			.oauthProvider(oAuthInfoResponse.getOAuthProvider())
-			.nickname(signUpRequest.getNickname())
-			.birthday(signUpRequest.getBirthday())
+			.nickname(signUpRequest.nickname())
+			.birthday(signUpRequest.birthday())
 			.activityAmount(activityAmount)
 			.gender(gender)
-			.height(signUpRequest.getHeight())
+			.height(signUpRequest.height())
 			.profileImagePath("/")
 			.status(Status.ACTIVE)
 			.recommendedCalorie(recommendedCalorie)
@@ -127,9 +125,7 @@ public class UserService {
 	 */
 
 	public DuplicateNicknameResponse checkDublicateNickname(String nickname) {
-		System.out.println("nickname : " + nickname);
 		Integer countNickname = userRepository.countByNickname(nickname);
-		System.out.println("count : " + countNickname);
 		if (countNickname > 0) {
 			return new DuplicateNicknameResponse(false);
 		} else {

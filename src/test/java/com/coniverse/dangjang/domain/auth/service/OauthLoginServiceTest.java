@@ -54,7 +54,7 @@ public class OauthLoginServiceTest {
 	void 로그인을_성공한다() {
 
 		//given 회원가입
-		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequest();
+		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequestKakao();
 		userService.signUp(signUpRequest);
 
 		KakaoLoginRequest kakaoLoginParams = new KakaoLoginRequest();
@@ -71,7 +71,7 @@ public class OauthLoginServiceTest {
 	void JWT_반환한다() throws NonExistentUserException {
 		// given
 
-		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequest();
+		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequestKakao();
 		userService.signUp(signUpRequest);
 
 		KakaoInfoResponse kakaoInfoResponse = new KakaoInfoResponse();

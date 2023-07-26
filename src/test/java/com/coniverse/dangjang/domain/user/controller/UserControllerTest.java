@@ -40,12 +40,10 @@ public class UserControllerTest extends ControllerTest {
 	@Test
 	void 중복된_닉네임_확인을_성공한다() throws Exception {
 		// given
-		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequest();
-		signUpRequest.setActivityAmount("MEDIUM");
-		signUpRequest.setProvider("naver");
+		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequestNaver();
 		userService.signUp(signUpRequest);
 		// when
-		ResultActions resultActions = get(mockMvc, URI, signUpRequest.getNickname());
+		ResultActions resultActions = get(mockMvc, URI, signUpRequest.nickname());
 
 		// then
 		resultActions.andExpectAll(

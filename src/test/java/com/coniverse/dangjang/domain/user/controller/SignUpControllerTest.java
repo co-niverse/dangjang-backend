@@ -26,7 +26,7 @@ public class SignUpControllerTest extends ControllerTest {
 
 	@Test
 	void 회원가입_성공한다() throws Exception {
-		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequest();
+		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequestKakao();
 		LoginResponse loginResponse = new LoginResponse("test", "accessToken", "refreshToken", false, false);
 		given(userService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
