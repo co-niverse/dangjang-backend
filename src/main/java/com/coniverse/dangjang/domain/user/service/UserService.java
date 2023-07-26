@@ -125,8 +125,8 @@ public class UserService {
 	 */
 
 	public DuplicateNicknameResponse checkDublicateNickname(String nickname) {
-		Integer countNickname = userRepository.countByNickname(nickname);
-		if (countNickname > 0) {
+		Optional<User> findNickname = userRepository.findByNickname(nickname);
+		if (findNickname.isPresent()) {
 			return new DuplicateNicknameResponse(false);
 		} else {
 			return new DuplicateNicknameResponse(true);
