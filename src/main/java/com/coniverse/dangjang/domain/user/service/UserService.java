@@ -77,6 +77,16 @@ public class UserService {
 		}
 	}
 
+	/**
+	 * 권장 칼로리 계산하기
+	 *
+	 * @param gender         성별
+	 * @param height         몸무게
+	 * @param activityAmount 하루 활동량
+	 * @return 권장칼로리
+	 * @since 1.0
+	 */
+
 	public int calCulateRecommendedCalorie(Gender gender, int height, ActivityAmount activityAmount) {
 		Double standardWeight = 0.0;
 		if (gender.equals(false)) {
