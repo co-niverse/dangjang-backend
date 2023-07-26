@@ -24,8 +24,6 @@ public class UserControllerTest extends ControllerTest {
 
 	@Test
 	void 중복되지_않은_닉네임_확인을_성공한다() throws Exception {
-		// given
-
 		// when
 		ResultActions resultActions = get(mockMvc, URI, "hello");
 
