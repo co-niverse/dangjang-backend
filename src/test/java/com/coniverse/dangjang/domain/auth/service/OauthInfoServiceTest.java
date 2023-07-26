@@ -28,7 +28,6 @@ class OauthInfoServiceTest {
 	void 네이버_사용자_정보_조회를_요청하여_연결에_성공한다() {
 		NaverLoginRequest naverLoginRequest = new NaverLoginRequest();
 		naverLoginRequest.setAccessToken("access_token");
-		naverLoginRequest.getOauthProvider();
 		//연결이 되었을 땐 , 잘못된 accessToken으로 요청을 보냈기 때문에 401 Unauthorized 에러가 발생한다.
 		Assertions.assertThrows(InvalidAuthenticationException.class, () -> {
 			oAuthInfoService.request(naverLoginRequest);
