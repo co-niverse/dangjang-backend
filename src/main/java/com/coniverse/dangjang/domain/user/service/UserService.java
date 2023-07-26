@@ -63,12 +63,12 @@ public class UserService {
 	 */
 
 	public OAuthInfoResponse getOauthInfo(OauthProvider provider, String accessToken) {
-		if (provider.equals("kakao")) {
+		if (provider.equals(OauthProvider.KAKAO)) {
 			KakaoLoginRequest kakaoLoginRequest = new KakaoLoginRequest();
 			kakaoLoginRequest.setAccessToken(accessToken);
 			return productOauthInfoService.request(kakaoLoginRequest);
 
-		} else if (provider.equals("naver")) {
+		} else if (provider.equals(OauthProvider.NAVER)) {
 			NaverLoginRequest naverLoginRequest = new NaverLoginRequest();
 			naverLoginRequest.setAccessToken(accessToken);
 			return productOauthInfoService.request(naverLoginRequest);
