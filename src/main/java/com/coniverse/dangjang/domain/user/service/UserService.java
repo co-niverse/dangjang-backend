@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthToken;
+import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
@@ -61,7 +62,7 @@ public class UserService {
 	 * @since 1.0
 	 */
 
-	public OAuthInfoResponse getOauthInfo(String provider, String accessToken) {
+	public OAuthInfoResponse getOauthInfo(OauthProvider provider, String accessToken) {
 		if (provider.equals("kakao")) {
 			KakaoLoginRequest kakaoLoginRequest = new KakaoLoginRequest();
 			kakaoLoginRequest.setAccessToken(accessToken);
@@ -94,10 +95,12 @@ public class UserService {
 	}
 
 	public LoginResponse signUp(SignUpRequest signUpRequest) {
-		OAuthInfoResponse oAuthInfoResponse = getOauthInfo(signUpRequest.provider(), signUpRequest.accessToken());
+		OAuthInfoResponse oAuthInfoResponse = getOauthInfo(OauthProvider.of(signUpRequest.provider()), signUpRequest.accessToken());
+
 		ActivityAmount activityAmount = ActivityAmount.of(signUpRequest.activityAmount());
 
 		Gender gender = Gender.of(signUpRequest.gender());
+
 		int recommendedCalorie = calCulateRecommendedCalorie(Gender.of(signUpRequest.gender()), signUpRequest.height(),
 			ActivityAmount.of(signUpRequest.activityAmount()));
 
