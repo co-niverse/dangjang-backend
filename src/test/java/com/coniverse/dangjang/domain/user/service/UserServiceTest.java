@@ -2,6 +2,10 @@ package com.coniverse.dangjang.domain.user.service;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
 import com.coniverse.dangjang.domain.user.dto.DuplicateNicknameResponse;
 import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
-import com.coniverse.dangjang.domain.user.dto.TestRequestMethod;
+import com.coniverse.dangjang.fixture.SignUpFixture;
 
 /**
  * @author EVE
@@ -23,7 +27,12 @@ public class UserServiceTest {
 	@Test()
 	void 새로운_유저를_추가한다_카카오() {
 		//given
-		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequest();
+		List<String> diseases = new ArrayList<>();
+		diseases.add("저혈당");
+		//given 회원가입
+		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
+			false, 0, false, false,
+			diseases);
 
 		//when
 		LoginResponse loginResponse = userService.signUp(signUpRequest);
@@ -34,9 +43,12 @@ public class UserServiceTest {
 	@Test()
 	void 새로운_유저를_추가한다_네이버() {
 		//given
-		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequest();
-		signUpRequest.setActivityAmount("MEDIUM");
-		signUpRequest.setProvider("naver");
+		List<String> diseases = new ArrayList<>();
+		diseases.add("저혈당");
+		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "naver", true, LocalDate.parse("2021-06-21"), 150, 50, "MEDIUM",
+			false, 0, false, false,
+			diseases);
+
 		//when
 		LoginResponse loginResponse = userService.signUp(signUpRequest);
 		//that
@@ -46,14 +58,17 @@ public class UserServiceTest {
 	@Test()
 	void 중복된_닉네임을_확인한다() {
 		//given
-		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequest();
-		signUpRequest.setActivityAmount("MEDIUM");
-		signUpRequest.setProvider("naver");
+		List<String> diseases = new ArrayList<>();
+		diseases.add("저혈당");
+		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "naver", true, LocalDate.parse("2021-06-21"), 150, 50, "MEDIUM",
+			false, 0, false, false,
+			diseases);
+
 		userService.signUp(signUpRequest);
 		//when
-		DuplicateNicknameResponse isDuplicated = userService.checkDublicateNickname(signUpRequest.getNickname());
+		DuplicateNicknameResponse isDuplicated = userService.checkDublicateNickname(signUpRequest.nickname());
 		//then
-		assertThat(isDuplicated.isDuplicate()).isEqualTo(false);
+		assertThat(isDuplicated.duplicate()).isEqualTo(false);
 	}
 
 	@Test()
@@ -63,6 +78,6 @@ public class UserServiceTest {
 		//when
 		DuplicateNicknameResponse isDuplicated = userService.checkDublicateNickname(nickname);
 		//then
-		assertThat(isDuplicated.isDuplicate()).isEqualTo(true);
+		assertThat(isDuplicated.duplicate()).isEqualTo(true);
 	}
 }

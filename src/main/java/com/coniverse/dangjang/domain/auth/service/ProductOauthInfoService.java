@@ -38,7 +38,6 @@ public class ProductOauthInfoService implements OauthInfoService {
 	@Override
 	public OAuthInfoResponse request(OauthLoginRequest params) {
 		try {
-			System.out.println("params.getOauthProvider() = " + params.getOauthProvider());
 			OAuthInfoRequestService client = clients.get(params.getOauthProvider());
 			String accessToken = params.getOauthToken();
 			return client.requestOauthInfo(accessToken);

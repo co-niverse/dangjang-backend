@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthToken;
+import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
@@ -21,7 +22,7 @@ import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * USER Service
@@ -30,7 +31,7 @@ import lombok.AllArgsConstructor;
  * @since 1.0
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserService {
 	private final UserRepository userRepository;
 	private final OauthInfoService productOauthInfoService;
@@ -52,68 +53,98 @@ public class UserService {
 	}
 
 	/**
-	 * 새로운 유저 회원가입
+	 * 새로운 유저 Oauth 사용자 정보 가져오기
 	 *
-	 * @param signUpRequest 카카오,네이버에서 사용자 정보 조회한 데이터 (authID ,Provider)
-	 * @return 새로 가입된 유저 회원가입
+	 * @param provider    카카오,네이버
+	 * @param accessToken Oauth 토큰
+	 * @return OAuthInfoResponse 유저 정보
+	 * @throws IllegalArgumentException 잘못된 provider 일때 발생하는 오류
 	 * @since 1.0
 	 */
 
-	public LoginResponse signUp(SignUpRequest signUpRequest) {
-		OAuthInfoResponse oAuthInfoResponse = null;
-		if (signUpRequest.getProvider().equals("kakao")) {
+	public OAuthInfoResponse getOauthInfo(OauthProvider provider, String accessToken) {
+		if (provider.equals(OauthProvider.KAKAO)) {
 			KakaoLoginRequest kakaoLoginRequest = new KakaoLoginRequest();
-			kakaoLoginRequest.setAccessToken(signUpRequest.getAccessToken());
-			oAuthInfoResponse = productOauthInfoService.request(kakaoLoginRequest);
+			kakaoLoginRequest.setAccessToken(accessToken);
+			return productOauthInfoService.request(kakaoLoginRequest);
 
-		} else if (signUpRequest.getProvider().equals("naver")) {
+		} else if (provider.equals(OauthProvider.NAVER)) {
 			NaverLoginRequest naverLoginRequest = new NaverLoginRequest();
-			naverLoginRequest.setAccessToken(signUpRequest.getAccessToken());
-			oAuthInfoResponse = productOauthInfoService.request(naverLoginRequest);
+			naverLoginRequest.setAccessToken(accessToken);
+			return productOauthInfoService.request(naverLoginRequest);
 		} else {
+			throw new IllegalArgumentException("잘못된 provider 입니다.");
+		}
+	}
 
+	/**
+	 * 권장 칼로리 계산하기
+	 *
+	 * @param gender         성별
+	 * @param height         몸무게
+	 * @param activityAmount 하루 활동량
+	 * @return 권장칼로리
+	 * @since 1.0
+	 */
+
+	public int calCulateRecommendedCalorie(Gender gender, int height, ActivityAmount activityAmount) {
+		Double standardWeight = 0.0;
+		if (gender.equals(false)) {
+			standardWeight = (Double)(Math.pow(height / 100, 2.0) * 22);
+		} else {
+			standardWeight = (Double)(Math.pow(height / 100, 2.0) * 21);
 		}
 
-		Gender gender = null;
-		Float standardWeight = 0f;
-		if (signUpRequest.getGender().equals(false)) {
-			gender = Gender.M;
-			standardWeight = (float)(Math.pow(signUpRequest.getHeight() / 100, 2.0) * 22f);
+		if (activityAmount.equals(ActivityAmount.LOW)) {
+			return (int)(standardWeight * 25);
+		} else if (activityAmount.equals(ActivityAmount.MEDIUM)) {
+			return (int)(standardWeight * 30);
 		} else {
-			gender = Gender.F;
-			standardWeight = (float)(Math.pow(signUpRequest.getHeight() / 100, 2.0) * 21f);
+			return (int)(standardWeight * 35);
 		}
+	}
 
-		int recommendedCalorie = 0;
-		ActivityAmount activityAmount = ActivityAmount.LOW;
-		if (signUpRequest.getActivityAmount().equals("LOW")) {
-			activityAmount = ActivityAmount.LOW;
-			recommendedCalorie = (int)(standardWeight * 25);
-		} else if (signUpRequest.getActivityAmount().equals("MEDIUM")) {
-			activityAmount = ActivityAmount.MEDIUM;
-			recommendedCalorie = (int)(standardWeight * 30);
-		} else {
-			activityAmount = ActivityAmount.HIGH;
-			recommendedCalorie = (int)(standardWeight * 35);
-		}
+	/**
+	 * 회원가입
+	 *
+	 * @param signUpRequest 회원가입 정보
+	 * @return LoginResponse 로그인 응답
+	 * @since 1.0
+	 */
+	public LoginResponse signUp(SignUpRequest signUpRequest) {
+		OAuthInfoResponse oAuthInfoResponse = getOauthInfo(OauthProvider.of(signUpRequest.provider()), signUpRequest.accessToken());
+
+		ActivityAmount activityAmount = ActivityAmount.of(signUpRequest.activityAmount());
+
+		Gender gender = Gender.of(signUpRequest.gender());
+
+		int recommendedCalorie = calCulateRecommendedCalorie(Gender.of(signUpRequest.gender()), signUpRequest.height(),
+			ActivityAmount.of(signUpRequest.activityAmount()));
 
 		User user = User.builder()
 			.oauthId(oAuthInfoResponse.getUserId())
 			.oauthProvider(oAuthInfoResponse.getOAuthProvider())
-			.nickname(signUpRequest.getNickname())
-			.birthday(signUpRequest.getBirthday())
+			.nickname(signUpRequest.nickname())
+			.birthday(signUpRequest.birthday())
 			.activityAmount(activityAmount)
 			.gender(gender)
-			.height(signUpRequest.getHeight())
+			.height(signUpRequest.height())
 			.profileImagePath("/")
 			.status(Status.ACTIVE)
 			.recommendedCalorie(recommendedCalorie)
 			.build();
 
-		return login(new UserResponse(userRepository.save(user).getOauthId(), user.getNickname()));
+		return signupAfterLogin(new UserResponse(userRepository.save(user).getOauthId(), user.getNickname()));
 	}
 
-	public LoginResponse login(UserResponse userResponse) {
+	/**
+	 * 회원가입 후 로그인
+	 *
+	 * @param userResponse 사용자 정보
+	 * @return LoginResponse 로그인 정보
+	 * @since 1.0
+	 */
+	public LoginResponse signupAfterLogin(UserResponse userResponse) {
 		AuthToken authToken = authTokensGenerator.generate(userResponse.oauthId());
 		return new LoginResponse(userResponse.nickname(), authToken.getAccessToken(), authToken.getRefreshToken(), false, false);
 	}
@@ -127,10 +158,8 @@ public class UserService {
 	 */
 
 	public DuplicateNicknameResponse checkDublicateNickname(String nickname) {
-		System.out.println("nickname : " + nickname);
-		Integer countNickname = userRepository.countByNickname(nickname);
-		System.out.println("count : " + countNickname);
-		if (countNickname > 0) {
+		Optional<User> findNickname = userRepository.findByNickname(nickname);
+		if (findNickname.isPresent()) {
 			return new DuplicateNicknameResponse(false);
 		} else {
 			return new DuplicateNicknameResponse(true);

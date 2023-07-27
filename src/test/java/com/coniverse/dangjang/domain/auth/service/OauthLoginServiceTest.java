@@ -2,7 +2,10 @@ package com.coniverse.dangjang.domain.auth.service;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,11 +18,11 @@ import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.service.authToken.AuthTokensGenerator;
 import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
-import com.coniverse.dangjang.domain.user.dto.TestRequestMethod;
 import com.coniverse.dangjang.domain.user.dto.UserResponse;
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
 import com.coniverse.dangjang.domain.user.infrastructure.KakaoInfoResponse;
 import com.coniverse.dangjang.domain.user.service.UserService;
+import com.coniverse.dangjang.fixture.SignUpFixture;
 
 /**
  * @author EVE
@@ -52,9 +55,12 @@ public class OauthLoginServiceTest {
 
 	@Test
 	void 로그인을_성공한다() {
-
+		List<String> diseases = new ArrayList<>();
+		diseases.add("저혈당");
 		//given 회원가입
-		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequest();
+		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
+			false, 0, false, false,
+			diseases);
 		userService.signUp(signUpRequest);
 
 		KakaoLoginRequest kakaoLoginParams = new KakaoLoginRequest();
@@ -70,8 +76,12 @@ public class OauthLoginServiceTest {
 	@WithAnonymousUser
 	void JWT_반환한다() throws NonExistentUserException {
 		// given
-
-		SignUpRequest signUpRequest = TestRequestMethod.getSignUpRequest();
+		List<String> diseases = new ArrayList<>();
+		diseases.add("저혈당");
+		//given 회원가입
+		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
+			false, 0, false, false,
+			diseases);
 		userService.signUp(signUpRequest);
 
 		KakaoInfoResponse kakaoInfoResponse = new KakaoInfoResponse();

@@ -12,6 +12,7 @@ import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
 import com.coniverse.dangjang.domain.user.service.UserService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -20,7 +21,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/signUp")
 public class SignUpController {
 	private final UserService userService;
 
@@ -29,8 +30,8 @@ public class SignUpController {
 	 * @return 회원가입 후 로그인을 시도 , ResponseEntity 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, authID)를 전달한다.
 	 * @since 1.0
 	 */
-	@PostMapping("/signUp")
-	public ResponseEntity<SuccessSingleResponse<LoginResponse>> signUp(@RequestBody SignUpRequest params) {
+	@PostMapping("")
+	public ResponseEntity<SuccessSingleResponse<LoginResponse>> signUp(@Valid @RequestBody SignUpRequest params) {
 		LoginResponse loginResponse = userService.signUp(params);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
 	}

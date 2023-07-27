@@ -2,6 +2,7 @@ package com.coniverse.dangjang.domain.user.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,6 +12,8 @@ import com.coniverse.dangjang.domain.user.dto.DuplicateNicknameResponse;
 import com.coniverse.dangjang.domain.user.service.UserService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -20,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
+@Validated
 public class UserController {
 	private final UserService userService;
 
@@ -29,7 +33,8 @@ public class UserController {
 	 * @since 1.0
 	 */
 	@GetMapping("/duplicateNickname")
-	public ResponseEntity<SuccessSingleResponse<DuplicateNicknameResponse>> checkDuplicateNickname(@RequestParam String nickname) {
+	public ResponseEntity<SuccessSingleResponse<DuplicateNicknameResponse>> checkDuplicateNickname(
+		@RequestParam @Pattern(regexp = "^[a-zA-Z]{1,8}$", message = "닉네임은 영어로만 이루어져있어야 합니다.") @NotBlank(message = "닉네임은 1~8글자 이내여야 합니다.") String nickname) {
 		DuplicateNicknameResponse duplicateNicknameResponse = userService.checkDublicateNickname(nickname);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), duplicateNicknameResponse));
 	}
