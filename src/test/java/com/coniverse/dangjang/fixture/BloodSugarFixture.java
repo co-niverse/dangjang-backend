@@ -31,7 +31,7 @@ public class BloodSugarFixture {
 	}
 
 	public static HealthMetricPatchRequest 단위_변경한_혈당_수정_요청() {
-		return new HealthMetricPatchRequest(등록_혈당_타입.getTitle(), 등록_혈당_타입.getTitle(), 수정_혈당_단위);
+		return new HealthMetricPatchRequest(등록_혈당_타입.getTitle(), null, 수정_혈당_단위);
 	}
 
 	public static HealthMetricResponse 혈당_등록_응답() {
