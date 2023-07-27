@@ -36,7 +36,7 @@ public class BloodSugarRegistrationController implements HealthMetricRegistratio
 	@PostMapping("/{month}/{day}")
 	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> post(int month, int day, HealthMetricPostRequest postRequest) {
 		LocalDate createdAt = createdAtUtil.generateCreatedAt(month, day);
-		HealthMetricResponse bloodSugarResponse = bloodSugarRegistrationService.register(postRequest, createdAt);
+		HealthMetricResponse bloodSugarResponse = bloodSugarRegistrationService.register(postRequest, createdAt, "11111111");
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), bloodSugarResponse));
 	}
 
@@ -44,7 +44,7 @@ public class BloodSugarRegistrationController implements HealthMetricRegistratio
 	@PatchMapping("/{month}/{day}")
 	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> patch(int month, int day, HealthMetricPatchRequest patchRequest) {
 		LocalDate createdAt = createdAtUtil.generateCreatedAt(month, day);
-		HealthMetricResponse bloodSugarResponse = bloodSugarRegistrationService.update(patchRequest, createdAt);
+		HealthMetricResponse bloodSugarResponse = bloodSugarRegistrationService.update(patchRequest, createdAt, "11111111");
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), bloodSugarResponse));
 	}
 }
