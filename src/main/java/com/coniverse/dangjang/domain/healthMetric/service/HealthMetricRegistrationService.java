@@ -19,16 +19,18 @@ public interface HealthMetricRegistrationService {
 	 *
 	 * @param request   건강지표 request post dto
 	 * @param createdAt 건강지표 생성일
+	 * @param oauthId   건강지표 등록 유저 PK
 	 * @since 1.0.0
 	 */
-	HealthMetricResponse register(HealthMetricPostRequest request, LocalDate createdAt);
+	HealthMetricResponse register(HealthMetricPostRequest request, LocalDate createdAt, String oauthId);
 
 	/**
 	 * 건강지표를 수정한다.
 	 *
 	 * @param request   건강지표 request patch dto
 	 * @param createdAt 건강지표 생성일
+	 * @param oauthId   건강지표 수정 유저 PK
 	 * @since 1.0.0
 	 */
-	HealthMetricResponse update(HealthMetricPatchRequest request, LocalDate createdAt);
+	HealthMetricResponse update(HealthMetricPatchRequest request, LocalDate createdAt, String oauthId);
 }

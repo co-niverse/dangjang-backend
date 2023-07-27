@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -20,7 +21,6 @@ import com.coniverse.dangjang.domain.healthMetric.dto.request.HealthMetricPatchR
 import com.coniverse.dangjang.domain.healthMetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthMetric.dto.response.HealthMetricResponse;
 import com.coniverse.dangjang.domain.healthMetric.entity.HealthMetric;
-import com.coniverse.dangjang.domain.healthMetric.entity.HealthMetricId;
 import com.coniverse.dangjang.domain.healthMetric.repository.HealthMetricRepository;
 import com.coniverse.dangjang.domain.healthMetric.service.bloodSugar.BloodSugarRegistrationService;
 import com.coniverse.dangjang.domain.user.entity.User;
@@ -34,6 +34,7 @@ import com.coniverse.dangjang.domain.user.repository.UserRepository;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class BloodSugarRegistrationServiceTest {
+	private final LocalDate 등록_일자 = LocalDate.of(2023, 12, 31);
 	@Autowired
 	private BloodSugarRegistrationService bloodSugarRegistrationService;
 	@Autowired
@@ -41,30 +42,37 @@ class BloodSugarRegistrationServiceTest {
 	@Autowired
 	private UserRepository userRepository;
 	private User 기범;
-	private HealthMetric 수정할_혈당;
+	private HealthMetric 등록된_혈당;
 
 	@BeforeAll
 	void setUp() {
 		기범 = userRepository.save(유저_기범());
-		수정할_혈당 = healthMetricRepository.save(정상_혈당(기범));
 	}
 
+	@AfterAll
+	void tearDown() {
+		healthMetricRepository.deleteAll();
+		userRepository.deleteAll();
+	}
+
+	@Order(50)
 	@Test
 	void 혈당을_성공적으로_등록한다() {
 		// given
-		HealthMetricPostRequest bloodSugarPostRequest = 혈당_등록_요청();
-		LocalDate createdAt = LocalDate.of(2023, 12, 30);
+		HealthMetricPostRequest request = 혈당_등록_요청();
+
 		// when
-		HealthMetricResponse bloodSugarResponse = bloodSugarRegistrationService.register(bloodSugarPostRequest, createdAt);
+		HealthMetricResponse response = bloodSugarRegistrationService.register(request, 등록_일자, 기범.getOauthId());
 
 		// then
-		HealthMetricId id = generateHealthMetricId(bloodSugarResponse);
-		HealthMetric healthMetric = healthMetricRepository.findByHealthMetricId(id).orElseThrow();
+		등록된_혈당 = healthMetricRepository.findByHealthMetricId(기범.getOauthId(), response.createdAt(), response.healthMetricType())
+			.orElseThrow();
 
 		assertAll(
-			() -> assertThat(healthMetric.getHealthMetricType().getTitle()).isEqualTo(bloodSugarPostRequest.healthMetricType()),
-			() -> assertThat(healthMetric.getUnit()).isEqualTo(bloodSugarPostRequest.unit()),
-			() -> assertThat(healthMetric.getOauthId()).isEqualTo(기범.getOauthId())
+			() -> assertThat(등록된_혈당.getHealthMetricType().getTitle()).isEqualTo(request.healthMetricType()),
+			() -> assertThat(등록된_혈당.getUnit()).isEqualTo(request.unit()),
+			() -> assertThat(등록된_혈당.getCreatedAt()).isEqualTo(등록_일자),
+			() -> assertThat(등록된_혈당.getOauthId()).isEqualTo(기범.getOauthId())
 		);
 	}
 
@@ -72,19 +80,20 @@ class BloodSugarRegistrationServiceTest {
 	@Test
 	void 단위만_변경된_혈당을_성공적으로_수정한다() {
 		// given
-		String healthMetricType = 수정할_혈당.getHealthMetricType().getTitle();
-		HealthMetricPatchRequest bloodSugarPatchRequest = new HealthMetricPatchRequest(healthMetricType, healthMetricType, "100");
+		HealthMetricPatchRequest request = 단위_변경한_혈당_수정_요청();
 
 		// when
-		HealthMetricResponse bloodSugarPatchResponse = bloodSugarRegistrationService.update(bloodSugarPatchRequest, 수정할_혈당.getCreatedAt());
+		HealthMetricResponse response = bloodSugarRegistrationService.update(request, 등록_일자, 기범.getOauthId());
 
 		// then
-		HealthMetricId id = generateHealthMetricId(bloodSugarPatchResponse);
-		HealthMetric healthMetric = healthMetricRepository.findByHealthMetricId(id).orElseThrow();
+
+		HealthMetric 수정된_혈당 = healthMetricRepository.findByHealthMetricId(기범.getOauthId(), response.createdAt(), response.healthMetricType())
+			.orElseThrow();
 
 		assertAll(
-			() -> assertThat(healthMetric.getUnit()).isEqualTo(bloodSugarPatchRequest.unit()),
-			() -> assertThat(healthMetric.getUnit()).isNotEqualTo(수정할_혈당.getUnit())
+			() -> assertThat(수정된_혈당.getUnit()).isEqualTo(request.unit()),
+			() -> assertThat(수정된_혈당.getUnit()).isNotEqualTo(등록된_혈당.getUnit()),
+			() -> assertThat(수정된_혈당.getHealthMetricType()).isEqualTo(등록된_혈당.getHealthMetricType())
 		);
 	}
 
@@ -92,29 +101,20 @@ class BloodSugarRegistrationServiceTest {
 	@Test
 	void 타입이_변경된_혈당을_성공적으로_수정한다() {
 		// given
-		HealthMetricPatchRequest bloodSugarPatchRequest = 혈당_수정_요청();
+		HealthMetricPatchRequest request = 타입_변경한_혈당_수정_요청();
 
 		// when
-		HealthMetricResponse bloodSugarPatchResponse = bloodSugarRegistrationService.update(bloodSugarPatchRequest, 수정할_혈당.getCreatedAt());
+		HealthMetricResponse response = bloodSugarRegistrationService.update(request, 등록_일자, 기범.getOauthId());
 
 		// then
-		HealthMetricId id = generateHealthMetricId(bloodSugarPatchResponse);
-		HealthMetric healthMetric = healthMetricRepository.findByHealthMetricId(id).orElseThrow();
+		HealthMetric 수정된_혈당 = healthMetricRepository.findByHealthMetricId(기범.getOauthId(), response.createdAt(), response.healthMetricType())
+			.orElseThrow();
 
 		assertAll(
-			() -> assertThat(healthMetric.getHealthMetricType().getTitle()).isEqualTo(bloodSugarPatchRequest.curHealthMetricType()),
-			() -> assertThat(healthMetric.getUnit()).isEqualTo(bloodSugarPatchRequest.unit()),
-			() -> assertThat(healthMetric.getHealthMetricType()).isNotEqualTo(수정할_혈당.getHealthMetricType()),
-			() -> assertThat(healthMetric.getUnit()).isNotEqualTo(수정할_혈당.getUnit())
+			() -> assertThat(수정된_혈당.getHealthMetricType().getTitle()).isEqualTo(request.newHealthMetricType()),
+			() -> assertThat(수정된_혈당.getUnit()).isEqualTo(request.unit()),
+			() -> assertThat(수정된_혈당.getHealthMetricType()).isNotEqualTo(등록된_혈당.getHealthMetricType()),
+			() -> assertThat(수정된_혈당.getUnit()).isEqualTo(등록된_혈당.getUnit())
 		);
-	}
-
-	private HealthMetricId generateHealthMetricId(HealthMetricResponse healthMetricResponse) {
-		return HealthMetricId.builder()
-			.createdAt(healthMetricResponse.createdAt())
-			.healthMetricCode(healthMetricResponse.healthMetricCode())
-			.healthMetricType(healthMetricResponse.healthMetricType())
-			.oauthId(기범.getOauthId())
-			.build();
 	}
 }
