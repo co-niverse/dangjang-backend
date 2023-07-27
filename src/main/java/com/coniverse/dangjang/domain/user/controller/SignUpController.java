@@ -12,6 +12,7 @@ import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
 import com.coniverse.dangjang.domain.user.service.UserService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -30,7 +31,7 @@ public class SignUpController {
 	 * @since 1.0
 	 */
 	@PostMapping("")
-	public ResponseEntity<SuccessSingleResponse<LoginResponse>> signUp(@RequestBody SignUpRequest params) {
+	public ResponseEntity<SuccessSingleResponse<LoginResponse>> signUp(@Valid @RequestBody SignUpRequest params) {
 		LoginResponse loginResponse = userService.signUp(params);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
 	}
