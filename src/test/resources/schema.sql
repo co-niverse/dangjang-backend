@@ -57,8 +57,8 @@ CREATE TABLE `HEALTH_METRIC`
 
 CREATE TABLE `DEVICE`
 (
-    `OAUTH_ID`        varchar(50)  NOT NULL,
-    `CODE`           varchar(10)  NOT NULL,
+    `OAUTH_ID` varchar(50) NOT NULL,
+    `CODE`     varchar(10) NOT NULL,
     PRIMARY KEY (`OAUTH_ID`, `CODE`),
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`),
     FOREIGN KEY (`CODE`) REFERENCES CODE (`CODE`)
@@ -66,8 +66,8 @@ CREATE TABLE `DEVICE`
 
 CREATE TABLE `NOTIFICATION`
 (
-    `OAUTH_ID`        varchar(50)  NOT NULL,
-    `CODE`           varchar(10)  NOT NULL,
+    `OAUTH_ID` varchar(50) NOT NULL,
+    `CODE`     varchar(10) NOT NULL,
     PRIMARY KEY (`OAUTH_ID`, `CODE`),
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`),
     FOREIGN KEY (`CODE`) REFERENCES CODE (`CODE`)
@@ -75,8 +75,8 @@ CREATE TABLE `NOTIFICATION`
 
 CREATE TABLE `DISEASE`
 (
-    `OAUTH_ID`        varchar(50)  NOT NULL,
-    `CODE`           varchar(10)  NOT NULL,
+    `OAUTH_ID` varchar(50) NOT NULL,
+    `CODE`     varchar(10) NOT NULL,
     PRIMARY KEY (`OAUTH_ID`, `CODE`),
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`),
     FOREIGN KEY (`CODE`) REFERENCES CODE (`CODE`)
