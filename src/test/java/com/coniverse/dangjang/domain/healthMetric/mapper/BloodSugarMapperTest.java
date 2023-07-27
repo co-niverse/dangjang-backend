@@ -24,7 +24,6 @@ public class BloodSugarMapperTest {
 		// then
 		assertAll(
 			() -> assertThat(혈당_응답.createdAt()).isEqualTo(혈당.getCreatedAt()),
-			() -> assertThat(혈당_응답.healthMetricCode()).isEqualTo(혈당.getHealthMetricCode()),
 			() -> assertThat(혈당_응답.healthMetricType()).isEqualTo(혈당.getHealthMetricType()),
 			() -> assertThat(혈당_응답.unit()).isEqualTo(혈당.getUnit())
 		);

@@ -2,7 +2,6 @@ package com.coniverse.dangjang.domain.healthMetric.dto.response;
 
 import java.time.LocalDate;
 
-import com.coniverse.dangjang.domain.healthMetric.enums.HealthMetricCode;
 import com.coniverse.dangjang.domain.healthMetric.enums.HealthMetricType;
 
 /**
@@ -11,5 +10,5 @@ import com.coniverse.dangjang.domain.healthMetric.enums.HealthMetricType;
  * @author TEO
  * @since 1.0.0
  */
-public record HealthMetricResponse(HealthMetricCode healthMetricCode, HealthMetricType healthMetricType, LocalDate createdAt, String unit) {
+public record HealthMetricResponse(HealthMetricType healthMetricType, LocalDate createdAt, String unit) {
 }
