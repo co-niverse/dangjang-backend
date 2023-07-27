@@ -9,7 +9,6 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,13 +36,6 @@ public class HealthMetricId implements Serializable {
 	 * @since 1.0.0
 	 */
 	protected HealthMetricId(LocalDate createdAt, HealthMetricType healthMetricType) {
-		this.createdAt = createdAt;
-		this.healthMetricType = healthMetricType;
-	}
-
-	@Builder
-	private HealthMetricId(String oauthId, LocalDate createdAt, HealthMetricType healthMetricType) {
-		this.oauthId = oauthId;
 		this.createdAt = createdAt;
 		this.healthMetricType = healthMetricType;
 	}
