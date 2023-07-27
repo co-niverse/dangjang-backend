@@ -2,6 +2,8 @@ package com.coniverse.dangjang.domain.user.entity;
 
 import java.time.LocalDate;
 
+import org.springframework.data.domain.Persistable;
+
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
@@ -13,7 +15,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,13 +24,10 @@ import lombok.NoArgsConstructor;
  * @author EVE
  * @since 1.0
  */
-@Entity
-@Table(name = "users")
-@Getter
+@Entity(name = "users")
+@Getter // TODO getter 제거하기
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends BaseEntity {
-	// @EmbeddedId
-	// private UserId userId;
+public class User extends BaseEntity implements Persistable<String> {
 	@Id
 	private String oauthId;
 	@Enumerated(EnumType.STRING)
@@ -57,7 +55,6 @@ public class User extends BaseEntity {
 	private User(String oauthId, OauthProvider oauthProvider, String nickname, Gender gender, LocalDate birthday, ActivityAmount activityAmount, int height,
 		int recommendedCalorie, Status status,
 		String profileImagePath) {
-		// this.userId = new UserId(oauthId, oauthProvider);
 		this.oauthId = oauthId;
 		this.oauthProvider = oauthProvider;
 		this.nickname = nickname;
@@ -70,19 +67,13 @@ public class User extends BaseEntity {
 		this.profileImagePath = profileImagePath;
 	}
 
-	// @Override
-	// public boolean equals(Object obj) {
-	// 	if (obj instanceof User) {
-	// 		return this.userId.equals(((User)obj).userId);
-	// 	}
-	// 	return false;
-	// }
+	@Override
+	public String getId() {
+		return this.oauthId;
+	}
 
-	// public String getOauthId() {
-	// 	return this.userId.getOauthId();
-	// }
-	//
-	// public OauthProvider getOauthProvider() {
-	// 	return this.userId.getOauthProvider();
-	// }
+	@Override
+	public boolean isNew() {
+		return getCreatedAt() == null;
+	}
 }

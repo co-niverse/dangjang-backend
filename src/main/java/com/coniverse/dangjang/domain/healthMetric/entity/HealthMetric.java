@@ -2,6 +2,8 @@ package com.coniverse.dangjang.domain.healthMetric.entity;
 
 import java.time.LocalDate;
 
+import org.springframework.data.domain.Persistable;
+
 import com.coniverse.dangjang.domain.healthMetric.enums.HealthMetricType;
 import com.coniverse.dangjang.domain.user.entity.User;
 
@@ -25,7 +27,7 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class HealthMetric {
+public class HealthMetric implements Persistable<HealthMetricId> {
 	@EmbeddedId
 	private HealthMetricId healthMetricId;
 	@Getter
@@ -57,5 +59,15 @@ public class HealthMetric {
 
 	public HealthMetricType getHealthMetricType() {
 		return this.healthMetricId.getHealthMetricType();
+	}
+
+	@Override
+	public HealthMetricId getId() {
+		return this.healthMetricId;
+	}
+
+	@Override
+	public boolean isNew() {
+		return getOauthId() == null;
 	}
 }
