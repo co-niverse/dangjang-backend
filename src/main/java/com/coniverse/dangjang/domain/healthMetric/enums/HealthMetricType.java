@@ -2,7 +2,7 @@ package com.coniverse.dangjang.domain.healthMetric.enums;
 
 import java.util.Arrays;
 
-import com.coniverse.dangjang.domain.healthMetric.exception.HealthMetricTypeNotFoundException;
+import com.coniverse.dangjang.domain.healthMetric.exception.HealthMetricTypeNonExistentException;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -42,13 +42,13 @@ public enum HealthMetricType {
 	 *
 	 * @param title 건강지표 타입 제목
 	 * @return HealthMetricType 건강지표 타입
-	 * @throws HealthMetricTypeNotFoundException 건강지표 타입을 찾을 수 없을 때 발생하는 예외
+	 * @throws HealthMetricTypeNonExistentException 건강지표 타입을 찾을 수 없을 때 발생하는 예외
 	 * @since 1.0.0
 	 */
 	public static HealthMetricType findByTitle(String title) {
 		return Arrays.stream(HealthMetricType.values())
 			.filter(type -> type.getTitle().equals(title))
 			.findAny()
-			.orElseThrow(HealthMetricTypeNotFoundException::new);
+			.orElseThrow(HealthMetricTypeNonExistentException::new);
 	}
 }
