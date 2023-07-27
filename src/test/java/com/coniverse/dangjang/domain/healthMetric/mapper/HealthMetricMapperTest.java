@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 import com.coniverse.dangjang.domain.healthMetric.dto.response.HealthMetricResponse;
 import com.coniverse.dangjang.domain.healthMetric.entity.HealthMetric;
 
-public class BloodSugarMapperTest {
-	BloodSugarMapper bloodSugarMapper = new BloodSugarMapperImpl();
+public class HealthMetricMapperTest {
+	HealthMetricMapper healthMetricMapper = new HealthMetricMapperImpl();
 
 	@Test
 	void 건강지표_entity를_response_dto로_변환한다() {
@@ -19,7 +19,7 @@ public class BloodSugarMapperTest {
 		HealthMetric 혈당 = 정상_혈당(유저_기범());
 
 		// when
-		HealthMetricResponse 혈당_응답 = bloodSugarMapper.toResponse(혈당);
+		HealthMetricResponse 혈당_응답 = healthMetricMapper.toResponse(혈당);
 
 		// then
 		assertAll(
@@ -27,5 +27,15 @@ public class BloodSugarMapperTest {
 			() -> assertThat(혈당_응답.healthMetricType()).isEqualTo(혈당.getHealthMetricType()),
 			() -> assertThat(혈당_응답.unit()).isEqualTo(혈당.getUnit())
 		);
+	}
+
+	@Test
+	void post_resquest_dto를_건강지표_entity로_변환한다() {
+
+	}
+
+	@Test
+	void patch_resquest_dto를_건강지표_entity로_변환한다() {
+
 	}
 }
