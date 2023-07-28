@@ -319,6 +319,28 @@ public class SignUpControllerTest extends ControllerTest {
 	}
 
 	@Test
+	void 질병리스트_값이_비어있는_회원가입_요청을_Bad_Request_반환한다() throws Exception {
+		List<String> diseases = new ArrayList<>();
+		diseases.add("");
+		//given 회원가입
+		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
+			false, 0, false, false,
+			diseases);
+		LoginResponse loginResponse = new LoginResponse("test", "accessToken", "refreshToken", false, false);
+		given(userService.signUp(any())).willReturn(loginResponse);
+		String content = objectMapper.writeValueAsString(signUpRequest);
+		// when
+
+		ResultActions resultActions = post(mockMvc, URI, content);
+
+		// then
+		resultActions.andExpectAll(
+			status().isBadRequest(),
+			jsonPath("$.message").value("올바르지 못한 데이터입니다.")
+		);
+	}
+
+	@Test
 	void 질병리스트가_없는_회원가입_요청을_Bad_Request_반환한다() throws Exception {
 		//given 회원가입
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
