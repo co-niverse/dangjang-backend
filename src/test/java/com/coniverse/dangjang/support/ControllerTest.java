@@ -15,6 +15,9 @@ import com.coniverse.dangjang.domain.healthMetric.service.bloodSugar.BloodSugarR
 import com.coniverse.dangjang.domain.healthMetric.util.CreatedAtUtil;
 import com.coniverse.dangjang.domain.intro.controller.IntroController;
 import com.coniverse.dangjang.domain.intro.service.IntroService;
+import com.coniverse.dangjang.domain.user.controller.SignUpController;
+import com.coniverse.dangjang.domain.user.controller.UserController;
+import com.coniverse.dangjang.domain.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -29,7 +32,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 	controllers = {
 		IntroController.class,
 		LoginController.class,
-		HealthMetricRegistrationController.class
+		HealthMetricRegistrationController.class,
+		LoginController.class,
+		SignUpController.class,
+		UserController.class
 	},
 	includeFilters = @ComponentScan.Filter(classes = {EnableWebSecurity.class}))
 @MockBean(JpaMetamodelMappingContext.class)
@@ -46,4 +52,7 @@ public class ControllerTest {
 	private BloodSugarRegistrationService bloodSugarService;
 	@MockBean
 	private CreatedAtUtil createdAtUtil;
+	@MockBean
+	private UserService userService;
+
 }

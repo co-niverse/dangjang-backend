@@ -11,7 +11,6 @@ import com.coniverse.dangjang.domain.healthMetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.healthMetric.entity.HealthMetricId;
 import com.coniverse.dangjang.domain.healthMetric.enums.HealthMetricCode;
 import com.coniverse.dangjang.domain.healthMetric.enums.HealthMetricType;
-import com.coniverse.dangjang.domain.healthMetric.exception.HealthMetricAlreadyExistentException;
 import com.coniverse.dangjang.domain.healthMetric.exception.HealthMetricNotFoundException;
 import com.coniverse.dangjang.domain.healthMetric.exception.IncorrectTypeUpdateException;
 import com.coniverse.dangjang.domain.healthMetric.mapper.BloodSugarMapper;
@@ -96,9 +95,7 @@ public class BloodSugarRegistrationService implements HealthMetricRegistrationSe
 	private HealthMetricCode verifySameHealthMetricCodeAndGet(HealthMetricType prevHealthMetricType, HealthMetricType curHealthMetricType) {
 		HealthMetricCode prevHealthMetricCode = HealthMetricCode.findByHealthMetricType(prevHealthMetricType);
 		HealthMetricCode curHealthMetricCode = HealthMetricCode.findByHealthMetricType(curHealthMetricType);
-		if (prevHealthMetricCode != curHealthMetricCode) {
-			throw new IncorrectTypeUpdateException();
-		}
+
 		return prevHealthMetricCode;
 	}
 
@@ -137,9 +134,6 @@ public class BloodSugarRegistrationService implements HealthMetricRegistrationSe
 			.oauthId(user.getOauthId())
 			.build();
 
-		if (healthMetricRepository.findByHealthMetricId(id).isPresent()) {
-			throw new HealthMetricAlreadyExistentException();
-		}
 		HealthMetric healthMetric = generateHealthMetric(createdAt, healthMetricCode, healthMetricType, unit, user);
 		return healthMetricRepository.save(healthMetric);
 	}

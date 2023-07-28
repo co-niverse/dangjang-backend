@@ -1,5 +1,7 @@
 package com.coniverse.dangjang.domain.user.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.coniverse.dangjang.domain.user.entity.User;
@@ -17,6 +19,5 @@ public interface UserRepository extends JpaRepository<User, String> {
 	 *
 	 * @since 1.0
 	 */
-	// @Query("SELECT u FROM User u WHERE u.userId.oauthId = ?1 AND u.userId.oauthProvider = ?2")
-	// Optional<User> findByUserId(String oauthId, OauthProvider oauthProvider);
+	Optional<User> findByNickname(String nickname);
 }

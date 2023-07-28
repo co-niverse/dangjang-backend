@@ -3,6 +3,7 @@ package com.coniverse.dangjang.domain.intro.service;
 import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.intro.dto.IntroResponse;
+import com.coniverse.dangjang.domain.intro.dto.Version;
 import com.coniverse.dangjang.global.exception.BadRequestException;
 
 import lombok.RequiredArgsConstructor;
@@ -14,8 +15,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class IntroService {
-	private static final String MIN_VERSION = "1.0.0";
-	private static final String LATEST_VERSION = "1.0.0";
+	private static final String MIN_VERSION = Version.MINIMUM.getVersion();
+	private static final String LATEST_VERSION = Version.LATEST.getVersion();
 	private int error = -1;
 
 	/**
@@ -34,7 +35,7 @@ public class IntroService {
 	}
 
 	/**
-	 * TODO
+	 * TODO load data
 	 *
 	 * @return IntroResponse
 	 * @since 1.0.0
