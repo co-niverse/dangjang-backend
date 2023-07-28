@@ -4,6 +4,8 @@ import static com.coniverse.dangjang.support.SimpleMockMvc.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
@@ -34,11 +36,12 @@ public class UserControllerTest extends ControllerTest {
 
 	}
 
-	@Test
-	void _8글자이상인_닉네임을_받아와_Bad_Request를_반환한다() throws Exception {
+	@ParameterizedTest
+	@ValueSource(strings = {"test90", "", "testtesttesttesttest"})
+	void 조건에_맞지_않는_닉네임을_받아와_Bad_Request를_반환한다(String nickname) throws Exception {
 		//given
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		params.add("nickname", "fjdksslkfjdskf");
+		params.add("nickname", nickname);
 		// when
 		ResultActions resultActions = get(mockMvc, URI + "/duplicateNickname", params);
 
@@ -47,37 +50,6 @@ public class UserControllerTest extends ControllerTest {
 			status().isBadRequest(),
 			jsonPath("$.message").value("올바르지 못한 데이터입니다.")
 		);
-	}
-
-	@Test
-	void 숫자가_포함된_닉네임을_받아와_Bad_Request를_반환한다() throws Exception {
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		params.add("nickname", "dfj83");
-		// when
-		ResultActions resultActions = get(mockMvc, URI + "/duplicateNickname", params);
-
-		// then
-		resultActions.andExpectAll(
-			status().isBadRequest(),
-			jsonPath("$.message").value("올바르지 못한 데이터입니다.")
-		);
-
-	}
-
-	@Test
-	void 비어있는_닉네임은_Bad_Request를_반환한다() throws Exception {
-		// given
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		params.add("nickname", "");
-		// when
-		ResultActions resultActions = get(mockMvc, URI + "/duplicateNickname", params);
-
-		// then
-		resultActions.andExpectAll(
-			status().isBadRequest(),
-			jsonPath("$.message").value("올바르지 못한 데이터입니다.")
-		);
-
 	}
 
 }
