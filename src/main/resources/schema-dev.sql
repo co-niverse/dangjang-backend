@@ -9,12 +9,13 @@ DROP TABLE IF EXISTS USERS;
 CREATE TABLE `USERS`
 (
     `OAUTH_ID`            varchar(50) NOT NULL,
-    `NICKNAME`            varchar(15) NOT NULL,
+    `NICKNAME`            varchar(8)  NOT NULL,
     `OAUTH_PROVIDER`      varchar(10) NOT NULL,
     `GENDER`              varchar(1)  NOT NULL,
     `BIRTHDAY`            date        NOT NULL,
     `ACTIVITY_AMOUNT`     varchar(10) NOT NULL,
     `HEIGHT`              int         NOT NULL,
+    `ROLE`                varchar(10) NOT NULL,
     `RECOMMENDED_CALORIE` int         NOT NULL,
     `STATUS`              varchar(10) NOT NULL,
     `CREATED_AT`          datetime    NOT NULL,
@@ -49,7 +50,7 @@ CREATE TABLE `HEALTH_METRIC`
 (
     `OAUTH_ID`           varchar(50) NOT NULL,
     `CREATED_AT`         date        NOT NULL,
-    `HEALTH_METRIC_TYPE` varchar(30) NOT NULL,
+    `HEALTH_METRIC_TYPE` varchar(30) NOT NULL, -- TODO 수정
     `UNIT`               varchar(20) NOT NULL,
     PRIMARY KEY (`OAUTH_ID`, `CREATED_AT`, `HEALTH_METRIC_TYPE`),
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`)
@@ -57,8 +58,8 @@ CREATE TABLE `HEALTH_METRIC`
 
 CREATE TABLE `DEVICE`
 (
-    `OAUTH_ID`        varchar(50)  NOT NULL,
-    `CODE`           varchar(10)  NOT NULL,
+    `OAUTH_ID` varchar(50) NOT NULL,
+    `CODE`     varchar(10) NOT NULL,
     PRIMARY KEY (`OAUTH_ID`, `CODE`),
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`),
     FOREIGN KEY (`CODE`) REFERENCES CODE (`CODE`)
@@ -66,8 +67,8 @@ CREATE TABLE `DEVICE`
 
 CREATE TABLE `NOTIFICATION`
 (
-    `OAUTH_ID`        varchar(50)  NOT NULL,
-    `CODE`           varchar(10)  NOT NULL,
+    `OAUTH_ID` varchar(50) NOT NULL,
+    `CODE`     varchar(10) NOT NULL,
     PRIMARY KEY (`OAUTH_ID`, `CODE`),
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`),
     FOREIGN KEY (`CODE`) REFERENCES CODE (`CODE`)
@@ -75,8 +76,8 @@ CREATE TABLE `NOTIFICATION`
 
 CREATE TABLE `DISEASE`
 (
-    `OAUTH_ID`        varchar(50)  NOT NULL,
-    `CODE`           varchar(10)  NOT NULL,
+    `OAUTH_ID` varchar(50) NOT NULL,
+    `CODE`     varchar(10) NOT NULL,
     PRIMARY KEY (`OAUTH_ID`, `CODE`),
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`),
     FOREIGN KEY (`CODE`) REFERENCES CODE (`CODE`)
