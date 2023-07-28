@@ -17,7 +17,7 @@ import com.coniverse.dangjang.support.ControllerTest;
  * @author EVE
  * @since 1.0.0
  */
-public class UserControllerTest extends ControllerTest {
+class UserControllerTest extends ControllerTest {
 	private final String URI = "/api";
 
 	@Test
