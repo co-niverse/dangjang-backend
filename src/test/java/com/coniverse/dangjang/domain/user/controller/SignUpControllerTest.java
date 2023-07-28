@@ -122,11 +122,11 @@ public class SignUpControllerTest extends ControllerTest {
 
 	@ParameterizedTest
 	@ValueSource(strings = {"test90", "", "testtesttesttesttest"})
-	void 조건에_맞지_않는_닉네임_회원가입_요청을_Bad_Request_반환한다() throws Exception {
+	void 조건에_맞지_않는_닉네임_회원가입_요청을_Bad_Request_반환한다(String nickname) throws Exception {
 		List<String> diseases = new ArrayList<>();
 		diseases.add("저혈당");
 		//given 회원가입
-		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test90", "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
+		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", nickname, "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
 			false, 0, false, false,
 			diseases);
 		LoginResponse loginResponse = new LoginResponse("test", "accessToken", "refreshToken", false, false);
