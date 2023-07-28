@@ -20,7 +20,7 @@ import com.coniverse.dangjang.fixture.SignUpFixture;
  * @since 1.0.0
  */
 @SpringBootTest
-public class UserServiceTest {
+class UserServiceTest {
 	@Autowired
 	private UserService userService;
 

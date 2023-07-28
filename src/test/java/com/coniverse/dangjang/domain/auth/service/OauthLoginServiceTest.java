@@ -29,7 +29,7 @@ import com.coniverse.dangjang.fixture.SignUpFixture;
  * @since 1.0
  */
 @SpringBootTest
-public class OauthLoginServiceTest {
+class OauthLoginServiceTest {
 	@Autowired
 	private OauthLoginService oAuthLoginService;
 

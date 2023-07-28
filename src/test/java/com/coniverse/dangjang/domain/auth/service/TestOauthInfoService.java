@@ -8,7 +8,7 @@ import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
 import com.coniverse.dangjang.support.FakeBean;
 
 @FakeBean
-public class TestOauthInfoService implements OauthInfoService {
+class TestOauthInfoService implements OauthInfoService {
 	@Override
 	public OAuthInfoResponse request(OauthLoginRequest params) {
 
