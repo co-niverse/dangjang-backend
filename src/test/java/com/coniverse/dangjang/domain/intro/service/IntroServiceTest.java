@@ -1,7 +1,6 @@
 package com.coniverse.dangjang.domain.intro.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -38,6 +37,18 @@ class IntroServiceTest {
 
 			// when & then
 			assertThatThrownBy(() -> introService.getTestIntroResponse()).isInstanceOf(BadRequestException.class);
+		}
+	}
+
+	@Nested
+	class ProdIntroResponse를 {
+		@Test
+		void 호출하면_IntroResponse가_반환된다() {
+			// when
+			IntroResponse<?> introResponse = introService.getProdIntroResponse();
+
+			// then
+			assertThat(introResponse).isNotNull();
 		}
 	}
 }
