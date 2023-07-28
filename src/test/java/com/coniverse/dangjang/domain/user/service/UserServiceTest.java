@@ -37,7 +37,11 @@ public class UserServiceTest {
 		//when
 		LoginResponse loginResponse = userService.signUp(signUpRequest);
 		//that
-		assertThat(loginResponse).isNotNull();
+		assertThat(loginResponse.accessToken()).isNotNull();
+		assertThat(loginResponse.refreshToken()).isNotNull();
+		assertThat(loginResponse.nickname()).isEqualTo(signUpRequest.nickname());
+		assertThat(loginResponse.dangjangClub()).isEqualTo(false);
+		assertThat(loginResponse.healthConnect()).isEqualTo(false);
 	}
 
 	@Test()
@@ -52,7 +56,11 @@ public class UserServiceTest {
 		//when
 		LoginResponse loginResponse = userService.signUp(signUpRequest);
 		//that
-		assertThat(loginResponse).isNotNull();
+		assertThat(loginResponse.accessToken()).isNotNull();
+		assertThat(loginResponse.refreshToken()).isNotNull();
+		assertThat(loginResponse.nickname()).isEqualTo(signUpRequest.nickname());
+		assertThat(loginResponse.dangjangClub()).isEqualTo(false);
+		assertThat(loginResponse.healthConnect()).isEqualTo(false);
 	}
 
 	@Test()
