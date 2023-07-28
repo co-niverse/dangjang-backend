@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
@@ -118,57 +120,13 @@ public class SignUpControllerTest extends ControllerTest {
 		);
 	}
 
-	@Test
-	void 닉네임이_숫자로_이루어진_회원가입_요청을_Bad_Request_반환한다() throws Exception {
+	@ParameterizedTest
+	@ValueSource(strings = {"test90", "", "testtesttesttesttest"})
+	void 조건에_맞지_않는_닉네임_회원가입_요청을_Bad_Request_반환한다() throws Exception {
 		List<String> diseases = new ArrayList<>();
 		diseases.add("저혈당");
 		//given 회원가입
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test90", "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
-			false, 0, false, false,
-			diseases);
-		LoginResponse loginResponse = new LoginResponse("test", "accessToken", "refreshToken", false, false);
-		given(userService.signUp(any())).willReturn(loginResponse);
-		String content = objectMapper.writeValueAsString(signUpRequest);
-		// when
-
-		ResultActions resultActions = post(mockMvc, URI, content);
-
-		// then
-		resultActions.andExpectAll(
-			status().isBadRequest(),
-			jsonPath("$.message").value("올바르지 못한 데이터입니다.")
-		);
-	}
-
-	@Test
-	void 닉네임이_비어있는_회원가입_요청을_Bad_Request_반환한다() throws Exception {
-		List<String> diseases = new ArrayList<>();
-		diseases.add("저혈당");
-		//given 회원가입
-		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "", "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
-			false, 0, false, false,
-			diseases);
-		LoginResponse loginResponse = new LoginResponse("test", "accessToken", "refreshToken", false, false);
-		given(userService.signUp(any())).willReturn(loginResponse);
-		String content = objectMapper.writeValueAsString(signUpRequest);
-		// when
-
-		ResultActions resultActions = post(mockMvc, URI, content);
-
-		// then
-		resultActions.andExpectAll(
-			status().isBadRequest(),
-			jsonPath("$.message").value("올바르지 못한 데이터입니다.")
-		);
-	}
-
-	@Test
-	void 닉네임이_9글자_이상으로_이루어진_회원가입_요청을_Bad_Request_반환한다() throws Exception {
-		List<String> diseases = new ArrayList<>();
-		diseases.add("저혈당");
-		//given 회원가입
-		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "testtesttesttesttest", "kakao", false, LocalDate.parse("2021-06-21"), 150,
-			50, "LOW",
 			false, 0, false, false,
 			diseases);
 		LoginResponse loginResponse = new LoginResponse("test", "accessToken", "refreshToken", false, false);
@@ -197,7 +155,6 @@ public class SignUpControllerTest extends ControllerTest {
 		given(userService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
-
 		ResultActions resultActions = post(mockMvc, URI, content);
 
 		// then
