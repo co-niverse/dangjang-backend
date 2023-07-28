@@ -88,11 +88,11 @@ public class UserService {
 	 */
 
 	public int calCulateRecommendedCalorie(Gender gender, int height, ActivityAmount activityAmount) {
-		Double standardWeight = 0.0;
+		double standardWeight;
 		if (gender.equals(false)) {
-			standardWeight = (Double)(Math.pow(height / 100, 2.0) * 22);
+			standardWeight = (Math.pow(height / 100.0, 2.0) * 22);
 		} else {
-			standardWeight = (Double)(Math.pow(height / 100, 2.0) * 21);
+			standardWeight = (Math.pow(height / 100.0, 2.0) * 21);
 		}
 
 		if (activityAmount.equals(ActivityAmount.LOW)) {
