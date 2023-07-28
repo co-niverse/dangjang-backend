@@ -40,8 +40,8 @@ class UserServiceTest {
 		assertThat(loginResponse.accessToken()).isNotNull();
 		assertThat(loginResponse.refreshToken()).isNotNull();
 		assertThat(loginResponse.nickname()).isEqualTo(signUpRequest.nickname());
-		assertThat(loginResponse.dangjangClub()).isEqualTo(false);
-		assertThat(loginResponse.healthConnect()).isEqualTo(false);
+		assertThat(loginResponse.dangjangClub()).isFalse();
+		assertThat(loginResponse.healthConnect()).isFalse();
 	}
 
 	@Test()
@@ -59,8 +59,8 @@ class UserServiceTest {
 		assertThat(loginResponse.accessToken()).isNotNull();
 		assertThat(loginResponse.refreshToken()).isNotNull();
 		assertThat(loginResponse.nickname()).isEqualTo(signUpRequest.nickname());
-		assertThat(loginResponse.dangjangClub()).isEqualTo(false);
-		assertThat(loginResponse.healthConnect()).isEqualTo(false);
+		assertThat(loginResponse.dangjangClub()).isFalse();
+		assertThat(loginResponse.healthConnect()).isFalse();
 	}
 
 	@Test()
@@ -76,7 +76,7 @@ class UserServiceTest {
 		//when
 		DuplicateNicknameResponse isDuplicated = userService.checkDublicateNickname(signUpRequest.nickname());
 		//then
-		assertThat(isDuplicated.duplicate()).isEqualTo(false);
+		assertThat(isDuplicated.duplicate()).isFalse();
 	}
 
 	@Test()
@@ -86,6 +86,6 @@ class UserServiceTest {
 		//when
 		DuplicateNicknameResponse isDuplicated = userService.checkDublicateNickname(nickname);
 		//then
-		assertThat(isDuplicated.duplicate()).isEqualTo(true);
+		assertThat(isDuplicated.duplicate()).isTrue();
 	}
 }
