@@ -17,7 +17,7 @@ import com.coniverse.dangjang.domain.user.entity.enums.Status;
 public class UserFixture {
 	public static User 유저_기범() {
 		return User.builder()
-			.oauthId("1234kakao")
+			.oauthId("11111111")
 			.oauthProvider(OauthProvider.KAKAO)
 			.nickname("기범")
 			.gender(Gender.M)
@@ -25,6 +25,7 @@ public class UserFixture {
 			.activityAmount(ActivityAmount.MEDIUM)
 			.height(199)
 			.recommendedCalorie(2000)
+			.role("ROLE_USER")
 			.status(Status.ACTIVE)
 			.profileImagePath("/images/profile/.png")
 			.build();
@@ -32,7 +33,7 @@ public class UserFixture {
 
 	public static User 유저_가은() {
 		return User.builder()
-			.oauthId("1234naver")
+			.oauthId("22222222")
 			.oauthProvider(OauthProvider.NAVER)
 			.nickname("가은")
 			.gender(Gender.F)
@@ -40,6 +41,7 @@ public class UserFixture {
 			.activityAmount(ActivityAmount.LOW)
 			.height(180)
 			.recommendedCalorie(1500)
+			.role("ROLE_USER")
 			.status(Status.ACTIVE)
 			.profileImagePath("/images/profile/.png")
 			.build();

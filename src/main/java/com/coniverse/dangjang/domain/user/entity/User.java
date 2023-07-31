@@ -32,7 +32,7 @@ public class User extends BaseEntity implements Persistable<String> {
 	private String oauthId;
 	@Enumerated(EnumType.STRING)
 	private OauthProvider oauthProvider;
-	@Column(nullable = false, unique = true, length = 15)
+	@Column(nullable = false, unique = true, length = 8)
 	private String nickname;
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, length = 5)
@@ -46,6 +46,7 @@ public class User extends BaseEntity implements Persistable<String> {
 	private int height;
 	@Column(nullable = false)
 	private int recommendedCalorie;
+	private String role; // TODO enum
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Status status;
@@ -53,8 +54,7 @@ public class User extends BaseEntity implements Persistable<String> {
 
 	@Builder
 	private User(String oauthId, OauthProvider oauthProvider, String nickname, Gender gender, LocalDate birthday, ActivityAmount activityAmount, int height,
-		int recommendedCalorie, Status status,
-		String profileImagePath) {
+		int recommendedCalorie, String role, Status status, String profileImagePath) {
 		this.oauthId = oauthId;
 		this.oauthProvider = oauthProvider;
 		this.nickname = nickname;
@@ -64,6 +64,7 @@ public class User extends BaseEntity implements Persistable<String> {
 		this.height = height;
 		this.recommendedCalorie = recommendedCalorie;
 		this.status = status;
+		this.role = role;
 		this.profileImagePath = profileImagePath;
 	}
 
