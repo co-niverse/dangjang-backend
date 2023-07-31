@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.auth.service.authToken;
+package com.coniverse.dangjang.domain.auth.service;
 
 import java.security.Key;
 import java.util.Date;
@@ -17,19 +17,11 @@ import io.jsonwebtoken.security.Keys;
  * JWT 생성 및 반환
  *
  * @author EVE
- * @since 1.0
+ * @since 1.0.0
  */
 @Component
 public class JwtTokenProvider {
-
 	private final Key key;
-
-	/**
-	 * JWT Token Provider
-	 *
-	 * @param secretKey JWT SECRETKEY
-	 * @since 1.0
-	 */
 
 	public JwtTokenProvider(@Value("${jwt.secret-key}") String secretKey) {
 		byte[] keyBytes = Decoders.BASE64.decode(secretKey);
@@ -37,12 +29,12 @@ public class JwtTokenProvider {
 	}
 
 	/**
-	 * JWT Token 생성
+	 * jwt token을 생성한다
 	 *
-	 * @param subject userID String으로 변환한 값
-	 * @return Jwts.builder() JWT TOKEN
-	 * @Parm expiredAt JWT 유효 기간
-	 * @since 1.0
+	 * @param subject   userid
+	 * @param expiredAt JWT 유효 기간
+	 * @return jwt token
+	 * @since 1.0.0
 	 */
 	public String generate(String subject, Date expiredAt) {
 		return Jwts.builder()
@@ -53,11 +45,11 @@ public class JwtTokenProvider {
 	}
 
 	/**
-	 * userID 추출
+	 * user id를 추출한다
 	 *
-	 * @param accessToken JWT ACCESSTOKEN
-	 * @return claims.getSubject() userID 반환
-	 * @since 1.0
+	 * @param accessToken jwt accessToken
+	 * @return user id
+	 * @since 1.0.0
 	 */
 	public String extractSubject(String accessToken) {
 		Claims claims = parseClaims(accessToken);
@@ -65,11 +57,11 @@ public class JwtTokenProvider {
 	}
 
 	/**
-	 * JWT 복호화 , 만료된 Token refresh Token으로 검증 후 재발급
+	 * JWT 복호화
 	 *
-	 * @param accessToken JWT ACCESSTOKEN
-	 * @return claims.getSubject() userID 반환
-	 * @since 1.0
+	 * @param accessToken jwt accessToken
+	 * @return Claims JWT 복호화
+	 * @since 1.0.0
 	 */
 	private Claims parseClaims(String accessToken) {
 		try {
