@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotBlank;
  * @author EVE, TEO
  * @since 1.0.0
  */
-public record KakaoLoginRequest(@NotBlank(message = "") String accessToken) implements OauthLoginRequest {
+public record KakaoLoginRequest(@NotBlank(message = "access token은 필수로 입력해야 합니다.") String accessToken) implements OauthLoginRequest {
 	@Override
 	public OauthProvider getOauthProvider() {
 		return OauthProvider.KAKAO;
