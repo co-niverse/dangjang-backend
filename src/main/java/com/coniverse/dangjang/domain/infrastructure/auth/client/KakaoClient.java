@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.auth.service.oauthInfoRequest;
+package com.coniverse.dangjang.domain.infrastructure.auth.client;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -10,39 +10,39 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
-import com.coniverse.dangjang.domain.user.infrastructure.NaverInfoResponse;
-import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
+import com.coniverse.dangjang.domain.infrastructure.auth.dto.KakaoInfoResponse;
+import com.coniverse.dangjang.domain.infrastructure.auth.dto.OAuthInfoResponse;
 
 import lombok.RequiredArgsConstructor;
 
 /**
- * 네이버 사용자 정보 조회
+ * 카카오 사용자 정보 조회
  *
  * @author EVE
- * @since 1.0
+ * @since 1.0.0
  */
 @Component
 @RequiredArgsConstructor
-public class NaverInfoRequestService implements OAuthInfoRequestService {
+public class KakaoClient implements OAuthClient {
 
-	@Value("${oauth.naver.url.api}")
+	@Value("${oauth.kakao.url.api}")
 	private String apiUrl;
 
 	private final RestTemplate restTemplate;
 
 	@Override
 	public OauthProvider getOauthProvider() {
-		return OauthProvider.NAVER;
+		return OauthProvider.KAKAO;
 	}
 
 	/**
-	 * @param accessToken 네이버 accessToken을 받아온다.
-	 * @return OAuthInfoResponse 네이버 사용자 정보
-	 * @since 1.0
+	 * @param accessToken 카카오 accessToken을 받아온다.
+	 * @return OAuthInfoResponse 카카오 사용자 정보
+	 * @since 1.0.0
 	 */
 	@Override
 	public OAuthInfoResponse requestOauthInfo(String accessToken) {
-		String url = apiUrl + "/v1/nid/me";
+		String url = apiUrl + "/v2/user/me";
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -52,6 +52,6 @@ public class NaverInfoRequestService implements OAuthInfoRequestService {
 
 		HttpEntity<?> request = new HttpEntity<>(body, httpHeaders);
 
-		return restTemplate.postForObject(url, request, NaverInfoResponse.class);
+		return restTemplate.postForObject(url, request, KakaoInfoResponse.class);
 	}
 }
