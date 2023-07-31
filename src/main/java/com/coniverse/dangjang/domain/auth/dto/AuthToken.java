@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.auth.dto.AuthToken;
+package com.coniverse.dangjang.domain.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
  * AuthToken 객체
  *
  * @author EVE
- * @since 1.0
+ * @since 1.0.0
  */
 @Getter
 @Setter

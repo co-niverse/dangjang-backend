@@ -2,22 +2,15 @@ package com.coniverse.dangjang.domain.auth.dto.request;
 
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotBlank;
 
 /**
- * 네이버 로그인 parm
+ * 네이버 로그인 dto
  *
- * @author EVE
- * @since 1.0
+ * @author EVE, TEO
+ * @since 1.0.0
  */
-@Getter
-@Setter
-@NoArgsConstructor
-public class NaverLoginRequest implements OauthLoginRequest {
-	private String accessToken;
-
+public record NaverLoginRequest(@NotBlank(message = "") String accessToken) implements OauthLoginRequest {
 	@Override
 	public OauthProvider getOauthProvider() {
 		return OauthProvider.NAVER;
@@ -27,5 +20,4 @@ public class NaverLoginRequest implements OauthLoginRequest {
 	public String getOauthToken() {
 		return accessToken;
 	}
-
 }
