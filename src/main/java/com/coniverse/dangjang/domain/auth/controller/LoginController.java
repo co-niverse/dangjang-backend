@@ -17,6 +17,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 /**
+ * 로그인 컨트롤러
+ *
  * @author EVE
  * @since 1.0.0
  */
@@ -48,4 +50,3 @@ public class LoginController {
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
 	}
 }
-
