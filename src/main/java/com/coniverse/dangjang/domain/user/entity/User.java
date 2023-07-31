@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author EVE
- * @since 1.0
+ * @since 1.0.0
  */
 @Entity(name = "users")
 @Getter // TODO getter 제거하기
