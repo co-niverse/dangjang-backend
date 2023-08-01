@@ -60,7 +60,7 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	@Override
 	public OAuthInfoResponse request(OauthLoginRequest params) {
 		OAuthClient client = clients.get(params.getOauthProvider());
-		String accessToken = params.getOauthToken();
+		String accessToken = params.getAccessToken();
 		return client.requestOauthInfo(accessToken);
 	}
 }

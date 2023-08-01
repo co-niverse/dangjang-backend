@@ -11,5 +11,5 @@ import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 public interface OauthLoginRequest {
 	OauthProvider getOauthProvider();
 
-	String getOauthToken();
+	String getAccessToken();
 }

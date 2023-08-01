@@ -17,7 +17,7 @@ public record NaverLoginRequest(@NotBlank(message = "access token은 필수로 �
 	}
 
 	@Override
-	public String getOauthToken() {
+	public String getAccessToken() {
 		return accessToken;
 	}
 }
