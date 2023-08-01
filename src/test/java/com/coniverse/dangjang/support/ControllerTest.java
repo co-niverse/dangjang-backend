@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.coniverse.dangjang.domain.auth.controller.LoginController;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
 import com.coniverse.dangjang.domain.healthMetric.controller.HealthMetricRegistrationController;
-import com.coniverse.dangjang.domain.healthMetric.service.bloodSugar.BloodSugarRegistrationService;
+import com.coniverse.dangjang.domain.healthMetric.service.HealthMetricRegistrationService;
 import com.coniverse.dangjang.domain.healthMetric.util.CreatedAtUtil;
 import com.coniverse.dangjang.domain.intro.controller.IntroController;
 import com.coniverse.dangjang.domain.intro.service.IntroService;
@@ -43,7 +43,7 @@ public class ControllerTest {
 	@MockBean
 	private OauthLoginService oAuthLoginService;
 	@MockBean
-	private BloodSugarRegistrationService bloodSugarService;
+	private HealthMetricRegistrationService healthMetricRegistrationService;
 	@MockBean
 	private CreatedAtUtil createdAtUtil;
 }

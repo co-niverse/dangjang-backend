@@ -22,7 +22,6 @@ import com.coniverse.dangjang.domain.healthMetric.dto.request.HealthMetricPostRe
 import com.coniverse.dangjang.domain.healthMetric.dto.response.HealthMetricResponse;
 import com.coniverse.dangjang.domain.healthMetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.healthMetric.repository.HealthMetricRepository;
-import com.coniverse.dangjang.domain.healthMetric.service.bloodSugar.BloodSugarRegistrationService;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
@@ -33,10 +32,10 @@ import com.coniverse.dangjang.domain.user.repository.UserRepository;
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class BloodSugarRegistrationServiceTest {
+class HealthMetricRegistrationServiceTest {
 	private final LocalDate 등록_일자 = LocalDate.of(2023, 12, 31);
 	@Autowired
-	private BloodSugarRegistrationService bloodSugarRegistrationService;
+	private HealthMetricRegistrationService healthMetricRegistrationService;
 	@Autowired
 	private HealthMetricRepository healthMetricRepository;
 	@Autowired
@@ -62,7 +61,7 @@ class BloodSugarRegistrationServiceTest {
 		HealthMetricPostRequest request = 혈당_등록_요청();
 
 		// when
-		HealthMetricResponse response = bloodSugarRegistrationService.register(request, 등록_일자, 테오.getOauthId());
+		HealthMetricResponse response = healthMetricRegistrationService.register(request, 등록_일자, 테오.getOauthId());
 
 		// then
 		등록된_혈당 = healthMetricRepository.findByHealthMetricId(테오.getOauthId(), response.createdAt(), response.healthMetricType())
@@ -83,7 +82,7 @@ class BloodSugarRegistrationServiceTest {
 		HealthMetricPatchRequest request = 단위_변경한_혈당_수정_요청();
 
 		// when
-		HealthMetricResponse response = bloodSugarRegistrationService.update(request, 등록_일자, 테오.getOauthId());
+		HealthMetricResponse response = healthMetricRegistrationService.update(request, 등록_일자, 테오.getOauthId());
 
 		// then
 
@@ -104,7 +103,7 @@ class BloodSugarRegistrationServiceTest {
 		HealthMetricPatchRequest request = 타입_변경한_혈당_수정_요청();
 
 		// when
-		HealthMetricResponse response = bloodSugarRegistrationService.update(request, 등록_일자, 테오.getOauthId());
+		HealthMetricResponse response = healthMetricRegistrationService.update(request, 등록_일자, 테오.getOauthId());
 
 		// then
 		HealthMetric 수정된_혈당 = healthMetricRepository.findByHealthMetricId(테오.getOauthId(), response.createdAt(), response.healthMetricType())
