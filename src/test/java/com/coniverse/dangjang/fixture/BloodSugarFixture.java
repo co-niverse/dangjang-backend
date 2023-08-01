@@ -2,11 +2,11 @@ package com.coniverse.dangjang.fixture;
 
 import java.time.LocalDate;
 
-import com.coniverse.dangjang.domain.healthMetric.dto.request.HealthMetricPatchRequest;
-import com.coniverse.dangjang.domain.healthMetric.dto.request.HealthMetricPostRequest;
-import com.coniverse.dangjang.domain.healthMetric.dto.response.HealthMetricResponse;
-import com.coniverse.dangjang.domain.healthMetric.entity.HealthMetric;
-import com.coniverse.dangjang.domain.healthMetric.enums.HealthMetricType;
+import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchRequest;
+import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
+import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;
+import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
+import com.coniverse.dangjang.domain.healthmetric.enums.HealthMetricType;
 import com.coniverse.dangjang.domain.user.entity.User;
 
 /**

@@ -10,9 +10,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.coniverse.dangjang.domain.auth.controller.LoginController;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
-import com.coniverse.dangjang.domain.healthMetric.controller.HealthMetricRegistrationController;
-import com.coniverse.dangjang.domain.healthMetric.service.HealthMetricRegistrationService;
-import com.coniverse.dangjang.domain.healthMetric.util.CreatedAtUtil;
+import com.coniverse.dangjang.domain.healthmetric.controller.HealthMetricRegistrationController;
+import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegistrationService;
+import com.coniverse.dangjang.domain.healthmetric.util.CreatedAtUtil;
 import com.coniverse.dangjang.domain.intro.controller.IntroController;
 import com.coniverse.dangjang.domain.intro.service.IntroService;
 import com.coniverse.dangjang.domain.user.controller.SignUpController;
