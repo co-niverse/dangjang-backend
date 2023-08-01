@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 
-public class HealthMetricMapperTest {
+class HealthMetricMapperTest {
 	HealthMetricMapper healthMetricMapper = new HealthMetricMapperImpl();
 
 	@Test

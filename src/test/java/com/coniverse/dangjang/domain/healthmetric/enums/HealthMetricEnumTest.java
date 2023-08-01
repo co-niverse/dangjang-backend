@@ -12,7 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
  * @author TEO
  * @since 1.0.0
  */
-public class HealthMetricEnumTest {
+class HealthMetricEnumTest {
 	private static Stream<Arguments> provideHealthMetricType() {
 		return Stream.of(
 			Arguments.of("취침시간", HealthMetricType.BED_TIME),

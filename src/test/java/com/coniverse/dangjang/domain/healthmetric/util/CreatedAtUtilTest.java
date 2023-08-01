@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import com.coniverse.dangjang.domain.healthmetric.exception.IncorrectCreatedAtException;
 
-public class CreatedAtUtilTest {
+class CreatedAtUtilTest {
 	CreatedAtUtil createdAtUtil = new CreatedAtUtil();
 
 	@Test
