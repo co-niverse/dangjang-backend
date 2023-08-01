@@ -1,6 +1,7 @@
 package com.coniverse.dangjang.domain.infrastructure.auth.client;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Component
 @RequiredArgsConstructor
+@Profile("!test")
 public class KakaoClient implements OAuthClient {
 
 	@Value("${oauth.kakao.url.api}")
