@@ -1,4 +1,6 @@
-package com.coniverse.dangjang.domain.auth.service;
+package com.coniverse.dangjang.domain.auth.support;
+
+import static com.coniverse.dangjang.fixture.UserFixture.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -6,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.coniverse.dangjang.domain.auth.dto.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.request.OauthLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
+import com.coniverse.dangjang.domain.auth.service.AuthTokenGenerator;
+import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
 import com.coniverse.dangjang.domain.infrastructure.auth.dto.KakaoInfoResponse;
 import com.coniverse.dangjang.domain.infrastructure.auth.dto.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
@@ -14,7 +18,7 @@ import com.coniverse.dangjang.support.annotation.FakeBean;
 
 @FakeBean
 @Transactional
-public class TestOauthLoginService implements OauthLoginService {
+public class MockOauthLoginService implements OauthLoginService {
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -32,6 +36,6 @@ public class TestOauthLoginService implements OauthLoginService {
 
 	@Override
 	public OAuthInfoResponse request(OauthLoginRequest params) {
-		return new KakaoInfoResponse("22222222");
+		return new KakaoInfoResponse(유저_이브().getOauthId());
 	}
 }
