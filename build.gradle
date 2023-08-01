@@ -62,7 +62,7 @@ sonarqube {
         property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
         property "sonar.java.binaries", "${buildDir}/classes"
         property "sonar.test.inclusions", "**/*Test.java"
-        property "sonar.exclusions", "**/*Application*, **/*Exception*, **/dto/**, **/entity/**, **/infrastructure/**, **/global/advice/**, **/global/config/**, **/global/support/**, **/generated/**"
+        property "sonar.exclusions", "**/*Application*, **/*Exception*, **/dto/**, **/entity/**, **/infrastructure/**, **/global/advice/**, **/global/config/**, **/global/support/**, **/mapper/**"
     }
 }
 
@@ -90,7 +90,7 @@ jacocoTestReport {
                             '**/global/advice/**',
                             '**/global/config/**',
                             '**/global/support/**',
-                            '**/generated/**'
+                            '**/mapper/**'
                     ])
                 })
         )
@@ -132,7 +132,7 @@ jacocoTestCoverageVerification {
                     '*.global.advice.*',
                     '*.global.config.*',
                     '*.global.support.*',
-                    '*.generated.*'
+                    '*.mapper.*'
             ]
         }
     }
