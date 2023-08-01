@@ -35,11 +35,11 @@ class HealthMetricRepositoryTest {
 	private UserRepository userRepository;
 	@Autowired
 	private EntityManager em;
-	private String 기범_아이디;
+	private String 테오_아이디;
 
 	@BeforeAll
 	void setUp() {
-		기범_아이디 = userRepository.save(유저_기범()).getOauthId();
+		테오_아이디 = userRepository.save(유저_테오()).getOauthId();
 	}
 
 	@AfterAll
@@ -51,10 +51,10 @@ class HealthMetricRepositoryTest {
 	@Test
 	void 건강지표를_성공적으로_저장한다() {
 		// given
-		User 기범 = userRepository.findById(기범_아이디).orElseThrow();
+		User 테오 = userRepository.findById(테오_아이디).orElseThrow();
 
 		// when
-		HealthMetric 저장된_혈당 = healthMetricRepository.save(정상_혈당(기범));
+		HealthMetric 저장된_혈당 = healthMetricRepository.save(정상_혈당(테오));
 		em.flush();
 
 		// then
@@ -72,11 +72,11 @@ class HealthMetricRepositoryTest {
 	@Test
 	void unit이_없는_건강지표를_저장할_경우_예외가_발생한다() {
 		// given
-		User 기범 = userRepository.findById(기범_아이디).orElseThrow();
+		User 테오 = userRepository.findById(테오_아이디).orElseThrow();
 		HealthMetric unit이_없는_혈당 = HealthMetric.builder()
 			.healthMetricType(HealthMetricType.BEFORE_BREAKFAST)
 			.createdAt(LocalDate.now())
-			.user(기범)
+			.user(테오)
 			.build();
 
 		// when

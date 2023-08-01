@@ -16,7 +16,7 @@ public class HealthMetricMapperTest {
 	@Test
 	void 건강지표_entity를_response_dto로_변환한다() {
 		// given
-		HealthMetric 혈당 = 정상_혈당(유저_기범());
+		HealthMetric 혈당 = 정상_혈당(유저_테오());
 
 		// when
 		HealthMetricResponse 혈당_응답 = healthMetricMapper.toResponse(혈당);

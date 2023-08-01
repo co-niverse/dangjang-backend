@@ -41,12 +41,12 @@ class BloodSugarRegistrationServiceTest {
 	private HealthMetricRepository healthMetricRepository;
 	@Autowired
 	private UserRepository userRepository;
-	private User 기범;
+	private User 테오;
 	private HealthMetric 등록된_혈당;
 
 	@BeforeAll
 	void setUp() {
-		기범 = userRepository.save(유저_기범());
+		테오 = userRepository.save(유저_테오());
 	}
 
 	@AfterAll
@@ -62,17 +62,17 @@ class BloodSugarRegistrationServiceTest {
 		HealthMetricPostRequest request = 혈당_등록_요청();
 
 		// when
-		HealthMetricResponse response = bloodSugarRegistrationService.register(request, 등록_일자, 기범.getOauthId());
+		HealthMetricResponse response = bloodSugarRegistrationService.register(request, 등록_일자, 테오.getOauthId());
 
 		// then
-		등록된_혈당 = healthMetricRepository.findByHealthMetricId(기범.getOauthId(), response.createdAt(), response.healthMetricType())
+		등록된_혈당 = healthMetricRepository.findByHealthMetricId(테오.getOauthId(), response.createdAt(), response.healthMetricType())
 			.orElseThrow();
 
 		assertAll(
 			() -> assertThat(등록된_혈당.getHealthMetricType().getTitle()).isEqualTo(request.healthMetricType()),
 			() -> assertThat(등록된_혈당.getUnit()).isEqualTo(request.unit()),
 			() -> assertThat(등록된_혈당.getCreatedAt()).isEqualTo(등록_일자),
-			() -> assertThat(등록된_혈당.getOauthId()).isEqualTo(기범.getOauthId())
+			() -> assertThat(등록된_혈당.getOauthId()).isEqualTo(테오.getOauthId())
 		);
 	}
 
@@ -83,11 +83,11 @@ class BloodSugarRegistrationServiceTest {
 		HealthMetricPatchRequest request = 단위_변경한_혈당_수정_요청();
 
 		// when
-		HealthMetricResponse response = bloodSugarRegistrationService.update(request, 등록_일자, 기범.getOauthId());
+		HealthMetricResponse response = bloodSugarRegistrationService.update(request, 등록_일자, 테오.getOauthId());
 
 		// then
 
-		HealthMetric 수정된_혈당 = healthMetricRepository.findByHealthMetricId(기범.getOauthId(), response.createdAt(), response.healthMetricType())
+		HealthMetric 수정된_혈당 = healthMetricRepository.findByHealthMetricId(테오.getOauthId(), response.createdAt(), response.healthMetricType())
 			.orElseThrow();
 
 		assertAll(
@@ -104,10 +104,10 @@ class BloodSugarRegistrationServiceTest {
 		HealthMetricPatchRequest request = 타입_변경한_혈당_수정_요청();
 
 		// when
-		HealthMetricResponse response = bloodSugarRegistrationService.update(request, 등록_일자, 기범.getOauthId());
+		HealthMetricResponse response = bloodSugarRegistrationService.update(request, 등록_일자, 테오.getOauthId());
 
 		// then
-		HealthMetric 수정된_혈당 = healthMetricRepository.findByHealthMetricId(기범.getOauthId(), response.createdAt(), response.healthMetricType())
+		HealthMetric 수정된_혈당 = healthMetricRepository.findByHealthMetricId(테오.getOauthId(), response.createdAt(), response.healthMetricType())
 			.orElseThrow();
 
 		assertAll(

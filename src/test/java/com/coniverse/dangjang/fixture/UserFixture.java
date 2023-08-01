@@ -15,11 +15,11 @@ import com.coniverse.dangjang.domain.user.entity.enums.Status;
  * @since 1.0.0
  */
 public class UserFixture {
-	public static User 유저_기범() {
+	public static User 유저_테오() {
 		return User.builder()
 			.oauthId("11111111")
 			.oauthProvider(OauthProvider.KAKAO)
-			.nickname("기범")
+			.nickname("TEO")
 			.gender(Gender.M)
 			.birthday(LocalDate.of(1997, 5, 23))
 			.activityAmount(ActivityAmount.MEDIUM)
@@ -31,11 +31,11 @@ public class UserFixture {
 			.build();
 	}
 
-	public static User 유저_가은() {
+	public static User 유저_이브() {
 		return User.builder()
 			.oauthId("22222222")
 			.oauthProvider(OauthProvider.NAVER)
-			.nickname("가은")
+			.nickname("EVE")
 			.gender(Gender.F)
 			.birthday(LocalDate.of(2001, 12, 24))
 			.activityAmount(ActivityAmount.LOW)
