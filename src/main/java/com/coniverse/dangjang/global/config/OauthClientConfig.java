@@ -19,5 +19,4 @@ public class OauthClientConfig {
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	} // TODO WebClient
-
 }
