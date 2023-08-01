@@ -12,7 +12,7 @@ import com.coniverse.dangjang.domain.healthMetric.enums.HealthMetricType;
 import com.coniverse.dangjang.domain.healthMetric.mapper.HealthMetricMapper;
 import com.coniverse.dangjang.domain.healthMetric.repository.HealthMetricRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
-import com.coniverse.dangjang.domain.user.service.UserService;
+import com.coniverse.dangjang.domain.user.service.UserSearchService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class HealthMetricRegistrationService {
 	private final HealthMetricRepository healthMetricRepository;
 	private final HealthMetricMapper healthMetricMapper;
-	private final UserService userService;
+	private final UserSearchService userSearchService;
 	private final HealthMetricSearchService healthMetricSearchService;
 
 	/**
@@ -41,7 +41,7 @@ public class HealthMetricRegistrationService {
 	 * @since 1.0.0
 	 */
 	public HealthMetricResponse register(HealthMetricPostRequest request, LocalDate createdAt, String oauthId) {
-		User user = userService.findUserByOauthId(oauthId);
+		User user = userSearchService.findUserByOauthId(oauthId);
 
 		return healthMetricMapper.toResponse(
 			healthMetricRepository.save(healthMetricMapper.toEntity(request, createdAt, user))
@@ -58,7 +58,7 @@ public class HealthMetricRegistrationService {
 	 */
 	public HealthMetricResponse update(HealthMetricPatchRequest request, LocalDate createdAt, String oauthId) {
 		HealthMetricType healthMetricType = HealthMetricType.findByTitle(request.healthMetricType());
-		User user = userService.findUserByOauthId(oauthId);
+		User user = userSearchService.findUserByOauthId(oauthId);
 		HealthMetric healthMetric = healthMetricSearchService.findHealthMetricById(oauthId, createdAt, healthMetricType);
 
 		if (request.newHealthMetricType() == null) {

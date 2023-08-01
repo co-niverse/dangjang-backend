@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.user.dto.DuplicateNicknameResponse;
@@ -20,9 +21,10 @@ import com.coniverse.dangjang.fixture.SignUpFixture;
  * @since 1.0.0
  */
 @SpringBootTest
-class UserServiceTest {
+@Transactional
+class UserSignupServiceTest {
 	@Autowired
-	private UserService userService;
+	private UserSignupService userSignupService;
 
 	@Test()
 	void 새로운_유저를_추가한다_카카오() {
@@ -35,7 +37,7 @@ class UserServiceTest {
 			diseases);
 
 		//when
-		LoginResponse loginResponse = userService.signUp(signUpRequest);
+		LoginResponse loginResponse = userSignupService.signUp(signUpRequest);
 		//that
 		assertThat(loginResponse.accessToken()).isNotNull();
 		assertThat(loginResponse.refreshToken()).isNotNull();
@@ -54,7 +56,7 @@ class UserServiceTest {
 			diseases);
 
 		//when
-		LoginResponse loginResponse = userService.signUp(signUpRequest);
+		LoginResponse loginResponse = userSignupService.signUp(signUpRequest);
 		//that
 		assertThat(loginResponse.accessToken()).isNotNull();
 		assertThat(loginResponse.refreshToken()).isNotNull();
@@ -72,9 +74,9 @@ class UserServiceTest {
 			false, 0, false, false,
 			diseases);
 
-		userService.signUp(signUpRequest);
+		userSignupService.signUp(signUpRequest);
 		//when
-		DuplicateNicknameResponse isDuplicated = userService.checkDuplicatedNickname(signUpRequest.nickname());
+		DuplicateNicknameResponse isDuplicated = userSignupService.checkDuplicatedNickname(signUpRequest.nickname());
 		//then
 		assertThat(isDuplicated.duplicate()).isFalse();
 	}
@@ -84,7 +86,7 @@ class UserServiceTest {
 		//given
 		String nickname = "nickname";
 		//when
-		DuplicateNicknameResponse isDuplicated = userService.checkDuplicatedNickname(nickname);
+		DuplicateNicknameResponse isDuplicated = userSignupService.checkDuplicatedNickname(nickname);
 		//then
 		assertThat(isDuplicated.duplicate()).isTrue();
 	}

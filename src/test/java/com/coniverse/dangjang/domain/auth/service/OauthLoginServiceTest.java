@@ -12,11 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
-import com.coniverse.dangjang.domain.infrastructure.auth.dto.KakaoInfoResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
-import com.coniverse.dangjang.domain.user.service.UserService;
 
 /**
  * @author EVE, TEO
@@ -29,8 +27,6 @@ class OauthLoginServiceTest {
 	private OauthLoginService oauthLoginService;
 	@Autowired
 	private UserRepository userRepository;
-	@Autowired
-	private UserService userService;
 
 	@Test
 	void 가입된_유저가_아니면_로그인을_실패한다() {
@@ -53,18 +49,11 @@ class OauthLoginServiceTest {
 
 		//then
 		assertAll(
-			() -> assertThat(response.oauthId()).isEqualTo(이브.getOauthId()),
-			() -> assertThat(response.nickname()).isEqualTo(이브.getNickname()),
 			() -> assertThat(response.accessToken()).isNotNull(),
-			() -> assertThat(response.refreshToken()).isNotNull()
+			() -> assertThat(response.refreshToken()).isNotNull(),
+			() -> assertThat(response.nickname()).isEqualTo(이브.getNickname()),
+			() -> assertThat(response.dangjangClub()).isFalse(),
+			() -> assertThat(response.healthConnect()).isFalse()
 		);
-	}
-
-	@Test
-	void 새로운_유저를_추가한다() { // TODO userService test로 빼기
-		//given
-		KakaoInfoResponse kakaoInfoResponse = new KakaoInfoResponse("12345678");
-		String userId = userService.signUp(kakaoInfoResponse);
-		assertThat(userId).isNotNull();
 	}
 }

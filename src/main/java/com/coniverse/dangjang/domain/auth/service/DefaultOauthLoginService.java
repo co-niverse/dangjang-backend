@@ -15,7 +15,7 @@ import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.infrastructure.auth.client.OAuthClient;
 import com.coniverse.dangjang.domain.infrastructure.auth.dto.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
-import com.coniverse.dangjang.domain.user.service.UserService;
+import com.coniverse.dangjang.domain.user.service.UserSearchService;
 
 /**
  * oauth 로그인 서비스
@@ -27,12 +27,12 @@ import com.coniverse.dangjang.domain.user.service.UserService;
 @Transactional
 public class DefaultOauthLoginService implements OauthLoginService {
 	private final AuthTokenGenerator authTokenGenerator;
-	private final UserService userService;
+	private final UserSearchService userSearchService;
 	private final Map<OauthProvider, OAuthClient> clients;
 
-	public DefaultOauthLoginService(AuthTokenGenerator authTokenGenerator, UserService userService, List<OAuthClient> clients) {
+	public DefaultOauthLoginService(AuthTokenGenerator authTokenGenerator, UserSearchService userSearchService, List<OAuthClient> clients) {
 		this.authTokenGenerator = authTokenGenerator;
-		this.userService = userService;
+		this.userSearchService = userSearchService;
 		this.clients = clients.stream().collect(
 			Collectors.toUnmodifiableMap(OAuthClient::getOauthProvider, Function.identity())
 		);
@@ -45,15 +45,14 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	 */
 	public LoginResponse login(OauthLoginRequest params) {
 		OAuthInfoResponse oAuthInfoResponse = request(params);
-		User user = userService.findUserByOauthId(oAuthInfoResponse.getOauthId());
+		User user = userSearchService.findUserByOauthId(oAuthInfoResponse.getOauthId());
 		AuthToken authToken = authTokenGenerator.generate(user.getOauthId());
 
-		return new LoginResponse(user.getOauthId(), user.getNickname(),
-			authToken.getAccessToken(), authToken.getRefreshToken(), authToken.getExpiresIn());
+		return new LoginResponse(authToken.getAccessToken(), authToken.getRefreshToken(), user.getNickname(), false, false);
 	}
 
 	/**
-	 * @param params 카카오,네이버 accessToken을 받아온다.
+	 * @param params 카카오,네이버 accessToken
 	 * @return OAuthInfoResponse 카카오, 네이버 사용자 정보
 	 * @since 1.0.0
 	 */

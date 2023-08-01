@@ -17,7 +17,7 @@ import com.coniverse.dangjang.domain.intro.controller.IntroController;
 import com.coniverse.dangjang.domain.intro.service.IntroService;
 import com.coniverse.dangjang.domain.user.controller.SignUpController;
 import com.coniverse.dangjang.domain.user.controller.UserController;
-import com.coniverse.dangjang.domain.user.service.UserService;
+import com.coniverse.dangjang.domain.user.service.UserSignupService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -53,6 +53,6 @@ public class ControllerTest {
 	@MockBean
 	private CreatedAtUtil createdAtUtil;
 	@MockBean
-	private UserService userService;
+	private UserSignupService userSignupService;
 
 }

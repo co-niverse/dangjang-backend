@@ -22,6 +22,6 @@ public record NaverInfoResponse(Response response) implements OAuthInfoResponse 
 	}
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
-	private record Response(String id) {
+	public record Response(String id) {
 	}
 }

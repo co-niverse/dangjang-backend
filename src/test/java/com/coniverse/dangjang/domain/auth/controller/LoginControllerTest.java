@@ -40,7 +40,6 @@ class LoginControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isOk(),
 			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
-			jsonPath("$.data.oauthId").value(response.oauthId()),
 			jsonPath("$.data.accessToken").value(response.accessToken()),
 			jsonPath("$.data.refreshToken").value(response.refreshToken())
 		);
@@ -79,7 +78,6 @@ class LoginControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isOk(),
 			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
-			jsonPath("$.data.oauthId").value(response.oauthId()),
 			jsonPath("$.data.accessToken").value(response.accessToken()),
 			jsonPath("$.data.refreshToken").value(response.refreshToken())
 		);

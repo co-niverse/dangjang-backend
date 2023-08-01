@@ -22,6 +22,6 @@ public class LoginFixture {
 	}
 
 	public static LoginResponse 로그인_응답() {
-		return new LoginResponse("11111111", "EVE", "accessToken", "refreshToken", 1000L);
+		return new LoginResponse("accessToken", "refreshToken", "EVE", false, false);
 	}
 }

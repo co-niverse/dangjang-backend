@@ -19,7 +19,6 @@ import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
 import com.coniverse.dangjang.domain.user.entity.enums.Status;
-import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -27,27 +26,15 @@ import lombok.RequiredArgsConstructor;
 /**
  * USER Service
  *
- * @author EVE, TEO
+ * @author EVE
  * @since 1.0.0
  */
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserSignupService {
 	private final UserRepository userRepository;
 	private final OauthLoginService oauthLoginService;
 	private final AuthTokenGenerator authTokensGenerator;
-
-	/**
-	 * PK로 유저를 조회한다.
-	 *
-	 * @param oauthId 유저 PK
-	 * @return User 유저
-	 * @throws NonExistentUserException 유저가 존재하지 않을 경우 발생하는 예외
-	 * @since 1.0.0
-	 */
-	public User findUserByOauthId(String oauthId) {
-		return userRepository.findById(oauthId).orElseThrow(NonExistentUserException::new);
-	}
 
 	/**
 	 * 회원가입
@@ -75,6 +62,7 @@ public class UserService {
 			.gender(gender)
 			.height(signUpRequest.height())
 			.status(Status.ACTIVE)
+			.role("ROLE_USER")
 			.recommendedCalorie(recommendedCalorie)
 			.build();
 
@@ -90,7 +78,6 @@ public class UserService {
 	 * @throws IllegalArgumentException 잘못된 provider 일때 발생하는 오류
 	 * @since 1.0.0
 	 */
-
 	public OAuthInfoResponse getOauthInfo(OauthProvider provider, String accessToken) {
 		if (provider.equals(OauthProvider.KAKAO)) {
 			KakaoLoginRequest kakaoLoginRequest = new KakaoLoginRequest(accessToken);
@@ -140,7 +127,7 @@ public class UserService {
 	 */
 	public LoginResponse signupAfterLogin(UserResponse userResponse) {
 		AuthToken authToken = authTokensGenerator.generate(userResponse.oauthId());
-		return new LoginResponse(userResponse.nickname(), authToken.getAccessToken(), authToken.getRefreshToken(), false, false);
+		return new LoginResponse(authToken.getAccessToken(), authToken.getRefreshToken(), userResponse.nickname(), false, false);
 	}
 
 	/**
@@ -158,5 +145,4 @@ public class UserService {
 			return new DuplicateNicknameResponse(true);
 		}
 	}
-
 }
