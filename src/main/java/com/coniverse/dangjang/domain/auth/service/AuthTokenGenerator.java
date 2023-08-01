@@ -44,16 +44,5 @@ public class AuthTokenGenerator {
 
 		return AuthToken.of(accessToken, refreshToken, BEARER_TYPE, accessTokenExpireTime / 1000L);
 	}
-
-	/**
-	 * access token에서 유저 id를 추출한다
-	 *
-	 * @param accessToken JWT 토큰
-	 * @return user id
-	 * @since 1.0.0
-	 */
-	public Long extractMemberId(String accessToken) {
-		return Long.valueOf(jwtTokenProvider.extractSubject(accessToken));
-	}
 }
 
