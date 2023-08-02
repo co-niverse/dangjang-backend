@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * @author EVE
- * @since 1.0
+ * @since 1.0.0
  */
 @RestController
 @RequiredArgsConstructor
@@ -28,7 +28,7 @@ public class LoginController {
 	/**
 	 * @param params 카카오 accessToken을 받아온다.
 	 * @return ResponseEntity 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, authID)를 전달한다.
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	@PostMapping("/kakao")
 	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginKakao(@RequestBody KakaoLoginRequest params) {
@@ -39,7 +39,7 @@ public class LoginController {
 	/**
 	 * @param params 네이버 accessToken을 받아온다.
 	 * @return ResponseEntity 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, authID)를 전달한다.
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	@PostMapping("/naver")
 	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginNaver(@RequestBody NaverLoginRequest params) {

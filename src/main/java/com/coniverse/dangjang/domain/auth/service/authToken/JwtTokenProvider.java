@@ -27,7 +27,7 @@ import io.jsonwebtoken.security.Keys;
  * JWT 생성 및 반환
  *
  * @author EVE
- * @since 1.0
+ * @since 1.0.0
  */
 @Component
 public class JwtTokenProvider {
@@ -40,7 +40,7 @@ public class JwtTokenProvider {
 	 *
 	 * @param secretKey      JWT SECRETKEY
 	 * @param userRepository
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 
 	public JwtTokenProvider(@Value("${jwt.secret-key}") String secretKey, UserRepository userRepository) {
@@ -55,7 +55,7 @@ public class JwtTokenProvider {
 	 * @param oauthId userID String으로 변환한 값
 	 * @return Jwts.builder() JWT TOKEN
 	 * @Parm expiredAt JWT 유효 기간
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	public String generate(String oauthId, String role, Date expiredAt) {
 		return Jwts.builder()
@@ -103,7 +103,7 @@ public class JwtTokenProvider {
 	 *
 	 * @param accessToken JWT ACCESSTOKEN
 	 * @return claims.getSubject() userID 반환
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	private Claims parseClaims(String accessToken) {
 		try {

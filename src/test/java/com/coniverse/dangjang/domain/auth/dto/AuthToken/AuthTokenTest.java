@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * @author EVE
- * @since 1.0
+ * @since 1.0.0
  */
 class AuthTokenTest {
 	@Test

@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
  * 네이버 사용자 정보 조회
  *
  * @author EVE
- * @since 1.0
+ * @since 1.0.0
  */
 @Component
 @RequiredArgsConstructor
@@ -38,7 +38,7 @@ public class NaverInfoRequestService implements OAuthInfoRequestService {
 	/**
 	 * @param accessToken 네이버 accessToken을 받아온다.
 	 * @return OAuthInfoResponse 네이버 사용자 정보
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	@Override
 	public OAuthInfoResponse requestOauthInfo(String accessToken) {

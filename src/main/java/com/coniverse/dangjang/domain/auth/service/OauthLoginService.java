@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * @author EVE
- * @since 1.0
+ * @since 1.0.0
  */
 @Service
 @RequiredArgsConstructor
@@ -27,7 +27,7 @@ public class OauthLoginService {
 	/**
 	 * @param params 카카오,네이버 accessToken을 받아온다.
 	 * @return Content 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, authID)를 전달한다.
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	public LoginResponse login(OauthLoginRequest params) {
 		OAuthInfoResponse oAuthInfoResponse = oauthInfoService.request(params);

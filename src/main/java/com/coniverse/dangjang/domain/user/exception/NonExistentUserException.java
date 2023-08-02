@@ -8,7 +8,7 @@ import com.coniverse.dangjang.global.exception.BusinessException;
  * findUser()에서 발생한다.
  *
  * @author EVE
- * @since 1.0
+ * @since 1.0.0
  */
 public class NonExistentUserException extends BusinessException {
 	public NonExistentUserException() {

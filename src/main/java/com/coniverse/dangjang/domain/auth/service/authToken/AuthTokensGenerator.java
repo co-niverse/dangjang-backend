@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
  * JWT 생성 및 추출
  *
  * @author EVE
- * @since 1.0
+ * @since 1.0.0
  */
 
 @Service
@@ -33,7 +33,7 @@ public class AuthTokensGenerator {
 	 *
 	 * @param oauthId 유저 ID
 	 * @return AuthTokens JWT TOKEN 반환
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	public AuthToken generate(String oauthId, Role role) {
 		long now = (new Date()).getTime();
@@ -52,7 +52,7 @@ public class AuthTokensGenerator {
 	 *
 	 * @param accessToken JWT 토큰
 	 * @return Long 유저ID 반환
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 
 }

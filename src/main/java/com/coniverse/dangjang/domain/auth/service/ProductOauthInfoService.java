@@ -16,7 +16,7 @@ import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
 
 /**
  * @author EVE
- * @since 1.0
+ * @since 1.0.0
  */
 
 @Service

@@ -6,7 +6,7 @@ import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
  * 로그인 parm interface
  *
  * @author EVE
- * @since 1.0
+ * @since 1.0.0
  */
 public interface OauthLoginRequest {
 	OauthProvider getOauthProvider();

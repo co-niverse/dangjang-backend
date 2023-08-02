@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
  * 카카오 사용자 정보 조회
  *
  * @author EVE
- * @since 1.0
+ * @since 1.0.0
  */
 @Component
 @RequiredArgsConstructor
@@ -38,7 +38,7 @@ public class KakaoInfoRequestService implements OAuthInfoRequestService {
 	/**
 	 * @param accessToken 카카오 accessToken을 받아온다.
 	 * @return OAuthInfoResponse 카카오 사용자 정보
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	@Override
 	public OAuthInfoResponse requestOauthInfo(String accessToken) {

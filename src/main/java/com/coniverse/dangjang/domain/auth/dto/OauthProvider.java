@@ -12,7 +12,7 @@ import lombok.Getter;
  * 카카오,네이버 provider enum
  *
  * @author EVE
- * @since 1.0
+ * @since 1.0.0
  */
 @AllArgsConstructor
 public enum OauthProvider {

@@ -10,7 +10,7 @@ import lombok.Setter;
  * 네이버 로그인 parm
  *
  * @author EVE
- * @since 1.0
+ * @since 1.0.0
  */
 @Getter
 @Setter

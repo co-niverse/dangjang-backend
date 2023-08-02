@@ -30,7 +30,7 @@ import lombok.RequiredArgsConstructor;
  * USER Service
  *
  * @author EVE
- * @since 1.0
+ * @since 1.0.0
  */
 @Service
 @RequiredArgsConstructor
@@ -45,7 +45,7 @@ public class UserService {
 	 * @param oAuthInfoResponse 카카오,네이버에서 사용자 정보 조회한 데이터 (authID ,Provider)
 	 * @return userInfo 기존 유저일 때, 유저 정보를 리턴
 	 * @throws NonExistentUserException 회원가입된 유저가 아닐때 발생하는 오류
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 
 	public UserResponse findUser(OAuthInfoResponse oAuthInfoResponse) throws NonExistentUserException {
@@ -61,7 +61,7 @@ public class UserService {
 	 * @param accessToken Oauth 토큰
 	 * @return OAuthInfoResponse 유저 정보
 	 * @throws IllegalArgumentException 잘못된 provider 일때 발생하는 오류
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 
 	public OAuthInfoResponse getOauthInfo(OauthProvider provider, String accessToken) {
@@ -86,7 +86,7 @@ public class UserService {
 	 * @param height         몸무게
 	 * @param activityAmount 하루 활동량
 	 * @return 권장칼로리
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 
 	public int calCulateRecommendedCalorie(Gender gender, int height, ActivityAmount activityAmount) {
@@ -111,7 +111,7 @@ public class UserService {
 	 *
 	 * @param signUpRequest 회원가입 정보
 	 * @return LoginResponse 로그인 응답
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	public LoginResponse signUp(SignUpRequest signUpRequest) {
 		//Todo : 테스트하기 위한 카카오 임시 더미데이터임, pr 올리기 전에 수정할 것
@@ -148,7 +148,7 @@ public class UserService {
 	 *
 	 * @param userResponse 사용자 정보
 	 * @return LoginResponse 로그인 정보
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 	public LoginResponse signupAfterLogin(UserResponse userResponse) {
 		AuthToken authToken = authTokensGenerator.generate(userResponse.oauthId(), Role.USER); //Todo : role 수정
@@ -160,7 +160,7 @@ public class UserService {
 	 *
 	 * @param nickname 확인이 필요한 닉네임
 	 * @return 중복된 닉네임이면 false, 중복되지 않았으면 true를 담은 DuplicateNicknameResponse 객체 리턴
-	 * @since 1.0
+	 * @since 1.0.0
 	 */
 
 	public DuplicateNicknameResponse checkDublicateNickname(String nickname) {
