@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.auth.dto.Response;
+package com.coniverse.dangjang.domain.auth.dto.response;
 
 /**
  * 로그인 RESPONSE

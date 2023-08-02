@@ -9,16 +9,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.coniverse.dangjang.domain.auth.controller.LoginController;
+import com.coniverse.dangjang.domain.auth.service.JwtTokenProvider;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
-import com.coniverse.dangjang.domain.auth.service.authToken.JwtTokenProvider;
-import com.coniverse.dangjang.domain.healthMetric.controller.HealthMetricRegistrationController;
-import com.coniverse.dangjang.domain.healthMetric.service.bloodSugar.BloodSugarRegistrationService;
-import com.coniverse.dangjang.domain.healthMetric.util.CreatedAtUtil;
+import com.coniverse.dangjang.domain.healthmetric.controller.HealthMetricRegistrationController;
+import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegistrationService;
+import com.coniverse.dangjang.domain.healthmetric.util.CreatedAtUtil;
 import com.coniverse.dangjang.domain.intro.controller.IntroController;
 import com.coniverse.dangjang.domain.intro.service.IntroService;
 import com.coniverse.dangjang.domain.user.controller.SignUpController;
 import com.coniverse.dangjang.domain.user.controller.UserController;
-import com.coniverse.dangjang.domain.user.service.UserService;
+import com.coniverse.dangjang.domain.user.service.UserSignupService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -50,11 +50,11 @@ public class ControllerTest {
 	@MockBean
 	private OauthLoginService oAuthLoginService;
 	@MockBean
-	private BloodSugarRegistrationService bloodSugarService;
+	private HealthMetricRegistrationService healthMetricRegistrationService;
 	@MockBean
 	private CreatedAtUtil createdAtUtil;
 	@MockBean
-	private UserService userService;
+	private UserSignupService userSignupService;
 	@MockBean
 	private JwtTokenProvider jwtTokenProvider;
 

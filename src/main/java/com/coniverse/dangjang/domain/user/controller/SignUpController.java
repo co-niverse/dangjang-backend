@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
+import com.coniverse.dangjang.domain.auth.dto.response.signInResponse;
 import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
-import com.coniverse.dangjang.domain.user.service.UserService;
+import com.coniverse.dangjang.domain.user.service.UserSignupService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
 import jakarta.validation.Valid;
@@ -23,16 +23,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/signUp")
 public class SignUpController {
-	private final UserService userService;
+	private final UserSignupService userSignupService;
 
 	/**
 	 * @param params 회원가입에 필요한 정보를 담아온다.
 	 * @return 회원가입 후 로그인을 시도 , ResponseEntity 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, authID)를 전달한다.
 	 * @since 1.0
 	 */
-	@PostMapping("")
-	public ResponseEntity<SuccessSingleResponse<LoginResponse>> signUp(@Valid @RequestBody SignUpRequest params) {
-		LoginResponse loginResponse = userService.signUp(params);
+	@PostMapping
+	public ResponseEntity<SuccessSingleResponse<signInResponse>> signUp(@Valid @RequestBody SignUpRequest params) {
+		signInResponse loginResponse = userSignupService.signUp(params);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
 	}
 }

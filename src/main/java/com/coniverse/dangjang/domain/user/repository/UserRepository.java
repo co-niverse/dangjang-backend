@@ -12,14 +12,11 @@ import com.coniverse.dangjang.domain.user.entity.User;
  * @author EVE
  * @since 1.0.0
  */
-// public interface UserRepository extends JpaRepository<User, UserId> {
 public interface UserRepository extends JpaRepository<User, String> {
 	/**
-	 * OauthID(카카오,네이버 사용자 ID)로 사용자 정보 조회
+	 * nickname으로 사용자 정보 조회
 	 *
 	 * @since 1.0.0
 	 */
 	Optional<User> findByNickname(String nickname);
-
-	Optional<User> findByOauthId(String oauthId);
 }

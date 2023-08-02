@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.coniverse.dangjang.domain.auth.service.authToken.JwtTokenProvider;
+import com.coniverse.dangjang.domain.auth.service.JwtTokenProvider;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coniverse.dangjang.domain.user.dto.DuplicateNicknameResponse;
-import com.coniverse.dangjang.domain.user.service.UserService;
+import com.coniverse.dangjang.domain.user.service.UserSignupService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
 import jakarta.validation.constraints.NotBlank;
@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api")
 @Validated
 public class UserController {
-	private final UserService userService;
+	private final UserSignupService userSignupService;
 
 	/**
 	 * @param nickname 확인이 필요한 닉네임을 담아온다.
@@ -35,7 +35,7 @@ public class UserController {
 	@GetMapping("/duplicateNickname")
 	public ResponseEntity<SuccessSingleResponse<DuplicateNicknameResponse>> checkDuplicateNickname(
 		@RequestParam @Pattern(regexp = "^[a-zA-Z]{1,8}$", message = "닉네임은 영어로만 이루어져있어야 합니다.") @NotBlank(message = "닉네임은 1~8글자 이내여야 합니다.") String nickname) {
-		DuplicateNicknameResponse duplicateNicknameResponse = userService.checkDublicateNickname(nickname);
+		DuplicateNicknameResponse duplicateNicknameResponse = userSignupService.checkDuplicatedNickname(nickname);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), duplicateNicknameResponse));
 	}
 }

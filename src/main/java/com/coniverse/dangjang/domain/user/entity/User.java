@@ -2,6 +2,8 @@ package com.coniverse.dangjang.domain.user.entity;
 
 import java.time.LocalDate;
 
+import org.springframework.data.domain.Persistable;
+
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
@@ -14,7 +16,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,16 +25,15 @@ import lombok.NoArgsConstructor;
  * @author EVE
  * @since 1.0.0
  */
-@Entity
-@Table(name = "users")
-@Getter
+@Entity(name = "users")
+@Getter // TODO getter 제거하기
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends BaseEntity {
+public class User extends BaseEntity implements Persistable<String> {
 	@Id
 	private String oauthId;
 	@Enumerated(EnumType.STRING)
 	private OauthProvider oauthProvider;
-	@Column(nullable = false, unique = true, length = 15)
+	@Column(nullable = false, unique = true, length = 8)
 	private String nickname;
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, length = 5)
@@ -47,6 +47,7 @@ public class User extends BaseEntity {
 	private int height;
 	@Column(nullable = false)
 	private int recommendedCalorie;
+
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Status status;
@@ -57,8 +58,7 @@ public class User extends BaseEntity {
 
 	@Builder
 	private User(String oauthId, OauthProvider oauthProvider, String nickname, Gender gender, LocalDate birthday, ActivityAmount activityAmount, int height,
-		int recommendedCalorie, Status status,
-		String profileImagePath, Role role) {
+		int recommendedCalorie, Role role, Status status, String profileImagePath) {
 		this.oauthId = oauthId;
 		this.oauthProvider = oauthProvider;
 		this.nickname = nickname;
@@ -68,8 +68,17 @@ public class User extends BaseEntity {
 		this.height = height;
 		this.recommendedCalorie = recommendedCalorie;
 		this.status = status;
-		this.profileImagePath = profileImagePath;
 		this.role = role;
+		this.profileImagePath = profileImagePath;
 	}
 
+	@Override
+	public String getId() {
+		return this.oauthId;
+	}
+
+	@Override
+	public boolean isNew() {
+		return getCreatedAt() == null;
+	}
 }
