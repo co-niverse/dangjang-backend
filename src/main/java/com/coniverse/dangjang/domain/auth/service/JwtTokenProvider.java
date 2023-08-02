@@ -73,8 +73,7 @@ public class JwtTokenProvider {
 		Claims claims = parseClaims(token);
 
 		String oauthId = claims.getSubject().toString();
-		//Todo: 왱 Collection 타입으로 만드는지 이해못함
-		//클레임에서 권한 정보 가져오기
+
 		final Collection<? extends GrantedAuthority> authorities = Stream.of(
 				claims.get("role").toString())
 			.map(SimpleGrantedAuthority::new)
