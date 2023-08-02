@@ -13,7 +13,6 @@ import com.coniverse.dangjang.domain.auth.service.AuthTokenGenerator;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
 import com.coniverse.dangjang.domain.infrastructure.auth.dto.KakaoInfoResponse;
 import com.coniverse.dangjang.domain.infrastructure.auth.dto.OAuthInfoResponse;
-import com.coniverse.dangjang.domain.user.dto.UserDto;
 import com.coniverse.dangjang.domain.user.dto.request.SignUpRequest;
 import com.coniverse.dangjang.domain.user.dto.response.DuplicateNicknameResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
@@ -21,7 +20,6 @@ import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
 import com.coniverse.dangjang.domain.user.entity.enums.Role;
 import com.coniverse.dangjang.domain.user.entity.enums.Status;
-import com.coniverse.dangjang.domain.user.mapper.UserMapperImpl;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -38,7 +36,6 @@ public class UserSignupService {
 	private final UserRepository userRepository;
 	private final OauthLoginService oauthLoginService;
 	private final AuthTokenGenerator authTokensGenerator;
-	private final UserMapperImpl userMapper;
 
 	/**
 	 * 회원가입
@@ -72,8 +69,8 @@ public class UserSignupService {
 			.role(Role.USER)
 			.recommendedCalorie(recommendedCalorie)
 			.build();
-		
-		return signupAfterLogin(userMapper.toDto(userRepository.save(user)));
+
+		return signupAfterLogin(userRepository.save(user));
 	}
 
 	/**
@@ -128,14 +125,14 @@ public class UserSignupService {
 	/**
 	 * 회원가입 후 로그인
 	 *
-	 * @param userDto 사용자 정보
+	 * @param user 사용자 정보
 	 * @return LoginResponse 로그인 정보
 	 * @since 1.0.0
 	 */
 	//Todo merge 수정
-	public LoginResponse signupAfterLogin(UserDto userDto) {
-		AuthToken authToken = authTokensGenerator.generate(userDto.oauthId(), Role.USER); //Todo role 수정
-		return new LoginResponse(authToken.getAccessToken(), authToken.getRefreshToken(), userDto.nickname(), false, false);
+	public LoginResponse signupAfterLogin(User user) {
+		AuthToken authToken = authTokensGenerator.generate(user.getOauthId(), user.getRole()); //Todo role 수정
+		return new LoginResponse(authToken.getAccessToken(), authToken.getRefreshToken(), user.getNickname(), false, false);
 	}
 
 	/**
