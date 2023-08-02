@@ -8,7 +8,7 @@ import com.coniverse.dangjang.domain.auth.dto.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
-import com.coniverse.dangjang.domain.auth.dto.response.signInResponse;
+import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.service.AuthTokenGenerator;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
 import com.coniverse.dangjang.domain.infrastructure.auth.dto.OAuthInfoResponse;
@@ -44,7 +44,7 @@ public class UserSignupService {
 	 * @return LoginResponse 로그인 응답
 	 * @since 1.0.0
 	 */
-	public signInResponse signUp(SignUpRequest signUpRequest) {
+	public LoginResponse signUp(SignUpRequest signUpRequest) {
 		OAuthInfoResponse oAuthInfoResponse = getOauthInfo(OauthProvider.of(signUpRequest.provider()), signUpRequest.accessToken());
 
 		ActivityAmount activityAmount = ActivityAmount.of(signUpRequest.activityAmount());
@@ -127,9 +127,9 @@ public class UserSignupService {
 	 * @since 1.0.0
 	 */
 	//Todo merge 수정
-	public signInResponse signupAfterLogin(UserResponse userResponse) {
+	public LoginResponse signupAfterLogin(UserResponse userResponse) {
 		AuthToken authToken = authTokensGenerator.generate(userResponse.oauthId(), Role.USER); //Todo role 수정
-		return new signInResponse(authToken.getAccessToken(), authToken.getRefreshToken(), userResponse.nickname(), false, false);
+		return new LoginResponse(authToken.getAccessToken(), authToken.getRefreshToken(), userResponse.nickname(), false, false);
 	}
 
 	/**

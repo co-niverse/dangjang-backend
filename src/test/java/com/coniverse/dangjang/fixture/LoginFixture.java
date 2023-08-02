@@ -2,7 +2,7 @@ package com.coniverse.dangjang.fixture;
 
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
-import com.coniverse.dangjang.domain.auth.dto.response.signInResponse;
+import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 
 /**
  * login fixture
@@ -21,7 +21,7 @@ public class LoginFixture {
 		return new NaverLoginRequest(액세스_토큰);
 	}
 
-	public static signInResponse 로그인_응답() {
-		return new signInResponse("accessToken", "refreshToken", "EVE", false, false);
+	public static LoginResponse 로그인_응답() {
+		return new LoginResponse("accessToken", "refreshToken", "EVE", false, false);
 	}
 }

@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.coniverse.dangjang.domain.auth.dto.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.auth.dto.request.OauthLoginRequest;
-import com.coniverse.dangjang.domain.auth.dto.response.signInResponse;
+import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.infrastructure.auth.client.OAuthClient;
 import com.coniverse.dangjang.domain.infrastructure.auth.dto.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
@@ -44,12 +44,12 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	 * @return Content 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, authID)를 전달한다.
 	 * @since 1.0.0
 	 */
-	public signInResponse login(OauthLoginRequest params) {
+	public LoginResponse login(OauthLoginRequest params) {
 		OAuthInfoResponse oAuthInfoResponse = request(params);
 		User user = userSearchService.findUserByOauthId(oAuthInfoResponse.getOauthId());
 		AuthToken authToken = authTokenGenerator.generate(user.getOauthId(), Role.USER);
 
-		return new signInResponse(authToken.getAccessToken(), authToken.getRefreshToken(), user.getNickname(), false, false);
+		return new LoginResponse(authToken.getAccessToken(), authToken.getRefreshToken(), user.getNickname(), false, false);
 	}
 
 	/**

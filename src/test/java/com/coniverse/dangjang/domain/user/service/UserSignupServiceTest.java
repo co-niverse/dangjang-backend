@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.coniverse.dangjang.domain.auth.dto.response.signInResponse;
+import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.user.dto.DuplicateNicknameResponse;
 import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
 import com.coniverse.dangjang.fixture.SignUpFixture;
@@ -37,7 +37,7 @@ class UserSignupServiceTest {
 			diseases);
 
 		//when
-		signInResponse loginResponse = userSignupService.signUp(signUpRequest);
+		LoginResponse loginResponse = userSignupService.signUp(signUpRequest);
 		//that
 		assertThat(loginResponse.accessToken()).isNotNull();
 		assertThat(loginResponse.refreshToken()).isNotNull();
@@ -56,7 +56,7 @@ class UserSignupServiceTest {
 			diseases);
 
 		//when
-		signInResponse loginResponse = userSignupService.signUp(signUpRequest);
+		LoginResponse loginResponse = userSignupService.signUp(signUpRequest);
 		//that
 		assertThat(loginResponse.accessToken()).isNotNull();
 		assertThat(loginResponse.refreshToken()).isNotNull();

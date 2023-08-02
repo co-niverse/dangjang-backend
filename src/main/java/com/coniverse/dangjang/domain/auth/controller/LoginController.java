@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
-import com.coniverse.dangjang.domain.auth.dto.response.signInResponse;
+import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
@@ -35,8 +35,8 @@ public class LoginController {
 	 * @since 1.0.0
 	 */
 	@PostMapping("/kakao")
-	public ResponseEntity<SuccessSingleResponse<signInResponse>> loginKakao(@Valid @RequestBody KakaoLoginRequest params) {
-		signInResponse loginResponse = oauthLoginService.login(params);
+	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginKakao(@Valid @RequestBody KakaoLoginRequest params) {
+		LoginResponse loginResponse = oauthLoginService.login(params);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
 	}
 
@@ -46,8 +46,8 @@ public class LoginController {
 	 * @since 1.0.0
 	 */
 	@PostMapping("/naver")
-	public ResponseEntity<SuccessSingleResponse<signInResponse>> loginNaver(@Valid @RequestBody NaverLoginRequest params) {
-		signInResponse loginResponse = oauthLoginService.login(params);
+	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginNaver(@Valid @RequestBody NaverLoginRequest params) {
+		LoginResponse loginResponse = oauthLoginService.login(params);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
 	}
 }

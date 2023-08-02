@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
-import com.coniverse.dangjang.domain.auth.dto.response.signInResponse;
+import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
@@ -45,7 +45,7 @@ class OauthLoginServiceTest {
 		KakaoLoginRequest request = 카카오_로그인_요청();
 
 		//when
-		signInResponse response = oauthLoginService.login(request);
+		LoginResponse response = oauthLoginService.login(request);
 
 		//then
 		assertAll(

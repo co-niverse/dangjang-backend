@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.coniverse.dangjang.domain.auth.dto.response.signInResponse;
+import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
 import com.coniverse.dangjang.domain.user.service.UserSignupService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
@@ -31,8 +31,8 @@ public class SignUpController {
 	 * @since 1.0
 	 */
 	@PostMapping
-	public ResponseEntity<SuccessSingleResponse<signInResponse>> signUp(@Valid @RequestBody SignUpRequest params) {
-		signInResponse loginResponse = userSignupService.signUp(params);
+	public ResponseEntity<SuccessSingleResponse<LoginResponse>> signUp(@Valid @RequestBody SignUpRequest params) {
+		LoginResponse loginResponse = userSignupService.signUp(params);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
 	}
 }

@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
-import com.coniverse.dangjang.domain.auth.dto.response.signInResponse;
+import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
 import com.coniverse.dangjang.support.ControllerTest;
 
@@ -22,7 +22,7 @@ import com.coniverse.dangjang.support.ControllerTest;
  */
 class LoginControllerTest extends ControllerTest {
 	private static final String URI = "/api/auth";
-	private final signInResponse response = 로그인_응답();
+	private final LoginResponse response = 로그인_응답();
 	@Autowired
 	private OauthLoginService oauthLoginService;
 
