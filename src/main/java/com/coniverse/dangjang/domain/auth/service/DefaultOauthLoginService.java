@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
 import com.coniverse.dangjang.domain.auth.dto.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
@@ -16,6 +17,7 @@ import com.coniverse.dangjang.domain.infrastructure.auth.client.OAuthClient;
 import com.coniverse.dangjang.domain.infrastructure.auth.dto.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.entity.enums.Role;
+import com.coniverse.dangjang.domain.user.exception.InvalidAuthenticationException;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
 
 /**
@@ -55,12 +57,19 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	/**
 	 * @param params 카카오,네이버 accessToken
 	 * @return OAuthInfoResponse 카카오, 네이버 사용자 정보
+	 * @throws InvalidAuthenticationException 유효하지 않은 인증
 	 * @since 1.0.0
 	 */
 	@Override
 	public OAuthInfoResponse request(OauthLoginRequest params) {
-		OAuthClient client = clients.get(params.getOauthProvider());
-		String accessToken = params.getAccessToken();
-		return client.requestOauthInfo(accessToken);
+
+		try {
+			OAuthClient client = clients.get(params.getOauthProvider());
+			String accessToken = params.getAccessToken();
+			return client.requestOauthInfo(accessToken);
+		} catch (HttpClientErrorException.Unauthorized e) {
+			throw new InvalidAuthenticationException();
+		}
+
 	}
 }
