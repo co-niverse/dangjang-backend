@@ -62,7 +62,7 @@ public class SecurityConfig {
 			.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers("/api/signUp").permitAll()
 				.requestMatchers("/api/signIn").permitAll()
-				.requestMatchers("/api/intro/*").hasRole("ADMIN")
+				.requestMatchers("/api/intro/*").permitAll()
 
 			);
 
