@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.coniverse.dangjang.domain.auth.controller.LoginController;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
+import com.coniverse.dangjang.domain.auth.service.authToken.JwtTokenProvider;
 import com.coniverse.dangjang.domain.healthMetric.controller.HealthMetricRegistrationController;
 import com.coniverse.dangjang.domain.healthMetric.service.bloodSugar.BloodSugarRegistrationService;
 import com.coniverse.dangjang.domain.healthMetric.util.CreatedAtUtil;
@@ -54,5 +55,7 @@ public class ControllerTest {
 	private CreatedAtUtil createdAtUtil;
 	@MockBean
 	private UserService userService;
+	@MockBean
+	private JwtTokenProvider jwtTokenProvider;
 
 }
