@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
+import com.coniverse.dangjang.domain.user.entity.enums.Role;
 import com.coniverse.dangjang.domain.user.entity.enums.Status;
 import com.coniverse.dangjang.global.support.BaseEntity;
 
@@ -28,8 +29,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
-	// @EmbeddedId
-	// private UserId userId;
 	@Id
 	private String oauthId;
 	@Enumerated(EnumType.STRING)
@@ -52,12 +51,14 @@ public class User extends BaseEntity {
 	@Column(nullable = false)
 	private Status status;
 	private String profileImagePath;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private Role role;
 
 	@Builder
 	private User(String oauthId, OauthProvider oauthProvider, String nickname, Gender gender, LocalDate birthday, ActivityAmount activityAmount, int height,
 		int recommendedCalorie, Status status,
-		String profileImagePath) {
-		// this.userId = new UserId(oauthId, oauthProvider);
+		String profileImagePath, Role role) {
 		this.oauthId = oauthId;
 		this.oauthProvider = oauthProvider;
 		this.nickname = nickname;
@@ -68,21 +69,7 @@ public class User extends BaseEntity {
 		this.recommendedCalorie = recommendedCalorie;
 		this.status = status;
 		this.profileImagePath = profileImagePath;
+		this.role = role;
 	}
 
-	// @Override
-	// public boolean equals(Object obj) {
-	// 	if (obj instanceof User) {
-	// 		return this.userId.equals(((User)obj).userId);
-	// 	}
-	// 	return false;
-	// }
-
-	// public String getOauthId() {
-	// 	return this.userId.getOauthId();
-	// }
-	//
-	// public OauthProvider getOauthProvider() {
-	// 	return this.userId.getOauthProvider();
-	// }
 }

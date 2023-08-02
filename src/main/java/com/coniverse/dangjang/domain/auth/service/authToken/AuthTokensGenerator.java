@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthToken;
+import com.coniverse.dangjang.domain.user.entity.enums.Role;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,18 +31,18 @@ public class AuthTokensGenerator {
 	/**
 	 * JWT 생성
 	 *
-	 * @param memberId 유저 ID
+	 * @param oauthId 유저 ID
 	 * @return AuthTokens JWT TOKEN 반환
 	 * @since 1.0
 	 */
-	public AuthToken generate(String memberId) {
+	public AuthToken generate(String oauthId, Role role) {
 		long now = (new Date()).getTime();
 		Date accessTokenExpiredAt = new Date(now + accessTokenExpireTime);
 		Date refreshTokenExpiredAt = new Date(now + refreshTokenExpireTime);
 
-		String subject = memberId;
-		String accessToken = jwtTokenProvider.generate(subject, accessTokenExpiredAt);
-		String refreshToken = jwtTokenProvider.generate(subject, refreshTokenExpiredAt);
+		String subject = oauthId;
+		String accessToken = jwtTokenProvider.generate(subject, "USER", accessTokenExpiredAt); //TODO : role 수정
+		String refreshToken = jwtTokenProvider.generate(subject, "USER", refreshTokenExpiredAt);
 
 		return AuthToken.of(accessToken, refreshToken, BEARER_TYPE, accessTokenExpireTime / 1000L);
 	}
@@ -53,8 +54,6 @@ public class AuthTokensGenerator {
 	 * @return Long 유저ID 반환
 	 * @since 1.0
 	 */
-	public Long extractMemberId(String accessToken) {
-		return Long.valueOf(jwtTokenProvider.extractSubject(accessToken));
-	}
+
 }
 

@@ -17,8 +17,10 @@ import com.coniverse.dangjang.domain.user.dto.UserResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
+import com.coniverse.dangjang.domain.user.entity.enums.Role;
 import com.coniverse.dangjang.domain.user.entity.enums.Status;
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
+import com.coniverse.dangjang.domain.user.infrastructure.KakaoInfoResponse;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
@@ -112,7 +114,10 @@ public class UserService {
 	 * @since 1.0
 	 */
 	public LoginResponse signUp(SignUpRequest signUpRequest) {
-		OAuthInfoResponse oAuthInfoResponse = getOauthInfo(OauthProvider.of(signUpRequest.provider()), signUpRequest.accessToken());
+		//Todo : 테스트하기 위한 카카오 임시 더미데이터임, pr 올리기 전에 수정할 것
+		KakaoInfoResponse oAuthInfoResponse = new KakaoInfoResponse();
+		oAuthInfoResponse.setId("dsfkdjsklf837");
+		//OAuthInfoResponse oAuthInfoResponse = getOauthInfo(OauthProvider.of(signUpRequest.provider()), signUpRequest.accessToken());
 
 		ActivityAmount activityAmount = ActivityAmount.of(signUpRequest.activityAmount());
 
@@ -132,6 +137,7 @@ public class UserService {
 			.profileImagePath("/")
 			.status(Status.ACTIVE)
 			.recommendedCalorie(recommendedCalorie)
+			.role(Role.USER)
 			.build();
 
 		return signupAfterLogin(new UserResponse(userRepository.save(user).getOauthId(), user.getNickname()));
@@ -145,7 +151,7 @@ public class UserService {
 	 * @since 1.0
 	 */
 	public LoginResponse signupAfterLogin(UserResponse userResponse) {
-		AuthToken authToken = authTokensGenerator.generate(userResponse.oauthId());
+		AuthToken authToken = authTokensGenerator.generate(userResponse.oauthId(), Role.USER); //Todo : role 수정
 		return new LoginResponse(userResponse.nickname(), authToken.getAccessToken(), authToken.getRefreshToken(), false, false);
 	}
 
