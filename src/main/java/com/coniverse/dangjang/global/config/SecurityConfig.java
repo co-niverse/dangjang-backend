@@ -60,9 +60,7 @@ public class SecurityConfig {
 					SessionCreationPolicy.STATELESS))
 			.addFilterAt(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 			.authorizeHttpRequests(authorize -> authorize
-				.requestMatchers("/api/signUp").permitAll()
-				.requestMatchers("/api/signIn").permitAll()
-				.requestMatchers("/api/intro/*").permitAll()
+				.anyRequest().permitAll()
 
 			);
 
