@@ -60,7 +60,11 @@ public class SecurityConfig {
 					SessionCreationPolicy.STATELESS))
 			.addFilterAt(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 			.authorizeHttpRequests(authorize -> authorize
-				.anyRequest().permitAll()
+				.requestMatchers("/api/intro/prod").permitAll()
+				.requestMatchers("/api/signUp").permitAll()
+				.requestMatchers("/api/duplicateNickname").permitAll()
+				.requestMatchers("/api/**").hasRole("USER")
+				.anyRequest().authenticated()
 
 			);
 
