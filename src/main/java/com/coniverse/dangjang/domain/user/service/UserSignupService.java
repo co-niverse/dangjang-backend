@@ -131,7 +131,7 @@ public class UserSignupService {
 	 */
 	//Todo merge 수정
 	public LoginResponse signupAfterLogin(User user) {
-		AuthToken authToken = authTokensGenerator.generate(user.getOauthId(), user.getRole()); //Todo role 수정
+		AuthToken authToken = authTokensGenerator.generate(user.getOauthId(), user.getRole());
 		return new LoginResponse(authToken.getAccessToken(), authToken.getRefreshToken(), user.getNickname(), false, false);
 	}
 

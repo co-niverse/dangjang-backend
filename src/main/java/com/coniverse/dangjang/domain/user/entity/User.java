@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
  * @since 1.0.0
  */
 @Entity(name = "users")
-@Getter // TODO getter 제거하기
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity implements Persistable<String> {
 	@Id
