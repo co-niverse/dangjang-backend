@@ -45,8 +45,8 @@ public class HealthMetricRegistrationController { // TODO @AuthenticationPrincip
 	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> post(@Range(min = 1, max = 12) @PathVariable(value = "month") int month,
 		@Range(min = 1, max = 31) @PathVariable(name = "day") int day, @Valid @RequestBody HealthMetricPostRequest postRequest) {
 		LocalDate createdAt = CreatedAtUtil.generateCreatedAt(month, day);
-		HealthMetricResponse bloodSugarResponse = healthMetricRegistrationService.register(postRequest, createdAt, "11111111");
-		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), bloodSugarResponse));
+		HealthMetricResponse response = healthMetricRegistrationService.register(postRequest, createdAt, "11111111");
+		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class HealthMetricRegistrationController { // TODO @AuthenticationPrincip
 	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> patch(@Range(min = 1, max = 12) @PathVariable(value = "month") int month,
 		@Range(min = 1, max = 31) @PathVariable(name = "day") int day, @Valid @RequestBody HealthMetricPatchRequest patchRequest) {
 		LocalDate createdAt = CreatedAtUtil.generateCreatedAt(month, day);
-		HealthMetricResponse bloodSugarResponse = healthMetricRegistrationService.update(patchRequest, createdAt, "11111111");
-		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), bloodSugarResponse));
+		HealthMetricResponse response = healthMetricRegistrationService.update(patchRequest, createdAt, "11111111");
+		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
 }

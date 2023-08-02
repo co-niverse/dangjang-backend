@@ -1,6 +1,6 @@
 package com.coniverse.dangjang.domain.healthmetric.controller;
 
-import static com.coniverse.dangjang.fixture.BloodSugarFixture.*;
+import static com.coniverse.dangjang.fixture.HealthMetricFixture.*;
 import static com.coniverse.dangjang.support.SimpleMockMvc.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -34,7 +34,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class HealthMetricRegistrationControllerTest extends ControllerTest {
 	public static final String URL = "/api/health-metric/{month}/{day}";
-	private final HealthMetricResponse bloodSugarResponse = 혈당_등록_응답();
+	private final HealthMetricResponse response = 건강지표_등록_응답();
 	private String postContent;
 	private String patchContent;
 	@Autowired
@@ -50,15 +50,15 @@ class HealthMetricRegistrationControllerTest extends ControllerTest {
 
 	@BeforeAll
 	void setUp() throws JsonProcessingException {
-		postContent = objectMapper.writeValueAsString(혈당_등록_요청());
-		patchContent = objectMapper.writeValueAsString(단위_변경한_혈당_수정_요청());
+		postContent = objectMapper.writeValueAsString(건강지표_등록_요청());
+		patchContent = objectMapper.writeValueAsString(단위_변경한_건강지표_수정_요청());
 	}
 
 	@Order(100)
 	@Test
-	void 혈당을_등록하면_성공_메시지를_반환한다() throws Exception {
+	void 건강지표를_등록하면_성공_메시지를_반환한다() throws Exception {
 		// given
-		given(healthMetricRegistrationService.register(any(), any(), anyString())).willReturn(bloodSugarResponse);
+		given(healthMetricRegistrationService.register(any(), any(), anyString())).willReturn(response);
 
 		// when
 		ResultActions resultActions = post(mockMvc, URL, postContent, 7, 8);
@@ -67,9 +67,9 @@ class HealthMetricRegistrationControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isOk(),
 			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
-			jsonPath("$.data.createdAt").value(bloodSugarResponse.createdAt().toString()),
-			jsonPath("$.data.healthMetricType").value(bloodSugarResponse.healthMetricType().toString()),
-			jsonPath("$.data.unit").value(bloodSugarResponse.unit())
+			jsonPath("$.data.createdAt").value(response.createdAt().toString()),
+			jsonPath("$.data.healthMetricType").value(response.title()),
+			jsonPath("$.data.unit").value(response.unit())
 		);
 	}
 
@@ -93,7 +93,7 @@ class HealthMetricRegistrationControllerTest extends ControllerTest {
 	@MethodSource("provideMonth")
 	void 올바른_PathVariable_month를_입력하면_성공메시지를_반환한다(int month) throws Exception {
 		// given
-		given(healthMetricRegistrationService.register(any(), any(), anyString())).willReturn(bloodSugarResponse);
+		given(healthMetricRegistrationService.register(any(), any(), anyString())).willReturn(response);
 
 		// when
 		ResultActions resultActions = post(mockMvc, URL, postContent, month, 8);
@@ -125,7 +125,7 @@ class HealthMetricRegistrationControllerTest extends ControllerTest {
 	@MethodSource("provideDay")
 	void 올바른_PathVariable_day를_입력하면_성공메시지를_반환한다(int day) throws Exception {
 		// given
-		given(healthMetricRegistrationService.register(any(), any(), anyString())).willReturn(bloodSugarResponse);
+		given(healthMetricRegistrationService.register(any(), any(), anyString())).willReturn(response);
 
 		// when
 		ResultActions resultActions = post(mockMvc, URL, postContent, 1, day);
@@ -141,8 +141,8 @@ class HealthMetricRegistrationControllerTest extends ControllerTest {
 	@Test
 	void 건강지표_등록_RequestBody의_건강지표_타입이_비어있으면_예외가_발생한다() throws Exception {
 		// given
-		HealthMetricPostRequest bloodSugarRequest = new HealthMetricPostRequest("", "100");
-		String content = objectMapper.writeValueAsString(bloodSugarRequest);
+		HealthMetricPostRequest request = new HealthMetricPostRequest("", "100");
+		String content = objectMapper.writeValueAsString(request);
 
 		// when
 		ResultActions resultActions = post(mockMvc, URL, content, 7, 8);
@@ -160,8 +160,8 @@ class HealthMetricRegistrationControllerTest extends ControllerTest {
 	@Test
 	void 건강지표_등록_RequestBody의_unit이_비어있으면_예외가_발생한다() throws Exception {
 		// given
-		HealthMetricPostRequest bloodSugarRequest = new HealthMetricPostRequest("아침 식전", " ");
-		String content = objectMapper.writeValueAsString(bloodSugarRequest);
+		HealthMetricPostRequest request = new HealthMetricPostRequest("아침 식전", " ");
+		String content = objectMapper.writeValueAsString(request);
 
 		// when
 		ResultActions resultActions = post(mockMvc, URL, content, 7, 8);
@@ -177,9 +177,9 @@ class HealthMetricRegistrationControllerTest extends ControllerTest {
 
 	@Order(800)
 	@Test
-	void 혈당을_수정하면_성공_메시지를_반환한다() throws Exception {
+	void 건강지표를_수정하면_성공_메시지를_반환한다() throws Exception {
 		// given
-		given(healthMetricRegistrationService.update(any(), any(), anyString())).willReturn(bloodSugarResponse);
+		given(healthMetricRegistrationService.update(any(), any(), anyString())).willReturn(response);
 
 		// when
 		ResultActions resultActions = patch(mockMvc, URL, patchContent, 7, 8);
@@ -188,7 +188,7 @@ class HealthMetricRegistrationControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isOk(),
 			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
-			jsonPath("$.data.createdAt").value(bloodSugarResponse.createdAt().toString())
+			jsonPath("$.data.createdAt").value(response.createdAt().toString())
 		);
 	}
 }

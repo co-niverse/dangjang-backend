@@ -4,15 +4,16 @@ import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
 
+import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
-import com.coniverse.dangjang.domain.healthmetric.enums.HealthMetricType;
 import com.coniverse.dangjang.domain.healthmetric.mapper.HealthMetricMapper;
 import com.coniverse.dangjang.domain.healthmetric.repository.HealthMetricRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
+import com.coniverse.dangjang.global.util.EnumFindUtil;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -57,11 +58,11 @@ public class HealthMetricRegistrationService {
 	 * @since 1.0.0
 	 */
 	public HealthMetricResponse update(HealthMetricPatchRequest request, LocalDate createdAt, String oauthId) {
-		HealthMetricType healthMetricType = HealthMetricType.findByTitle(request.healthMetricType());
+		CommonCode commonCode = EnumFindUtil.findByTitle(CommonCode.class, request.title());
 		User user = userSearchService.findUserByOauthId(oauthId);
-		HealthMetric healthMetric = healthMetricSearchService.findHealthMetricById(oauthId, createdAt, healthMetricType);
+		HealthMetric healthMetric = healthMetricSearchService.findHealthMetricById(oauthId, createdAt, commonCode);
 
-		if (request.newHealthMetricType() == null) {
+		if (request.newTitle() == null) {
 			healthMetric.updateUnit(request.unit());
 			return healthMetricMapper.toResponse(
 				healthMetricRepository.save(healthMetric));

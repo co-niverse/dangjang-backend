@@ -3,8 +3,9 @@ package com.coniverse.dangjang.domain.healthmetric.entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import com.coniverse.dangjang.domain.healthmetric.enums.HealthMetricType;
+import com.coniverse.dangjang.domain.code.enums.CommonCode;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -27,7 +28,8 @@ public class HealthMetricId implements Serializable {
 	private String oauthId;
 	private LocalDate createdAt;
 	@Enumerated(EnumType.STRING)
-	private HealthMetricType healthMetricType;
+	@Column(name = "code")
+	private CommonCode commonCode;
 
 	/**
 	 * HealthMetric 생성 시 사용하는 생성자
@@ -35,8 +37,8 @@ public class HealthMetricId implements Serializable {
 	 * @author TEO
 	 * @since 1.0.0
 	 */
-	protected HealthMetricId(LocalDate createdAt, HealthMetricType healthMetricType) {
+	protected HealthMetricId(LocalDate createdAt, CommonCode commonCode) {
 		this.createdAt = createdAt;
-		this.healthMetricType = healthMetricType;
+		this.commonCode = commonCode;
 	}
 }
