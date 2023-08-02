@@ -1,7 +1,5 @@
 package com.coniverse.dangjang.domain.auth.service;
 
-import java.util.Date;
-
 import com.coniverse.dangjang.domain.auth.dto.request.OauthLoginRequest;
 import com.coniverse.dangjang.domain.user.infrastructure.KakaoInfoResponse;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
@@ -14,7 +12,6 @@ class TestOauthInfoService implements OauthInfoService {
 
 		KakaoInfoResponse kakaoInfoResponse = new KakaoInfoResponse();
 		kakaoInfoResponse.setId("A1234567");
-		kakaoInfoResponse.setConnectedAt(new Date());
 
 		return kakaoInfoResponse;
 	}
