@@ -16,7 +16,6 @@ import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.infrastructure.auth.client.OAuthClient;
 import com.coniverse.dangjang.domain.infrastructure.auth.dto.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
-import com.coniverse.dangjang.domain.user.entity.enums.Role;
 import com.coniverse.dangjang.domain.user.exception.InvalidAuthenticationException;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
 
@@ -49,7 +48,7 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	public LoginResponse login(OauthLoginRequest params) {
 		OAuthInfoResponse oAuthInfoResponse = request(params);
 		User user = userSearchService.findUserByOauthId(oAuthInfoResponse.getOauthId());
-		AuthToken authToken = authTokenGenerator.generate(user.getOauthId(), Role.USER);
+		AuthToken authToken = authTokenGenerator.generate(user.getOauthId(), user.getRole());
 
 		return new LoginResponse(authToken.getAccessToken(), authToken.getRefreshToken(), user.getNickname(), false, false);
 	}

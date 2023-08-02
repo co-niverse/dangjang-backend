@@ -41,9 +41,8 @@ public class AuthTokenGenerator {
 		Date refreshTokenExpiredAt = new Date(now + refreshTokenExpireTime);
 
 		String subject = oauthId;
-		String accessToken = jwtTokenProvider.generate(subject, "USER", accessTokenExpiredAt); //TODO : role 수정
-		String refreshToken = jwtTokenProvider.generate(subject, "USER", refreshTokenExpiredAt);
-
+		String accessToken = jwtTokenProvider.generate(subject, role.getRole(), accessTokenExpiredAt); //TODO : role 수정
+		String refreshToken = jwtTokenProvider.generate(subject, role.getRole(), refreshTokenExpiredAt);
 
 		return AuthToken.of(accessToken, refreshToken, BEARER_TYPE, accessTokenExpireTime / 1000L);
 	}
