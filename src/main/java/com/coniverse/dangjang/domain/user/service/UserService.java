@@ -20,7 +20,6 @@ import com.coniverse.dangjang.domain.user.entity.enums.Gender;
 import com.coniverse.dangjang.domain.user.entity.enums.Role;
 import com.coniverse.dangjang.domain.user.entity.enums.Status;
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
-import com.coniverse.dangjang.domain.user.infrastructure.KakaoInfoResponse;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
@@ -114,10 +113,8 @@ public class UserService {
 	 * @since 1.0.0
 	 */
 	public LoginResponse signUp(SignUpRequest signUpRequest) {
-		//Todo : 테스트하기 위한 카카오 임시 더미데이터임, pr 올리기 전에 수정할 것
-		KakaoInfoResponse oAuthInfoResponse = new KakaoInfoResponse();
-		oAuthInfoResponse.setId("dsfkdjsklf837");
-		//OAuthInfoResponse oAuthInfoResponse = getOauthInfo(OauthProvider.of(signUpRequest.provider()), signUpRequest.accessToken());
+
+		OAuthInfoResponse oAuthInfoResponse = getOauthInfo(OauthProvider.of(signUpRequest.provider()), signUpRequest.accessToken());
 
 		ActivityAmount activityAmount = ActivityAmount.of(signUpRequest.activityAmount());
 
