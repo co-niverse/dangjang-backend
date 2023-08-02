@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.user.dto;
+package com.coniverse.dangjang.domain.user.dto.request;
 
 import java.time.LocalDate;
 import java.util.List;
