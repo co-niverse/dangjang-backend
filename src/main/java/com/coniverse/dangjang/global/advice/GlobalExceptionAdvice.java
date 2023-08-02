@@ -1,5 +1,6 @@
 package com.coniverse.dangjang.global.advice;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -109,5 +110,18 @@ public class GlobalExceptionAdvice {
 		int errorCode = e.getStatusCode().value();
 		ErrorResponse errorResponse = new ErrorResponse(errorCode, "올바르지 못한 URL 요청입니다.");
 		return ResponseEntity.status(errorCode).body(errorResponse);
+	}
+
+	/**
+	 * 무결성을 위반하는 데이터를 insert 또는 update할 때 발생하는 예외를 처리한다.
+	 *
+	 * @param e {@link DataIntegrityViolationException}
+	 * @since 1.0.0
+	 */
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+		log.error(e.getMessage());
+		ErrorResponse errorResponse = new ErrorResponse(409, "이미 존재하는 데이터입니다.");
+		return ResponseEntity.status(409).body(errorResponse);
 	}
 }

@@ -32,7 +32,6 @@ oauth:
   kakao:
     url:
       api: https://kapi.kakao.com
-    sample-id: 1234
   naver:
     url:
       api: https://openapi.naver.com
@@ -68,11 +67,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-    defer-datasource-initialization: true
   sql:
     init:
       mode: always
-      platform: all
 
 ---
 spring:

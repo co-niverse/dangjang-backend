@@ -1,111 +1,59 @@
 package com.coniverse.dangjang.domain.auth.service;
 
+import static com.coniverse.dangjang.fixture.LoginFixture.*;
+import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.coniverse.dangjang.domain.auth.dto.AuthToken.AuthToken;
-import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
-import com.coniverse.dangjang.domain.auth.service.authToken.AuthTokensGenerator;
-import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
-import com.coniverse.dangjang.domain.user.dto.UserResponse;
+import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
+import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
-import com.coniverse.dangjang.domain.user.infrastructure.KakaoInfoResponse;
-import com.coniverse.dangjang.domain.user.service.UserService;
-import com.coniverse.dangjang.fixture.SignUpFixture;
+import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
 /**
- * @author EVE
- * @since 1.0
+ * @author EVE, TEO
+ * @since 1.0.0
  */
 @SpringBootTest
+@Transactional
 class OauthLoginServiceTest {
 	@Autowired
-	private OauthLoginService oAuthLoginService;
-
+	private OauthLoginService oauthLoginService;
 	@Autowired
-	private AuthTokensGenerator authTokensGenerator;
-	@Autowired
-	private UserService userService;
+	private UserRepository userRepository;
 
 	@Test
-	@WithAnonymousUser
-	void 로그인_실패한다() throws NonExistentUserException {
-
+	void 가입된_유저가_아니면_로그인을_실패한다() {
 		//given
-		KakaoLoginRequest kakaoLoginParams = new KakaoLoginRequest();
-		kakaoLoginParams.setAccessToken("4J-zgwK68lN3RIm8iy1Qv0EGE54mbyOrVc-X1cf1CinJXgAAAYk1SMchfail");
+		KakaoLoginRequest request = 카카오_로그인_요청();
 
-		//then
-		Assertions.assertThrows(NonExistentUserException.class, () -> {
-			oAuthLoginService.login(kakaoLoginParams);
-		});
-
+		// when & then
+		assertThatThrownBy(() -> oauthLoginService.login(request))
+			.isInstanceOf(NonExistentUserException.class);
 	}
 
 	@Test
-	void 로그인을_성공한다() {
-		List<String> diseases = new ArrayList<>();
-		diseases.add("저혈당");
-		//given 회원가입
-		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
-			false, 0, false, false,
-			diseases);
-		userService.signUp(signUpRequest);
-
-		KakaoLoginRequest kakaoLoginParams = new KakaoLoginRequest();
-		kakaoLoginParams.setAccessToken("4J-zgwK68lN3RIm8iy1Qv0EGE54mbyOrVc-X1cf1CinJXgAAAYk1SMch");
+	void 가입된_유저면_로그인을_성공한다() {
+		//given
+		User 이브 = userRepository.save(유저_이브());
+		KakaoLoginRequest request = 카카오_로그인_요청();
 
 		//when
-		LoginResponse actual = oAuthLoginService.login(kakaoLoginParams);
+		LoginResponse response = oauthLoginService.login(request);
+
 		//then
-		assertThat(actual).isNotNull();
-	}
-
-	@Test
-	@WithAnonymousUser
-	void JWT_반환한다() throws NonExistentUserException {
-		// given
-		List<String> diseases = new ArrayList<>();
-		diseases.add("저혈당");
-		//given 회원가입
-		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
-			false, 0, false, false,
-			diseases);
-		userService.signUp(signUpRequest);
-
-		KakaoInfoResponse kakaoInfoResponse = new KakaoInfoResponse();
-		kakaoInfoResponse.setId("A1234567");
-		kakaoInfoResponse.setConnectedAt(new Date());
-
-		//when 유저 존재 확인
-		UserResponse userInfo = userService.findUser(kakaoInfoResponse);
-		//then
-		if (userInfo != null) {
-			AuthToken authToken = authTokensGenerator.generate(userInfo.oauthId());
-			assertThat(authToken).isNotNull();
-		}
-	}
-
-	@Test()
-	void 존재하지_않는_유저_여부_확인하기() throws NonExistentUserException {
-		//given
-		KakaoInfoResponse kakaoInfoResponse = new KakaoInfoResponse();
-		kakaoInfoResponse.setId("2878733654L");
-		kakaoInfoResponse.setConnectedAt(new Date());
-
-		Assertions.assertThrows(NonExistentUserException.class, () -> {
-			userService.findUser(kakaoInfoResponse);
-		});
+		assertAll(
+			() -> assertThat(response.accessToken()).isNotNull(),
+			() -> assertThat(response.refreshToken()).isNotNull(),
+			() -> assertThat(response.nickname()).isEqualTo(이브.getNickname()),
+			() -> assertThat(response.dangjangClub()).isFalse(),
+			() -> assertThat(response.healthConnect()).isFalse()
+		);
 	}
 }

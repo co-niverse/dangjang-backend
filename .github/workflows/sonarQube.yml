@@ -20,6 +20,11 @@ jobs:
   code-analysis:
     runs-on: ubuntu-latest
     steps:
+      - uses: szenius/set-timezone@v1.2
+        with:
+          timezoneLinux: "Asia/Seoul"
+          timezoneMacos: "Asia/Seoul"
+
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
