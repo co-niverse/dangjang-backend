@@ -1,10 +1,7 @@
 package com.coniverse.dangjang.domain.user.infrastructure;
 
-import java.util.Date;
-
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,8 +17,6 @@ import lombok.Setter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class KakaoInfoResponse implements OAuthInfoResponse {
 	private String id;
-	@JsonProperty("connected_at")
-	private Date connectedAt;
 
 	@Override
 	public String getUserId() {

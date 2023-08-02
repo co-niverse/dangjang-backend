@@ -7,6 +7,7 @@ import com.coniverse.dangjang.domain.auth.dto.Response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.dto.request.OauthLoginRequest;
 import com.coniverse.dangjang.domain.auth.service.authToken.AuthTokensGenerator;
 import com.coniverse.dangjang.domain.user.dto.UserResponse;
+import com.coniverse.dangjang.domain.user.entity.enums.Role;
 import com.coniverse.dangjang.domain.user.infrastructure.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.user.service.UserService;
 
@@ -31,7 +32,7 @@ public class OauthLoginService {
 	public LoginResponse login(OauthLoginRequest params) {
 		OAuthInfoResponse oAuthInfoResponse = oauthInfoService.request(params);
 		UserResponse user = userService.findUser(oAuthInfoResponse);
-		AuthToken authToken = authTokensGenerator.generate(user.oauthId());
+		AuthToken authToken = authTokensGenerator.generate(user.oauthId(), Role.USER); //ToDo: Role.USER -> user.getRole()
 		return new LoginResponse(user.nickname(), authToken.getAccessToken(), authToken.getRefreshToken(), false, false);
 	}
 
