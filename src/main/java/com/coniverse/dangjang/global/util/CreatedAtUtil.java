@@ -5,12 +5,15 @@ import java.time.LocalDate;
 
 import com.coniverse.dangjang.global.exception.IncorrectCreatedAtException;
 
+import lombok.NoArgsConstructor;
+
 /**
  * 생성일자와 관련한 util
  *
  * @author TEO
  * @since 1.0.0
  */
+@NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public class CreatedAtUtil {
 	/**
 	 * 생성일자를 생성한다.
