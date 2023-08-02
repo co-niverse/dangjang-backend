@@ -63,7 +63,7 @@ public class SecurityConfig {
 				.requestMatchers("/api/intro/prod").permitAll()
 				.requestMatchers("/api/signUp").permitAll()
 				.requestMatchers("/api/duplicateNickname").permitAll()
-				.requestMatchers("/api/**").hasRole("USER")
+				.requestMatchers("/api/**").permitAll()
 				.anyRequest().authenticated()
 
 			);
