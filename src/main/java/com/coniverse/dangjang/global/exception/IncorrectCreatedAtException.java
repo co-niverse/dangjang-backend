@@ -1,6 +1,4 @@
-package com.coniverse.dangjang.domain.healthmetric.exception;
-
-import com.coniverse.dangjang.global.exception.BusinessException;
+package com.coniverse.dangjang.global.exception;
 
 /**
  * 생성일자가 올바르지 않을 때 발생하는 예외
