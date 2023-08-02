@@ -7,6 +7,6 @@ package com.coniverse.dangjang.domain.auth.dto.response;
  * @since 1.0.0
  */
 
-public record LoginResponse(String nickname, String accessToken, String refreshToken, Boolean dangjangClub, Boolean healthConnect) {
+public record LoginResponse(String accessToken, String refreshToken, String nickname, boolean dangjangClub, boolean healthConnect) {
 
 }
