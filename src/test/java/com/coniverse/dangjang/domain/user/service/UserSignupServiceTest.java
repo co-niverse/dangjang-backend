@@ -22,7 +22,7 @@ import com.coniverse.dangjang.fixture.SignUpFixture;
  */
 @SpringBootTest
 @Transactional
-public class UserSignupServiceTest {
+class UserSignupServiceTest {
 	@Autowired
 	private UserSignupService userSignupService;
 
