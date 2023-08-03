@@ -23,7 +23,6 @@ import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRe
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.healthmetric.repository.HealthMetricRepository;
-import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.global.util.EnumFindUtil;
 
@@ -42,12 +41,12 @@ class HealthMetricRegistrationServiceTest {
 	private HealthMetricRepository healthMetricRepository;
 	@Autowired
 	private UserRepository userRepository;
-	private User 테오;
+	private String 테오_아이디;
 	private HealthMetric 등록된_건강지표;
 
 	@BeforeAll
 	void setUp() {
-		테오 = userRepository.save(유저_테오());
+		테오_아이디 = userRepository.save(유저_테오()).getOauthId();
 	}
 
 	@AfterAll
@@ -63,17 +62,17 @@ class HealthMetricRegistrationServiceTest {
 		HealthMetricPostRequest request = 건강지표_등록_요청();
 
 		// when
-		HealthMetricResponse response = healthMetricRegistrationService.register(request, 등록_일자, 테오.getOauthId());
+		HealthMetricResponse response = healthMetricRegistrationService.register(request, 등록_일자, 테오_아이디);
 
 		// then
 		등록된_건강지표 = healthMetricRepository
-			.findByHealthMetricId(테오.getOauthId(), response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.title())).orElseThrow();
+			.findByHealthMetricId(테오_아이디, response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.title())).orElseThrow();
 
 		assertAll(
 			() -> assertThat(등록된_건강지표.getCommonCode().getTitle()).isEqualTo(request.title()),
 			() -> assertThat(등록된_건강지표.getUnit()).isEqualTo(request.unit()),
 			() -> assertThat(등록된_건강지표.getCreatedAt()).isEqualTo(등록_일자),
-			() -> assertThat(등록된_건강지표.getOauthId()).isEqualTo(테오.getOauthId())
+			() -> assertThat(등록된_건강지표.getOauthId()).isEqualTo(테오_아이디)
 		);
 	}
 
@@ -84,12 +83,12 @@ class HealthMetricRegistrationServiceTest {
 		HealthMetricPatchRequest request = 단위_변경한_건강지표_수정_요청();
 
 		// when
-		HealthMetricResponse response = healthMetricRegistrationService.update(request, 등록_일자, 테오.getOauthId());
+		HealthMetricResponse response = healthMetricRegistrationService.update(request, 등록_일자, 테오_아이디);
 
 		// then
 
 		HealthMetric 수정된_건강지표 = healthMetricRepository
-			.findByHealthMetricId(테오.getOauthId(), response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.title())).orElseThrow();
+			.findByHealthMetricId(테오_아이디, response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.title())).orElseThrow();
 
 		assertAll(
 			() -> assertThat(수정된_건강지표.getUnit()).isEqualTo(request.unit()),
@@ -105,11 +104,11 @@ class HealthMetricRegistrationServiceTest {
 		HealthMetricPatchRequest request = 타입_변경한_건강지표_수정_요청();
 
 		// when
-		HealthMetricResponse response = healthMetricRegistrationService.update(request, 등록_일자, 테오.getOauthId());
+		HealthMetricResponse response = healthMetricRegistrationService.update(request, 등록_일자, 테오_아이디);
 
 		// then
 		HealthMetric 수정된_건강지표 = healthMetricRepository
-			.findByHealthMetricId(테오.getOauthId(), response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.title())).orElseThrow();
+			.findByHealthMetricId(테오_아이디, response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.title())).orElseThrow();
 
 		assertAll(
 			() -> assertThat(수정된_건강지표.getCommonCode().getTitle()).isEqualTo(request.newTitle()),
