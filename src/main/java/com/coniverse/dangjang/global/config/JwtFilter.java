@@ -1,6 +1,7 @@
 package com.coniverse.dangjang.global.config;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,6 +35,14 @@ public class JwtFilter extends OncePerRequestFilter {
 			}
 		}
 		filterChain.doFilter(request, response);
+	}
+
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request)
+		throws ServletException {
+		String path = request.getRequestURI();
+		List<String> paths = List.of("/api/auth/**", "/api/signUp", "/api/intro/**", "/api/duplicateNickname", "/api/health-metric");
+		return paths.contains(path);
 	}
 
 	private String getToken(final String authHeader) {
