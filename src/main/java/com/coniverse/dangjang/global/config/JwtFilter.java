@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.coniverse.dangjang.domain.auth.service.JwtTokenProvider;
+import com.coniverse.dangjang.global.exception.InvalidTokenException;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -39,7 +40,9 @@ public class JwtFilter extends OncePerRequestFilter {
 		if (StringUtils.hasLength(authHeader) && authHeader.startsWith("Bearer")) {
 			System.out.println("JwtFilter + getToken: " + authHeader.substring(7));
 			return authHeader.substring(7);
+		} else {
+			throw new InvalidTokenException("토큰 양식이 잘못되었습니다.");
 		}
-		return null;
+
 	}
 }

@@ -13,6 +13,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
+import com.coniverse.dangjang.global.exception.InvalidTokenException;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -61,11 +63,11 @@ public class JwtTokenProvider {
 				.parseClaimsJws(token);
 			return true;
 		} catch (ExpiredJwtException e) {
-			throw new RuntimeException("토큰이 만료되었습니다.");
+			throw new InvalidTokenException("토큰이 만료되었습니다.");
 		} catch (UnsupportedJwtException e) {
-			throw new RuntimeException("지원되지 않는 토큰입니다.");
+			throw new InvalidTokenException("지원되지 않는 토큰입니다.");
 		} catch (IllegalArgumentException e) {
-			throw new RuntimeException("토큰이 잘못되었습니다.");
+			throw new InvalidTokenException("토큰이 잘못되었습니다.");
 		}
 	}
 
