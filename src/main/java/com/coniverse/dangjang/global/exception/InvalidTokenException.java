@@ -6,6 +6,6 @@ package com.coniverse.dangjang.global.exception;
  */
 public class InvalidTokenException extends BusinessException {
 	public InvalidTokenException(String message) {
-		super(403, message);
+		super(401, message);
 	}
 }

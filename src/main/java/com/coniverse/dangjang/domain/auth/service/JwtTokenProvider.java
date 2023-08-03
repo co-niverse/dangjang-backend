@@ -63,7 +63,7 @@ public class JwtTokenProvider {
 				.parseClaimsJws(token);
 			return true;
 		} catch (ExpiredJwtException e) {
-			throw new InvalidTokenException("토큰이 만료되었습니다.");
+			throw new InvalidTokenException("토큰 유효기간이 만료되었습니다.");
 		} catch (UnsupportedJwtException e) {
 			throw new InvalidTokenException("지원되지 않는 토큰입니다.");
 		} catch (IllegalArgumentException e) {
