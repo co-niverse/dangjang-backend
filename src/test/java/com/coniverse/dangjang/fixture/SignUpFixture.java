@@ -12,6 +12,7 @@ import com.coniverse.dangjang.domain.user.dto.request.SignUpRequest;
  * @since 1.0.0
  */
 public class SignUpFixture {
+
 	public static SignUpRequest getSignUpRequest(String accessToken, String nickname, String provider, Boolean gender, LocalDate birthday, int height,
 		int weight, String activityAmount, Boolean diabetes, int diabetesYear, Boolean medicine, Boolean injection,
 		List<String> diseases) {
@@ -19,5 +20,14 @@ public class SignUpFixture {
 			diabetesYear, medicine, injection, diseases);
 		return signUpRequest;
 	}
+
+	// public static LoginResponse getSignUpResponse() {
+	// 	List<String> diseases = List.of("고혈압");
+	// 	SignUpRequest signUpRequest = getSignUpRequest("287873365589", "test", "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
+	// 		false, 0, false, false,
+	// 		diseases);
+	// 	LoginResponse loginResponse = userSignupService.signUp(signUpRequest);
+	// 	return loginResponse;
+	// }
 
 }

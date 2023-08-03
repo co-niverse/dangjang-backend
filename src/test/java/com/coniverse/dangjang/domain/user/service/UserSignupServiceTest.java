@@ -22,11 +22,11 @@ import com.coniverse.dangjang.fixture.SignUpFixture;
  */
 @SpringBootTest
 @Transactional
-class UserSignupServiceTest {
+public class UserSignupServiceTest {
 	@Autowired
 	private UserSignupService userSignupService;
 
-	@Test()
+	@Test
 	void 새로운_유저를_추가한다_카카오() {
 		//given
 		List<String> diseases = new ArrayList<>();
@@ -46,7 +46,7 @@ class UserSignupServiceTest {
 		assertThat(loginResponse.healthConnect()).isFalse();
 	}
 
-	@Test()
+	@Test
 	void 새로운_유저를_추가한다_네이버() {
 		//given
 		List<String> diseases = new ArrayList<>();
@@ -57,6 +57,7 @@ class UserSignupServiceTest {
 
 		//when
 		LoginResponse loginResponse = userSignupService.signUp(signUpRequest);
+		System.out.println("token : " + loginResponse.accessToken());
 		//that
 		assertThat(loginResponse.accessToken()).isNotNull();
 		assertThat(loginResponse.refreshToken()).isNotNull();
@@ -65,7 +66,7 @@ class UserSignupServiceTest {
 		assertThat(loginResponse.healthConnect()).isFalse();
 	}
 
-	@Test()
+	@Test
 	void 중복된_닉네임을_확인한다() {
 		//given
 		List<String> diseases = new ArrayList<>();
@@ -81,7 +82,7 @@ class UserSignupServiceTest {
 		assertThat(isDuplicated.duplicate()).isFalse();
 	}
 
-	@Test()
+	@Test
 	void 중복되지_않은_닉네임을_확인한다() {
 		//given
 		String nickname = "nickname";

@@ -33,6 +33,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class HealthMetricRegistrationControllerTest extends ControllerTest {
+
 	public static final String URL = "/api/health-metric/{month}/{day}";
 	private final HealthMetricResponse bloodSugarResponse = 혈당_등록_응답();
 	private String postContent;
