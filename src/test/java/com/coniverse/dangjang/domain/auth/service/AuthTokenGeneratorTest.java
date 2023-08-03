@@ -1,7 +1,10 @@
 package com.coniverse.dangjang.domain.auth.service;
 
+import static com.coniverse.dangjang.fixture.JwtTokenFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.security.Key;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.coniverse.dangjang.domain.auth.dto.AuthToken;
 import com.coniverse.dangjang.domain.user.entity.enums.Role;
+
+import io.jsonwebtoken.Claims;
 
 /**
  * @author EVE
@@ -37,23 +42,21 @@ class AuthTokenGeneratorTest {
 		);
 	}
 
-	// @Test
-	// void 유효하지_않는_토큰은_예외를_발생시킨다() throws InvalidTokenException { //Todo : merge 후 , 예외 추가
-	// 	String authToken = 유효하지_않는_accessToken_생성();
-	// 	assertThrows(InvalidTokenException.class, () -> jwtTokenProvider.validationToken(authToken));
-	// }
-	//
-	// @Test
-	// void Authentication객체를_생성한다() throws RuntimeException {
-	// 	AuthToken authToken = authTokenGenerator.generate(subject, Role.USER);
-	// 	Authentication authentication = jwtTokenProvider.getAuthentication(authToken.getAccessToken());
-	// 	System.out.println("Authentication : " + authentication + " getPrincipal : " + authentication.getPrincipal());
-	// 	//Todo : assertThat 수정 필요
-	// 	assertAll(
-	// 		() -> assertThat(authentication.getPrincipal()).isNotNull(),
-	// 		() -> assertThat(authentication.getCredentials()).isNotNull(),
-	// 		() -> assertThat(authentication.getAuthorities()).isNotNull()
-	// 	);
-	//
-	// }
+	@Test
+	void key를_전달한다() {
+		Key key = jwtTokenProvider.getKey();
+		assertThat(key).isNotNull();
+	}
+
+	@Test
+	void parseClaims을_반환한다() throws RuntimeException {
+		Key key = jwtTokenProvider.getKey();
+		String accessToken = accessToken_생성(key);
+		Claims claims = jwtTokenProvider.parseClaims(accessToken);
+		//Todo : assertThat 수정 필요
+		assertAll(
+			() -> assertThat(claims).isNotNull()
+		);
+
+	}
 }
