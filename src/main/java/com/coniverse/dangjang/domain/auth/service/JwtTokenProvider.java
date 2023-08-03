@@ -50,7 +50,7 @@ public class JwtTokenProvider {
 	}
 
 	/**
-	 * JWT 복호화 , 만료된 Token refresh Token으로 검증 후 재발급
+	 * 복호화해서 Claims 반환
 	 *
 	 * @param accessToken JWT ACCESSTOKEN
 	 * @return claims.getSubject() userID 반환
