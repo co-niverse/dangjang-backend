@@ -72,7 +72,7 @@ public class JwtTokenProvider {
 	public Authentication getAuthentication(String token) {
 		Claims claims = parseClaims(token);
 
-		String oauthId = claims.getSubject().toString();
+		String oauthId = claims.getSubject();
 
 		final Collection<? extends GrantedAuthority> authorities = Stream.of(
 				claims.get("role").toString())
