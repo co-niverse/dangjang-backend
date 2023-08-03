@@ -2,8 +2,8 @@ package com.coniverse.dangjang.global.config;
 
 import java.io.IOException;
 import java.security.Key;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Stream;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -53,9 +53,9 @@ public class JwtFilter extends OncePerRequestFilter {
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request)
 		throws ServletException {
+		String[] excludePath = {"/api/auth/", "/api/signUp", "/api/intro/", "/api/duplicateNickname", "/api/health-metric"};
 		String path = request.getRequestURI();
-		List<String> paths = List.of("/api/auth/**", "/api/signUp", "/api/intro/**", "/api/duplicateNickname", "/api/health-metric");
-		return paths.contains(path);
+		return Arrays.stream(excludePath).anyMatch(path::startsWith);
 	}
 
 	/**
