@@ -18,10 +18,12 @@ import com.coniverse.dangjang.global.exception.InvalidTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 
 /**
  * JWT 생성 및 반환
@@ -62,12 +64,8 @@ public class JwtTokenProvider {
 				.build()
 				.parseClaimsJws(token);
 			return true;
-		} catch (ExpiredJwtException e) {
-			throw new InvalidTokenException("토큰 유효기간이 만료되었습니다.");
-		} catch (UnsupportedJwtException e) {
-			throw new InvalidTokenException("지원되지 않는 토큰입니다.");
-		} catch (IllegalArgumentException e) {
-			throw new InvalidTokenException("토큰이 잘못되었습니다.");
+		} catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
+			throw new InvalidTokenException(e.getMessage());
 		}
 	}
 

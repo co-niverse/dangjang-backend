@@ -1,5 +1,6 @@
 package com.coniverse.dangjang.domain.auth.service;
 
+import static com.coniverse.dangjang.fixture.JwtTokenFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,6 +12,7 @@ import org.springframework.security.core.Authentication;
 
 import com.coniverse.dangjang.domain.auth.dto.AuthToken;
 import com.coniverse.dangjang.domain.user.entity.enums.Role;
+import com.coniverse.dangjang.global.exception.InvalidTokenException;
 
 /**
  * @author EVE
@@ -39,10 +41,9 @@ class AuthTokenGeneratorTest {
 	}
 
 	@Test
-	void 유효하지_않는_토큰은_예외를_발생시킨다() throws RuntimeException { //Todo : merge 후 , 예외 추가
-		AuthToken authToken = authTokenGenerator.generate(subject, Role.USER);
-		authToken.setAccessToken(authToken.getAccessToken() + "a");
-		assertThatThrownBy(() -> jwtTokenProvider.validationToken(authToken.getAccessToken())).isInstanceOf(RuntimeException.class);
+	void 유효하지_않는_토큰은_예외를_발생시킨다() throws InvalidTokenException { //Todo : merge 후 , 예외 추가
+		String authToken = 유효하지_않는_accessToken_생성();
+		assertThrows(InvalidTokenException.class, () -> jwtTokenProvider.validationToken(authToken));
 	}
 
 	@Test
