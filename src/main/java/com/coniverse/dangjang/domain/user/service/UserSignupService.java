@@ -46,7 +46,6 @@ public class UserSignupService {
 	public LoginResponse signUp(SignUpRequest signUpRequest) {
 
 		OAuthInfoResponse oAuthInfoResponse = getOauthInfo(OauthProvider.of(signUpRequest.provider()), signUpRequest.accessToken());
-
 		ActivityAmount activityAmount = ActivityAmount.of(signUpRequest.activityAmount());
 
 		Gender gender = Gender.of(signUpRequest.gender());
@@ -129,7 +128,7 @@ public class UserSignupService {
 	//Todo merge 수정
 	public LoginResponse signupAfterLogin(User user) {
 		AuthToken authToken = authTokensGenerator.generate(user.getOauthId(), user.getRole());
-		return new LoginResponse(authToken.getAccessToken(), authToken.getRefreshToken(), user.getNickname(), false, false);
+		return new LoginResponse(user.getNickname(), false, false);
 	}
 
 	/**

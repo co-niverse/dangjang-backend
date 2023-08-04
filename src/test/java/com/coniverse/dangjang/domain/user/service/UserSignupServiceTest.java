@@ -39,8 +39,6 @@ class UserSignupServiceTest {
 		//when
 		LoginResponse loginResponse = userSignupService.signUp(signUpRequest);
 		//that
-		assertThat(loginResponse.accessToken()).isNotNull();
-		assertThat(loginResponse.refreshToken()).isNotNull();
 		assertThat(loginResponse.nickname()).isEqualTo(signUpRequest.nickname());
 		assertThat(loginResponse.dangjangClub()).isFalse();
 		assertThat(loginResponse.healthConnect()).isFalse();
@@ -57,10 +55,7 @@ class UserSignupServiceTest {
 
 		//when
 		LoginResponse loginResponse = userSignupService.signUp(signUpRequest);
-		System.out.println("token : " + loginResponse.accessToken());
 		//that
-		assertThat(loginResponse.accessToken()).isNotNull();
-		assertThat(loginResponse.refreshToken()).isNotNull();
 		assertThat(loginResponse.nickname()).isEqualTo(signUpRequest.nickname());
 		assertThat(loginResponse.dangjangClub()).isFalse();
 		assertThat(loginResponse.healthConnect()).isFalse();
