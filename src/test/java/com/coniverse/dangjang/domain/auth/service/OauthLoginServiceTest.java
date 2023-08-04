@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.coniverse.dangjang.domain.auth.dto.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
@@ -49,11 +50,36 @@ class OauthLoginServiceTest {
 
 		//then
 		assertAll(
-			() -> assertThat(response.accessToken()).isNotNull(),
-			() -> assertThat(response.refreshToken()).isNotNull(),
 			() -> assertThat(response.nickname()).isEqualTo(이브.getNickname()),
 			() -> assertThat(response.dangjangClub()).isFalse(),
 			() -> assertThat(response.healthConnect()).isFalse()
 		);
+	}
+
+	@Test
+	void 존재하는_사용자라면_auth토큰을_발급해준다() {
+		User 이브 = userRepository.save(유저_이브());
+
+		//when
+		AuthToken authToken = oauthLoginService.getAuthToken(이브.getNickname());
+
+		//then
+		assertAll(
+			() -> assertThat(authToken.getAccessToken()).isNotBlank(),
+			() -> assertThat(authToken.getRefreshToken()).isNotBlank()
+
+		);
+
+	}
+
+	@Test
+	void 존재하지_않는_사용자라면_auth토큰_발급시_오류발생한다() {
+		//given
+		String nickname = "testNicknametest";
+
+		//when&then
+		assertThatThrownBy(() -> oauthLoginService.getAuthToken(nickname))
+			.isInstanceOf(NonExistentUserException.class);
+
 	}
 }

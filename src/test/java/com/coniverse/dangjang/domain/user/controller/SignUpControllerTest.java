@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
 
+import com.coniverse.dangjang.domain.auth.dto.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
+import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
 import com.coniverse.dangjang.domain.user.dto.request.SignUpRequest;
 import com.coniverse.dangjang.domain.user.service.UserSignupService;
 import com.coniverse.dangjang.fixture.SignUpFixture;
@@ -29,6 +31,8 @@ class SignUpControllerTest extends ControllerTest {
 	private final String URI = "/api/signUp";
 	@Autowired
 	private UserSignupService userSignupService;
+	@Autowired
+	private OauthLoginService oauthLoginService;
 
 	@Test
 	void 회원가입_성공한다() throws Exception {
@@ -38,17 +42,23 @@ class SignUpControllerTest extends ControllerTest {
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
 			false, 0, false, false,
 			diseases);
-		LoginResponse loginResponse = new LoginResponse("test", "accessToken", "refreshToken", false, false);
+		LoginResponse loginResponse = new LoginResponse("test", false, false);
+		AuthToken authToken = new AuthToken();
+		authToken.setAccessToken("accessToken");
+		authToken.setRefreshToken("refreshToken");
 		given(userSignupService.signUp(any())).willReturn(loginResponse);
+		given(oauthLoginService.getAuthToken(loginResponse.nickname())).willReturn(authToken);
 		String content = objectMapper.writeValueAsString(signUpRequest);
-		// when
 
+		// when
 		ResultActions resultActions = post(mockMvc, URI, content);
 
 		// then
 		resultActions.andExpectAll(
 			status().isOk(),
-			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase())
+			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
+			header().exists("AccessToken"),
+			header().exists("RefreshToken")
 		);
 
 	}
@@ -61,11 +71,11 @@ class SignUpControllerTest extends ControllerTest {
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("", "test", "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
 			false, 0, false, false,
 			diseases);
-		LoginResponse loginResponse = new LoginResponse("test", "accessToken", "refreshToken", false, false);
+		LoginResponse loginResponse = new LoginResponse("test", false, false);
 		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
-		// when
 
+		// when
 		ResultActions resultActions = post(mockMvc, URI, content);
 
 		// then
@@ -84,7 +94,7 @@ class SignUpControllerTest extends ControllerTest {
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("accessToken", "test", "KAKAO", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
 			false, 0, false, false,
 			diseases);
-		LoginResponse loginResponse = new LoginResponse("test", "accessToken", "refreshToken", false, false);
+		LoginResponse loginResponse = new LoginResponse("test", false, false);
 		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
@@ -106,7 +116,7 @@ class SignUpControllerTest extends ControllerTest {
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("accessToken", "test", "kakao", false, LocalDate.parse("2027-06-21"), 150, 50, "LOW",
 			false, 0, false, false,
 			diseases);
-		LoginResponse loginResponse = new LoginResponse("test", "accessToken", "refreshToken", false, false);
+		LoginResponse loginResponse = new LoginResponse("test", false, false);
 		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
@@ -129,7 +139,7 @@ class SignUpControllerTest extends ControllerTest {
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", nickname, "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
 			false, 0, false, false,
 			diseases);
-		LoginResponse loginResponse = new LoginResponse("test", "accessToken", "refreshToken", false, false);
+		LoginResponse loginResponse = new LoginResponse("test", false, false);
 		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
@@ -151,7 +161,7 @@ class SignUpControllerTest extends ControllerTest {
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "kakao", null, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
 			false, 0, false, false,
 			diseases);
-		LoginResponse loginResponse = new LoginResponse("test", "accessToken", "refreshToken", false, false);
+		LoginResponse loginResponse = new LoginResponse("test", false, false);
 		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
@@ -172,7 +182,7 @@ class SignUpControllerTest extends ControllerTest {
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "kakao", false, LocalDate.parse("2021-06-21"), 150, -1, "LOW",
 			false, 0, false, false,
 			diseases);
-		LoginResponse loginResponse = new LoginResponse("test", "accessToken", "refreshToken", false, false);
+		LoginResponse loginResponse = new LoginResponse("test", false, false);
 		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
@@ -194,7 +204,7 @@ class SignUpControllerTest extends ControllerTest {
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "kakao", false, LocalDate.parse("2021-06-21"), -1, 50, "LOW",
 			false, 0, false, false,
 			diseases);
-		LoginResponse loginResponse = new LoginResponse("test", "accessToken", "refreshToken", false, false);
+		LoginResponse loginResponse = new LoginResponse("test", false, false);
 		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
@@ -216,7 +226,7 @@ class SignUpControllerTest extends ControllerTest {
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "low",
 			false, 0, false, false,
 			diseases);
-		LoginResponse loginResponse = new LoginResponse("test", "accessToken", "refreshToken", false, false);
+		LoginResponse loginResponse = new LoginResponse("test", false, false);
 		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
@@ -238,7 +248,7 @@ class SignUpControllerTest extends ControllerTest {
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
 			null, 0, false, false,
 			diseases);
-		LoginResponse loginResponse = new LoginResponse("test", "accessToken", "refreshToken", false, false);
+		LoginResponse loginResponse = new LoginResponse("test", false, false);
 		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
@@ -260,7 +270,7 @@ class SignUpControllerTest extends ControllerTest {
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
 			false, -1, false, false,
 			diseases);
-		LoginResponse loginResponse = new LoginResponse("test", "accessToken", "refreshToken", false, false);
+		LoginResponse loginResponse = new LoginResponse("test", false, false);
 		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
@@ -282,7 +292,7 @@ class SignUpControllerTest extends ControllerTest {
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
 			false, 0, null, false,
 			diseases);
-		LoginResponse loginResponse = new LoginResponse("test", "accessToken", "refreshToken", false, false);
+		LoginResponse loginResponse = new LoginResponse("test", false, false);
 		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
@@ -304,7 +314,7 @@ class SignUpControllerTest extends ControllerTest {
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
 			false, 0, false, null,
 			diseases);
-		LoginResponse loginResponse = new LoginResponse("test", "accessToken", "refreshToken", false, false);
+		LoginResponse loginResponse = new LoginResponse("test", false, false);
 		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
@@ -326,7 +336,7 @@ class SignUpControllerTest extends ControllerTest {
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
 			false, 0, false, false,
 			diseases);
-		LoginResponse loginResponse = new LoginResponse("test", "accessToken", "refreshToken", false, false);
+		LoginResponse loginResponse = new LoginResponse("test", false, false);
 		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
@@ -346,7 +356,7 @@ class SignUpControllerTest extends ControllerTest {
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
 			false, 0, false, false,
 			null);
-		LoginResponse loginResponse = new LoginResponse("test", "accessToken", "refreshToken", false, false);
+		LoginResponse loginResponse = new LoginResponse("test", false, false);
 		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
