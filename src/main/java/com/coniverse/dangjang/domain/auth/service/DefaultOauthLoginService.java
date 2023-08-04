@@ -2,6 +2,7 @@ package com.coniverse.dangjang.domain.auth.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -17,6 +18,8 @@ import com.coniverse.dangjang.domain.infrastructure.auth.client.OAuthClient;
 import com.coniverse.dangjang.domain.infrastructure.auth.dto.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.exception.InvalidAuthenticationException;
+import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
+import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
 
 /**
@@ -31,13 +34,16 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	private final AuthTokenGenerator authTokenGenerator;
 	private final UserSearchService userSearchService;
 	private final Map<OauthProvider, OAuthClient> clients;
+	private final UserRepository userRepository;
 
-	public DefaultOauthLoginService(AuthTokenGenerator authTokenGenerator, UserSearchService userSearchService, List<OAuthClient> clients) {
+	public DefaultOauthLoginService(AuthTokenGenerator authTokenGenerator, UserSearchService userSearchService, List<OAuthClient> clients,
+		UserRepository userRepository) {
 		this.authTokenGenerator = authTokenGenerator;
 		this.userSearchService = userSearchService;
 		this.clients = clients.stream().collect(
 			Collectors.toUnmodifiableMap(OAuthClient::getOauthProvider, Function.identity())
 		);
+		this.userRepository = userRepository;
 	}
 
 	/**
@@ -48,9 +54,22 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	public LoginResponse login(OauthLoginRequest params) {
 		OAuthInfoResponse oAuthInfoResponse = request(params);
 		User user = userSearchService.findUserByOauthId(oAuthInfoResponse.getOauthId());
-		AuthToken authToken = authTokenGenerator.generate(user.getOauthId(), user.getRole());
+		return new LoginResponse(user.getNickname(), false, false);
+	}
 
-		return new LoginResponse(authToken.getAccessToken(), authToken.getRefreshToken(), user.getNickname(), false, false);
+	/**
+	 * @param nickname
+	 * @return AuthToken 로그인을 성공한 사용자의 authToken을 전달
+	 * @since 1.0.0
+	 */
+
+	public AuthToken getAuthToken(String nickname) {
+		Optional<User> user = userRepository.findByNickname(nickname);
+		if (user.isPresent()) {
+			return authTokenGenerator.generate(user.get().getOauthId(), user.get().getRole());
+		} else {
+			throw new NonExistentUserException();
+		}
 	}
 
 	/**
