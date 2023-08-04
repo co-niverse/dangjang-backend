@@ -13,5 +13,10 @@ import com.coniverse.dangjang.domain.user.entity.User;
  * @since 1.0.0
  */
 public interface UserRepository extends JpaRepository<User, String> {
+	/**
+	 * nickname으로 사용자 정보 조회
+	 *
+	 * @since 1.0.0
+	 */
 	Optional<User> findByNickname(String nickname);
 }

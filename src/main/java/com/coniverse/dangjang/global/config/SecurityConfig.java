@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -26,6 +27,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 	@Value("${cors.allowed-origins}")
 	private String allowedOrigins;
+	private final JwtFilter jwtFilter;
+
+	public SecurityConfig(JwtFilter jwtFilter) {
+		this.jwtFilter = jwtFilter;
+	}
 
 	/**
 	 * SecurityFilterChain 설정
@@ -52,7 +58,15 @@ public class SecurityConfig {
 			.sessionManagement(
 				sessionManagementConfigurer -> sessionManagementConfigurer.sessionCreationPolicy(
 					SessionCreationPolicy.STATELESS))
-			.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll());
+			.addFilterAt(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+			.authorizeHttpRequests(authorize -> authorize
+				.requestMatchers("/api/intro/prod").permitAll()
+				.requestMatchers("/api/signUp").permitAll()
+				.requestMatchers("/api/duplicateNickname").permitAll()
+				.requestMatchers("/api/**").permitAll()
+				.anyRequest().authenticated()
+
+			);
 
 		return http.build();
 	}

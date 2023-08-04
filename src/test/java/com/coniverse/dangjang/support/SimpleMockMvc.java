@@ -1,5 +1,6 @@
 package com.coniverse.dangjang.support;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -13,7 +14,8 @@ import org.springframework.util.MultiValueMap;
  * @since 1.0.0
  */
 public class SimpleMockMvc {
-	public static ResultActions post(final MockMvc mockMvc, final String uri, final String content, final Object... pathVariables) throws Exception {
+	public static ResultActions post(final MockMvc mockMvc, final String uri, final String content, final Object... pathVariables) throws
+		Exception {
 		return mockMvc.perform(
 			MockMvcRequestBuilders.post(uri, pathVariables)
 				.accept(MediaType.APPLICATION_JSON)
@@ -22,16 +24,19 @@ public class SimpleMockMvc {
 		);
 	}
 
-	public static ResultActions put(final MockMvc mockMvc, final String uri, final String content, final Object... pathVariables) throws Exception {
+	public static ResultActions put(final MockMvc mockMvc, final String uri, final String content, final String header, final Object... pathVariables) throws
+		Exception {
 		return mockMvc.perform(
 			MockMvcRequestBuilders.put(uri, pathVariables)
+				.header(HttpHeaders.AUTHORIZATION, header)
 				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(content)
 		);
 	}
 
-	public static ResultActions patch(final MockMvc mockMvc, final String uri, final String content, final Object... pathVariables) throws Exception {
+	public static ResultActions patch(final MockMvc mockMvc, final String uri, final String content, final Object... pathVariables) throws
+		Exception {
 		return mockMvc.perform(
 			MockMvcRequestBuilders.patch(uri, pathVariables)
 				.accept(MediaType.APPLICATION_JSON)
@@ -52,6 +57,15 @@ public class SimpleMockMvc {
 		return mockMvc.perform(
 			MockMvcRequestBuilders.get(uri, pathVariables)
 				.params(params)
+				.accept(MediaType.APPLICATION_JSON)
+		);
+	}
+
+	public static ResultActions get(final MockMvc mockMvc, final String uri, String authorization, final Object... pathVariables) throws
+		Exception {
+		return mockMvc.perform(
+			MockMvcRequestBuilders.get(uri, pathVariables)
+				.header(HttpHeaders.AUTHORIZATION, "Bearer " + authorization)
 				.accept(MediaType.APPLICATION_JSON)
 		);
 	}
