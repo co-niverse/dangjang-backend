@@ -21,7 +21,7 @@ CREATE TABLE `USERS`
     `CREATED_AT`          datetime    NOT NULL,
     `UPDATED_AT`          datetime    NOT NULL,
     `PROFILE_IMAGE_PATH`  varchar(255),
---     `DIABETES`           boolean     NOT NULL,
+    `DIABETES`            boolean     NOT NULL,
     `DIABETES_YEAR`       int,
     MEDICINE              boolean,
     INJECTION             boolean,
@@ -37,23 +37,24 @@ CREATE TABLE `DANGJANG_CLUB`
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`)
 );
 
-CREATE TABLE `CODE`
-(
-    `CODE`        varchar(10) NOT NULL,
-    `PARENT_CODE` varchar(20),
-    `ENG_NAME`    varchar(20) NOT NULL,
-    `KOR_NAME`    varchar(20) NOT NULL,
-    PRIMARY KEY (`CODE`)
-);
+-- CREATE TABLE `CODE`
+-- (
+--    `CODE`       varchar(10) NOT NULL,
+--    `CODE_GROUP` varchar(20),
+--    `ENG_NAME`   varchar(20) NOT NULL,
+--    `KOR_NAME`   varchar(20) NOT NULL,
+--    PRIMARY KEY (`CODE`)
+-- );
 
 CREATE TABLE `HEALTH_METRIC`
 (
-    `OAUTH_ID`           varchar(50) NOT NULL,
-    `CREATED_AT`         date        NOT NULL,
-    `HEALTH_METRIC_TYPE` varchar(30) NOT NULL, -- TODO 수정
-    `UNIT`               varchar(20) NOT NULL,
-    PRIMARY KEY (`OAUTH_ID`, `CREATED_AT`, `HEALTH_METRIC_TYPE`),
+    `OAUTH_ID`   varchar(50) NOT NULL,
+    `CREATED_AT` date        NOT NULL,
+    `CODE`       varchar(10) NOT NULL,
+    `UNIT`       varchar(20) NOT NULL,
+    PRIMARY KEY (`OAUTH_ID`, `CREATED_AT`, `CODE`),
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`)
+    -- FOREIGN KEY (`CODE`) REFERENCES CODE (`CODE`)
 );
 
 CREATE TABLE `DEVICE`
@@ -61,8 +62,8 @@ CREATE TABLE `DEVICE`
     `OAUTH_ID` varchar(50) NOT NULL,
     `CODE`     varchar(10) NOT NULL,
     PRIMARY KEY (`OAUTH_ID`, `CODE`),
-    FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`),
-    FOREIGN KEY (`CODE`) REFERENCES CODE (`CODE`)
+    FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`)
+    -- FOREIGN KEY (`CODE`) REFERENCES CODE (`CODE`)
 );
 
 CREATE TABLE `NOTIFICATION`
@@ -70,8 +71,8 @@ CREATE TABLE `NOTIFICATION`
     `OAUTH_ID` varchar(50) NOT NULL,
     `CODE`     varchar(10) NOT NULL,
     PRIMARY KEY (`OAUTH_ID`, `CODE`),
-    FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`),
-    FOREIGN KEY (`CODE`) REFERENCES CODE (`CODE`)
+    FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`)
+    --  FOREIGN KEY (`CODE`) REFERENCES CODE (`CODE`)
 );
 
 CREATE TABLE `DISEASE`
@@ -79,6 +80,6 @@ CREATE TABLE `DISEASE`
     `OAUTH_ID` varchar(50) NOT NULL,
     `CODE`     varchar(10) NOT NULL,
     PRIMARY KEY (`OAUTH_ID`, `CODE`),
-    FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`),
-    FOREIGN KEY (`CODE`) REFERENCES CODE (`CODE`)
+    FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`)
+    -- FOREIGN KEY (`CODE`) REFERENCES CODE (`CODE`)
 );

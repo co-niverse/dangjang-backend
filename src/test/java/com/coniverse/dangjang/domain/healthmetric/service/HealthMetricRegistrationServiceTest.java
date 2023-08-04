@@ -1,6 +1,6 @@
 package com.coniverse.dangjang.domain.healthmetric.service;
 
-import static com.coniverse.dangjang.fixture.BloodSugarFixture.*;
+import static com.coniverse.dangjang.fixture.HealthMetricFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,6 +17,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;
@@ -24,6 +25,7 @@ import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.healthmetric.repository.HealthMetricRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
+import com.coniverse.dangjang.global.util.EnumFindUtil;
 
 /**
  * @author TEO
@@ -41,7 +43,7 @@ class HealthMetricRegistrationServiceTest {
 	@Autowired
 	private UserRepository userRepository;
 	private User 테오;
-	private HealthMetric 등록된_혈당;
+	private HealthMetric 등록된_건강지표;
 
 	@BeforeAll
 	void setUp() {
@@ -56,64 +58,64 @@ class HealthMetricRegistrationServiceTest {
 
 	@Order(50)
 	@Test
-	void 혈당을_성공적으로_등록한다() {
+	void 건강지표를_성공적으로_등록한다() {
 		// given
-		HealthMetricPostRequest request = 혈당_등록_요청();
+		HealthMetricPostRequest request = 건강지표_등록_요청();
 
 		// when
 		HealthMetricResponse response = healthMetricRegistrationService.register(request, 등록_일자, 테오.getOauthId());
 
 		// then
-		등록된_혈당 = healthMetricRepository.findByHealthMetricId(테오.getOauthId(), response.createdAt(), response.healthMetricType())
-			.orElseThrow();
+		등록된_건강지표 = healthMetricRepository
+			.findByHealthMetricId(테오.getOauthId(), response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.title())).orElseThrow();
 
 		assertAll(
-			() -> assertThat(등록된_혈당.getHealthMetricType().getTitle()).isEqualTo(request.healthMetricType()),
-			() -> assertThat(등록된_혈당.getUnit()).isEqualTo(request.unit()),
-			() -> assertThat(등록된_혈당.getCreatedAt()).isEqualTo(등록_일자),
-			() -> assertThat(등록된_혈당.getOauthId()).isEqualTo(테오.getOauthId())
+			() -> assertThat(등록된_건강지표.getCommonCode().getTitle()).isEqualTo(request.title()),
+			() -> assertThat(등록된_건강지표.getUnit()).isEqualTo(request.unit()),
+			() -> assertThat(등록된_건강지표.getCreatedAt()).isEqualTo(등록_일자),
+			() -> assertThat(등록된_건강지표.getOauthId()).isEqualTo(테오.getOauthId())
 		);
 	}
 
 	@Order(100)
 	@Test
-	void 단위만_변경된_혈당을_성공적으로_수정한다() {
+	void 단위만_변경된_건강지표를_성공적으로_수정한다() {
 		// given
-		HealthMetricPatchRequest request = 단위_변경한_혈당_수정_요청();
+		HealthMetricPatchRequest request = 단위_변경한_건강지표_수정_요청();
 
 		// when
 		HealthMetricResponse response = healthMetricRegistrationService.update(request, 등록_일자, 테오.getOauthId());
 
 		// then
 
-		HealthMetric 수정된_혈당 = healthMetricRepository.findByHealthMetricId(테오.getOauthId(), response.createdAt(), response.healthMetricType())
-			.orElseThrow();
+		HealthMetric 수정된_건강지표 = healthMetricRepository
+			.findByHealthMetricId(테오.getOauthId(), response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.title())).orElseThrow();
 
 		assertAll(
-			() -> assertThat(수정된_혈당.getUnit()).isEqualTo(request.unit()),
-			() -> assertThat(수정된_혈당.getUnit()).isNotEqualTo(등록된_혈당.getUnit()),
-			() -> assertThat(수정된_혈당.getHealthMetricType()).isEqualTo(등록된_혈당.getHealthMetricType())
+			() -> assertThat(수정된_건강지표.getUnit()).isEqualTo(request.unit()),
+			() -> assertThat(수정된_건강지표.getUnit()).isNotEqualTo(등록된_건강지표.getUnit()),
+			() -> assertThat(수정된_건강지표.getCommonCode()).isEqualTo(등록된_건강지표.getCommonCode())
 		);
 	}
 
 	@Order(200)
 	@Test
-	void 타입이_변경된_혈당을_성공적으로_수정한다() {
+	void 타입이_변경된_건강지표를_성공적으로_수정한다() {
 		// given
-		HealthMetricPatchRequest request = 타입_변경한_혈당_수정_요청();
+		HealthMetricPatchRequest request = 타입_변경한_건강지표_수정_요청();
 
 		// when
 		HealthMetricResponse response = healthMetricRegistrationService.update(request, 등록_일자, 테오.getOauthId());
 
 		// then
-		HealthMetric 수정된_혈당 = healthMetricRepository.findByHealthMetricId(테오.getOauthId(), response.createdAt(), response.healthMetricType())
-			.orElseThrow();
+		HealthMetric 수정된_건강지표 = healthMetricRepository
+			.findByHealthMetricId(테오.getOauthId(), response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.title())).orElseThrow();
 
 		assertAll(
-			() -> assertThat(수정된_혈당.getHealthMetricType().getTitle()).isEqualTo(request.newHealthMetricType()),
-			() -> assertThat(수정된_혈당.getUnit()).isEqualTo(request.unit()),
-			() -> assertThat(수정된_혈당.getHealthMetricType()).isNotEqualTo(등록된_혈당.getHealthMetricType()),
-			() -> assertThat(수정된_혈당.getUnit()).isEqualTo(등록된_혈당.getUnit())
+			() -> assertThat(수정된_건강지표.getCommonCode().getTitle()).isEqualTo(request.newTitle()),
+			() -> assertThat(수정된_건강지표.getUnit()).isEqualTo(request.unit()),
+			() -> assertThat(수정된_건강지표.getCommonCode()).isNotEqualTo(등록된_건강지표.getCommonCode()),
+			() -> assertThat(수정된_건강지표.getUnit()).isEqualTo(등록된_건강지표.getUnit())
 		);
 	}
 }

@@ -17,8 +17,8 @@ import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchR
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegistrationService;
-import com.coniverse.dangjang.domain.healthmetric.util.CreatedAtUtil;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
+import com.coniverse.dangjang.global.util.CreatedAtUtil;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,22 +33,20 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/health-metric")
 @RequiredArgsConstructor
 @Validated
-public class HealthMetricRegistrationController {
+public class HealthMetricRegistrationController { // TODO @AuthenticationPrincipal Map<String, Object> principal
 	private final HealthMetricRegistrationService healthMetricRegistrationService;
-	private final CreatedAtUtil createdAtUtil;
 
 	/**
 	 * HTTP POST METHOD
-	 * TODO @AuthenticationPrincipal Map<String, Object> principal
 	 *
 	 * @since 1.0.0
 	 */
 	@PostMapping("/{month}/{day}")
 	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> post(@Range(min = 1, max = 12) @PathVariable(value = "month") int month,
 		@Range(min = 1, max = 31) @PathVariable(name = "day") int day, @Valid @RequestBody HealthMetricPostRequest postRequest) {
-		LocalDate createdAt = createdAtUtil.generateCreatedAt(month, day);
-		HealthMetricResponse bloodSugarResponse = healthMetricRegistrationService.register(postRequest, createdAt, "11111111");
-		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), bloodSugarResponse));
+		LocalDate createdAt = CreatedAtUtil.generateCreatedAt(month, day);
+		HealthMetricResponse response = healthMetricRegistrationService.register(postRequest, createdAt, "11111111");
+		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
 
 	/**
@@ -59,8 +57,8 @@ public class HealthMetricRegistrationController {
 	@PatchMapping("/{month}/{day}")
 	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> patch(@Range(min = 1, max = 12) @PathVariable(value = "month") int month,
 		@Range(min = 1, max = 31) @PathVariable(name = "day") int day, @Valid @RequestBody HealthMetricPatchRequest patchRequest) {
-		LocalDate createdAt = createdAtUtil.generateCreatedAt(month, day);
-		HealthMetricResponse bloodSugarResponse = healthMetricRegistrationService.update(patchRequest, createdAt, "11111111");
-		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), bloodSugarResponse));
+		LocalDate createdAt = CreatedAtUtil.generateCreatedAt(month, day);
+		HealthMetricResponse response = healthMetricRegistrationService.update(patchRequest, createdAt, "11111111");
+		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
 }

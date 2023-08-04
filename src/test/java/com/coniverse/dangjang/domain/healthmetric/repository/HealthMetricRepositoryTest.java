@@ -1,6 +1,6 @@
 package com.coniverse.dangjang.domain.healthmetric.repository;
 
-import static com.coniverse.dangjang.fixture.BloodSugarFixture.*;
+import static com.coniverse.dangjang.fixture.HealthMetricFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,8 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
-import com.coniverse.dangjang.domain.healthmetric.enums.HealthMetricType;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.support.annotation.RepositoryTest;
@@ -54,18 +54,18 @@ class HealthMetricRepositoryTest {
 		User 테오 = userRepository.findById(테오_아이디).orElseThrow();
 
 		// when
-		HealthMetric 저장된_혈당 = healthMetricRepository.save(정상_혈당(테오));
+		HealthMetric 저장된_건강지표 = healthMetricRepository.save(건강지표_엔티티(테오));
 		em.flush();
 
 		// then
-		HealthMetric 찾은_혈당 = healthMetricRepository.findByHealthMetricId(저장된_혈당.getOauthId(), 저장된_혈당.getCreatedAt(), 저장된_혈당.getHealthMetricType())
+		HealthMetric 찾은_건강지표 = healthMetricRepository.findByHealthMetricId(저장된_건강지표.getOauthId(), 저장된_건강지표.getCreatedAt(), 저장된_건강지표.getCommonCode())
 			.orElseThrow();
 
 		assertAll(
-			() -> assertThat(찾은_혈당.getOauthId()).isEqualTo(저장된_혈당.getOauthId()),
-			() -> assertThat(찾은_혈당.getHealthMetricType()).isEqualTo(저장된_혈당.getHealthMetricType()),
-			() -> assertThat(찾은_혈당.getCreatedAt()).isEqualTo(저장된_혈당.getCreatedAt()),
-			() -> assertThat(찾은_혈당.getUnit()).isEqualTo(저장된_혈당.getUnit())
+			() -> assertThat(찾은_건강지표.getOauthId()).isEqualTo(저장된_건강지표.getOauthId()),
+			() -> assertThat(찾은_건강지표.getCommonCode()).isEqualTo(저장된_건강지표.getCommonCode()),
+			() -> assertThat(찾은_건강지표.getCreatedAt()).isEqualTo(저장된_건강지표.getCreatedAt()),
+			() -> assertThat(찾은_건강지표.getUnit()).isEqualTo(저장된_건강지표.getUnit())
 		);
 	}
 
@@ -73,14 +73,14 @@ class HealthMetricRepositoryTest {
 	void unit이_없는_건강지표를_저장할_경우_예외가_발생한다() {
 		// given
 		User 테오 = userRepository.findById(테오_아이디).orElseThrow();
-		HealthMetric unit이_없는_혈당 = HealthMetric.builder()
-			.healthMetricType(HealthMetricType.BEFORE_BREAKFAST)
+		HealthMetric unit이_없는_건강지표 = HealthMetric.builder()
+			.commonCode(CommonCode.BS_BBF)
 			.createdAt(LocalDate.now())
 			.user(테오)
 			.build();
 
 		// when
-		healthMetricRepository.save(unit이_없는_혈당);
+		healthMetricRepository.save(unit이_없는_건강지표);
 
 		// then
 		assertThatThrownBy(() -> em.flush())

@@ -39,21 +39,22 @@ CREATE TABLE `DANGJANG_CLUB`
 
 CREATE TABLE `CODE`
 (
-    `CODE`        varchar(10) NOT NULL,
-    `PARENT_CODE` varchar(20),
-    `ENG_NAME`    varchar(20) NOT NULL,
-    `KOR_NAME`    varchar(20) NOT NULL,
+    `CODE`       varchar(10) NOT NULL,
+    `CODE_GROUP` varchar(20),
+    `ENG_NAME`   varchar(20) NOT NULL,
+    `KOR_NAME`   varchar(20) NOT NULL,
     PRIMARY KEY (`CODE`)
 );
 
 CREATE TABLE `HEALTH_METRIC`
 (
-    `OAUTH_ID`           varchar(50) NOT NULL,
-    `CREATED_AT`         date        NOT NULL,
-    `HEALTH_METRIC_TYPE` varchar(30) NOT NULL, -- TODO 수정
-    `UNIT`               varchar(20) NOT NULL,
-    PRIMARY KEY (`OAUTH_ID`, `CREATED_AT`, `HEALTH_METRIC_TYPE`),
+    `OAUTH_ID`   varchar(50) NOT NULL,
+    `CREATED_AT` date        NOT NULL,
+    `CODE`       varchar(10) NOT NULL,
+    `UNIT`       varchar(20) NOT NULL,
+    PRIMARY KEY (`OAUTH_ID`, `CREATED_AT`, `CODE`),
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`)
+    -- FOREIGN KEY (`CODE`) REFERENCES CODE (`CODE`)
 );
 
 CREATE TABLE `DEVICE`
