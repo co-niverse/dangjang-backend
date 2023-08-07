@@ -68,7 +68,7 @@ class HealthMetricRegistrationControllerTest extends ControllerTest {
 			status().isOk(),
 			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
 			jsonPath("$.data.createdAt").value(response.createdAt().toString()),
-			jsonPath("$.data.healthMetricType").value(response.title()),
+			jsonPath("$.data.title").value(response.title()),
 			jsonPath("$.data.unit").value(response.unit())
 		);
 	}
@@ -151,7 +151,7 @@ class HealthMetricRegistrationControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isBadRequest(),
 			jsonPath("$.errorCode").value(400),
-			jsonPath("$.fieldErrors[0].field").value("healthMetricType"),
+			jsonPath("$.fieldErrors[0].field").value("title"),
 			jsonPath("$.fieldErrors[0].rejectedValue").value("")
 		);
 	}
