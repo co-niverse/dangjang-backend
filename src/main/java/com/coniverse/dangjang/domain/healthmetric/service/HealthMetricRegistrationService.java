@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
 
+import com.coniverse.dangjang.domain.analysis.service.AnalysisService;
+import com.coniverse.dangjang.domain.analysis.vo.AnalysisData.BloodSugarAnalysisData;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
@@ -32,6 +34,7 @@ public class HealthMetricRegistrationService {
 	private final HealthMetricMapper healthMetricMapper;
 	private final UserSearchService userSearchService;
 	private final HealthMetricSearchService healthMetricSearchService;
+	private final AnalysisService analysisService;
 
 	/**
 	 * 건강지표를 저장한다.
@@ -43,10 +46,9 @@ public class HealthMetricRegistrationService {
 	 */
 	public HealthMetricResponse register(HealthMetricPostRequest request, LocalDate createdAt, String oauthId) {
 		User user = userSearchService.findUserByOauthId(oauthId);
-
-		return healthMetricMapper.toResponse(
-			healthMetricRepository.save(healthMetricMapper.toEntity(request, createdAt, user))
-		);
+		HealthMetric healthMetric = healthMetricRepository.save(healthMetricMapper.toEntity(request, createdAt, user));
+		analysisService.analyze(new BloodSugarAnalysisData(healthMetric, user));
+		return healthMetricMapper.toResponse(healthMetric);
 	}
 
 	/**
