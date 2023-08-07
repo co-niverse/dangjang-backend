@@ -21,7 +21,7 @@ CREATE TABLE `USERS`
     `CREATED_AT`          datetime    NOT NULL,
     `UPDATED_AT`          datetime    NOT NULL,
     `PROFILE_IMAGE_PATH`  varchar(255),
---     `DIABETES`           boolean     NOT NULL,
+    `DIABETES`            boolean     NOT NULL,
     `DIABETES_YEAR`       int,
     MEDICINE              boolean,
     INJECTION             boolean,
