@@ -69,7 +69,7 @@ class HealthMetricRegistrationServiceTest {
 			.findByHealthMetricId(테오_아이디, response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.title())).orElseThrow();
 
 		assertAll(
-			() -> assertThat(등록된_건강지표.getCommonCode().getTitle()).isEqualTo(request.title()),
+			() -> assertThat(등록된_건강지표.getType().getTitle()).isEqualTo(request.title()),
 			() -> assertThat(등록된_건강지표.getUnit()).isEqualTo(request.unit()),
 			() -> assertThat(등록된_건강지표.getCreatedAt()).isEqualTo(등록_일자),
 			() -> assertThat(등록된_건강지표.getOauthId()).isEqualTo(테오_아이디)
@@ -93,7 +93,7 @@ class HealthMetricRegistrationServiceTest {
 		assertAll(
 			() -> assertThat(수정된_건강지표.getUnit()).isEqualTo(request.unit()),
 			() -> assertThat(수정된_건강지표.getUnit()).isNotEqualTo(등록된_건강지표.getUnit()),
-			() -> assertThat(수정된_건강지표.getCommonCode()).isEqualTo(등록된_건강지표.getCommonCode())
+			() -> assertThat(수정된_건강지표.getType()).isEqualTo(등록된_건강지표.getType())
 		);
 	}
 
@@ -111,9 +111,9 @@ class HealthMetricRegistrationServiceTest {
 			.findByHealthMetricId(테오_아이디, response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.title())).orElseThrow();
 
 		assertAll(
-			() -> assertThat(수정된_건강지표.getCommonCode().getTitle()).isEqualTo(request.newTitle()),
+			() -> assertThat(수정된_건강지표.getType().getTitle()).isEqualTo(request.newTitle()),
 			() -> assertThat(수정된_건강지표.getUnit()).isEqualTo(request.unit()),
-			() -> assertThat(수정된_건강지표.getCommonCode()).isNotEqualTo(등록된_건강지표.getCommonCode()),
+			() -> assertThat(수정된_건강지표.getType()).isNotEqualTo(등록된_건강지표.getType()),
 			() -> assertThat(수정된_건강지표.getUnit()).isEqualTo(등록된_건강지표.getUnit())
 		);
 	}

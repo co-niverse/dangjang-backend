@@ -33,7 +33,7 @@ public abstract class HealthMetricAnalysisData {
 	 * @since 1.0.0
 	 */
 	public static HealthMetricAnalysisData of(HealthMetric healthMetric, User user) {
-		GroupCode groupCode = GroupCode.findByCode(healthMetric.getType());
+		GroupCode groupCode = healthMetric.getGroupCode();
 		if (groupCode.equals(GroupCode.BLOOD_SUGAR)) {
 			return new BloodSugarAnalysisData(healthMetric, user);
 		}

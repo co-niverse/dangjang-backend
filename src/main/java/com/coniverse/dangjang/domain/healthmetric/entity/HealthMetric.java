@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import org.springframework.data.domain.Persistable;
 
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
+import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.user.entity.User;
 
 import jakarta.persistence.Column;
@@ -30,6 +31,8 @@ import lombok.NoArgsConstructor;
 public class HealthMetric implements Persistable<HealthMetricId> {
 	@EmbeddedId
 	private HealthMetricId healthMetricId;
+	@Getter
+	private GroupCode groupCode;
 	@Getter
 	@Column(nullable = false)
 	private String unit;
@@ -57,7 +60,7 @@ public class HealthMetric implements Persistable<HealthMetricId> {
 		return this.healthMetricId.getCreatedAt();
 	}
 
-	public CommonCode getCommonCode() {
+	public CommonCode getType() {
 		return this.healthMetricId.getCommonCode();
 	}
 

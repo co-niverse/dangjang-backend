@@ -29,7 +29,7 @@ class HealthMetricMapperTest {
 		// then
 		assertAll(
 			() -> assertThat(건강지표_응답.createdAt()).isEqualTo(건강지표.getCreatedAt()),
-			() -> assertThat(건강지표_응답.title()).isEqualTo(건강지표.getCommonCode().getTitle()),
+			() -> assertThat(건강지표_응답.title()).isEqualTo(건강지표.getType().getTitle()),
 			() -> assertThat(건강지표_응답.unit()).isEqualTo(건강지표.getUnit())
 		);
 	}
@@ -44,7 +44,7 @@ class HealthMetricMapperTest {
 
 		// then
 		assertAll(
-			() -> assertThat(건강지표_등록_요청.title()).isEqualTo(건강지표.getCommonCode().getTitle()),
+			() -> assertThat(건강지표_등록_요청.title()).isEqualTo(건강지표.getType().getTitle()),
 			() -> assertThat(건강지표_등록_요청.unit()).isEqualTo(건강지표.getUnit())
 		);
 	}
@@ -59,7 +59,7 @@ class HealthMetricMapperTest {
 
 		// then
 		assertAll(
-			() -> assertThat(건강지표_수정_요청.newTitle()).isEqualTo(건강지표.getCommonCode().getTitle()),
+			() -> assertThat(건강지표_수정_요청.newTitle()).isEqualTo(건강지표.getType().getTitle()),
 			() -> assertThat(건강지표_수정_요청.unit()).isEqualTo(건강지표.getUnit())
 		);
 	}
