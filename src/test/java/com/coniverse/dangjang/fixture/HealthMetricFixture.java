@@ -19,9 +19,9 @@ public class HealthMetricFixture {
 	private static final LocalDate 생성일자 = LocalDate.of(2023, 12, 31);
 	private static final String 등록_건강지표_단위 = "140";
 	private static final String 수정_건강지표_단위 = "100";
-	private static final CommonCode 등록_건강지표 = CommonCode.BS_BBF;
+	private static final CommonCode 등록_건강지표 = CommonCode.BEFORE_BREAKFAST;
 	private static final String 등록_건강지표_상세명 = 등록_건강지표.getTitle();
-	private static final String 수정_건강지표_상세명 = CommonCode.BS_ALC.getTitle();
+	private static final String 수정_건강지표_상세명 = CommonCode.AFTER_LUNCH.getTitle();
 
 	public static HealthMetricPostRequest 건강지표_등록_요청() {
 		return new HealthMetricPostRequest(등록_건강지표_상세명, 등록_건강지표_단위);

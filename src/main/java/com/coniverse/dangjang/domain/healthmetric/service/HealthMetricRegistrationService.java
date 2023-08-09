@@ -5,8 +5,9 @@ import java.time.LocalDate;
 import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.analysis.service.AnalysisService;
-import com.coniverse.dangjang.domain.analysis.vo.AnalysisData.BloodSugarAnalysisData;
+import com.coniverse.dangjang.domain.analysis.vo.analysisdata.HealthMetricAnalysisData;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
+import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;
@@ -47,7 +48,7 @@ public class HealthMetricRegistrationService {
 	public HealthMetricResponse register(HealthMetricPostRequest request, LocalDate createdAt, String oauthId) {
 		User user = userSearchService.findUserByOauthId(oauthId);
 		HealthMetric healthMetric = healthMetricRepository.save(healthMetricMapper.toEntity(request, createdAt, user));
-		analysisService.analyze(new BloodSugarAnalysisData(healthMetric, user));
+		analysisService.analyze(HealthMetricAnalysisData.of(healthMetric, user), GroupCode.findByCode(healthMetric.getType()));
 		return healthMetricMapper.toResponse(healthMetric);
 	}
 
