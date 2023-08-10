@@ -83,12 +83,9 @@ public class UserSignupService {
 			KakaoLoginRequest kakaoLoginRequest = new KakaoLoginRequest(accessToken);
 			return oauthLoginService.request(kakaoLoginRequest);
 
-		} else if (provider.equals(OauthProvider.NAVER)) {
+		} else {
 			NaverLoginRequest naverLoginRequest = new NaverLoginRequest(accessToken);
 			return oauthLoginService.request(naverLoginRequest);
-		} else {
-			return null;
-			// throw new IllegalArgumentException("잘못된 provider 입니다.");
 		}
 	}
 
