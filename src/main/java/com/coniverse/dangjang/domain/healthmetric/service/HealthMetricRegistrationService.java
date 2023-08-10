@@ -61,7 +61,7 @@ public class HealthMetricRegistrationService {
 	public HealthMetricResponse update(HealthMetricPatchRequest request, String oauthId) {
 		CommonCode type = EnumFindUtil.findByTitle(CommonCode.class, request.type());
 		LocalDate createdAt = LocalDate.parse(request.createdAt());
-		HealthMetric healthMetric = healthMetricSearchService.findHealthMetricById(oauthId, createdAt, type);
+		HealthMetric healthMetric = healthMetricSearchService.findByHealthMetricId(oauthId, createdAt, type);
 		User user = userSearchService.findUserByOauthId(oauthId);
 
 		HealthMetric updatedHealthMetric;

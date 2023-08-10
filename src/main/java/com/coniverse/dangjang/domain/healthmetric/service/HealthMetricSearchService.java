@@ -34,7 +34,7 @@ public class HealthMetricSearchService {
 	 * @throws HealthMetricNotFoundException 유저의 건강 지표를 찾을 수 없을 경우 발생한다.
 	 * @since 1.0.0
 	 */
-	public HealthMetric findHealthMetricById(String oauthId, LocalDate createdAt, CommonCode type) {
+	public HealthMetric findByHealthMetricId(String oauthId, LocalDate createdAt, CommonCode type) {
 		return healthMetricRepository.findByHealthMetricId(oauthId, createdAt, type).orElseThrow(HealthMetricNotFoundException::new);
 	}
 }
