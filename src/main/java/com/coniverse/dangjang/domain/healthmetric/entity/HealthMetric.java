@@ -6,6 +6,7 @@ import org.springframework.data.domain.Persistable;
 
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.code.enums.GroupCode;
+import com.coniverse.dangjang.domain.healthmetric.exception.IsNotSameGroupException;
 import com.coniverse.dangjang.domain.user.entity.User;
 
 import jakarta.persistence.Column;
@@ -76,5 +77,18 @@ public class HealthMetric implements Persistable<HealthMetricId> {
 	@Override
 	public boolean isNew() {
 		return getOauthId() == null;
+	}
+
+	/**
+	 * 건강 지표 type의 그룹이 같은지 검증한다.
+	 *
+	 * @param type 건강 지표 type
+	 * @throws IsNotSameGroupException 건강 지표 type의 그룹이 다를 경우
+	 * @since 1.0.0
+	 */
+	public void verifySameGroupCode(CommonCode type) { // TODO test
+		if (!this.groupCode.hasCode(type)) {
+			throw new IsNotSameGroupException();
+		}
 	}
 }

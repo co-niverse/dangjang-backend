@@ -1,7 +1,5 @@
 package com.coniverse.dangjang.domain.healthmetric.mapper;
 
-import java.time.LocalDate;
-
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -18,15 +16,15 @@ import com.coniverse.dangjang.global.util.EnumFindUtil;
 public interface HealthMetricMapper {
 	@Mappings({
 		@Mapping(target = "type", expression = "java(EnumFindUtil.findByTitle(CommonCode.class, request.type()))"),
-		@Mapping(target = "createdAt", source = "createdAt")
+		@Mapping(target = "createdAt", source = "request.createdAt")
 	})
-	HealthMetric toEntity(HealthMetricPostRequest request, LocalDate createdAt, User user);
+	HealthMetric toEntity(HealthMetricPostRequest request, User user);
 
 	@Mappings({
 		@Mapping(target = "type", expression = "java(EnumFindUtil.findByTitle(CommonCode.class, request.newType()))"),
-		@Mapping(target = "createdAt", source = "createdAt")
+		@Mapping(target = "createdAt", source = "request.createdAt")
 	})
-	HealthMetric toEntity(HealthMetricPatchRequest request, LocalDate createdAt, User user);
+	HealthMetric toEntity(HealthMetricPatchRequest request, User user);
 
 	@Mapping(target = "type", source = "type.title")
 	HealthMetricResponse toResponse(HealthMetric healthMetric);

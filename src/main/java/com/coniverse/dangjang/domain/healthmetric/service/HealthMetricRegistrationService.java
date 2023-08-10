@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.coniverse.dangjang.domain.analysis.service.AnalysisService;
 import com.coniverse.dangjang.domain.analysis.vo.analysisdata.HealthMetricAnalysisData;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
+import com.coniverse.dangjang.domain.feedback.entity.BloodSugarFeedback;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;
@@ -34,44 +35,82 @@ public class HealthMetricRegistrationService {
 	private final HealthMetricMapper healthMetricMapper;
 	private final UserSearchService userSearchService;
 	private final HealthMetricSearchService healthMetricSearchService;
-	private final AnalysisService analysisService;
+	private final AnalysisService<HealthMetricAnalysisData, BloodSugarFeedback> analysisService;
 
 	/**
 	 * 건강지표를 저장한다.
 	 *
-	 * @param request   건강지표 request post dto
-	 * @param createdAt 건강지표 생성일
-	 * @param oauthId   건강지표 등록 유저 PK
+	 * @param request 건강지표 request post dto
+	 * @param oauthId 건강지표 등록 유저 PK
 	 * @since 1.0.0
 	 */
-	public HealthMetricResponse register(HealthMetricPostRequest request, LocalDate createdAt, String oauthId) {
+	public HealthMetricResponse register(HealthMetricPostRequest request, String oauthId) {
 		User user = userSearchService.findUserByOauthId(oauthId);
-		HealthMetric healthMetric = healthMetricRepository.save(healthMetricMapper.toEntity(request, createdAt, user));
-		analysisService.analyze(HealthMetricAnalysisData.of(healthMetric, user), healthMetric.getGroupCode());
+		HealthMetric healthMetric = healthMetricRepository.save(healthMetricMapper.toEntity(request, user));
+		BloodSugarFeedback feedback = generateFeedback(healthMetric, user);
 		return healthMetricMapper.toResponse(healthMetric);
 	}
 
 	/**
 	 * 건강지표를 수정한다.
 	 *
-	 * @param request   건강지표 request patch dto
-	 * @param createdAt 건강지표 생성일
-	 * @param oauthId   건강지표 수정 유저 PK
+	 * @param request 건강지표 request patch dto
+	 * @param oauthId 건강지표 수정 유저 PK
 	 * @since 1.0.0
 	 */
-	public HealthMetricResponse update(HealthMetricPatchRequest request, LocalDate createdAt, String oauthId) {
-		CommonCode commonCode = EnumFindUtil.findByTitle(CommonCode.class, request.type());
+	public HealthMetricResponse update(HealthMetricPatchRequest request, String oauthId) {
+		CommonCode type = EnumFindUtil.findByTitle(CommonCode.class, request.type());
+		LocalDate createdAt = LocalDate.parse(request.createdAt());
+		HealthMetric healthMetric = healthMetricSearchService.findHealthMetricById(oauthId, createdAt, type);
 		User user = userSearchService.findUserByOauthId(oauthId);
-		HealthMetric healthMetric = healthMetricSearchService.findHealthMetricById(oauthId, createdAt, commonCode);
 
-		if (request.newType() == null) {
-			healthMetric.updateUnit(request.unit());
-			return healthMetricMapper.toResponse(
-				healthMetricRepository.save(healthMetric));
+		HealthMetric updatedHealthMetric;
+		if (request.isEmptyNewType()) {
+			updatedHealthMetric = updateUnit(healthMetric, request.unit());
+		} else {
+			updatedHealthMetric = updateType(healthMetric, request, user);
 		}
+		BloodSugarFeedback feedback = generateFeedback(updatedHealthMetric, user);
+		return healthMetricMapper.toResponse(updatedHealthMetric);
+	}
+
+	/**
+	 * 조언을 생성한다.
+	 *
+	 * @param healthMetric 건강지표
+	 * @param user         건강지표 등록 or 수정 유저
+	 * @since 1.0.0
+	 */
+	private BloodSugarFeedback generateFeedback(HealthMetric healthMetric, User user) {
+		HealthMetricAnalysisData analysisData = HealthMetricAnalysisData.of(healthMetric, user);
+		return analysisService.analyze(analysisData, healthMetric.getGroupCode());
+	}
+
+	/**
+	 * unit을 수정한다.
+	 *
+	 * @param healthMetric 건강지표
+	 * @param unit         unit
+	 * @since 1.0.0
+	 */
+	private HealthMetric updateUnit(HealthMetric healthMetric, String unit) {
+		healthMetric.updateUnit(unit);
+		return healthMetricRepository.save(healthMetric);
+	}
+
+	/**
+	 * type을 수정한다.
+	 * <p>
+	 * type은 PK이기 때문에 삭제 후 새로운 type으로 저장한다.
+	 *
+	 * @param healthMetric 건강지표
+	 * @param request      건강지표 request patch dto
+	 * @param user         건강지표 수정 유저
+	 * @since 1.0.0
+	 */
+	private HealthMetric updateType(HealthMetric healthMetric, HealthMetricPatchRequest request, User user) {
+		healthMetric.verifySameGroupCode(EnumFindUtil.findByTitle(CommonCode.class, request.newType()));
 		healthMetricRepository.delete(healthMetric);
-		return healthMetricMapper.toResponse(
-			healthMetricRepository.save(healthMetricMapper.toEntity(request, createdAt, user))
-		);
+		return healthMetricRepository.save(healthMetricMapper.toEntity(request, user));
 	}
 }

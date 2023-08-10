@@ -5,8 +5,6 @@ import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalDate;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -34,7 +32,6 @@ import com.coniverse.dangjang.global.util.EnumFindUtil;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class HealthMetricRegistrationServiceTest {
-	private final LocalDate 등록_일자 = LocalDate.of(2023, 12, 31);
 	@Autowired
 	private HealthMetricRegistrationService healthMetricRegistrationService;
 	@Autowired
@@ -62,7 +59,7 @@ class HealthMetricRegistrationServiceTest {
 		HealthMetricPostRequest request = 건강지표_등록_요청();
 
 		// when
-		HealthMetricResponse response = healthMetricRegistrationService.register(request, 등록_일자, 테오_아이디);
+		HealthMetricResponse response = healthMetricRegistrationService.register(request, 테오_아이디);
 
 		// then
 		등록된_건강지표 = healthMetricRepository
@@ -71,7 +68,7 @@ class HealthMetricRegistrationServiceTest {
 		assertAll(
 			() -> assertThat(등록된_건강지표.getType().getTitle()).isEqualTo(request.type()),
 			() -> assertThat(등록된_건강지표.getUnit()).isEqualTo(request.unit()),
-			() -> assertThat(등록된_건강지표.getCreatedAt()).isEqualTo(등록_일자),
+			() -> assertThat(등록된_건강지표.getCreatedAt()).isEqualTo(request.createdAt()),
 			() -> assertThat(등록된_건강지표.getOauthId()).isEqualTo(테오_아이디)
 		);
 	}
@@ -83,7 +80,7 @@ class HealthMetricRegistrationServiceTest {
 		HealthMetricPatchRequest request = 단위_변경한_건강지표_수정_요청();
 
 		// when
-		HealthMetricResponse response = healthMetricRegistrationService.update(request, 등록_일자, 테오_아이디);
+		HealthMetricResponse response = healthMetricRegistrationService.update(request, 테오_아이디);
 
 		// then
 
@@ -91,8 +88,10 @@ class HealthMetricRegistrationServiceTest {
 			.findByHealthMetricId(테오_아이디, response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.type())).orElseThrow();
 
 		assertAll(
-			() -> assertThat(수정된_건강지표.getUnit()).isEqualTo(request.unit()),
 			() -> assertThat(수정된_건강지표.getUnit()).isNotEqualTo(등록된_건강지표.getUnit()),
+			() -> assertThat(수정된_건강지표.getUnit()).isEqualTo(request.unit()),
+			() -> assertThat(수정된_건강지표.getCreatedAt()).isEqualTo(등록된_건강지표.getCreatedAt()),
+			() -> assertThat(수정된_건강지표.getOauthId()).isEqualTo(등록된_건강지표.getOauthId()),
 			() -> assertThat(수정된_건강지표.getType()).isEqualTo(등록된_건강지표.getType())
 		);
 	}
@@ -104,7 +103,7 @@ class HealthMetricRegistrationServiceTest {
 		HealthMetricPatchRequest request = 타입_변경한_건강지표_수정_요청();
 
 		// when
-		HealthMetricResponse response = healthMetricRegistrationService.update(request, 등록_일자, 테오_아이디);
+		HealthMetricResponse response = healthMetricRegistrationService.update(request, 테오_아이디);
 
 		// then
 		HealthMetric 수정된_건강지표 = healthMetricRepository
@@ -112,9 +111,9 @@ class HealthMetricRegistrationServiceTest {
 
 		assertAll(
 			() -> assertThat(수정된_건강지표.getType().getTitle()).isEqualTo(request.newType()),
-			() -> assertThat(수정된_건강지표.getUnit()).isEqualTo(request.unit()),
-			() -> assertThat(수정된_건강지표.getType()).isNotEqualTo(등록된_건강지표.getType()),
-			() -> assertThat(수정된_건강지표.getUnit()).isEqualTo(등록된_건강지표.getUnit())
+			() -> assertThat(수정된_건강지표.getCreatedAt()).isEqualTo(등록된_건강지표.getCreatedAt()),
+			() -> assertThat(수정된_건강지표.getOauthId()).isEqualTo(등록된_건강지표.getOauthId()),
+			() -> assertThat(수정된_건강지표.getType()).isNotEqualTo(등록된_건강지표.getType())
 		);
 	}
 }

@@ -16,7 +16,7 @@ import com.coniverse.dangjang.domain.user.entity.User;
  * @since 1.0.0
  */
 public class HealthMetricFixture {
-	private static final LocalDate 생성일자 = LocalDate.of(2023, 12, 31);
+	private static final String 생성일자 = "2023-12-31";
 	private static final String 등록_건강지표_단위 = "140";
 	private static final String 수정_건강지표_단위 = "100";
 	private static final CommonCode 등록_건강지표 = CommonCode.BEFORE_BREAKFAST;
@@ -24,24 +24,24 @@ public class HealthMetricFixture {
 	private static final String 수정_건강지표_상세명 = CommonCode.AFTER_LUNCH.getTitle();
 
 	public static HealthMetricPostRequest 건강지표_등록_요청() {
-		return new HealthMetricPostRequest(등록_건강지표_상세명, 등록_건강지표_단위);
+		return new HealthMetricPostRequest(등록_건강지표_상세명, 생성일자, 등록_건강지표_단위);
 	}
 
 	public static HealthMetricPatchRequest 타입_변경한_건강지표_수정_요청() {
-		return new HealthMetricPatchRequest(등록_건강지표_상세명, 수정_건강지표_상세명, 등록_건강지표_단위);
+		return new HealthMetricPatchRequest(등록_건강지표_상세명, 수정_건강지표_상세명, 생성일자, 등록_건강지표_단위);
 	}
 
 	public static HealthMetricPatchRequest 단위_변경한_건강지표_수정_요청() {
-		return new HealthMetricPatchRequest(등록_건강지표_상세명, null, 수정_건강지표_단위);
+		return new HealthMetricPatchRequest(등록_건강지표_상세명, null, 생성일자, 수정_건강지표_단위);
 	}
 
 	public static HealthMetricResponse 건강지표_등록_응답() {
-		return new HealthMetricResponse(등록_건강지표_상세명, 생성일자, 등록_건강지표_단위);
+		return new HealthMetricResponse(등록_건강지표_상세명, LocalDate.parse(생성일자), 등록_건강지표_단위);
 	}
 
 	public static HealthMetric 건강지표_엔티티(User user) {
 		return HealthMetric.builder()
-			.createdAt(생성일자)
+			.createdAt(LocalDate.parse(생성일자))
 			.type(등록_건강지표)
 			.user(user)
 			.unit(등록_건강지표_단위)

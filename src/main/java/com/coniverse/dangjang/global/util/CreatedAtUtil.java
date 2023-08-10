@@ -11,6 +11,7 @@ import com.coniverse.dangjang.global.exception.IncorrectCreatedAtException;
  * @author TEO
  * @since 1.0.0
  */
+@Deprecated
 public class CreatedAtUtil {
 	/**
 	 * 생성일자를 생성한다.

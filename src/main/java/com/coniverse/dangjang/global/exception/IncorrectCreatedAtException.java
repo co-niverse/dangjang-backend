@@ -6,6 +6,7 @@ package com.coniverse.dangjang.global.exception;
  * @author TEO
  * @since 1.0.0
  */
+@Deprecated
 public class IncorrectCreatedAtException extends BusinessException {
 	public IncorrectCreatedAtException() {
 		super(400, "생성일자가 올바르지 않습니다.");

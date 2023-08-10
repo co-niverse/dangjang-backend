@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,7 +32,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class HealthMetricRegistrationControllerTest extends ControllerTest {
-	public static final String URL = "/api/health-metric/{month}/{day}";
+	public static final String URL = "/api/health-metric";
 	private final HealthMetricResponse response = 건강지표_등록_응답();
 	private String postContent;
 	private String patchContent;
@@ -58,10 +57,10 @@ class HealthMetricRegistrationControllerTest extends ControllerTest {
 	@Test
 	void 건강지표를_등록하면_성공_메시지를_반환한다() throws Exception {
 		// given
-		given(healthMetricRegistrationService.register(any(), any(), anyString())).willReturn(response);
+		given(healthMetricRegistrationService.register(any(), anyString())).willReturn(response);
 
 		// when
-		ResultActions resultActions = post(mockMvc, URL, postContent, 7, 8);
+		ResultActions resultActions = post(mockMvc, URL, postContent);
 
 		// then
 		resultActions.andExpectAll(
@@ -74,78 +73,14 @@ class HealthMetricRegistrationControllerTest extends ControllerTest {
 	}
 
 	@Order(200)
-	@ParameterizedTest
-	@ValueSource(ints = {-1, 0, 13})
-	void 범위를_벗어나는_PathVariable_month를_입력하면_예외가_발생한다(int month) throws Exception {
-		// when
-		ResultActions resultActions = post(mockMvc, URL, postContent, month, 1);
-
-		// then
-		resultActions.andExpectAll(
-			status().isBadRequest(),
-			jsonPath("$.errorCode").value(400),
-			jsonPath("$.violationErrors[0].rejectedValue").value(month)
-		);
-	}
-
-	@Order(300)
-	@ParameterizedTest
-	@MethodSource("provideMonth")
-	void 올바른_PathVariable_month를_입력하면_성공메시지를_반환한다(int month) throws Exception {
-		// given
-		given(healthMetricRegistrationService.register(any(), any(), anyString())).willReturn(response);
-
-		// when
-		ResultActions resultActions = post(mockMvc, URL, postContent, month, 8);
-
-		// then
-		resultActions.andExpectAll(
-			status().isOk(),
-			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase())
-		);
-	}
-
-	@Order(400)
-	@ParameterizedTest
-	@ValueSource(ints = {-1, 0, 32})
-	void 범위를_벗어나는_PathVariable_day를_입력하면_예외가_발생한다(int day) throws Exception {
-		// when
-		ResultActions resultActions = post(mockMvc, URL, postContent, 1, day);
-
-		// then
-		resultActions.andExpectAll(
-			status().isBadRequest(),
-			jsonPath("$.errorCode").value(400),
-			jsonPath("$.violationErrors[0].rejectedValue").value(day)
-		);
-	}
-
-	@Order(500)
-	@ParameterizedTest
-	@MethodSource("provideDay")
-	void 올바른_PathVariable_day를_입력하면_성공메시지를_반환한다(int day) throws Exception {
-		// given
-		given(healthMetricRegistrationService.register(any(), any(), anyString())).willReturn(response);
-
-		// when
-		ResultActions resultActions = post(mockMvc, URL, postContent, 1, day);
-
-		// then
-		resultActions.andExpectAll(
-			status().isOk(),
-			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase())
-		);
-	}
-
-	@Order(600)
 	@Test
 	void 건강지표_등록_RequestBody의_건강지표_타입이_비어있으면_예외가_발생한다() throws Exception {
 		// given
-		HealthMetricPostRequest request = new HealthMetricPostRequest("", "100");
+		HealthMetricPostRequest request = new HealthMetricPostRequest("", "2023-12-31", "100");
 		String content = objectMapper.writeValueAsString(request);
 
 		// when
-		ResultActions resultActions = post(mockMvc, URL, content, 7, 8);
+		ResultActions resultActions = post(mockMvc, URL, content);
 
 		// then
 		resultActions.andExpectAll(
@@ -156,15 +91,15 @@ class HealthMetricRegistrationControllerTest extends ControllerTest {
 		);
 	}
 
-	@Order(700)
+	@Order(300)
 	@Test
 	void 건강지표_등록_RequestBody의_unit이_비어있으면_예외가_발생한다() throws Exception {
 		// given
-		HealthMetricPostRequest request = new HealthMetricPostRequest("아침 식전", " ");
+		HealthMetricPostRequest request = new HealthMetricPostRequest("아침 식전", "2023-12-31", " ");
 		String content = objectMapper.writeValueAsString(request);
 
 		// when
-		ResultActions resultActions = post(mockMvc, URL, content, 7, 8);
+		ResultActions resultActions = post(mockMvc, URL, content);
 
 		// then
 		resultActions.andExpectAll(
@@ -175,14 +110,34 @@ class HealthMetricRegistrationControllerTest extends ControllerTest {
 		);
 	}
 
-	@Order(800)
+	@Order(400)
+	@ParameterizedTest
+	@ValueSource(strings = {"2023-02-29", "2023-04-31", "2023-06-31", "2023-09-31", "2023-11-31", "2023.01.01", "2023/01/01"})
+	void 건강지표_등록_RequestBody의_날짜가_유효하지_않으면_예외가_발생한다(String createdAt) throws Exception {
+		// given
+		HealthMetricPostRequest request = new HealthMetricPostRequest("아침 식전", createdAt, "100");
+		String content = objectMapper.writeValueAsString(request);
+
+		// when
+		ResultActions resultActions = post(mockMvc, URL, content);
+
+		// then
+		resultActions.andExpectAll(
+			status().isBadRequest(),
+			jsonPath("$.errorCode").value(400),
+			jsonPath("$.fieldErrors[0].field").value("createdAt"),
+			jsonPath("$.fieldErrors[0].rejectedValue").value(createdAt)
+		);
+	}
+
+	@Order(500)
 	@Test
 	void 건강지표를_수정하면_성공_메시지를_반환한다() throws Exception {
 		// given
-		given(healthMetricRegistrationService.update(any(), any(), anyString())).willReturn(response);
+		given(healthMetricRegistrationService.update(any(), anyString())).willReturn(response);
 
 		// when
-		ResultActions resultActions = patch(mockMvc, URL, patchContent, 7, 8);
+		ResultActions resultActions = patch(mockMvc, URL, patchContent);
 
 		// then
 		resultActions.andExpectAll(

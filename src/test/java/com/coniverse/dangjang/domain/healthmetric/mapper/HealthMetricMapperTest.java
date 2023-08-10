@@ -40,7 +40,8 @@ class HealthMetricMapperTest {
 		HealthMetricPostRequest 건강지표_등록_요청 = 건강지표_등록_요청();
 
 		// when
-		HealthMetric 건강지표 = healthMetricMapper.toEntity(건강지표_등록_요청, 등록_일자, 유저_테오());
+		// HealthMetric 건강지표 = healthMetricMapper.toEntity(건강지표_등록_요청, 등록_일자, 유저_테오());
+		HealthMetric 건강지표 = healthMetricMapper.toEntity(건강지표_등록_요청, 유저_테오());
 
 		// then
 		assertAll(
@@ -55,7 +56,7 @@ class HealthMetricMapperTest {
 		HealthMetricPatchRequest 건강지표_수정_요청 = 타입_변경한_건강지표_수정_요청();
 
 		// when
-		HealthMetric 건강지표 = healthMetricMapper.toEntity(건강지표_수정_요청, 등록_일자, 유저_테오());
+		HealthMetric 건강지표 = healthMetricMapper.toEntity(건강지표_수정_요청, 유저_테오());
 
 		// then
 		assertAll(

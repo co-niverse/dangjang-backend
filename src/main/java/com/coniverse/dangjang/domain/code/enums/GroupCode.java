@@ -66,7 +66,7 @@ public enum GroupCode implements EnumCode {
 	 * @see CommonCode
 	 * @since 1.0.0
 	 */
-	private boolean hasCode(CommonCode commonCode) {
+	public boolean hasCode(CommonCode commonCode) {
 		return commonCodeList.stream().anyMatch(t -> t.equals(commonCode));
 	}
 }
