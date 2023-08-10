@@ -5,6 +5,7 @@ package com.coniverse.dangjang.global.exception;
  *
  * @author TEO
  * @since 1.0.0
+ * @deprecated
  */
 @Deprecated
 public class IncorrectCreatedAtException extends BusinessException {

@@ -10,6 +10,7 @@ import com.coniverse.dangjang.global.exception.IncorrectCreatedAtException;
  *
  * @author TEO
  * @since 1.0.0
+ * @deprecated
  */
 @Deprecated
 public class CreatedAtUtil {

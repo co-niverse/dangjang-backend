@@ -8,6 +8,13 @@ import java.lang.annotation.Target;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
+/**
+ * LocalDate가 유효한지 검증하는 annotation
+ *
+ * @author TEO
+ * @see LocalDateValidator
+ * @since 1.0.0
+ */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = LocalDateValidator.class)

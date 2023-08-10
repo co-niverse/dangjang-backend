@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 전단계 당뇨환자와 2형 당뇨환자의 공복, 식후 혈당 정상 수치 기준
+ * 전단계 당뇨환자와 2형 당뇨환자의 식전, 식후 혈당 정상 수치 기준
  * <p>
  * 전단계 당뇨환자: 공복 혈당 70~99mg/dL, 식후 혈당 90~139mg/dL
  * <p>
@@ -35,6 +35,11 @@ public enum BloodSugarLevel {
 		return this.meal.bloodSugarTypes.contains(bloodSugarType);
 	}
 
+	/**
+	 * 혈당 타입의 식전, 식후 구분
+	 *
+	 * @since 1.0.0
+	 */
 	@AllArgsConstructor
 	private enum Meal {
 		BEFORE_MEAL(List.of(CommonCode.EMPTY_STOMACH, CommonCode.BEFORE_BREAKFAST, CommonCode.BEFORE_LUNCH, CommonCode.BEFORE_DINNER)),
