@@ -1,7 +1,12 @@
 package com.coniverse.dangjang.fixture;
 
+import static org.junit.jupiter.params.provider.Arguments.*;
+
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Stream;
+
+import org.junit.jupiter.params.provider.Arguments;
 
 import com.coniverse.dangjang.domain.user.dto.request.SignUpRequest;
 
@@ -12,6 +17,9 @@ import com.coniverse.dangjang.domain.user.dto.request.SignUpRequest;
  * @since 1.0.0
  */
 public class SignUpFixture {
+	public static Stream<Arguments> 회원가입_사용자_목록() {
+		return Stream.of(arguments("kakao", false), arguments("naver", true));
+	}
 
 	public static SignUpRequest getSignUpRequest(String accessToken, String nickname, String provider, Boolean gender, LocalDate birthday, int height,
 		int weight, String activityAmount, Boolean diabetes, int diabetesYear, Boolean medicine, Boolean injection,

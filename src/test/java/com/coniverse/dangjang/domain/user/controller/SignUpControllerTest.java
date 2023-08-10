@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,12 +35,13 @@ class SignUpControllerTest extends ControllerTest {
 	@Autowired
 	private OauthLoginService oauthLoginService;
 
-	@Test
-	void 회원가입_성공한다() throws Exception {
+	@ParameterizedTest
+	@MethodSource("com.coniverse.dangjang.fixture.SignUpFixture#회원가입_사용자_목록")
+	void 회원가입_성공한다(String provider, Boolean gender) throws Exception {
 		List<String> diseases = new ArrayList<>();
 		diseases.add("저혈당");
 		//given 회원가입
-		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
+		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", provider, gender, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
 			false, 0, false, false,
 			diseases);
 		LoginResponse loginResponse = new LoginResponse("test", false, false);
