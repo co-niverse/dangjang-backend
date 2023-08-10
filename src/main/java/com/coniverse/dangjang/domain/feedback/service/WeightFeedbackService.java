@@ -27,8 +27,4 @@ public class WeightFeedbackService {
 		WeightFeedback weightFeedback = wieghtMapper.toDocument(weightAnalysisData, feddback);
 		weightFeedbackRepository.save(weightFeedback);
 	}
-
-	public void updateFeedback() {
-
-	}
 }
