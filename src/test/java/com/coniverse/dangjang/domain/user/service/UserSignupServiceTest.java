@@ -62,6 +62,19 @@ class UserSignupServiceTest {
 	}
 
 	@Test
+	void 올바르지_않는_Provider로_유저를_추가해_회원가입에_실패한다() {
+		//given
+		List<String> diseases = new ArrayList<>();
+		diseases.add("저혈당");
+		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "nope", true, LocalDate.parse("2021-06-21"), 150, 50, "MEDIUM",
+			false, 0, false, false,
+			diseases);
+		//when&that
+		assertThatThrownBy(() -> userSignupService.signUp(signUpRequest))
+			.isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test
 	void 중복된_닉네임을_확인한다() {
 		//given
 		List<String> diseases = new ArrayList<>();

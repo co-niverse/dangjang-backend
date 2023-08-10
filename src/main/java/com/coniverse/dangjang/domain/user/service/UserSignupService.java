@@ -87,7 +87,8 @@ public class UserSignupService {
 			NaverLoginRequest naverLoginRequest = new NaverLoginRequest(accessToken);
 			return oauthLoginService.request(naverLoginRequest);
 		} else {
-			throw new IllegalArgumentException("잘못된 provider 입니다.");
+			return null;
+			// throw new IllegalArgumentException("잘못된 provider 입니다.");
 		}
 	}
 
