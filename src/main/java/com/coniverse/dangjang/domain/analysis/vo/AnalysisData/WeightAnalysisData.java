@@ -9,12 +9,13 @@ import lombok.Getter;
 
 @Getter
 public class WeightAnalysisData extends AbstractAnalysisData {
-	private int unit;
-	private int weightDiff;
-	private WeightSteps weightSteps;
+	public int unit;
+	public int weightDiff;
+	public WeightSteps weightSteps;
 
 	public WeightAnalysisData(HealthMetric healthMetric, User user) {
 		super(healthMetric.getCreatedAt(), healthMetric.getCommonCode(), user.getOauthId());
+		convertUnit(healthMetric.getUnit());
 		double bmi = (this.unit / Math.pow(user.getHeight() / 100.0, 2.0));
 		this.weightSteps = WeightSteps.of(bmi);
 		this.weightDiff = getWeightDiff(user.getGender(), user.getHeight());
