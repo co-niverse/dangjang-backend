@@ -31,6 +31,8 @@ import com.coniverse.dangjang.domain.healthmetric.repository.HealthMetricReposit
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.global.util.EnumFindUtil;
 
+import jakarta.transaction.Transactional;
+
 /**
  * @author TEO
  * @since 1.0.0
@@ -50,7 +52,12 @@ class HealthMetricRegistrationServiceTest {
 	private HealthMetric 등록된_건강지표;
 
 	static Stream<Arguments> 건강지표_목록() {
-		return Stream.of(arguments(CommonCode.WT_MEM, "50"), arguments(CommonCode.WT_MEM, "30"), arguments(CommonCode.BS_BBF, "140"));
+		return Stream.of(arguments(CommonCode.WT_MEM, "50"), arguments(CommonCode.BS_BBF, "140"));
+	}
+
+	static Stream<Arguments> 체중_건강지표_목록() {
+		return Stream.of(arguments(CommonCode.WT_MEM, "30"), arguments(CommonCode.WT_MEM, "50"), arguments(CommonCode.WT_MEM, "100"),
+			arguments(CommonCode.WT_MEM, "120"), arguments(CommonCode.WT_MEM, "150"));
 	}
 
 	@BeforeAll
@@ -70,7 +77,7 @@ class HealthMetricRegistrationServiceTest {
 	void 건강지표를_성공적으로_등록한다(CommonCode commonCode, String unit) {
 		// given
 		HealthMetricPostRequest request = 건강지표_등록_요청(commonCode, unit);
-
+		System.out.println("hello");
 		// when
 		HealthMetricResponse response = healthMetricRegistrationService.register(request, 등록_일자, 테오_아이디);
 
@@ -125,6 +132,28 @@ class HealthMetricRegistrationServiceTest {
 			() -> assertThat(수정된_건강지표.getUnit()).isEqualTo(request.unit()),
 			() -> assertThat(수정된_건강지표.getCommonCode()).isNotEqualTo(등록된_건강지표.getCommonCode()),
 			() -> assertThat(수정된_건강지표.getUnit()).isEqualTo(등록된_건강지표.getUnit())
+		);
+	}
+
+	@Order(40)
+	@ParameterizedTest
+	@Transactional
+	@MethodSource("체중_건강지표_목록")
+	void 체중_건강지표를_성공적으로_등록한다(CommonCode commonCode, String unit) {
+		// given
+		HealthMetricPostRequest request = 건강지표_등록_요청(commonCode, unit);
+		// when
+		HealthMetricResponse response = healthMetricRegistrationService.register(request, 등록_일자, 테오_아이디);
+
+		// then
+		등록된_건강지표 = healthMetricRepository
+			.findByHealthMetricId(테오_아이디, response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.title())).orElseThrow();
+
+		assertAll(
+			() -> assertThat(등록된_건강지표.getCommonCode().getTitle()).isEqualTo(request.title()),
+			() -> assertThat(등록된_건강지표.getUnit()).isEqualTo(request.unit()),
+			() -> assertThat(등록된_건강지표.getCreatedAt()).isEqualTo(등록_일자),
+			() -> assertThat(등록된_건강지표.getOauthId()).isEqualTo(테오_아이디)
 		);
 	}
 }
