@@ -9,6 +9,13 @@ import com.coniverse.dangjang.domain.feedback.repository.WeightFeedbackRepositor
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 체중 조언서비스
+ *
+ * @author EVE
+ * @see WeightAnalysisData
+ * @since 1.0.0
+ */
 @Component
 @RequiredArgsConstructor
 public class WeightFeedbackService {

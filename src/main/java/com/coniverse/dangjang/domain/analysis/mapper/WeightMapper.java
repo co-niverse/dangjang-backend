@@ -8,6 +8,10 @@ import com.coniverse.dangjang.domain.analysis.document.WeightFeedback;
 import com.coniverse.dangjang.domain.analysis.vo.AnalysisData.WeightAnalysisData;
 import com.coniverse.dangjang.global.util.EnumFindUtil;
 
+/**
+ * @author EVE
+ * @since 1.0.0
+ */
 @Mapper(componentModel = "spring", imports = {EnumFindUtil.class})
 public interface WeightMapper {
 	@Mappings({
