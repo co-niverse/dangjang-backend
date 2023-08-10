@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.analysis.service;
+package com.coniverse.dangjang.domain.feedback.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
