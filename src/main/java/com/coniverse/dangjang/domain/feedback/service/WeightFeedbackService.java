@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.feedback.generator;
+package com.coniverse.dangjang.domain.feedback.service;
 
 import org.springframework.stereotype.Component;
 
@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class WeightFeedbackGenerator {
+public class WeightFeedbackService {
 	private final WeightFeedbackRepository weightFeedbackRepository;
 	private final WeightMapper wieghtMapper;
 
@@ -26,5 +26,9 @@ public class WeightFeedbackGenerator {
 		String feddback = generateFeedback(weightAnalysisData);
 		WeightFeedback weightFeedback = wieghtMapper.toDocument(weightAnalysisData, feddback);
 		weightFeedbackRepository.save(weightFeedback);
+	}
+
+	public void updateFeedback() {
+
 	}
 }

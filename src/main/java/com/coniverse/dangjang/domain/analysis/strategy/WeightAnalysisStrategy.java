@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import com.coniverse.dangjang.domain.analysis.vo.AnalysisData.AbstractAnalysisData;
 import com.coniverse.dangjang.domain.analysis.vo.AnalysisData.WeightAnalysisData;
 import com.coniverse.dangjang.domain.code.enums.CodeGroup;
-import com.coniverse.dangjang.domain.feedback.generator.WeightFeedbackGenerator;
+import com.coniverse.dangjang.domain.feedback.service.WeightFeedbackService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,12 +19,12 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class WeightAnalysisStrategy implements AnalysisStrategy {
-	private final WeightFeedbackGenerator weightFeedbackGenerator;
+	private final WeightFeedbackService weightFeedbackService;
 
 	@Override
 	public <T extends AbstractAnalysisData> void analyze(T data) {
 		WeightAnalysisData analysisData = (WeightAnalysisData)data;
-		weightFeedbackGenerator.saveFeedback(analysisData);
+		weightFeedbackService.saveFeedback(analysisData);
 	}
 
 	/**
