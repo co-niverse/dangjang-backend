@@ -8,6 +8,8 @@ import org.springframework.data.mongodb.repository.Query;
 import com.coniverse.dangjang.domain.analysis.document.WeightFeedback;
 
 /**
+ * 체중 FeedbackRepository
+ *
  * @author EVE
  * @since 1.0.0
  */
