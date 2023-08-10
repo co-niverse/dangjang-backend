@@ -11,6 +11,8 @@ import com.coniverse.dangjang.domain.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -32,6 +34,7 @@ public class HealthMetric implements Persistable<HealthMetricId> {
 	@EmbeddedId
 	private HealthMetricId healthMetricId;
 	@Getter
+	@Enumerated(EnumType.STRING)
 	private GroupCode groupCode;
 	@Getter
 	@Column(nullable = false)
