@@ -1,12 +1,22 @@
 package com.coniverse.dangjang.domain.analysis.enums;
 
 public enum WeightSteps {
-	underweight,
-	normal,
-	overweight,
-	obesity,
-	mildObesity,
-	highObesity;
+	underweight("저체중"),
+	normal("정상체중"),
+	overweight("과체중"),
+	obesity("경도비만"),
+	mildObesity("중등도비만"),
+	highObesity("고도비만");
+
+	private final String title;
+
+	WeightSteps(String title) {
+		this.title = title;
+	}
+
+	public String getTitle() {
+		return this.title;
+	}
 
 	public static WeightSteps of(double bmi) {
 		if (bmi < 18.5) {
