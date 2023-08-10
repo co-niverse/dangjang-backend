@@ -17,6 +17,16 @@ spring:
   web:
     resources:
       add-mappings: false
+  data:
+    mongodb:
+      port: 27018
+      database: test
+
+de:
+  flapdoodle:
+    mongodb:
+      embedded:
+        version: 6.0.2
 
 jwt:
   secret-key: coniverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverseconiverse
