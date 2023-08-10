@@ -77,7 +77,6 @@ class HealthMetricRegistrationServiceTest {
 	void 건강지표를_성공적으로_등록한다(CommonCode commonCode, String unit) {
 		// given
 		HealthMetricPostRequest request = 건강지표_등록_요청(commonCode, unit);
-		System.out.println("hello");
 		// when
 		HealthMetricResponse response = healthMetricRegistrationService.register(request, 등록_일자, 테오_아이디);
 
