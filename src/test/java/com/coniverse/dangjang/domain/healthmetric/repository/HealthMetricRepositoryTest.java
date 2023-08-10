@@ -18,7 +18,7 @@ import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
-import com.coniverse.dangjang.support.annotation.RepositoryTest;
+import com.coniverse.dangjang.support.annotation.JpaRepositoryTest;
 
 import jakarta.persistence.EntityManager;
 
@@ -26,7 +26,7 @@ import jakarta.persistence.EntityManager;
  * @author TEO
  * @since 1.0.0
  */
-@RepositoryTest
+@JpaRepositoryTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class HealthMetricRepositoryTest {
 	@Autowired

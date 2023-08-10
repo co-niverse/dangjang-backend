@@ -9,7 +9,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 /**
- * repository test annotation
+ * JPA repository test annotation
  *
  * @author TEO
  * @since 1.0.0
@@ -18,5 +18,5 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 @Target(ElementType.TYPE)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public @interface RepositoryTest {
+public @interface JpaRepositoryTest {
 }
