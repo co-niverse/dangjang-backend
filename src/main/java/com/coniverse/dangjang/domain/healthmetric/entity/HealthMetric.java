@@ -42,8 +42,9 @@ public class HealthMetric implements Persistable<HealthMetricId> {
 	private User user;
 
 	@Builder
-	private HealthMetric(LocalDate createdAt, CommonCode commonCode, String unit, User user) {
-		this.healthMetricId = new HealthMetricId(createdAt, commonCode);
+	private HealthMetric(LocalDate createdAt, CommonCode type, String unit, User user) {
+		this.healthMetricId = new HealthMetricId(createdAt, type);
+		this.groupCode = GroupCode.findByCode(type);
 		this.unit = unit;
 		this.user = user;
 	}
@@ -61,7 +62,7 @@ public class HealthMetric implements Persistable<HealthMetricId> {
 	}
 
 	public CommonCode getType() {
-		return this.healthMetricId.getCommonCode();
+		return this.healthMetricId.getType();
 	}
 
 	@Override

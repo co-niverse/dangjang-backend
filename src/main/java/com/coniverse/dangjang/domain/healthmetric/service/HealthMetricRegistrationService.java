@@ -60,11 +60,11 @@ public class HealthMetricRegistrationService {
 	 * @since 1.0.0
 	 */
 	public HealthMetricResponse update(HealthMetricPatchRequest request, LocalDate createdAt, String oauthId) {
-		CommonCode commonCode = EnumFindUtil.findByTitle(CommonCode.class, request.title());
+		CommonCode commonCode = EnumFindUtil.findByTitle(CommonCode.class, request.type());
 		User user = userSearchService.findUserByOauthId(oauthId);
 		HealthMetric healthMetric = healthMetricSearchService.findHealthMetricById(oauthId, createdAt, commonCode);
 
-		if (request.newTitle() == null) {
+		if (request.newType() == null) {
 			healthMetric.updateUnit(request.unit());
 			return healthMetricMapper.toResponse(
 				healthMetricRepository.save(healthMetric));

@@ -74,7 +74,7 @@ class HealthMetricRepositoryTest {
 		// given
 		User 테오 = userRepository.findById(테오_아이디).orElseThrow();
 		HealthMetric unit이_없는_건강지표 = HealthMetric.builder()
-			.commonCode(CommonCode.BEFORE_BREAKFAST)
+			.type(CommonCode.BEFORE_BREAKFAST)
 			.createdAt(LocalDate.now())
 			.user(테오)
 			.build();

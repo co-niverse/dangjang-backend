@@ -42,7 +42,7 @@ public class HealthMetricFixture {
 	public static HealthMetric 건강지표_엔티티(User user) {
 		return HealthMetric.builder()
 			.createdAt(생성일자)
-			.commonCode(등록_건강지표)
+			.type(등록_건강지표)
 			.user(user)
 			.unit(등록_건강지표_단위)
 			.build();

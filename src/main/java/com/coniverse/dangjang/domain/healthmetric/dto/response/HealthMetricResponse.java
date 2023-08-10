@@ -8,5 +8,5 @@ import java.time.LocalDate;
  * @author TEO
  * @since 1.0.0
  */
-public record HealthMetricResponse(String title, LocalDate createdAt, String unit) {
+public record HealthMetricResponse(String type, LocalDate createdAt, String unit) {
 }

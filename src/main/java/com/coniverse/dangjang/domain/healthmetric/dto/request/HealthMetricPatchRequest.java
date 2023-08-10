@@ -8,6 +8,6 @@ import jakarta.validation.constraints.NotBlank;
  * @author TEO
  * @since 1.0.0
  */
-public record HealthMetricPatchRequest(@NotBlank(message = "건강지표 상세명은 필수로 입력해야 합니다.") String title, String newTitle,
+public record HealthMetricPatchRequest(@NotBlank(message = "건강지표 상세 타입은 필수로 입력해야 합니다.") String type, String newType,
 									   @NotBlank(message = "단위는 필수로 입력해야 합니다.") String unit) {
 }

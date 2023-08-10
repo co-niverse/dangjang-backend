@@ -66,10 +66,10 @@ class HealthMetricRegistrationServiceTest {
 
 		// then
 		등록된_건강지표 = healthMetricRepository
-			.findByHealthMetricId(테오_아이디, response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.title())).orElseThrow();
+			.findByHealthMetricId(테오_아이디, response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.type())).orElseThrow();
 
 		assertAll(
-			() -> assertThat(등록된_건강지표.getType().getTitle()).isEqualTo(request.title()),
+			() -> assertThat(등록된_건강지표.getType().getTitle()).isEqualTo(request.type()),
 			() -> assertThat(등록된_건강지표.getUnit()).isEqualTo(request.unit()),
 			() -> assertThat(등록된_건강지표.getCreatedAt()).isEqualTo(등록_일자),
 			() -> assertThat(등록된_건강지표.getOauthId()).isEqualTo(테오_아이디)
@@ -88,7 +88,7 @@ class HealthMetricRegistrationServiceTest {
 		// then
 
 		HealthMetric 수정된_건강지표 = healthMetricRepository
-			.findByHealthMetricId(테오_아이디, response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.title())).orElseThrow();
+			.findByHealthMetricId(테오_아이디, response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.type())).orElseThrow();
 
 		assertAll(
 			() -> assertThat(수정된_건강지표.getUnit()).isEqualTo(request.unit()),
@@ -108,10 +108,10 @@ class HealthMetricRegistrationServiceTest {
 
 		// then
 		HealthMetric 수정된_건강지표 = healthMetricRepository
-			.findByHealthMetricId(테오_아이디, response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.title())).orElseThrow();
+			.findByHealthMetricId(테오_아이디, response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.type())).orElseThrow();
 
 		assertAll(
-			() -> assertThat(수정된_건강지표.getType().getTitle()).isEqualTo(request.newTitle()),
+			() -> assertThat(수정된_건강지표.getType().getTitle()).isEqualTo(request.newType()),
 			() -> assertThat(수정된_건강지표.getUnit()).isEqualTo(request.unit()),
 			() -> assertThat(수정된_건강지표.getType()).isNotEqualTo(등록된_건강지표.getType()),
 			() -> assertThat(수정된_건강지표.getUnit()).isEqualTo(등록된_건강지표.getUnit())

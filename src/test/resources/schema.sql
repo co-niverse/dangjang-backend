@@ -21,7 +21,7 @@ CREATE TABLE `USERS`
     `CREATED_AT`          datetime    NOT NULL,
     `UPDATED_AT`          datetime    NOT NULL,
     `PROFILE_IMAGE_PATH`  varchar(255),
---     `DIABETES`           boolean     NOT NULL,
+    `DIABETIC`            boolean, -- TODO not null
     `DIABETES_YEAR`       int,
     MEDICINE              boolean,
     INJECTION             boolean,
@@ -39,8 +39,8 @@ CREATE TABLE `DANGJANG_CLUB`
 
 CREATE TABLE `CODE`
 (
-    `CODE`       varchar(10) NOT NULL,
-    `CODE_GROUP` varchar(20),
+    `CODE`       varchar(20) NOT NULL,
+    `GROUP_CODE` varchar(20),
     `ENG_NAME`   varchar(20) NOT NULL,
     `KOR_NAME`   varchar(20) NOT NULL,
     PRIMARY KEY (`CODE`)
@@ -50,9 +50,10 @@ CREATE TABLE `HEALTH_METRIC`
 (
     `OAUTH_ID`   varchar(50) NOT NULL,
     `CREATED_AT` date        NOT NULL,
-    `CODE`       varchar(10) NOT NULL,
+    `TYPE`       varchar(20) NOT NULL,
+    `GROUP_CODE` varchar(20) NOT NULL,
     `UNIT`       varchar(20) NOT NULL,
-    PRIMARY KEY (`OAUTH_ID`, `CREATED_AT`, `CODE`),
+    PRIMARY KEY (`OAUTH_ID`, `CREATED_AT`, `TYPE`),
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`)
     -- FOREIGN KEY (`CODE`) REFERENCES CODE (`CODE`)
 );
@@ -60,7 +61,7 @@ CREATE TABLE `HEALTH_METRIC`
 CREATE TABLE `DEVICE`
 (
     `OAUTH_ID` varchar(50) NOT NULL,
-    `CODE`     varchar(10) NOT NULL,
+    `CODE`     varchar(20) NOT NULL,
     PRIMARY KEY (`OAUTH_ID`, `CODE`),
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`),
     FOREIGN KEY (`CODE`) REFERENCES CODE (`CODE`)
@@ -69,7 +70,7 @@ CREATE TABLE `DEVICE`
 CREATE TABLE `NOTIFICATION`
 (
     `OAUTH_ID` varchar(50) NOT NULL,
-    `CODE`     varchar(10) NOT NULL,
+    `CODE`     varchar(20) NOT NULL,
     PRIMARY KEY (`OAUTH_ID`, `CODE`),
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`),
     FOREIGN KEY (`CODE`) REFERENCES CODE (`CODE`)
@@ -78,7 +79,7 @@ CREATE TABLE `NOTIFICATION`
 CREATE TABLE `DISEASE`
 (
     `OAUTH_ID` varchar(50) NOT NULL,
-    `CODE`     varchar(10) NOT NULL,
+    `CODE`     varchar(20) NOT NULL,
     PRIMARY KEY (`OAUTH_ID`, `CODE`),
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`),
     FOREIGN KEY (`CODE`) REFERENCES CODE (`CODE`)
