@@ -46,7 +46,7 @@ public class WeightFeedbackServiceTest {
 	void 체중별_조언을_성공적으로_등록한다(CommonCode commonCode, String unit) {
 		// given
 		WeightAnalysisData weightAnalysisData = 체중분석_데이터(commonCode, unit);
-		weightFeedbackRepository.deleteByFeedbackId(테오_아이디, 등록_일자);
+		weightFeedbackRepository.deleteAll();
 		// when
 		weightFeedbackService.saveFeedback(weightAnalysisData);
 		// then

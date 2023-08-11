@@ -16,7 +16,4 @@ import com.coniverse.dangjang.domain.feedback.document.WeightFeedback;
 public interface WeightFeedbackRepository extends MongoRepository<WeightFeedback, String> {
 	@Query("{'oauthId': ?0, 'createdAt': ?1}")
 	WeightFeedback findByFeedbackId(String oauthId, LocalDate createdAt);
-
-	@Query(value = "{'oauthId': ?0, 'createdAt': ?1}", delete = true)
-	Long deleteByFeedbackId(String oauthId, LocalDate createdAt);
 }
