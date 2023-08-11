@@ -1,5 +1,11 @@
 package com.coniverse.dangjang.domain.analysis.enums;
 
+/**
+ * WeightSteps 체중 단계 ENUM
+ *
+ * @author EVE
+ * @since 1.0.0
+ */
 public enum WeightSteps {
 	underweight("저체중"),
 	normal("정상체중"),

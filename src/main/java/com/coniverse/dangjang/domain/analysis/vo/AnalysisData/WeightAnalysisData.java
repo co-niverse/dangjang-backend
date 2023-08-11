@@ -7,6 +7,12 @@ import com.coniverse.dangjang.domain.user.entity.enums.Gender;
 
 import lombok.Getter;
 
+/**
+ * 체중분석데이터
+ *
+ * @author EVE
+ * @since 1.0.0
+ */
 @Getter
 public class WeightAnalysisData extends AbstractAnalysisData {
 	public int unit;

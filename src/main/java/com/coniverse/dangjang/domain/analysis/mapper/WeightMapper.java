@@ -9,6 +9,8 @@ import com.coniverse.dangjang.domain.feedback.document.WeightFeedback;
 import com.coniverse.dangjang.global.util.EnumFindUtil;
 
 /**
+ * 체중 FeedbackMapper
+ *
  * @author EVE
  * @since 1.0.0
  */

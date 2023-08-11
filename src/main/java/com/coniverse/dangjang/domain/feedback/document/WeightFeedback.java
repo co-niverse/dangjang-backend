@@ -13,6 +13,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * WeightFeedback Document
+ *
+ * @author EVE
+ * @since 1.0.0
+ */
 @Getter
 @Document
 @NoArgsConstructor
