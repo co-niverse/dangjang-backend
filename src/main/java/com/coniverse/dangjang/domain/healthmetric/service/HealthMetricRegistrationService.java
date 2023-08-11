@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.HealthMetricAnalysisData;
-import com.coniverse.dangjang.domain.analysis.factory.HealthMetricAnalysisDataFactory;
+import com.coniverse.dangjang.domain.analysis.service.AnalysisDataFactoryService;
 import com.coniverse.dangjang.domain.analysis.service.AnalysisService;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.feedback.dto.response.FeedbackResponse;
@@ -37,7 +37,7 @@ public class HealthMetricRegistrationService {
 	private final UserSearchService userSearchService;
 	private final HealthMetricSearchService healthMetricSearchService;
 	private final AnalysisService<HealthMetricAnalysisData, FeedbackResponse> analysisService;
-	private final HealthMetricAnalysisDataFactory healthMetricAnalysisDataFactory;
+	private final AnalysisDataFactoryService analysisDataFactoryService;
 
 	/**
 	 * 건강지표를 저장한다.
@@ -77,14 +77,14 @@ public class HealthMetricRegistrationService {
 	}
 
 	/**
-	 * 조언을 생성을 요청한다.
+	 * 조언 생성을 요청한다.
 	 *
 	 * @param healthMetric 건강지표
 	 * @param user         건강지표 등록 or 수정 유저
 	 * @since 1.0.0
 	 */
 	private FeedbackResponse requestFeedback(HealthMetric healthMetric, User user) {
-		HealthMetricAnalysisData analysisData = healthMetricAnalysisDataFactory.createAnalysisData(healthMetric, user);
+		HealthMetricAnalysisData analysisData = analysisDataFactoryService.createHealthMetricAnalysisData(healthMetric, user);
 		return analysisService.analyze(analysisData, healthMetric.getGroupCode());
 	}
 

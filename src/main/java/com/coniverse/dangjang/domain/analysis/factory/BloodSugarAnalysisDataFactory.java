@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.BloodSugarAnalysisData;
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.HealthMetricAnalysisData;
+import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.user.entity.User;
 
@@ -14,10 +15,15 @@ import com.coniverse.dangjang.domain.user.entity.User;
  * @since 1.0.0
  */
 @Component
-public class BloodSugarAnalysisDataFactory extends HealthMetricAnalysisDataFactory {
+public class BloodSugarAnalysisDataFactory implements HealthMetricAnalysisDataFactory {
 
 	@Override
 	public HealthMetricAnalysisData create(HealthMetric healthMetric, User user) {
 		return new BloodSugarAnalysisData(healthMetric, user);
+	}
+
+	@Override
+	public GroupCode getGroupCode() {
+		return GroupCode.BLOOD_SUGAR;
 	}
 }

@@ -4,6 +4,7 @@ import static com.coniverse.dangjang.fixture.HealthMetricFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.*;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -14,7 +15,10 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
+import com.coniverse.dangjang.domain.analysis.service.AnalysisDataFactoryService;
+import com.coniverse.dangjang.domain.analysis.service.AnalysisService;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
@@ -38,6 +42,10 @@ class HealthMetricRegistrationServiceTest {
 	private HealthMetricRepository healthMetricRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@MockBean
+	private AnalysisService<?, ?> analysisService;
+	@MockBean
+	private AnalysisDataFactoryService analysisDataFactoryService;
 	private String 테오_아이디;
 	private HealthMetric 등록된_건강지표;
 
@@ -56,6 +64,8 @@ class HealthMetricRegistrationServiceTest {
 	@Test
 	void 건강지표를_성공적으로_등록한다() {
 		// given
+		given(analysisDataFactoryService.createHealthMetricAnalysisData(any(), any())).willReturn(null);
+		given(analysisService.analyze(any(), any())).willReturn(null);
 		HealthMetricPostRequest request = 건강지표_등록_요청();
 
 		// when
@@ -77,6 +87,8 @@ class HealthMetricRegistrationServiceTest {
 	@Test
 	void 단위만_변경된_건강지표를_성공적으로_수정한다() {
 		// given
+		given(analysisDataFactoryService.createHealthMetricAnalysisData(any(), any())).willReturn(null);
+		given(analysisService.analyze(any(), any())).willReturn(null);
 		HealthMetricPatchRequest request = 단위_변경한_건강지표_수정_요청();
 
 		// when
@@ -100,6 +112,8 @@ class HealthMetricRegistrationServiceTest {
 	@Test
 	void 타입이_변경된_건강지표를_성공적으로_수정한다() {
 		// given
+		given(analysisDataFactoryService.createHealthMetricAnalysisData(any(), any())).willReturn(null);
+		given(analysisService.analyze(any(), any())).willReturn(null);
 		HealthMetricPatchRequest request = 타입_변경한_건강지표_수정_요청();
 
 		// when
