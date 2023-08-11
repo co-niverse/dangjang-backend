@@ -101,10 +101,10 @@ public class UserSignupService {
 
 	public int calculateRecommendedCalorie(Gender gender, int height, ActivityAmount activityAmount) {
 		double standardWeight;
-		if (gender.getIsTrue().equals(false)) {
-			standardWeight = (Math.pow(height / 100.0, 2.0) * 22);
-		} else {
+		if (gender.isTrue()) {
 			standardWeight = (Math.pow(height / 100.0, 2.0) * 21);
+		} else {
+			standardWeight = (Math.pow(height / 100.0, 2.0) * 22);
 		}
 
 		if (activityAmount.equals(ActivityAmount.LOW)) {
