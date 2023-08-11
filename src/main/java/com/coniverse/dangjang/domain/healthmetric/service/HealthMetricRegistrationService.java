@@ -4,10 +4,11 @@ import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
 
+import com.coniverse.dangjang.domain.analysis.dto.healthMetric.HealthMetricAnalysisData;
+import com.coniverse.dangjang.domain.analysis.factory.HealthMetricAnalysisDataFactory;
 import com.coniverse.dangjang.domain.analysis.service.AnalysisService;
-import com.coniverse.dangjang.domain.analysis.vo.analysisdata.HealthMetricAnalysisData;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
-import com.coniverse.dangjang.domain.feedback.entity.BloodSugarFeedback;
+import com.coniverse.dangjang.domain.feedback.dto.response.FeedbackResponse;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;
@@ -35,7 +36,8 @@ public class HealthMetricRegistrationService {
 	private final HealthMetricMapper healthMetricMapper;
 	private final UserSearchService userSearchService;
 	private final HealthMetricSearchService healthMetricSearchService;
-	private final AnalysisService<HealthMetricAnalysisData, BloodSugarFeedback> analysisService;
+	private final AnalysisService<HealthMetricAnalysisData, FeedbackResponse> analysisService;
+	private final HealthMetricAnalysisDataFactory healthMetricAnalysisDataFactory;
 
 	/**
 	 * 건강지표를 저장한다.
@@ -47,8 +49,8 @@ public class HealthMetricRegistrationService {
 	public HealthMetricResponse register(HealthMetricPostRequest request, String oauthId) {
 		User user = userSearchService.findUserByOauthId(oauthId);
 		HealthMetric healthMetric = healthMetricRepository.save(healthMetricMapper.toEntity(request, user));
-		BloodSugarFeedback feedback = generateFeedback(healthMetric, user);
-		return healthMetricMapper.toResponse(healthMetric);
+		FeedbackResponse feedback = this.requestFeedback(healthMetric, user);
+		return healthMetricMapper.toResponse(healthMetric, feedback);
 	}
 
 	/**
@@ -70,19 +72,19 @@ public class HealthMetricRegistrationService {
 		} else {
 			updatedHealthMetric = updateType(healthMetric, request, user);
 		}
-		BloodSugarFeedback feedback = generateFeedback(updatedHealthMetric, user);
-		return healthMetricMapper.toResponse(updatedHealthMetric);
+		FeedbackResponse feedback = this.requestFeedback(updatedHealthMetric, user);
+		return healthMetricMapper.toResponse(updatedHealthMetric, feedback);
 	}
 
 	/**
-	 * 조언을 생성한다.
+	 * 조언을 생성을 요청한다.
 	 *
 	 * @param healthMetric 건강지표
 	 * @param user         건강지표 등록 or 수정 유저
 	 * @since 1.0.0
 	 */
-	private BloodSugarFeedback generateFeedback(HealthMetric healthMetric, User user) {
-		HealthMetricAnalysisData analysisData = HealthMetricAnalysisData.of(healthMetric, user);
+	private FeedbackResponse requestFeedback(HealthMetric healthMetric, User user) {
+		HealthMetricAnalysisData analysisData = healthMetricAnalysisDataFactory.createAnalysisData(healthMetric, user);
 		return analysisService.analyze(analysisData, healthMetric.getGroupCode());
 	}
 

@@ -1,17 +1,17 @@
 package com.coniverse.dangjang.domain.analysis.strategy;
 
-import com.coniverse.dangjang.domain.analysis.vo.AnalysisData.AbstractAnalysisData;
-import com.coniverse.dangjang.domain.code.enums.CodeGroup;
+import com.coniverse.dangjang.domain.code.enums.GroupCode;
 
 /**
  * 분석 전략 interface
  *
+ * @param <T> 분석할 데이터
+ * @param <R> 분석 결과
  * @author TEO
- * @see AbstractAnalysisData
  * @since 1.0.0
  */
-public interface AnalysisStrategy {
-	<T extends AbstractAnalysisData> void analyze(T data); // TODO 조언 return으로 수정
+public interface AnalysisStrategy<T, R> {
+	R analyze(T data);
 
-	CodeGroup getCodeGroup();
+	GroupCode getCodeGroup();
 }
