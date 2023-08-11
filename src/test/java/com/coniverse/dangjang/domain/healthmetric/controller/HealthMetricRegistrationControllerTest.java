@@ -5,8 +5,6 @@ import static com.coniverse.dangjang.support.SimpleMockMvc.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.util.stream.IntStream;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -38,14 +36,6 @@ class HealthMetricRegistrationControllerTest extends ControllerTest {
 	private String patchContent;
 	@Autowired
 	private HealthMetricRegistrationService healthMetricRegistrationService;
-
-	private static IntStream provideMonth() {
-		return IntStream.range(1, 13);
-	}
-
-	private static IntStream provideDay() {
-		return IntStream.range(1, 32);
-	}
 
 	@BeforeAll
 	void setUp() throws JsonProcessingException {
