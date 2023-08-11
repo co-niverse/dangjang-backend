@@ -24,7 +24,7 @@ import jakarta.transaction.Transactional;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class WeightFeedbackServiceTest {
+class WeightFeedbackServiceTest {
 	private final LocalDate 등록_일자 = LocalDate.of(2023, 12, 31);
 	@Autowired
 	private WeightFeedbackService weightFeedbackService;

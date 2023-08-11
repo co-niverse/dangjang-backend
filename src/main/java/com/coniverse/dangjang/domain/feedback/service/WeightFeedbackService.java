@@ -24,9 +24,8 @@ public class WeightFeedbackService {
 
 	public String generateFeedback(WeightAnalysisData weightAnalysisData) {
 		//TODO: 혈당 피드백 merge한 후 positive 수정
-		String feedback = String.format("%s이에요. 평균 체중에 비해 %dkg %s", weightAnalysisData.getWeightSteps().getTitle(), weightAnalysisData.getWeightDiff(),
+		return String.format("%s이에요. 평균 체중에 비해 %dkg %s", weightAnalysisData.getWeightSteps().getTitle(), weightAnalysisData.getWeightDiff(),
 			weightAnalysisData.getWeightDiff() > 0 ? "많아요" : "적어요");
-		return feedback;
 	}
 
 	public void saveFeedback(WeightAnalysisData weightAnalysisData) {
