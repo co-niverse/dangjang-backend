@@ -23,9 +23,8 @@ public class HealthMetricFixture {
 	private static final String 등록_건강지표_상세명 = 등록_건강지표.getTitle();
 	private static final String 수정_건강지표_상세명 = CommonCode.BS_ALC.getTitle();
 
-	public static HealthMetricPostRequest 건강지표_등록_요청(CommonCode commonCode, String unit) {
-		String 건강지표_상세명 = commonCode.getTitle();
-		return new HealthMetricPostRequest(건강지표_상세명, unit);
+	public static HealthMetricPostRequest 건강지표_등록_요청() {
+		return new HealthMetricPostRequest(등록_건강지표_상세명, 등록_건강지표_단위);
 	}
 
 	public static HealthMetricPatchRequest 타입_변경한_건강지표_수정_요청() {

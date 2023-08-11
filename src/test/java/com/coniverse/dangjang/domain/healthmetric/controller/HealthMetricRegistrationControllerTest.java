@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegistrationService;
@@ -52,7 +51,7 @@ class HealthMetricRegistrationControllerTest extends ControllerTest {
 
 	@BeforeAll
 	void setUp() throws JsonProcessingException {
-		postContent = objectMapper.writeValueAsString(건강지표_등록_요청(CommonCode.BS_BBF, "140"));
+		postContent = objectMapper.writeValueAsString(건강지표_등록_요청());
 		patchContent = objectMapper.writeValueAsString(단위_변경한_건강지표_수정_요청());
 	}
 

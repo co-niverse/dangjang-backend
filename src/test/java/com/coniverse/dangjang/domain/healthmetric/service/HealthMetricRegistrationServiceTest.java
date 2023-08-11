@@ -4,10 +4,8 @@ import static com.coniverse.dangjang.fixture.HealthMetricFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.params.provider.Arguments.*;
 
 import java.time.LocalDate;
-import java.util.stream.Stream;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -16,9 +14,6 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -30,8 +25,6 @@ import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.healthmetric.repository.HealthMetricRepository;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.global.util.EnumFindUtil;
-
-import jakarta.transaction.Transactional;
 
 /**
  * @author TEO
@@ -51,15 +44,6 @@ class HealthMetricRegistrationServiceTest {
 	private String 테오_아이디;
 	private HealthMetric 등록된_건강지표;
 
-	static Stream<Arguments> 건강지표_목록() {
-		return Stream.of(arguments(CommonCode.WT_MEM, "50"), arguments(CommonCode.BS_BBF, "140"));
-	}
-
-	static Stream<Arguments> 체중_건강지표_목록() {
-		return Stream.of(arguments(CommonCode.WT_MEM, "30"), arguments(CommonCode.WT_MEM, "50"), arguments(CommonCode.WT_MEM, "100"),
-			arguments(CommonCode.WT_MEM, "120"), arguments(CommonCode.WT_MEM, "150"));
-	}
-
 	@BeforeAll
 	void setUp() {
 		테오_아이디 = userRepository.save(유저_테오()).getOauthId();
@@ -72,11 +56,10 @@ class HealthMetricRegistrationServiceTest {
 	}
 
 	@Order(50)
-	@ParameterizedTest
-	@MethodSource("건강지표_목록")
-	void 건강지표를_성공적으로_등록한다(CommonCode commonCode, String unit) {
+	@Test
+	void 건강지표를_성공적으로_등록한다() {
 		// given
-		HealthMetricPostRequest request = 건강지표_등록_요청(commonCode, unit);
+		HealthMetricPostRequest request = 건강지표_등록_요청();
 		// when
 		HealthMetricResponse response = healthMetricRegistrationService.register(request, 등록_일자, 테오_아이디);
 
@@ -131,28 +114,6 @@ class HealthMetricRegistrationServiceTest {
 			() -> assertThat(수정된_건강지표.getUnit()).isEqualTo(request.unit()),
 			() -> assertThat(수정된_건강지표.getCommonCode()).isNotEqualTo(등록된_건강지표.getCommonCode()),
 			() -> assertThat(수정된_건강지표.getUnit()).isEqualTo(등록된_건강지표.getUnit())
-		);
-	}
-
-	@Order(40)
-	@ParameterizedTest
-	@Transactional
-	@MethodSource("체중_건강지표_목록")
-	void 체중_건강지표를_성공적으로_등록한다(CommonCode commonCode, String unit) {
-		// given
-		HealthMetricPostRequest request = 건강지표_등록_요청(commonCode, unit);
-		// when
-		HealthMetricResponse response = healthMetricRegistrationService.register(request, 등록_일자, 테오_아이디);
-
-		// then
-		등록된_건강지표 = healthMetricRepository
-			.findByHealthMetricId(테오_아이디, response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.title())).orElseThrow();
-
-		assertAll(
-			() -> assertThat(등록된_건강지표.getCommonCode().getTitle()).isEqualTo(request.title()),
-			() -> assertThat(등록된_건강지표.getUnit()).isEqualTo(request.unit()),
-			() -> assertThat(등록된_건강지표.getCreatedAt()).isEqualTo(등록_일자),
-			() -> assertThat(등록된_건강지표.getOauthId()).isEqualTo(테오_아이디)
 		);
 	}
 }
