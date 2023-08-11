@@ -25,13 +25,14 @@ public class BloodSugarAnalysisData extends HealthMetricAnalysisData {
 
 	public BloodSugarAnalysisData(HealthMetric healthMetric, User user) {
 		super(user.getOauthId(), healthMetric.getCreatedAt(), healthMetric.getType());
+		convertUnit(healthMetric.getUnit());
 		this.diabetic = true; // TODO 유저 정보 mapping
 		this.medicine = true;
 		this.injection = true;
 	}
 
 	@Override
-	public void convertUnit(String unit) {
+	void convertUnit(String unit) {
 		try {
 			this.unit = Integer.parseInt(unit);
 		} catch (NumberFormatException e) {

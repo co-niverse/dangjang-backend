@@ -27,5 +27,5 @@ public abstract class HealthMetricAnalysisData {
 	 * @param unit 변환할 단위
 	 * @since 1.0.0
 	 */
-	public abstract void convertUnit(String unit);
+	abstract void convertUnit(String unit);
 }
