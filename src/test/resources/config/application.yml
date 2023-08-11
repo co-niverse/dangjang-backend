@@ -59,6 +59,10 @@ logging:
             cache: debug
         transaction:
           interceptor: trace
+        data:
+          mongodb:
+            core:
+              MongoTemplate: debug
     web: trace
 
 ---
