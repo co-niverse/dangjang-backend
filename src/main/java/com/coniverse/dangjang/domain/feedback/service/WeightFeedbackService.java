@@ -2,9 +2,9 @@ package com.coniverse.dangjang.domain.feedback.service;
 
 import org.springframework.stereotype.Component;
 
-import com.coniverse.dangjang.domain.analysis.document.WeightFeedback;
 import com.coniverse.dangjang.domain.analysis.mapper.WeightMapper;
 import com.coniverse.dangjang.domain.analysis.vo.AnalysisData.WeightAnalysisData;
+import com.coniverse.dangjang.domain.feedback.document.WeightFeedback;
 import com.coniverse.dangjang.domain.feedback.repository.WeightFeedbackRepository;
 
 import lombok.RequiredArgsConstructor;

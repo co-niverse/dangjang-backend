@@ -4,8 +4,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
-import com.coniverse.dangjang.domain.analysis.document.WeightFeedback;
 import com.coniverse.dangjang.domain.analysis.vo.AnalysisData.WeightAnalysisData;
+import com.coniverse.dangjang.domain.feedback.document.WeightFeedback;
 import com.coniverse.dangjang.global.util.EnumFindUtil;
 
 /**
