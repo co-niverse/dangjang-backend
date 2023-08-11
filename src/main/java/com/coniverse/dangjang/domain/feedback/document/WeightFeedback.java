@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.analysis.document;
+package com.coniverse.dangjang.domain.feedback.document;
 
 import java.time.LocalDate;
 
@@ -14,7 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Document(collection = "weightFeedbacks")
+@Document
 @NoArgsConstructor
 public class WeightFeedback {
 	@Id
@@ -27,7 +27,7 @@ public class WeightFeedback {
 	private String feedback;
 
 	@Builder
-	public WeightFeedback(String oauthId, int weightDiff, WeightSteps weightSteps, LocalDate createdAt, String feedback) {
+	private WeightFeedback(String oauthId, int weightDiff, WeightSteps weightSteps, LocalDate createdAt, String feedback) {
 		this.oauthId = oauthId;
 		this.weightDiff = weightDiff;
 		this.weightSteps = weightSteps;
