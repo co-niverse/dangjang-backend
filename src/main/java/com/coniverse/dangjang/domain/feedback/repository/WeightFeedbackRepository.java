@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
-import com.coniverse.dangjang.domain.analysis.document.WeightFeedback;
+import com.coniverse.dangjang.domain.feedback.document.WeightFeedback;
 
 /**
  * 체중 FeedbackRepository
