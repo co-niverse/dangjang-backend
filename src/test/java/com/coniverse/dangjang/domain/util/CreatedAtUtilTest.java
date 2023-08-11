@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import com.coniverse.dangjang.global.exception.IncorrectCreatedAtException;
 import com.coniverse.dangjang.global.util.CreatedAtUtil;
 
+@Deprecated
 class CreatedAtUtilTest {
 	@Test
 	void 생성일자를_생성한다() {
