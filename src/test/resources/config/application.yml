@@ -19,7 +19,7 @@ spring:
       add-mappings: false
   data:
     mongodb:
-      port: 27018
+      port: 0
       database: test
 
 de:
