@@ -4,6 +4,12 @@ import com.coniverse.dangjang.global.support.enums.EnumCode;
 
 import lombok.AllArgsConstructor;
 
+/**
+ * 분석 결과에 대한 경보
+ *
+ * @author TEO
+ * @since 1.0.0
+ */
 @AllArgsConstructor
 public enum Alert implements EnumCode {
 	HYPOGLYCEMIA("저혈당"),
