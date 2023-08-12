@@ -47,6 +47,8 @@ public class UserFixture {
 			.profileImagePath("/images/profile/.png")
 			.diabetes(true)
 			.diabetes_year(1)
+			.medicine(false)
+			.injection(false)
 			.build();
 	}
 }
