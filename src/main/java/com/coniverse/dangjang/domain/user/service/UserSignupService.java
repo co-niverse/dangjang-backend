@@ -64,6 +64,8 @@ public class UserSignupService {
 			.status(Status.ACTIVE)
 			.role(Role.USER)
 			.recommendedCalorie(recommendedCalorie)
+			.diabetes(signUpRequest.diabetes())
+			.diabetes_year(signUpRequest.diabetesYear())
 			.build();
 
 		return signupAfterLogin(userRepository.save(user));

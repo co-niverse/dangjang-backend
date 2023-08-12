@@ -45,6 +45,8 @@ public class UserFixture {
 			.role(Role.USER)
 			.status(Status.ACTIVE)
 			.profileImagePath("/images/profile/.png")
+			.diabetes(true)
+			.diabetes_year(1)
 			.build();
 	}
 }
