@@ -17,7 +17,7 @@ import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 class HealthMetricMapperTest {
 	public static final LocalDate 등록_일자 = LocalDate.of(2023, 12, 31);
 	HealthMetricMapper healthMetricMapper = new HealthMetricMapperImpl();
-
+	
 	@Test
 	void 건강지표_entity를_response_dto로_변환한다() {
 		// given

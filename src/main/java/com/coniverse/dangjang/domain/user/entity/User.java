@@ -47,7 +47,10 @@ public class User extends BaseEntity implements Persistable<String> {
 	private int height;
 	@Column(nullable = false)
 	private int recommendedCalorie;
-
+	@Column(nullable = false)
+	private boolean diabetes;
+	@Column
+	private int diabetes_year;
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Status status;
@@ -58,7 +61,7 @@ public class User extends BaseEntity implements Persistable<String> {
 
 	@Builder
 	private User(String oauthId, OauthProvider oauthProvider, String nickname, Gender gender, LocalDate birthday, ActivityAmount activityAmount, int height,
-		int recommendedCalorie, Role role, Status status, String profileImagePath) {
+		int recommendedCalorie, Role role, Status status, String profileImagePath, boolean diabetes, int diabetes_year) {
 		this.oauthId = oauthId;
 		this.oauthProvider = oauthProvider;
 		this.nickname = nickname;
@@ -70,6 +73,8 @@ public class User extends BaseEntity implements Persistable<String> {
 		this.status = status;
 		this.role = role;
 		this.profileImagePath = profileImagePath;
+		this.diabetes = diabetes;
+		this.diabetes_year = diabetes_year;
 	}
 
 	@Override

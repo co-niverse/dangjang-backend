@@ -64,6 +64,7 @@ public class SecurityConfig {
 				.requestMatchers("/api/signUp").permitAll()
 				.requestMatchers("/api/duplicateNickname").permitAll()
 				.requestMatchers("/api/**").permitAll()
+				.requestMatchers("/swagger-ui/**").permitAll()
 				.anyRequest().authenticated()
 
 			);

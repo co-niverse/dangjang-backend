@@ -64,6 +64,8 @@ public class UserSignupService {
 			.status(Status.ACTIVE)
 			.role(Role.USER)
 			.recommendedCalorie(recommendedCalorie)
+			.diabetes(signUpRequest.diabetes())
+			.diabetes_year(signUpRequest.diabetesYear())
 			.build();
 
 		return signupAfterLogin(userRepository.save(user));
@@ -83,11 +85,9 @@ public class UserSignupService {
 			KakaoLoginRequest kakaoLoginRequest = new KakaoLoginRequest(accessToken);
 			return oauthLoginService.request(kakaoLoginRequest);
 
-		} else if (provider.equals(OauthProvider.NAVER)) {
+		} else {
 			NaverLoginRequest naverLoginRequest = new NaverLoginRequest(accessToken);
 			return oauthLoginService.request(naverLoginRequest);
-		} else {
-			throw new IllegalArgumentException("잘못된 provider 입니다.");
 		}
 	}
 
@@ -103,10 +103,10 @@ public class UserSignupService {
 
 	public int calculateRecommendedCalorie(Gender gender, int height, ActivityAmount activityAmount) {
 		double standardWeight;
-		if (gender.equals(false)) {
-			standardWeight = (Math.pow(height / 100.0, 2.0) * 22);
-		} else {
+		if (gender.isTrue()) {
 			standardWeight = (Math.pow(height / 100.0, 2.0) * 21);
+		} else {
+			standardWeight = (Math.pow(height / 100.0, 2.0) * 22);
 		}
 
 		if (activityAmount.equals(ActivityAmount.LOW)) {

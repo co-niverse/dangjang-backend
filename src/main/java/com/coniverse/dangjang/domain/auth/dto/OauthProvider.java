@@ -25,6 +25,11 @@ public enum OauthProvider {
 		Stream.of(values()).collect(Collectors.toMap(OauthProvider::getTitle, OauthProvider::name)));
 
 	public static OauthProvider of(String title) {
-		return OauthProvider.valueOf(byTitle.get(title));
+		try {
+			return OauthProvider.valueOf(byTitle.get(title));
+		} catch (NullPointerException e) {
+			throw new IllegalArgumentException("존재하지 않는 OauthProvider 입니다.");
+		}
+
 	}
 }
