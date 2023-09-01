@@ -30,21 +30,20 @@ import lombok.NoArgsConstructor;
  * @since 1.0.0
  */
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class HealthMetric implements Persistable<HealthMetricId> {
 	@EmbeddedId
+	@Getter(AccessLevel.PRIVATE)
 	private HealthMetricId healthMetricId;
-	@Getter
 	@Enumerated(EnumType.STRING)
 	private GroupCode groupCode;
-	@Getter
 	@Column(nullable = false)
 	private String unit;
 	@MapsId("oauthId")
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "oauth_id")
 	private User user;
-	@Getter
 	private String guideId;
 
 	@Builder
