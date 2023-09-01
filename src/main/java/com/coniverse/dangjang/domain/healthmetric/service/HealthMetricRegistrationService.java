@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.analysis.service.AnalysisService;
 import com.coniverse.dangjang.domain.analysis.vo.AnalysisData.BloodSugarAnalysisData;
+import com.coniverse.dangjang.domain.analysis.vo.AnalysisData.ExerciseAnalysisData;
 import com.coniverse.dangjang.domain.analysis.vo.AnalysisData.WeightAnalysisData;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchRequest;
@@ -51,6 +52,8 @@ public class HealthMetricRegistrationService {
 		// TODO: 분석 서비스 분리
 		if (healthMetric.getCommonCode().equals((CommonCode.WT_MEM))) {
 			analysisService.analyze(new WeightAnalysisData(healthMetric, user));
+		} else if (healthMetric.getCommonCode().equals(CommonCode.EC_STC)) {
+			analysisService.analyze(new ExerciseAnalysisData(healthMetric, user));
 		} else {
 			analysisService.analyze(new BloodSugarAnalysisData(healthMetric, user));
 		}
