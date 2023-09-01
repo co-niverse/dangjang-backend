@@ -9,8 +9,8 @@ import com.coniverse.dangjang.domain.analysis.enums.Alert;
 import com.coniverse.dangjang.domain.analysis.enums.BloodSugarLevel;
 import com.coniverse.dangjang.domain.analysis.exception.NonAnalyticDataException;
 import com.coniverse.dangjang.domain.code.enums.GroupCode;
-import com.coniverse.dangjang.domain.feedback.dto.response.FeedbackResponse;
-import com.coniverse.dangjang.domain.feedback.service.BloodSugarFeedbackService;
+import com.coniverse.dangjang.domain.guide.bloodsugar.service.BloodSugarGuideGenerateService;
+import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,8 +23,8 @@ import lombok.RequiredArgsConstructor;
  */
 @Component
 @RequiredArgsConstructor
-public class BloodSugarAnalysisStrategy implements AnalysisStrategy<BloodSugarAnalysisData, FeedbackResponse> {
-	private final BloodSugarFeedbackService bloodSugarFeedbackService;
+public class BloodSugarAnalysisStrategy implements AnalysisStrategy<BloodSugarAnalysisData, GuideResponse> {
+	private final BloodSugarGuideGenerateService bloodSugarGuideGenerateService;
 
 	/**
 	 * 혈당 데이터를 분석한다.
@@ -34,10 +34,10 @@ public class BloodSugarAnalysisStrategy implements AnalysisStrategy<BloodSugarAn
 	 * @since 1.0.0
 	 */
 	@Override
-	public FeedbackResponse analyze(BloodSugarAnalysisData data) { // TODO 운동부족
+	public GuideResponse analyze(BloodSugarAnalysisData data) { // TODO 운동부족
 		int unit = data.getUnit();
 
-		return bloodSugarFeedbackService.save(
+		return bloodSugarGuideGenerateService.generateGuide(
 			Arrays.stream(BloodSugarLevel.values())
 				.filter(levels -> levels.isDiabetic() == data.isDiabetic())
 				.filter(levels -> levels.contains(data.getType()))

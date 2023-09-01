@@ -64,7 +64,7 @@ class HealthMetricRegistrationServiceTest {
 	@Test
 	void 건강지표를_성공적으로_등록한다() {
 		// given
-		given(analysisDataFactoryService.createHealthMetricAnalysisData(any(), any())).willReturn(null);
+		given(analysisDataFactoryService.createHealthMetricAnalysisData(any())).willReturn(null);
 		given(analysisService.analyze(any(), any())).willReturn(null);
 		HealthMetricPostRequest request = 건강지표_등록_요청();
 
@@ -87,7 +87,7 @@ class HealthMetricRegistrationServiceTest {
 	@Test
 	void 단위만_변경된_건강지표를_성공적으로_수정한다() {
 		// given
-		given(analysisDataFactoryService.createHealthMetricAnalysisData(any(), any())).willReturn(null);
+		given(analysisDataFactoryService.createHealthMetricAnalysisData(any())).willReturn(null);
 		given(analysisService.analyze(any(), any())).willReturn(null);
 		HealthMetricPatchRequest request = 단위_변경한_건강지표_수정_요청();
 
@@ -112,7 +112,7 @@ class HealthMetricRegistrationServiceTest {
 	@Test
 	void 타입이_변경된_건강지표를_성공적으로_수정한다() {
 		// given
-		given(analysisDataFactoryService.createHealthMetricAnalysisData(any(), any())).willReturn(null);
+		given(analysisDataFactoryService.createHealthMetricAnalysisData(any())).willReturn(null);
 		given(analysisService.analyze(any(), any())).willReturn(null);
 		HealthMetricPatchRequest request = 타입_변경한_건강지표_수정_요청();
 

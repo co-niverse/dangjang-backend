@@ -1,5 +1,7 @@
 package com.coniverse.dangjang.fixture;
 
+import static com.coniverse.dangjang.fixture.GuideFixture.*;
+
 import java.time.LocalDate;
 
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
@@ -36,7 +38,7 @@ public class HealthMetricFixture {
 	}
 
 	public static HealthMetricResponse 건강지표_등록_응답() {
-		return new HealthMetricResponse(등록_건강지표_상세명, LocalDate.parse(생성일자), 등록_건강지표_단위);
+		return new HealthMetricResponse(등록_건강지표_상세명, LocalDate.parse(생성일자), 등록_건강지표_단위, 혈당_가이드_응답());
 	}
 
 	public static HealthMetric 건강지표_엔티티(User user) {

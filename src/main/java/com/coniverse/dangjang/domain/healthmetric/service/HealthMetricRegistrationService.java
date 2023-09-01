@@ -8,7 +8,7 @@ import com.coniverse.dangjang.domain.analysis.dto.healthMetric.HealthMetricAnaly
 import com.coniverse.dangjang.domain.analysis.service.AnalysisDataFactoryService;
 import com.coniverse.dangjang.domain.analysis.service.AnalysisService;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
-import com.coniverse.dangjang.domain.feedback.dto.response.FeedbackResponse;
+import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;
@@ -31,12 +31,12 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class HealthMetricRegistrationService {
+public class HealthMetricRegistrationService { // TODO 이름 변경
 	private final HealthMetricRepository healthMetricRepository;
-	private final HealthMetricMapper healthMetricMapper;
+	private final HealthMetricMapper mapper;
 	private final UserSearchService userSearchService;
 	private final HealthMetricSearchService healthMetricSearchService;
-	private final AnalysisService<HealthMetricAnalysisData, FeedbackResponse> analysisService;
+	private final AnalysisService<HealthMetricAnalysisData, GuideResponse> analysisService;
 	private final AnalysisDataFactoryService analysisDataFactoryService;
 
 	/**
@@ -47,10 +47,11 @@ public class HealthMetricRegistrationService {
 	 * @since 1.0.0
 	 */
 	public HealthMetricResponse register(HealthMetricPostRequest request, String oauthId) {
-		User user = userSearchService.findUserByOauthId(oauthId);
-		HealthMetric healthMetric = healthMetricRepository.save(healthMetricMapper.toEntity(request, user));
-		FeedbackResponse feedback = this.requestFeedback(healthMetric, user);
-		return healthMetricMapper.toResponse(healthMetric, feedback);
+		final User user = userSearchService.findUserByOauthId(oauthId);
+		final HealthMetric healthMetric = mapper.toEntity(request, user);
+		final GuideResponse guideResponse = this.requestAnalysis(healthMetric);
+		healthMetric.updateGuideId(guideResponse.id());
+		return mapper.toResponse(healthMetricRepository.save(healthMetric), guideResponse);
 	}
 
 	/**
@@ -61,43 +62,18 @@ public class HealthMetricRegistrationService {
 	 * @since 1.0.0
 	 */
 	public HealthMetricResponse update(HealthMetricPatchRequest request, String oauthId) {
-		CommonCode type = EnumFindUtil.findByTitle(CommonCode.class, request.type());
-		LocalDate createdAt = LocalDate.parse(request.createdAt());
+		final CommonCode type = EnumFindUtil.findByTitle(CommonCode.class, request.type());
+		final LocalDate createdAt = LocalDate.parse(request.createdAt());
 		HealthMetric healthMetric = healthMetricSearchService.findByHealthMetricId(oauthId, createdAt, type);
-		User user = userSearchService.findUserByOauthId(oauthId);
 
-		HealthMetric updatedHealthMetric;
 		if (request.isEmptyNewType()) {
-			updatedHealthMetric = updateUnit(healthMetric, request.unit());
+			healthMetric.updateUnit(request.unit());
 		} else {
-			updatedHealthMetric = updateType(healthMetric, request, user);
+			User user = userSearchService.findUserByOauthId(oauthId);
+			healthMetric = this.updateType(healthMetric, request, user);
 		}
-		FeedbackResponse feedback = this.requestFeedback(updatedHealthMetric, user);
-		return healthMetricMapper.toResponse(updatedHealthMetric, feedback);
-	}
-
-	/**
-	 * 조언 생성을 요청한다.
-	 *
-	 * @param healthMetric 건강지표
-	 * @param user         건강지표 등록 or 수정 유저
-	 * @since 1.0.0
-	 */
-	private FeedbackResponse requestFeedback(HealthMetric healthMetric, User user) {
-		HealthMetricAnalysisData analysisData = analysisDataFactoryService.createHealthMetricAnalysisData(healthMetric, user);
-		return analysisService.analyze(analysisData, healthMetric.getGroupCode());
-	}
-
-	/**
-	 * unit을 수정한다.
-	 *
-	 * @param healthMetric 건강지표
-	 * @param unit         unit
-	 * @since 1.0.0
-	 */
-	private HealthMetric updateUnit(HealthMetric healthMetric, String unit) {
-		healthMetric.updateUnit(unit);
-		return healthMetricRepository.save(healthMetric);
+		final GuideResponse guideResponse = this.requestAnalysis(healthMetric);
+		return mapper.toResponse(healthMetricRepository.save(healthMetric), guideResponse);
 	}
 
 	/**
@@ -113,6 +89,20 @@ public class HealthMetricRegistrationService {
 	private HealthMetric updateType(HealthMetric healthMetric, HealthMetricPatchRequest request, User user) {
 		healthMetric.verifySameGroupCode(EnumFindUtil.findByTitle(CommonCode.class, request.newType()));
 		healthMetricRepository.delete(healthMetric);
-		return healthMetricRepository.save(healthMetricMapper.toEntity(request, user));
+		final HealthMetric updatedHealthMetric = mapper.toEntity(request, user);
+		updatedHealthMetric.updateGuideId(healthMetric.getGuideId());
+		return updatedHealthMetric;
+	}
+
+	/**
+	 * 분석을 요청한다.
+	 *
+	 * @param healthMetric 건강지표
+	 * @return 가이드 응답
+	 * @since 1.0.0
+	 */
+	private GuideResponse requestAnalysis(HealthMetric healthMetric) {
+		HealthMetricAnalysisData analysisData = analysisDataFactoryService.createHealthMetricAnalysisData(healthMetric);
+		return analysisService.analyze(analysisData, healthMetric.getGroupCode());
 	}
 }
