@@ -19,29 +19,23 @@ import com.coniverse.dangjang.global.util.EnumFindUtil;
 class CommonCodeTest {
 	private static Stream<Arguments> provideCommonCode() {
 		return Stream.of(
-			Arguments.of("취침시간", CommonCode.BED_TIME),
 			Arguments.of("공복", CommonCode.EMPTY_STOMACH),
 			Arguments.of("아침식전", CommonCode.BEFORE_BREAKFAST),
 			Arguments.of("점심식전", CommonCode.BEFORE_LUNCH),
 			Arguments.of("저녁식후", CommonCode.AFTER_DINNER),
 			Arguments.of("취침전", CommonCode.BEFORE_SLEEP),
-			Arguments.of("수축기", CommonCode.SYSTOLIC),
-			Arguments.of("당화혈색소", CommonCode.HBA1C),
-			Arguments.of("고강도운동", CommonCode.HIGH_INTENSITY_MINUTES)
+			Arguments.of("당화혈색소", CommonCode.HBA1C)
 		);
 	}
 
 	private static Stream<Arguments> provideCodeGroup() {
 		return Stream.of(
-			Arguments.of(GroupCode.SLEEP, CommonCode.BED_TIME),
 			Arguments.of(GroupCode.BLOOD_SUGAR, CommonCode.EMPTY_STOMACH),
 			Arguments.of(GroupCode.BLOOD_SUGAR, CommonCode.BEFORE_BREAKFAST),
 			Arguments.of(GroupCode.BLOOD_SUGAR, CommonCode.BEFORE_LUNCH),
 			Arguments.of(GroupCode.BLOOD_SUGAR, CommonCode.AFTER_DINNER),
 			Arguments.of(GroupCode.BLOOD_SUGAR, CommonCode.BEFORE_SLEEP),
-			Arguments.of(GroupCode.BLOOD_PRESSURE, CommonCode.SYSTOLIC),
 			Arguments.of(GroupCode.GLYCATED_HEMOGLOBIN, CommonCode.HBA1C),
-			Arguments.of(GroupCode.EXERCISE, CommonCode.HIGH_INTENSITY_MINUTES),
 			Arguments.of(GroupCode.WEIGHT, CommonCode.MEASUREMENT)
 		);
 	}

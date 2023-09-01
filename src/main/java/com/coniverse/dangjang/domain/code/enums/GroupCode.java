@@ -18,13 +18,11 @@ import lombok.AllArgsConstructor;
  */
 @AllArgsConstructor
 public enum GroupCode implements EnumCode {
-	SLEEP("수면", "sleep", List.of(CommonCode.BED_TIME, CommonCode.WAKE_UP_TIME)),
 	BLOOD_SUGAR("혈당", "blood sugar", List.of(
 		CommonCode.EMPTY_STOMACH, CommonCode.BEFORE_BREAKFAST, CommonCode.AFTER_BREAKFAST, CommonCode.BEFORE_LUNCH, CommonCode.AFTER_LUNCH,
 		CommonCode.BEFORE_DINNER, CommonCode.AFTER_DINNER, CommonCode.BEFORE_SLEEP, CommonCode.ETC)
 	),
-	BLOOD_PRESSURE("혈압", "blood pressure", List.of(CommonCode.SYSTOLIC, CommonCode.DIASTOLIC)),
-	EXERCISE("운동", "exercise", List.of(CommonCode.HIGH_INTENSITY_MINUTES, CommonCode.MIN_INTENSITY_MINUTES, CommonCode.STEP_COUNT)),
+	EXERCISE("운동", "exercise", List.of(CommonCode.STEP_COUNT)),
 	WEIGHT("체중", "weight", List.of(CommonCode.MEASUREMENT)),
 	GLYCATED_HEMOGLOBIN("당화혈색소", "glycated hemoglobin", List.of(CommonCode.HBA1C));
 

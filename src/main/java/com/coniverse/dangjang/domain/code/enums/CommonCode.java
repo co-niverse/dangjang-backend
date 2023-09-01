@@ -12,8 +12,6 @@ import lombok.AllArgsConstructor;
  */
 @AllArgsConstructor
 public enum CommonCode implements EnumCode {
-	BED_TIME("취침시간", "bed time"),
-	WAKE_UP_TIME("기상시간", "wake up time"),
 	EMPTY_STOMACH("공복", "empty stomach"),
 	BEFORE_BREAKFAST("아침식전", "before breakfast"),
 	AFTER_BREAKFAST("아침식후", "after breakfast"),
@@ -23,10 +21,6 @@ public enum CommonCode implements EnumCode {
 	AFTER_DINNER("저녁식후", "after dinner"),
 	BEFORE_SLEEP("취침전", "before sleep"),
 	ETC("기타", "etc"),
-	SYSTOLIC("수축기", "systolic"),
-	DIASTOLIC("이완기", "diastolic"),
-	HIGH_INTENSITY_MINUTES("고강도운동", "high intensity minutes"),
-	MIN_INTENSITY_MINUTES("중강도운동", "moderate intensity minutes"),
 	STEP_COUNT("걸음수", "step count"),
 	MEASUREMENT("체중", "measurement"),
 	HBA1C("당화혈색소", "HBA1C");
