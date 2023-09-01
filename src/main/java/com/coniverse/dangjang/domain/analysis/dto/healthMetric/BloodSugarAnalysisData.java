@@ -23,16 +23,17 @@ public class BloodSugarAnalysisData extends HealthMetricAnalysisData {
 	private int deviation;
 	private boolean lackOfExercise;
 
-	public BloodSugarAnalysisData(HealthMetric healthMetric, User user) {
-		super(user.getOauthId(), healthMetric.getCreatedAt(), healthMetric.getType());
+	public BloodSugarAnalysisData(HealthMetric healthMetric) {
+		super(healthMetric);
 		convertUnit(healthMetric.getUnit());
+		User user = healthMetric.getUser();
 		this.diabetic = true; // TODO 유저 정보 mapping
 		this.medicine = true;
 		this.injection = true;
 	}
 
 	@Override
-	void convertUnit(String unit) {
+	void convertUnit(String unit) { // TODO 테스트, validator로 변경
 		try {
 			this.unit = Integer.parseInt(unit);
 		} catch (NumberFormatException e) {

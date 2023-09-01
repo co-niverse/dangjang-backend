@@ -11,7 +11,6 @@ import com.coniverse.dangjang.domain.analysis.dto.healthMetric.HealthMetricAnaly
 import com.coniverse.dangjang.domain.analysis.factory.HealthMetricAnalysisDataFactory;
 import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
-import com.coniverse.dangjang.domain.user.entity.User;
 
 /**
  * 분석 데이터를 생성하는 factory service
@@ -34,8 +33,8 @@ public class AnalysisDataFactoryService {
 	 *
 	 * @since 1.0.0
 	 */
-	public HealthMetricAnalysisData createHealthMetricAnalysisData(HealthMetric healthMetric, User user) {
+	public HealthMetricAnalysisData createHealthMetricAnalysisData(HealthMetric healthMetric) {
 		HealthMetricAnalysisDataFactory analysisDataFactory = healthMetricAnalysisDataFactories.get(healthMetric.getGroupCode());
-		return analysisDataFactory.create(healthMetric, user);
+		return analysisDataFactory.create(healthMetric);
 	}
 }

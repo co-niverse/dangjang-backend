@@ -6,7 +6,6 @@ import com.coniverse.dangjang.domain.analysis.dto.healthMetric.BloodSugarAnalysi
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.HealthMetricAnalysisData;
 import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
-import com.coniverse.dangjang.domain.user.entity.User;
 
 /**
  * 혈당 분석 데이터를 생성하는 factory
@@ -18,8 +17,8 @@ import com.coniverse.dangjang.domain.user.entity.User;
 public class BloodSugarAnalysisDataFactory implements HealthMetricAnalysisDataFactory {
 
 	@Override
-	public HealthMetricAnalysisData create(HealthMetric healthMetric, User user) {
-		return new BloodSugarAnalysisData(healthMetric, user);
+	public HealthMetricAnalysisData create(HealthMetric healthMetric) {
+		return new BloodSugarAnalysisData(healthMetric);
 	}
 
 	@Override

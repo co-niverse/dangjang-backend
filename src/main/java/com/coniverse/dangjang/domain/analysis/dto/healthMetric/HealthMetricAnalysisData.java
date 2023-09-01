@@ -2,24 +2,31 @@ package com.coniverse.dangjang.domain.analysis.dto.healthMetric;
 
 import java.time.LocalDate;
 
+import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
+import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 분석 데이터 추상 클래스
+ * 건강 지표 분석 데이터 추상 클래스
  *
  * @author TEO
  * @since 1.0.0
  */
 @Getter
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class HealthMetricAnalysisData {
-	private String oauthId;
-	private LocalDate createdAt;
-	private CommonCode type;
+public abstract class HealthMetricAnalysisData implements AnalysisData {
+	private final String oauthId;
+	private final LocalDate createdAt;
+	private final CommonCode type;
+	private final String guideId;
+
+	protected HealthMetricAnalysisData(HealthMetric healthMetric) {
+		this.oauthId = healthMetric.getUser().getOauthId();
+		this.createdAt = healthMetric.getCreatedAt();
+		this.type = healthMetric.getType();
+		this.guideId = healthMetric.getGuideId();
+	}
 
 	/**
 	 * 각 분석 데이터마다 단위의 타입이 다르기 때문에 타입을 변환한다
