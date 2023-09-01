@@ -44,6 +44,8 @@ public class HealthMetric implements Persistable<HealthMetricId> {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "oauth_id")
 	private User user;
+	@Getter
+	private String guideId;
 
 	@Builder
 	private HealthMetric(LocalDate createdAt, CommonCode type, String unit, User user) {
@@ -55,6 +57,10 @@ public class HealthMetric implements Persistable<HealthMetricId> {
 
 	public void updateUnit(String unit) {
 		this.unit = unit;
+	}
+
+	public void updateGuideId(String guideId) {
+		this.guideId = guideId;
 	}
 
 	public String getOauthId() {
