@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,11 +21,12 @@ import com.coniverse.dangjang.domain.code.enums.GroupCode;
  * @since 1.0.0
  */
 @SpringBootTest
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AnalysisDataFactoryServiceTest {
 	@Autowired
 	private AnalysisDataFactoryService analysisDataFactoryService;
 
-	private static Stream<Arguments> provideHealthMetric() {
+	private Stream<Arguments> provideHealthMetric() {
 		return Stream.of(
 			Arguments.of(GroupCode.BLOOD_SUGAR, BloodSugarAnalysisData.class)
 			// TODO 체중, 운동, 당화혈색소, 식단 추가
