@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import org.springframework.stereotype.Component;
 
+import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.BloodSugarAnalysisData;
 import com.coniverse.dangjang.domain.analysis.enums.Alert;
 import com.coniverse.dangjang.domain.analysis.enums.BloodSugarLevel;
@@ -23,7 +24,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Component
 @RequiredArgsConstructor
-public class BloodSugarAnalysisStrategy implements AnalysisStrategy<BloodSugarAnalysisData, GuideResponse> {
+public class BloodSugarAnalysisStrategy implements AnalysisStrategy {
 	private final BloodSugarGuideGenerateService bloodSugarGuideGenerateService;
 
 	/**
@@ -34,17 +35,18 @@ public class BloodSugarAnalysisStrategy implements AnalysisStrategy<BloodSugarAn
 	 * @since 1.0.0
 	 */
 	@Override
-	public GuideResponse analyze(BloodSugarAnalysisData data) { // TODO 운동부족
-		int unit = data.getUnit();
+	public <T extends AnalysisData> GuideResponse analyze(T data) { // TODO 운동부족
+		BloodSugarAnalysisData analysisData = (BloodSugarAnalysisData)data;
+		int unit = analysisData.getUnit();
 
 		return bloodSugarGuideGenerateService.generateGuide(
 			Arrays.stream(BloodSugarLevel.values())
-				.filter(levels -> levels.isDiabetic() == data.isDiabetic())
-				.filter(levels -> levels.contains(data.getType()))
+				.filter(levels -> levels.isDiabetic() == analysisData.isDiabetic())
+				.filter(levels -> levels.contains(analysisData.getType()))
 				.findAny()
 				.map(level -> {
-					this.calculateAlertAndDeviation(level, data);
-					return data;
+					this.calculateAlertAndDeviation(level, analysisData);
+					return analysisData;
 				})
 				.orElseThrow(NonAnalyticDataException::new)
 		);

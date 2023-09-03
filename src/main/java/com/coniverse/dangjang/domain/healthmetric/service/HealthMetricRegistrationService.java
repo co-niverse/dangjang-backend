@@ -36,7 +36,7 @@ public class HealthMetricRegistrationService { // TODO 이름 변경
 	private final HealthMetricMapper mapper;
 	private final UserSearchService userSearchService;
 	private final HealthMetricSearchService healthMetricSearchService;
-	private final AnalysisService<HealthMetricAnalysisData, GuideResponse> analysisService;
+	private final AnalysisService analysisService;
 	private final AnalysisDataFactoryService analysisDataFactoryService;
 
 	/**
@@ -103,6 +103,6 @@ public class HealthMetricRegistrationService { // TODO 이름 변경
 	 */
 	private GuideResponse requestAnalysis(HealthMetric healthMetric) {
 		HealthMetricAnalysisData analysisData = analysisDataFactoryService.createHealthMetricAnalysisData(healthMetric);
-		return analysisService.analyze(analysisData, healthMetric.getGroupCode());
+		return analysisService.analyze(analysisData);
 	}
 }

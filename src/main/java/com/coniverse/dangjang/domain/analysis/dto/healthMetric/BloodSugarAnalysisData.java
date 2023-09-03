@@ -2,6 +2,7 @@ package com.coniverse.dangjang.domain.analysis.dto.healthMetric;
 
 import com.coniverse.dangjang.domain.analysis.enums.Alert;
 import com.coniverse.dangjang.domain.analysis.exception.UnitLessThanZeroException;
+import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.user.entity.User;
 
@@ -54,5 +55,10 @@ public class BloodSugarAnalysisData extends HealthMetricAnalysisData {
 
 	public void setLackOfExercise(boolean lackOfExercise) {
 		this.lackOfExercise = lackOfExercise;
+	}
+
+	@Override
+	public GroupCode getGroupCode() {
+		return GroupCode.BLOOD_SUGAR;
 	}
 }
