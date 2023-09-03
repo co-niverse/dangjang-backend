@@ -17,15 +17,15 @@ public class AnalysisDataFixture {
 		return new BloodSugarAnalysisData(건강지표_엔티티(CommonCode.BEFORE_BREAKFAST));
 	}
 
-	public static AnalysisData 운동_분석_데이터() {
+	public static AnalysisData 운동_분석_데이터() { // TODO return 수정
 		return new BloodSugarAnalysisData(건강지표_엔티티(CommonCode.STEP_COUNT));
 	}
 
-	public static AnalysisData 체중_분석_데이터() {
+	public static AnalysisData 체중_분석_데이터() { // TODO return 수정
 		return new BloodSugarAnalysisData(건강지표_엔티티(CommonCode.MEASUREMENT));
 	}
 
-	public static AnalysisData 당화혈색소_분석_데이터() {
+	public static AnalysisData 당화혈색소_분석_데이터() { // TODO return 수정
 		return new BloodSugarAnalysisData(건강지표_엔티티(CommonCode.HBA1C));
 	}
 }
