@@ -25,6 +25,7 @@ public class HealthMetricFixture {
 	private static final CommonCode 등록_건강지표 = CommonCode.BEFORE_BREAKFAST;
 	private static final String 등록_건강지표_상세명 = 등록_건강지표.getTitle();
 	private static final String 수정_건강지표_상세명 = CommonCode.AFTER_LUNCH.getTitle();
+	private static final String 가이드_아이디 = "12341234";
 
 	public static HealthMetricPostRequest 건강지표_등록_요청() {
 		return new HealthMetricPostRequest(등록_건강지표_상세명, 생성일자, 등록_건강지표_단위);
@@ -43,20 +44,35 @@ public class HealthMetricFixture {
 	}
 
 	public static HealthMetric 건강지표_엔티티(User user) {
-		return HealthMetric.builder()
+		HealthMetric healthMetric = HealthMetric.builder()
 			.createdAt(LocalDate.parse(생성일자))
 			.type(등록_건강지표)
 			.user(user)
 			.unit(등록_건강지표_단위)
 			.build();
+		healthMetric.updateGuideId(가이드_아이디);
+		return healthMetric;
 	}
 
 	public static HealthMetric 건강지표_엔티티(CommonCode type) {
-		return HealthMetric.builder()
+		HealthMetric healthMetric = HealthMetric.builder()
 			.createdAt(LocalDate.parse(생성일자))
 			.type(type)
 			.user(유저_테오())
 			.unit(등록_건강지표_단위)
 			.build();
+		healthMetric.updateGuideId(가이드_아이디);
+		return healthMetric;
+	}
+
+	public static HealthMetric 건강지표_엔티티(String unit) {
+		HealthMetric healthMetric = HealthMetric.builder()
+			.createdAt(LocalDate.parse(생성일자))
+			.type(등록_건강지표)
+			.user(유저_테오())
+			.unit(unit)
+			.build();
+		healthMetric.updateGuideId(가이드_아이디);
+		return healthMetric;
 	}
 }
