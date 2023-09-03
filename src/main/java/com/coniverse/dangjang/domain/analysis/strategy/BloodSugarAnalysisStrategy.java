@@ -59,7 +59,7 @@ public class BloodSugarAnalysisStrategy implements AnalysisStrategy {
 	 * @since 1.0.0
 	 */
 	@Override
-	public GroupCode getCodeGroup() {
+	public GroupCode getGroupCode() {
 		return GroupCode.BLOOD_SUGAR;
 	}
 

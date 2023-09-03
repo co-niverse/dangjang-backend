@@ -24,7 +24,7 @@ public class AnalysisService {
 
 	public AnalysisService(List<AnalysisStrategy> analysisStrategies) {
 		this.analysisStrategies = analysisStrategies.stream().collect(
-			Collectors.toUnmodifiableMap(AnalysisStrategy::getCodeGroup, Function.identity())
+			Collectors.toUnmodifiableMap(AnalysisStrategy::getGroupCode, Function.identity())
 		);
 	}
 

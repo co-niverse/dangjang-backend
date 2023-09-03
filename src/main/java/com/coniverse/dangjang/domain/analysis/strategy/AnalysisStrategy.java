@@ -13,5 +13,5 @@ import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
 public interface AnalysisStrategy {
 	<T extends AnalysisData> GuideResponse analyze(T analysisData);
 
-	GroupCode getCodeGroup();
+	GroupCode getGroupCode();
 }
