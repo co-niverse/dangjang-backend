@@ -28,7 +28,7 @@ class CommonCodeTest {
 		);
 	}
 
-	private static Stream<Arguments> provideCodeGroup() {
+	private static Stream<Arguments> provideGroupCode() {
 		return Stream.of(
 			Arguments.of(GroupCode.BLOOD_SUGAR, CommonCode.EMPTY_STOMACH),
 			Arguments.of(GroupCode.BLOOD_SUGAR, CommonCode.BEFORE_BREAKFAST),
@@ -47,7 +47,7 @@ class CommonCodeTest {
 	}
 
 	@ParameterizedTest
-	@MethodSource("provideCodeGroup")
+	@MethodSource("provideGroupCode")
 	void 건강지표_타입으로_건강지표_코드를_찾는다(GroupCode code, CommonCode type) {
 		assertThat(GroupCode.findByCode(type)).isEqualTo(code);
 	}
