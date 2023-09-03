@@ -35,9 +35,9 @@ import com.coniverse.dangjang.global.util.EnumFindUtil;
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class HealthMetricRegistrationServiceTest {
+class HealthMetricRegisterServiceTest {
 	@Autowired
-	private HealthMetricRegistrationService healthMetricRegistrationService;
+	private HealthMetricRegisterService healthMetricRegisterService;
 	@Autowired
 	private HealthMetricRepository healthMetricRepository;
 	@Autowired
@@ -69,7 +69,7 @@ class HealthMetricRegistrationServiceTest {
 		HealthMetricPostRequest request = 건강지표_등록_요청();
 
 		// when
-		HealthMetricResponse response = healthMetricRegistrationService.register(request, 테오_아이디);
+		HealthMetricResponse response = healthMetricRegisterService.register(request, 테오_아이디);
 
 		// then
 		등록된_건강지표 = healthMetricRepository
@@ -92,7 +92,7 @@ class HealthMetricRegistrationServiceTest {
 		HealthMetricPatchRequest request = 단위_변경한_건강지표_수정_요청();
 
 		// when
-		HealthMetricResponse response = healthMetricRegistrationService.update(request, 테오_아이디);
+		HealthMetricResponse response = healthMetricRegisterService.update(request, 테오_아이디);
 
 		// then
 
@@ -117,7 +117,7 @@ class HealthMetricRegistrationServiceTest {
 		HealthMetricPatchRequest request = 타입_변경한_건강지표_수정_요청();
 
 		// when
-		HealthMetricResponse response = healthMetricRegistrationService.update(request, 테오_아이디);
+		HealthMetricResponse response = healthMetricRegisterService.update(request, 테오_아이디);
 
 		// then
 		HealthMetric 수정된_건강지표 = healthMetricRepository

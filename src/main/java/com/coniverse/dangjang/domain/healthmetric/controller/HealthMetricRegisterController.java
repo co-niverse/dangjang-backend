@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;
-import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegistrationService;
+import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
 import jakarta.validation.Valid;
@@ -28,8 +28,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/health-metric")
 @RequiredArgsConstructor
 @Validated
-public class HealthMetricRegistrationController { // TODO @AuthenticationPrincipal Map<String, Object> principal
-	private final HealthMetricRegistrationService healthMetricRegistrationService;
+public class HealthMetricRegisterController { // TODO @AuthenticationPrincipal Map<String, Object> principal
+	private final HealthMetricRegisterService healthMetricRegisterService;
 
 	/**
 	 * HTTP POST METHOD
@@ -38,7 +38,7 @@ public class HealthMetricRegistrationController { // TODO @AuthenticationPrincip
 	 */
 	@PostMapping
 	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> post(@Valid @RequestBody HealthMetricPostRequest postRequest) {
-		HealthMetricResponse response = healthMetricRegistrationService.register(postRequest, "11111111");
+		HealthMetricResponse response = healthMetricRegisterService.register(postRequest, "11111111");
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
 
@@ -49,7 +49,7 @@ public class HealthMetricRegistrationController { // TODO @AuthenticationPrincip
 	 */
 	@PatchMapping
 	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> patch(@Valid @RequestBody HealthMetricPatchRequest patchRequest) {
-		HealthMetricResponse response = healthMetricRegistrationService.update(patchRequest, "11111111");
+		HealthMetricResponse response = healthMetricRegisterService.update(patchRequest, "11111111");
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
 }

@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;
-import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegistrationService;
+import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
 import com.coniverse.dangjang.support.ControllerTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -29,13 +29,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class HealthMetricRegistrationControllerTest extends ControllerTest {
+class HealthMetricRegisterControllerTest extends ControllerTest {
 	public static final String URL = "/api/health-metric";
 	private final HealthMetricResponse response = 건강지표_등록_응답();
 	private String postContent;
 	private String patchContent;
 	@Autowired
-	private HealthMetricRegistrationService healthMetricRegistrationService;
+	private HealthMetricRegisterService healthMetricRegisterService;
 
 	@BeforeAll
 	void setUp() throws JsonProcessingException {
@@ -47,7 +47,7 @@ class HealthMetricRegistrationControllerTest extends ControllerTest {
 	@Test
 	void 건강지표를_등록하면_성공_메시지를_반환한다() throws Exception {
 		// given
-		given(healthMetricRegistrationService.register(any(), anyString())).willReturn(response);
+		given(healthMetricRegisterService.register(any(), anyString())).willReturn(response);
 
 		// when
 		ResultActions resultActions = post(mockMvc, URL, postContent);
@@ -124,7 +124,7 @@ class HealthMetricRegistrationControllerTest extends ControllerTest {
 	@Test
 	void 건강지표를_수정하면_성공_메시지를_반환한다() throws Exception {
 		// given
-		given(healthMetricRegistrationService.update(any(), anyString())).willReturn(response);
+		given(healthMetricRegisterService.update(any(), anyString())).willReturn(response);
 
 		// when
 		ResultActions resultActions = patch(mockMvc, URL, patchContent);

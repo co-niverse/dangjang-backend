@@ -31,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class HealthMetricRegistrationService { // TODO 이름 변경
+public class HealthMetricRegisterService { // TODO 이름 변경
 	private final HealthMetricRepository healthMetricRepository;
 	private final HealthMetricMapper mapper;
 	private final UserSearchService userSearchService;
