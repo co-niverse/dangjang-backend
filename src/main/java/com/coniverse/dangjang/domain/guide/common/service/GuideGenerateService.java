@@ -1,6 +1,7 @@
 package com.coniverse.dangjang.domain.guide.common.service;
 
 import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
+import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
 
 /**
@@ -10,5 +11,7 @@ import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
  * @since 1.0.0
  */
 public interface GuideGenerateService {
-	<T extends AnalysisData> GuideResponse generateGuide(T analysisData);
+	GuideResponse generateGuide(AnalysisData analysisData);
+
+	GroupCode getGroupCode();
 }

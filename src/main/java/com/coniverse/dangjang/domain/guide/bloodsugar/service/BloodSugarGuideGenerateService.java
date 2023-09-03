@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.BloodSugarAnalysisData;
+import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.BloodSugarGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.mapper.BloodSugarGuideMapper;
 import com.coniverse.dangjang.domain.guide.bloodsugar.repository.BloodSugarGuideRepository;
@@ -13,7 +14,7 @@ import com.coniverse.dangjang.domain.guide.common.service.GuideGenerateService;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 혈당 가이드 service
+ * 혈당 가이드 생성 service
  *
  * @author TEO
  * @since 1.0.0
@@ -33,7 +34,7 @@ public class BloodSugarGuideGenerateService implements GuideGenerateService {
 	 * @since 1.0.0
 	 */
 	@Override
-	public <T extends AnalysisData> GuideResponse generateGuide(T analysisData) {
+	public GuideResponse generateGuide(AnalysisData analysisData) {
 		BloodSugarAnalysisData data = (BloodSugarAnalysisData)analysisData;
 		String content = "가이드 내용입니다.";
 		String summary = "가이드 요약입니다.";
@@ -42,6 +43,11 @@ public class BloodSugarGuideGenerateService implements GuideGenerateService {
 			return mapper.toResponse(bloodSugarGuideRepository.save(guide));
 		}
 		return this.updateGuide(data, content, summary);
+	}
+
+	@Override
+	public GroupCode getGroupCode() {
+		return GroupCode.BLOOD_SUGAR;
 	}
 
 	/**

@@ -7,7 +7,6 @@ import com.coniverse.dangjang.domain.code.exception.GroupCodeNotFoundException;
 import com.coniverse.dangjang.global.support.enums.EnumCode;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 /**
  * 그룹 코드
@@ -29,7 +28,6 @@ public enum GroupCode implements EnumCode {
 
 	private final String title;
 	private final String engTitle;
-	@Getter
 	private final List<CommonCode> commonCodeList;
 
 	/**

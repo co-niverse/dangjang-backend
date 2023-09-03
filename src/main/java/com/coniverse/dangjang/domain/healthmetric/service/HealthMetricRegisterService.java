@@ -4,11 +4,11 @@ import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
 
-import com.coniverse.dangjang.domain.analysis.dto.healthMetric.HealthMetricAnalysisData;
-import com.coniverse.dangjang.domain.analysis.service.AnalysisDataFactoryService;
+import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
 import com.coniverse.dangjang.domain.analysis.service.AnalysisService;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
+import com.coniverse.dangjang.domain.guide.common.service.GuideService;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;
@@ -31,13 +31,13 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class HealthMetricRegisterService { // TODO 이름 변경
+public class HealthMetricRegisterService {
 	private final HealthMetricRepository healthMetricRepository;
 	private final HealthMetricMapper mapper;
 	private final UserSearchService userSearchService;
 	private final HealthMetricSearchService healthMetricSearchService;
 	private final AnalysisService analysisService;
-	private final AnalysisDataFactoryService analysisDataFactoryService;
+	private final GuideService guideService;
 
 	/**
 	 * 건강지표를 저장한다.
@@ -49,7 +49,7 @@ public class HealthMetricRegisterService { // TODO 이름 변경
 	public HealthMetricResponse register(HealthMetricPostRequest request, String oauthId) {
 		final User user = userSearchService.findUserByOauthId(oauthId);
 		final HealthMetric healthMetric = mapper.toEntity(request, user);
-		final GuideResponse guideResponse = this.requestAnalysis(healthMetric);
+		final GuideResponse guideResponse = this.requestGuide(healthMetric);
 		healthMetric.updateGuideId(guideResponse.id());
 		return mapper.toResponse(healthMetricRepository.save(healthMetric), guideResponse);
 	}
@@ -72,7 +72,7 @@ public class HealthMetricRegisterService { // TODO 이름 변경
 			User user = userSearchService.findUserByOauthId(oauthId);
 			healthMetric = this.updateType(healthMetric, request, user);
 		}
-		final GuideResponse guideResponse = this.requestAnalysis(healthMetric);
+		final GuideResponse guideResponse = this.requestGuide(healthMetric);
 		return mapper.toResponse(healthMetricRepository.save(healthMetric), guideResponse);
 	}
 
@@ -95,14 +95,14 @@ public class HealthMetricRegisterService { // TODO 이름 변경
 	}
 
 	/**
-	 * 분석을 요청한다.
+	 * 가이드를 요청한다.
 	 *
 	 * @param healthMetric 건강지표
 	 * @return 가이드 응답
 	 * @since 1.0.0
 	 */
-	private GuideResponse requestAnalysis(HealthMetric healthMetric) {
-		HealthMetricAnalysisData analysisData = analysisDataFactoryService.createHealthMetricAnalysisData(healthMetric);
-		return analysisService.analyze(analysisData);
+	private GuideResponse requestGuide(HealthMetric healthMetric) {
+		final AnalysisData analysisData = analysisService.analyze(healthMetric);
+		return guideService.invokeGenerateGuide(analysisData, healthMetric.getGroupCode());
 	}
 }

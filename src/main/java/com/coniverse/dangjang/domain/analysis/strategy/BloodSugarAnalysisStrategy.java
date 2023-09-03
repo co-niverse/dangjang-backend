@@ -10,10 +10,7 @@ import com.coniverse.dangjang.domain.analysis.enums.Alert;
 import com.coniverse.dangjang.domain.analysis.enums.BloodSugarLevel;
 import com.coniverse.dangjang.domain.analysis.exception.NonAnalyticDataException;
 import com.coniverse.dangjang.domain.code.enums.GroupCode;
-import com.coniverse.dangjang.domain.guide.bloodsugar.service.BloodSugarGuideGenerateService;
-import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
-
-import lombok.RequiredArgsConstructor;
+import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 
 /**
  * 혈당 분석 전략
@@ -23,9 +20,18 @@ import lombok.RequiredArgsConstructor;
  * @since 1.0.0
  */
 @Component
-@RequiredArgsConstructor
 public class BloodSugarAnalysisStrategy implements AnalysisStrategy {
-	private final BloodSugarGuideGenerateService bloodSugarGuideGenerateService;
+	/**
+	 * 혈당 분석 데이터를 생성한다.
+	 *
+	 * @param healthMetric 건강지표
+	 * @return 혈당 분석 데이터
+	 * @since 1.0.0
+	 */
+	@Override
+	public AnalysisData createAnalysisData(HealthMetric healthMetric) {
+		return new BloodSugarAnalysisData(healthMetric);
+	}
 
 	/**
 	 * 혈당 데이터를 분석한다.
@@ -35,21 +41,19 @@ public class BloodSugarAnalysisStrategy implements AnalysisStrategy {
 	 * @since 1.0.0
 	 */
 	@Override
-	public <T extends AnalysisData> GuideResponse analyze(T data) { // TODO 운동부족
+	public AnalysisData analyze(AnalysisData data) { // TODO 운동부족
 		BloodSugarAnalysisData analysisData = (BloodSugarAnalysisData)data;
 		int unit = analysisData.getUnit();
 
-		return bloodSugarGuideGenerateService.generateGuide(
-			Arrays.stream(BloodSugarLevel.values())
-				.filter(levels -> levels.isDiabetic() == analysisData.isDiabetic())
-				.filter(levels -> levels.contains(analysisData.getType()))
-				.findAny()
-				.map(level -> {
-					this.calculateAlertAndDeviation(level, analysisData);
-					return analysisData;
-				})
-				.orElseThrow(NonAnalyticDataException::new)
-		);
+		return Arrays.stream(BloodSugarLevel.values())
+			.filter(levels -> levels.isDiabetic() == analysisData.isDiabetic())
+			.filter(levels -> levels.contains(analysisData.getType()))
+			.findAny()
+			.map(level -> {
+				this.calculateAlertAndDeviation(level, analysisData);
+				return analysisData;
+			})
+			.orElseThrow(NonAnalyticDataException::new);
 	}
 
 	/**
