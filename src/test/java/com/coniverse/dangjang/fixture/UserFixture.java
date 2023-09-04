@@ -6,6 +6,7 @@ import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
+import com.coniverse.dangjang.domain.user.entity.enums.Role;
 import com.coniverse.dangjang.domain.user.entity.enums.Status;
 
 /**
@@ -25,7 +26,7 @@ public class UserFixture {
 			.activityAmount(ActivityAmount.MEDIUM)
 			.height(199)
 			.recommendedCalorie(2000)
-			.role("ROLE_USER")
+			.role(Role.USER)
 			.status(Status.ACTIVE)
 			.profileImagePath("/images/profile/.png")
 			.build();
@@ -41,9 +42,13 @@ public class UserFixture {
 			.activityAmount(ActivityAmount.LOW)
 			.height(180)
 			.recommendedCalorie(1500)
-			.role("ROLE_USER")
+			.role(Role.USER)
 			.status(Status.ACTIVE)
 			.profileImagePath("/images/profile/.png")
+			.diabetes(true)
+			.diabetes_year(1)
+			.medicine(false)
+			.injection(false)
 			.build();
 	}
 }

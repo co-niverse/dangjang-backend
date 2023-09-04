@@ -69,7 +69,6 @@ class HealthMetricRegisterServiceTest {
 		// given
 		given(guideService.invokeGenerateGuide(any(), any())).willReturn(가이드_응답);
 		HealthMetricPostRequest request = 건강지표_등록_요청();
-
 		// when
 		HealthMetricResponse response = healthMetricRegisterService.register(request, 테오_아이디);
 
@@ -128,6 +127,26 @@ class HealthMetricRegisterServiceTest {
 			() -> assertThat(수정된_건강지표.getCreatedAt()).isEqualTo(등록된_건강지표.getCreatedAt()),
 			() -> assertThat(수정된_건강지표.getOauthId()).isEqualTo(등록된_건강지표.getOauthId()),
 			() -> assertThat(수정된_건강지표.getType()).isNotEqualTo(등록된_건강지표.getType())
+		);
+	}
+
+	@Order(400) //TODO : 건강지표_등록_요청 메서드 수정되면 삭제하기
+	@Test
+	void 체중_건강지표를_성공적으로_등록한다() {
+		// given
+		HealthMetricPostRequest request = 체중_건강지표_등록_요청();
+		// when
+		HealthMetricResponse response = healthMetricRegistrationService.register(request, 등록_일자, 테오_아이디);
+
+		// then
+		등록된_건강지표 = healthMetricRepository
+			.findByHealthMetricId(테오_아이디, response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.title())).orElseThrow();
+
+		assertAll(
+			() -> assertThat(등록된_건강지표.getCommonCode().getTitle()).isEqualTo(request.title()),
+			() -> assertThat(등록된_건강지표.getUnit()).isEqualTo(request.unit()),
+			() -> assertThat(등록된_건강지표.getCreatedAt()).isEqualTo(등록_일자),
+			() -> assertThat(등록된_건강지표.getOauthId()).isEqualTo(테오_아이디)
 		);
 	}
 }

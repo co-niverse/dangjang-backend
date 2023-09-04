@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
 
+import com.coniverse.dangjang.domain.auth.dto.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
@@ -31,7 +32,11 @@ class LoginControllerTest extends ControllerTest {
 		// given
 		KakaoLoginRequest request = 카카오_로그인_요청();
 		String content = objectMapper.writeValueAsString(request);
+		AuthToken authToken = new AuthToken();
+		authToken.setAccessToken("accessToken");
+		authToken.setRefreshToken("refreshToken");
 		given(oauthLoginService.login(request)).willReturn(response);
+		given(oauthLoginService.getAuthToken(response.nickname())).willReturn(authToken);
 
 		// when
 		ResultActions resultActions = post(mockMvc, URI + "/kakao", content);
@@ -40,8 +45,8 @@ class LoginControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isOk(),
 			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
-			jsonPath("$.data.accessToken").value(response.accessToken()),
-			jsonPath("$.data.refreshToken").value(response.refreshToken())
+			header().exists("AccessToken"),
+			header().exists("RefreshToken")
 		);
 
 	}
@@ -69,7 +74,11 @@ class LoginControllerTest extends ControllerTest {
 		// given
 		NaverLoginRequest request = 네이버_로그인_요청();
 		String content = objectMapper.writeValueAsString(request);
+		AuthToken authToken = new AuthToken();
+		authToken.setAccessToken("accessToken");
+		authToken.setRefreshToken("refreshToken");
 		given(oauthLoginService.login(request)).willReturn(response);
+		given(oauthLoginService.getAuthToken(response.nickname())).willReturn(authToken);
 
 		// when
 		ResultActions resultActions = post(mockMvc, URI + "/naver", content);
@@ -78,8 +87,8 @@ class LoginControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isOk(),
 			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
-			jsonPath("$.data.accessToken").value(response.accessToken()),
-			jsonPath("$.data.refreshToken").value(response.refreshToken())
+			header().exists("AccessToken"),
+			header().exists("RefreshToken")
 		);
 	}
 
@@ -100,4 +109,5 @@ class LoginControllerTest extends ControllerTest {
 			jsonPath("$.fieldErrors[0].rejectedValue").value(" ")
 		);
 	}
+	
 }

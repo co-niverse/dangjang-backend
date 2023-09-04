@@ -3,8 +3,15 @@ package com.coniverse.dangjang.fixture;
 import static com.coniverse.dangjang.fixture.GuideFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
 
-import java.time.LocalDate;
+import static com.coniverse.dangjang.fixture.UserFixture.*;
+import static org.junit.jupiter.params.provider.Arguments.*;
 
+import java.time.LocalDate;
+import java.util.stream.Stream;
+
+import org.junit.jupiter.params.provider.Arguments;
+
+import com.coniverse.dangjang.domain.analysis.vo.AnalysisData.WeightAnalysisData;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
@@ -74,5 +81,24 @@ public class HealthMetricFixture {
 			.build();
 		healthMetric.updateGuideId(가이드_아이디);
 		return healthMetric;
+	}
+
+	public static HealthMetric 건강지표_더미데이터(User user, CommonCode commonCode, String unit) {
+		return HealthMetric.builder()
+			.createdAt(생성일자)
+			.commonCode(commonCode)
+			.user(user)
+			.unit(unit)
+			.build();
+	}
+
+	public static Stream<Arguments> 체중_건강지표_목록() {
+		return Stream.of(arguments(CommonCode.WT_MEM, "30"), arguments(CommonCode.WT_MEM, "50"), arguments(CommonCode.WT_MEM, "100"),
+			arguments(CommonCode.WT_MEM, "120"), arguments(CommonCode.WT_MEM, "150"));
+	}
+
+	public static WeightAnalysisData 체중분석_데이터(CommonCode commonCode, String unit) {
+		return new WeightAnalysisData(건강지표_더미데이터(유저_테오(), commonCode, unit), 유저_테오());
+
 	}
 }

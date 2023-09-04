@@ -5,12 +5,15 @@ import java.util.Arrays;
 import com.coniverse.dangjang.global.exception.EnumNonExistentException;
 import com.coniverse.dangjang.global.support.enums.EnumCode;
 
+import lombok.NoArgsConstructor;
+
 /**
  * Enum 관련 유틸리티
  *
  * @author TEO
  * @since 1.0.0
  */
+@NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public class EnumFindUtil {
 	/**
 	 * 제목으로 enum class를 찾는다.

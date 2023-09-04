@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.coniverse.dangjang.domain.auth.controller.LoginController;
+import com.coniverse.dangjang.domain.auth.service.JwtTokenProvider;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
 import com.coniverse.dangjang.domain.healthmetric.controller.HealthMetricRegisterController;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
@@ -51,5 +52,7 @@ public class ControllerTest {
 	private HealthMetricRegisterService healthMetricRegisterService;
 	@MockBean
 	private UserSignupService userSignupService;
+	@MockBean
+	private JwtTokenProvider jwtTokenProvider;
 
 }

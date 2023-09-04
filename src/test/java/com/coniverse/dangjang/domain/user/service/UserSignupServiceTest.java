@@ -12,8 +12,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
-import com.coniverse.dangjang.domain.user.dto.DuplicateNicknameResponse;
-import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
+import com.coniverse.dangjang.domain.user.dto.request.SignUpRequest;
+import com.coniverse.dangjang.domain.user.dto.response.DuplicateNicknameResponse;
 import com.coniverse.dangjang.fixture.SignUpFixture;
 
 /**
@@ -26,7 +26,7 @@ class UserSignupServiceTest {
 	@Autowired
 	private UserSignupService userSignupService;
 
-	@Test()
+	@Test
 	void 새로운_유저를_추가한다_카카오() {
 		//given
 		List<String> diseases = new ArrayList<>();
@@ -39,14 +39,12 @@ class UserSignupServiceTest {
 		//when
 		LoginResponse loginResponse = userSignupService.signUp(signUpRequest);
 		//that
-		assertThat(loginResponse.accessToken()).isNotNull();
-		assertThat(loginResponse.refreshToken()).isNotNull();
 		assertThat(loginResponse.nickname()).isEqualTo(signUpRequest.nickname());
 		assertThat(loginResponse.dangjangClub()).isFalse();
 		assertThat(loginResponse.healthConnect()).isFalse();
 	}
 
-	@Test()
+	@Test
 	void 새로운_유저를_추가한다_네이버() {
 		//given
 		List<String> diseases = new ArrayList<>();
@@ -58,14 +56,25 @@ class UserSignupServiceTest {
 		//when
 		LoginResponse loginResponse = userSignupService.signUp(signUpRequest);
 		//that
-		assertThat(loginResponse.accessToken()).isNotNull();
-		assertThat(loginResponse.refreshToken()).isNotNull();
 		assertThat(loginResponse.nickname()).isEqualTo(signUpRequest.nickname());
 		assertThat(loginResponse.dangjangClub()).isFalse();
 		assertThat(loginResponse.healthConnect()).isFalse();
 	}
 
-	@Test()
+	@Test
+	void 올바르지_않는_Provider로_유저를_추가해_회원가입에_실패한다() {
+		//given
+		List<String> diseases = new ArrayList<>();
+		diseases.add("저혈당");
+		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "nope", true, LocalDate.parse("2021-06-21"), 150, 50, "MEDIUM",
+			false, 0, false, false,
+			diseases);
+		//when&that
+		assertThatThrownBy(() -> userSignupService.signUp(signUpRequest))
+			.isInstanceOf(IllegalArgumentException.class);
+	}
+
+	@Test
 	void 중복된_닉네임을_확인한다() {
 		//given
 		List<String> diseases = new ArrayList<>();
@@ -81,7 +90,7 @@ class UserSignupServiceTest {
 		assertThat(isDuplicated.duplicate()).isFalse();
 	}
 
-	@Test()
+	@Test
 	void 중복되지_않은_닉네임을_확인한다() {
 		//given
 		String nickname = "nickname";

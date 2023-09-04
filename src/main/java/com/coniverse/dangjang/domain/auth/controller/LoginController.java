@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.coniverse.dangjang.domain.auth.dto.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
@@ -27,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/auth")
 public class LoginController {
 	private final OauthLoginService oauthLoginService;
+	//Todo : merge 수정
 
 	/**
 	 * @param params 카카오 accessToken
@@ -36,7 +38,10 @@ public class LoginController {
 	@PostMapping("/kakao")
 	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginKakao(@Valid @RequestBody KakaoLoginRequest params) {
 		LoginResponse loginResponse = oauthLoginService.login(params);
-		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
+		AuthToken authToken = oauthLoginService.getAuthToken(loginResponse.nickname());
+		return ResponseEntity.ok()
+			.header("AccessToken", authToken.getAccessToken()).header("RefreshToken", authToken.getRefreshToken())
+			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
 	}
 
 	/**
@@ -47,6 +52,9 @@ public class LoginController {
 	@PostMapping("/naver")
 	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginNaver(@Valid @RequestBody NaverLoginRequest params) {
 		LoginResponse loginResponse = oauthLoginService.login(params);
-		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
+		AuthToken authToken = oauthLoginService.getAuthToken(loginResponse.nickname());
+		return ResponseEntity.ok()
+			.header("AccessToken", authToken.getAccessToken()).header("RefreshToken", authToken.getRefreshToken())
+			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
 	}
 }

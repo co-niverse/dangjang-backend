@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.coniverse.dangjang.domain.auth.dto.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
-import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
+import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
+import com.coniverse.dangjang.domain.user.dto.request.SignUpRequest;
 import com.coniverse.dangjang.domain.user.service.UserSignupService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
@@ -24,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/signUp")
 public class SignUpController {
 	private final UserSignupService userSignupService;
+	private final OauthLoginService oauthLoginService;
 
 	/**
 	 * @param params 회원가입에 필요한 정보를 담아온다.
@@ -33,6 +36,10 @@ public class SignUpController {
 	@PostMapping
 	public ResponseEntity<SuccessSingleResponse<LoginResponse>> signUp(@Valid @RequestBody SignUpRequest params) {
 		LoginResponse loginResponse = userSignupService.signUp(params);
-		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
+		AuthToken authToken = oauthLoginService.getAuthToken(loginResponse.nickname());
+
+		return ResponseEntity.ok()
+			.header("AccessToken", authToken.getAccessToken()).header("RefreshToken", authToken.getRefreshToken())
+			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
 	}
 }

@@ -16,7 +16,7 @@ import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 
 class HealthMetricMapperTest {
 	HealthMetricMapper healthMetricMapper = new HealthMetricMapperImpl();
-
+	
 	@Test
 	void 건강지표_entity를_response_dto로_변환한다() {
 		// given

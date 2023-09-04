@@ -7,6 +7,7 @@ import org.springframework.data.domain.Persistable;
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
+import com.coniverse.dangjang.domain.user.entity.enums.Role;
 import com.coniverse.dangjang.domain.user.entity.enums.Status;
 import com.coniverse.dangjang.global.support.BaseEntity;
 
@@ -25,7 +26,7 @@ import lombok.NoArgsConstructor;
  * @since 1.0.0
  */
 @Entity(name = "users")
-@Getter // TODO getter 제거하기
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity implements Persistable<String> {
 	@Id
@@ -46,15 +47,25 @@ public class User extends BaseEntity implements Persistable<String> {
 	private int height;
 	@Column(nullable = false)
 	private int recommendedCalorie;
-	private String role; // TODO enum
+	@Column(nullable = false)
+	private boolean diabetes;
+	@Column
+	private int diabetes_year;
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Status status;
 	private String profileImagePath;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private Role role;
+	@Column
+	private boolean medicine;
+	@Column
+	private boolean injection;
 
 	@Builder
 	private User(String oauthId, OauthProvider oauthProvider, String nickname, Gender gender, LocalDate birthday, ActivityAmount activityAmount, int height,
-		int recommendedCalorie, String role, Status status, String profileImagePath) {
+		int recommendedCalorie, Role role, Status status, String profileImagePath, boolean diabetes, int diabetes_year, boolean medicine, boolean injection) {
 		this.oauthId = oauthId;
 		this.oauthProvider = oauthProvider;
 		this.nickname = nickname;
@@ -66,6 +77,11 @@ public class User extends BaseEntity implements Persistable<String> {
 		this.status = status;
 		this.role = role;
 		this.profileImagePath = profileImagePath;
+		this.diabetes = diabetes;
+		this.diabetes_year = diabetes_year;
+		this.medicine = medicine;
+		this.injection = injection;
+
 	}
 
 	@Override

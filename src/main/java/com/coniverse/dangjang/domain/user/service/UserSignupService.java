@@ -12,12 +12,12 @@ import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.service.AuthTokenGenerator;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
 import com.coniverse.dangjang.domain.infrastructure.auth.dto.OAuthInfoResponse;
-import com.coniverse.dangjang.domain.user.dto.DuplicateNicknameResponse;
-import com.coniverse.dangjang.domain.user.dto.SignUpRequest;
-import com.coniverse.dangjang.domain.user.dto.UserResponse;
+import com.coniverse.dangjang.domain.user.dto.request.SignUpRequest;
+import com.coniverse.dangjang.domain.user.dto.response.DuplicateNicknameResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
+import com.coniverse.dangjang.domain.user.entity.enums.Role;
 import com.coniverse.dangjang.domain.user.entity.enums.Status;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
@@ -44,8 +44,8 @@ public class UserSignupService {
 	 * @since 1.0.0
 	 */
 	public LoginResponse signUp(SignUpRequest signUpRequest) {
-		OAuthInfoResponse oAuthInfoResponse = getOauthInfo(OauthProvider.of(signUpRequest.provider()), signUpRequest.accessToken());
 
+		OAuthInfoResponse oAuthInfoResponse = getOauthInfo(OauthProvider.of(signUpRequest.provider()), signUpRequest.accessToken());
 		ActivityAmount activityAmount = ActivityAmount.of(signUpRequest.activityAmount());
 
 		Gender gender = Gender.of(signUpRequest.gender());
@@ -62,11 +62,15 @@ public class UserSignupService {
 			.gender(gender)
 			.height(signUpRequest.height())
 			.status(Status.ACTIVE)
-			.role("ROLE_USER")
+			.role(Role.USER)
 			.recommendedCalorie(recommendedCalorie)
+			.diabetes(signUpRequest.diabetes())
+			.diabetes_year(signUpRequest.diabetesYear())
+			.medicine(signUpRequest.medicine())
+			.injection(signUpRequest.injection())
 			.build();
 
-		return signupAfterLogin(new UserResponse(userRepository.save(user).getOauthId(), user.getNickname()));
+		return signupAfterLogin(userRepository.save(user));
 	}
 
 	/**
@@ -83,11 +87,9 @@ public class UserSignupService {
 			KakaoLoginRequest kakaoLoginRequest = new KakaoLoginRequest(accessToken);
 			return oauthLoginService.request(kakaoLoginRequest);
 
-		} else if (provider.equals(OauthProvider.NAVER)) {
+		} else {
 			NaverLoginRequest naverLoginRequest = new NaverLoginRequest(accessToken);
 			return oauthLoginService.request(naverLoginRequest);
-		} else {
-			throw new IllegalArgumentException("잘못된 provider 입니다.");
 		}
 	}
 
@@ -103,10 +105,10 @@ public class UserSignupService {
 
 	public int calculateRecommendedCalorie(Gender gender, int height, ActivityAmount activityAmount) {
 		double standardWeight;
-		if (gender.equals(false)) {
-			standardWeight = (Math.pow(height / 100.0, 2.0) * 22);
-		} else {
+		if (gender.isTrue()) {
 			standardWeight = (Math.pow(height / 100.0, 2.0) * 21);
+		} else {
+			standardWeight = (Math.pow(height / 100.0, 2.0) * 22);
 		}
 
 		if (activityAmount.equals(ActivityAmount.LOW)) {
@@ -121,13 +123,14 @@ public class UserSignupService {
 	/**
 	 * 회원가입 후 로그인
 	 *
-	 * @param userResponse 사용자 정보
+	 * @param user 사용자 정보
 	 * @return LoginResponse 로그인 정보
 	 * @since 1.0.0
 	 */
-	public LoginResponse signupAfterLogin(UserResponse userResponse) {
-		AuthToken authToken = authTokensGenerator.generate(userResponse.oauthId());
-		return new LoginResponse(authToken.getAccessToken(), authToken.getRefreshToken(), userResponse.nickname(), false, false);
+	//Todo merge 수정
+	public LoginResponse signupAfterLogin(User user) {
+		AuthToken authToken = authTokensGenerator.generate(user.getOauthId(), user.getRole());
+		return new LoginResponse(user.getNickname(), false, false);
 	}
 
 	/**

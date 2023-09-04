@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.user.dto;
+package com.coniverse.dangjang.domain.user.dto.request;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,7 +18,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 public record SignUpRequest(@NotBlank(message = "oauth 접근 토큰은 필수로 입력해야 합니다.") String accessToken,
 							@Pattern(regexp = "^[a-z]*$", message = "provider는 소문자여야 합니다.") @NotBlank(message = "oauth provider는 필수로 입력해야 합니다.") String provider,
-							@Pattern(regexp = "^[a-zA-Z]{1,8}$", message = "닉네임은 영어 1~8글자 이내로 이루어져있어야 합니다.") String nickname,
+							@Pattern(regexp = "^[ㄱ-ㅎ가-힣a-zA-Z0-9]{1,8}$", message = "닉네임은 영어,한글,숫자 1~8글자 이내로 이루어져있어야 합니다.") String nickname,
 							@NotNull(message = "성별은 필수로 입력해야 합니다.") Boolean gender,
 							@NotNull(message = "생년월일은 필수로 입력해야 합니다.") @Past(message = "생년월일은 현재보다 과거이어야 합니다.") LocalDate birthday,
 
