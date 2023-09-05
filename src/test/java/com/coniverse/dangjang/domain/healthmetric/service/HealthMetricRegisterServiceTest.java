@@ -67,7 +67,7 @@ class HealthMetricRegisterServiceTest {
 	@Test
 	void 건강지표를_성공적으로_등록한다() {
 		// given
-		given(guideService.invokeGenerateGuide(any(), any())).willReturn(가이드_응답);
+		given(guideService.invokeGenerateGuide(any())).willReturn(가이드_응답);
 		HealthMetricPostRequest request = 건강지표_등록_요청();
 		// when
 		HealthMetricResponse response = healthMetricRegisterService.register(request, 테오_아이디);
@@ -88,7 +88,7 @@ class HealthMetricRegisterServiceTest {
 	@Test
 	void 단위만_변경된_건강지표를_성공적으로_수정한다() {
 		// given
-		given(guideService.invokeGenerateGuide(any(), any())).willReturn(가이드_응답);
+		given(guideService.invokeGenerateGuide(any())).willReturn(가이드_응답);
 		HealthMetricPatchRequest request = 단위_변경한_건강지표_수정_요청();
 
 		// when
@@ -112,7 +112,7 @@ class HealthMetricRegisterServiceTest {
 	@Test
 	void 타입이_변경된_건강지표를_성공적으로_수정한다() {
 		// given
-		given(guideService.invokeGenerateGuide(any(), any())).willReturn(가이드_응답);
+		given(guideService.invokeGenerateGuide(any())).willReturn(가이드_응답);
 		HealthMetricPatchRequest request = 타입_변경한_건강지표_수정_요청();
 
 		// when
@@ -134,7 +134,7 @@ class HealthMetricRegisterServiceTest {
 	@Test
 	void 체중_건강지표를_성공적으로_등록한다() {
 		// given
-		given(guideService.invokeGenerateGuide(any(), any())).willReturn(가이드_응답);
+		given(guideService.invokeGenerateGuide(any())).willReturn(가이드_응답);
 		HealthMetricPostRequest request = 건강지표_등록_요청();
 		// when
 		HealthMetricResponse response = healthMetricRegisterService.register(request, 테오_아이디);
