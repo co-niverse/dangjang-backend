@@ -96,4 +96,15 @@ public class HealthMetricFixture {
 			.unit(unit)
 			.build();
 	}
+
+	public static HealthMetric 건강지표_엔티티(User user, CommonCode type, String unit, String guideId) {
+		HealthMetric healthMetric = HealthMetric.builder()
+			.createdAt(LocalDate.parse(생성일자))
+			.type(type)
+			.user(user)
+			.unit(unit)
+			.build();
+		healthMetric.updateGuideId(guideId);
+		return healthMetric;
+	}
 }

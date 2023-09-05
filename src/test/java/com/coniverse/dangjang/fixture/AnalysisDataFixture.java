@@ -15,12 +15,12 @@ import com.coniverse.dangjang.domain.user.entity.User;
  * @since 1.0.0
  */
 public class AnalysisDataFixture {
-	public static AnalysisData 혈당_분석_데이터() {
-		return new BloodSugarAnalysisData(건강지표_엔티티(CommonCode.BEFORE_BREAKFAST));
-	}
-
 	public static AnalysisData 혈당_분석_데이터(User user, CommonCode type, String unit) {
 		return new BloodSugarAnalysisData(건강지표_엔티티(user, type, unit));
+	}
+
+	public static AnalysisData 혈당_분석_데이터(User user, CommonCode type, String unit, String guideId) {
+		return new BloodSugarAnalysisData(건강지표_엔티티(user, type, unit, guideId));
 	}
 
 	public static AnalysisData 운동_분석_데이터() { // TODO return 수정
