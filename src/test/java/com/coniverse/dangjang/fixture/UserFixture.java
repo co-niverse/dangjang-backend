@@ -29,6 +29,7 @@ public class UserFixture {
 			.role(Role.USER)
 			.status(Status.ACTIVE)
 			.profileImagePath("/images/profile/.png")
+			.diabetic(false)
 			.build();
 	}
 
@@ -45,8 +46,8 @@ public class UserFixture {
 			.role(Role.USER)
 			.status(Status.ACTIVE)
 			.profileImagePath("/images/profile/.png")
-			.diabetes(true)
-			.diabetes_year(1)
+			.diabetic(true)
+			.diabetesYear(1)
 			.medicine(false)
 			.injection(false)
 			.build();

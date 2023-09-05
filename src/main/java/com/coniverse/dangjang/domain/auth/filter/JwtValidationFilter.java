@@ -1,8 +1,7 @@
-package com.coniverse.dangjang.global.config;
+package com.coniverse.dangjang.domain.auth.filter;
 
 import java.io.IOException;
 import java.security.Key;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Stream;
 
@@ -31,9 +30,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * JWT 검증 필터
+ *
+ * @author EVE
+ * @since 1.0.0
+ */
 @Component
 @RequiredArgsConstructor
-public class JwtFilter extends OncePerRequestFilter {
+public class JwtValidationFilter extends OncePerRequestFilter {
 	private final JwtTokenProvider jwtTokenProvider;
 
 	@Override
@@ -51,11 +56,12 @@ public class JwtFilter extends OncePerRequestFilter {
 	}
 
 	@Override
-	protected boolean shouldNotFilter(HttpServletRequest request)
-		throws ServletException {
-		String[] excludePath = {"/api/auth/", "/api/signUp", "/api/intro/", "/api/duplicateNickname", "/api/health-metric", "/swagger-ui/", "/api-docs"};
-		String path = request.getRequestURI();
-		return Arrays.stream(excludePath).anyMatch(path::startsWith);
+	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+		String authorization = request.getHeader("Authorization");
+		return authorization == null || !authorization.startsWith("Bearer ");
+		// String[] excludePath = {"/api/auth/", "/api/signUp", "/api/intro/", "/api/duplicateNickname", "/api/health-metric", "/swagger-ui/", "/api-docs"};
+		// String path = request.getRequestURI();
+		// return Arrays.stream(excludePath).anyMatch(path::startsWith);
 	}
 
 	/**
@@ -63,10 +69,10 @@ public class JwtFilter extends OncePerRequestFilter {
 	 *
 	 * @param token
 	 * @return boolean 토큰 유효성 확인
-	 * @throws InvalidTokenException
+	 * @throws InvalidTokenException // TODO 각 exception이 언제 발생하는지
 	 * @since 1.0.0
 	 */
-	boolean validationToken(String token) {
+	private boolean validationToken(String token) {
 		try {
 			Key key = jwtTokenProvider.getKey();
 			Jwts.parserBuilder()
@@ -86,7 +92,7 @@ public class JwtFilter extends OncePerRequestFilter {
 	 * @return Authentication 접근한 사용자 정보
 	 * @since 1.0.0
 	 */
-	Authentication getAuthentication(String token) {
+	private Authentication getAuthentication(String token) {
 		Claims claims = jwtTokenProvider.parseClaims(token);
 
 		String oauthId = claims.getSubject();

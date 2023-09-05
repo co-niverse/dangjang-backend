@@ -27,9 +27,9 @@ public class BloodSugarAnalysisData extends HealthMetricAnalysisData {
 		super(healthMetric);
 		convertUnit(healthMetric.getUnit());
 		User user = healthMetric.getUser();
-		this.diabetic = true; // TODO 유저 정보 mapping
-		this.medicine = true;
-		this.injection = true;
+		this.diabetic = user.isDiabetic();
+		this.medicine = user.isMedicine();
+		this.injection = user.isInjection();
 	}
 
 	@Override
