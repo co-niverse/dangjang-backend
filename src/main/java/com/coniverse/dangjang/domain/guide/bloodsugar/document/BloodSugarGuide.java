@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
  */
 @Document
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class BloodSugarGuide implements Guide {
 	@Id
 	private String id;
