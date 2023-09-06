@@ -11,6 +11,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 import com.coniverse.dangjang.global.exception.IncorrectCreatedAtException;
 import com.coniverse.dangjang.global.util.CreatedAtUtil;
 
+/**
+ * @author TEO
+ * @since 1.0.0
+ */
 @Deprecated
 class CreatedAtUtilTest {
 	@Test

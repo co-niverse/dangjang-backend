@@ -14,9 +14,13 @@ import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRe
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 
+/**
+ * @author TEO
+ * @since 1.0.0
+ */
 class HealthMetricMapperTest {
 	HealthMetricMapper healthMetricMapper = new HealthMetricMapperImpl();
-	
+
 	@Test
 	void 건강지표_entity를_response_dto로_변환한다() {
 		// given

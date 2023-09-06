@@ -4,6 +4,12 @@ import java.util.List;
 
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 
+/**
+ * 공통 코드 fixture
+ *
+ * @author TEO
+ * @since 1.0.0
+ */
 public class CommonCodeFixture {
 	public static List<CommonCode> 혈당_타입() {
 		return List.of(

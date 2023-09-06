@@ -10,6 +10,10 @@ import com.coniverse.dangjang.domain.guide.bloodsugar.document.BloodSugarGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.repository.BloodSugarGuideRepository;
 import com.coniverse.dangjang.support.annotation.MongoRepositoryTest;
 
+/**
+ * @author TEO
+ * @since 1.0.0
+ */
 @MongoRepositoryTest
 public class BloodSugarGuideRepositoryTest {
 	@Autowired

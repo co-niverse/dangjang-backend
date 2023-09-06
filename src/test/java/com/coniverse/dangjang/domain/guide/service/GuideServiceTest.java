@@ -21,6 +21,10 @@ import com.coniverse.dangjang.domain.guide.common.service.GuideService;
 import com.coniverse.dangjang.domain.guide.weight.service.WeightGuideGenerateService;
 import com.coniverse.dangjang.fixture.AnalysisDataFixture;
 
+/**
+ * @author TEO
+ * @since 1.0.0
+ */
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class GuideServiceTest {
