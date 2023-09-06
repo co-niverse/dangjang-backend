@@ -1,7 +1,7 @@
 package com.coniverse.dangjang.domain.analysis.service;
 
 import static com.coniverse.dangjang.fixture.CommonCodeFixture.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.*;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -45,10 +45,15 @@ class AnalysisServiceTest {
 	@ParameterizedTest
 	@MethodSource("provideHealthMetricType")
 	void 건강지표_타입에_따라_알맞은_분석_전략을_선택하여_호출한다(List<CommonCode> type, AnalysisStrategy analysisStrategy) {
-		// given & when
+		// given
+		doReturn(null).when(analysisStrategy).analyze(any());
+
+		// when
 		type.stream()
 			.map(HealthMetricFixture::건강지표_엔티티)
-			.map(analysisService::analyze)
-			.forEach(analysisData -> verify(analysisStrategy).analyze(analysisData));
+			.forEach(analysisService::analyze);
+
+		// then
+		then(analysisStrategy).should(times(type.size())).analyze(any());
 	}
 }
