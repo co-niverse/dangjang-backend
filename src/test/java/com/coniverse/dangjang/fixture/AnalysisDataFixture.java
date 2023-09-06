@@ -38,4 +38,8 @@ public class AnalysisDataFixture {
 	public static AnalysisData 당화혈색소_분석_데이터() { // TODO return 수정
 		return new BloodSugarAnalysisData(건강지표_엔티티(CommonCode.HBA1C));
 	}
+
+	public static AnalysisData 분석_데이터(CommonCode type) {
+		return new BloodSugarAnalysisData(건강지표_엔티티(type));
+	}
 }
