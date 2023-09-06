@@ -15,7 +15,7 @@ import com.coniverse.dangjang.support.annotation.MongoRepositoryTest;
  * @since 1.0.0
  */
 @MongoRepositoryTest
-public class BloodSugarGuideRepositoryTest {
+class BloodSugarGuideRepositoryTest {
 	@Autowired
 	private BloodSugarGuideRepository bloodSugarGuideRepository;
 	private static final String oauthId = "12341234";

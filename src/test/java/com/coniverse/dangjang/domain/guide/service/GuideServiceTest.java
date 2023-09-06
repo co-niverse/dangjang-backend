@@ -27,7 +27,7 @@ import com.coniverse.dangjang.fixture.AnalysisDataFixture;
  */
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class GuideServiceTest {
+class GuideServiceTest {
 	@Autowired
 	private GuideService guideService;
 	@SpyBean

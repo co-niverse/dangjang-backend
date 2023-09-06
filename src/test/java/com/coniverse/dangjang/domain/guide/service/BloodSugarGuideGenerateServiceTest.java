@@ -27,7 +27,7 @@ import com.coniverse.dangjang.domain.user.entity.User;
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class BloodSugarGuideGenerateServiceTest {
+class BloodSugarGuideGenerateServiceTest {
 	private static final User user = 유저_테오();
 	@Autowired
 	private BloodSugarGuideGenerateService bloodSugarGuideGenerateService;

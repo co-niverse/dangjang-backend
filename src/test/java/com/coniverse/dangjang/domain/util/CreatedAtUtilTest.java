@@ -15,7 +15,7 @@ import com.coniverse.dangjang.global.util.CreatedAtUtil;
  * @author TEO
  * @since 1.0.0
  */
-@Deprecated
+@Deprecated(since = "1.0.0")
 class CreatedAtUtilTest {
 	@Test
 	void 생성일자를_생성한다() {

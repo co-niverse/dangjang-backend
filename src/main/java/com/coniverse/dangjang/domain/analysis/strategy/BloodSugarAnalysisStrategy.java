@@ -43,7 +43,6 @@ public class BloodSugarAnalysisStrategy implements AnalysisStrategy {
 	@Override
 	public AnalysisData analyze(AnalysisData data) { // TODO 운동부족
 		BloodSugarAnalysisData analysisData = (BloodSugarAnalysisData)data;
-		int unit = analysisData.getUnit();
 
 		return Arrays.stream(BloodSugarLevel.values())
 			.filter(levels -> levels.isDiabetic() == analysisData.isDiabetic())
