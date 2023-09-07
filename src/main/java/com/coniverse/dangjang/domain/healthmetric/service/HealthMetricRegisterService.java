@@ -47,9 +47,9 @@ public class HealthMetricRegisterService {
 	 */
 	public HealthMetricResponse register(HealthMetricPostRequest request, String oauthId) {
 		final User user = userSearchService.findUserByOauthId(oauthId);
-		final HealthMetric healthMetric = mapper.toEntity(request, user);
+		final HealthMetric healthMetric = healthMetricRepository.save(mapper.toEntity(request, user)); // TODO 가이드보다 insert 쿼리가 먼저 가도록 수정
 		final GuideResponse guideResponse = guideService.createGuide(analysisService.analyze(healthMetric));
-		return mapper.toResponse(healthMetricRepository.save(healthMetric), guideResponse);
+		return mapper.toResponse(healthMetric, guideResponse);
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class HealthMetricRegisterService {
 		final CommonCode type = EnumFindUtil.findByTitle(CommonCode.class, request.type());
 		final LocalDate createdAt = LocalDate.parse(request.createdAt());
 		HealthMetric healthMetric = healthMetricSearchService.findByHealthMetricId(oauthId, createdAt, type);
-		if (request.isEmptyNewType()) {
+		if (request.isBlankNewType()) {
 			return this.updateUnit(healthMetric, request.unit());
 		}
 		return this.updateType(healthMetric, request, oauthId);
@@ -78,8 +78,9 @@ public class HealthMetricRegisterService {
 	 */
 	private HealthMetricResponse updateUnit(HealthMetric healthMetric, String unit) {
 		healthMetric.updateUnit(unit);
+		HealthMetric newHealthMetric = healthMetricRepository.save(healthMetric);
 		final GuideResponse guideResponse = guideService.updateGuide(analysisService.analyze(healthMetric));
-		return mapper.toResponse(healthMetricRepository.save(healthMetric), guideResponse);
+		return mapper.toResponse(newHealthMetric, guideResponse);
 	}
 
 	/**
@@ -93,11 +94,11 @@ public class HealthMetricRegisterService {
 	 * @since 1.0.0
 	 */
 	private HealthMetricResponse updateType(HealthMetric prevHealthMetric, HealthMetricPatchRequest request, String oauthId) {
+		final User user = userSearchService.findUserByOauthId(oauthId);
 		prevHealthMetric.verifySameGroupCode(EnumFindUtil.findByTitle(CommonCode.class, request.newType()));
 		healthMetricRepository.delete(prevHealthMetric);
-		final User user = userSearchService.findUserByOauthId(oauthId);
-		final HealthMetric updatedHealthMetric = mapper.toEntity(request, user);
-		final GuideResponse guideResponse = guideService.updateGuideWithType(analysisService.analyze(updatedHealthMetric), prevHealthMetric.getType());
-		return mapper.toResponse(healthMetricRepository.save(updatedHealthMetric), guideResponse);
+		final HealthMetric healthMetric = healthMetricRepository.save(mapper.toEntity(request, user));
+		final GuideResponse guideResponse = guideService.updateGuideWithType(analysisService.analyze(healthMetric), prevHealthMetric.getType());
+		return mapper.toResponse(healthMetric, guideResponse);
 	}
 }
