@@ -17,4 +17,8 @@ public record HealthMetricPatchRequest(@NotBlank(message = "건강지표 상세 
 	public boolean isEmptyNewType() {
 		return this.newType == null;
 	}
+
+	public boolean isSameType() {
+		return this.type.equals(this.newType);
+	}
 }

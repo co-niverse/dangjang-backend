@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;
+import com.coniverse.dangjang.domain.healthmetric.exception.SameTypeException;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
@@ -49,6 +50,9 @@ public class HealthMetricRegisterController { // TODO @AuthenticationPrincipal M
 	 */
 	@PatchMapping
 	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> patch(@Valid @RequestBody HealthMetricPatchRequest patchRequest) {
+		if (patchRequest.isSameType()) {
+			throw new SameTypeException();
+		}
 		HealthMetricResponse response = healthMetricRegisterService.update(patchRequest, "11111111");
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}

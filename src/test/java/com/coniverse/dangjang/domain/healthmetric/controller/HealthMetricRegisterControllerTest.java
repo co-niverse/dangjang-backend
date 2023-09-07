@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
 
+import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
@@ -162,6 +163,24 @@ class HealthMetricRegisterControllerTest extends ControllerTest {
 			jsonPath("$.data.guide.unit").doesNotExist(),
 			jsonPath("$.data.guide.type").value(response.guide().type()),
 			jsonPath("$.data.guide.content").value(response.guide().content())
+		);
+	}
+
+	@Order(510)
+	@Test
+	void 이전_타입과_같은_타입으로_수정하면_예외가_발생한다() throws Exception {
+		// given
+		HealthMetricPatchRequest request = new HealthMetricPatchRequest("점심식후", "점심식후", "2023-12-31", "100");
+		String content = objectMapper.writeValueAsString(request);
+
+		// when
+		ResultActions resultActions = patch(mockMvc, URL, content);
+
+		// then
+		resultActions.andExpectAll(
+			status().isBadRequest(),
+			jsonPath("$.errorCode").value(400),
+			jsonPath("$.message").value("type과 newType은 같을 수 없습니다.")
 		);
 	}
 }
