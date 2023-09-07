@@ -16,6 +16,6 @@ import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
  * @since 1.0.0
  */
 public interface HealthMetricRepository extends JpaRepository<HealthMetric, Long> {
-	@Query("SELECT h FROM HealthMetric h WHERE h.healthMetricId.oauthId = ?1 AND h.healthMetricId.createdAt = ?2 AND h.healthMetricId.commonCode = ?3")
-	Optional<HealthMetric> findByHealthMetricId(String oauthId, LocalDate createdAt, CommonCode commonCode);
+	@Query("SELECT h FROM HealthMetric h WHERE h.healthMetricId.oauthId = ?1 AND h.healthMetricId.createdAt = ?2 AND h.healthMetricId.type = ?3")
+	Optional<HealthMetric> findByHealthMetricId(String oauthId, LocalDate createdAt, CommonCode type);
 }

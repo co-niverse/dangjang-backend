@@ -1,5 +1,7 @@
 package com.coniverse.dangjang.domain.healthmetric.dto.request;
 
+import com.coniverse.dangjang.global.validator.LocalDateValid;
+
 import jakarta.validation.constraints.NotBlank;
 
 /**
@@ -8,6 +10,7 @@ import jakarta.validation.constraints.NotBlank;
  * @author TEO
  * @since 1.0.0
  */
-public record HealthMetricPostRequest(@NotBlank(message = "건강지표 상세명은 필수로 입력해야 합니다.") String title,
+public record HealthMetricPostRequest(@NotBlank(message = "건강지표 상세 타입은 필수로 입력해야 합니다.") String type,
+									  @LocalDateValid String createdAt,
 									  @NotBlank(message = "단위는 필수로 입력해야 합니다.") String unit) {
 }

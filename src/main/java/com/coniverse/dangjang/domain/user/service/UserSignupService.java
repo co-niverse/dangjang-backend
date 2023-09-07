@@ -53,7 +53,7 @@ public class UserSignupService {
 		int recommendedCalorie = calculateRecommendedCalorie(Gender.of(signUpRequest.gender()), signUpRequest.height(),
 			ActivityAmount.of(signUpRequest.activityAmount()));
 
-		User user = User.builder()
+		User user = User.builder() // TODO mapper
 			.oauthId(oAuthInfoResponse.getOauthId())
 			.oauthProvider(oAuthInfoResponse.getOauthProvider())
 			.nickname(signUpRequest.nickname())
@@ -64,8 +64,8 @@ public class UserSignupService {
 			.status(Status.ACTIVE)
 			.role(Role.USER)
 			.recommendedCalorie(recommendedCalorie)
-			.diabetes(signUpRequest.diabetes())
-			.diabetes_year(signUpRequest.diabetesYear())
+			.diabetic(signUpRequest.diabetes())
+			.diabetesYear(signUpRequest.diabetesYear())
 			.medicine(signUpRequest.medicine())
 			.injection(signUpRequest.injection())
 			.build();

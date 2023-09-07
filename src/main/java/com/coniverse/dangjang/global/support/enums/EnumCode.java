@@ -1,7 +1,7 @@
 package com.coniverse.dangjang.global.support.enums;
 
 /**
- * Enum Mapping을 위한 interface
+ * Enum mapping을 위한 interface
  *
  * @author TEO
  * @since 1.0.0

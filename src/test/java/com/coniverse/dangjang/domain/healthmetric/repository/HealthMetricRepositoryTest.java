@@ -18,7 +18,7 @@ import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
-import com.coniverse.dangjang.support.annotation.RepositoryTest;
+import com.coniverse.dangjang.support.annotation.JpaRepositoryTest;
 
 import jakarta.persistence.EntityManager;
 
@@ -26,7 +26,7 @@ import jakarta.persistence.EntityManager;
  * @author TEO
  * @since 1.0.0
  */
-@RepositoryTest
+@JpaRepositoryTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class HealthMetricRepositoryTest {
 	@Autowired
@@ -58,12 +58,12 @@ class HealthMetricRepositoryTest {
 		em.flush();
 
 		// then
-		HealthMetric 찾은_건강지표 = healthMetricRepository.findByHealthMetricId(저장된_건강지표.getOauthId(), 저장된_건강지표.getCreatedAt(), 저장된_건강지표.getCommonCode())
+		HealthMetric 찾은_건강지표 = healthMetricRepository.findByHealthMetricId(저장된_건강지표.getOauthId(), 저장된_건강지표.getCreatedAt(), 저장된_건강지표.getType())
 			.orElseThrow();
 
 		assertAll(
 			() -> assertThat(찾은_건강지표.getOauthId()).isEqualTo(저장된_건강지표.getOauthId()),
-			() -> assertThat(찾은_건강지표.getCommonCode()).isEqualTo(저장된_건강지표.getCommonCode()),
+			() -> assertThat(찾은_건강지표.getType()).isEqualTo(저장된_건강지표.getType()),
 			() -> assertThat(찾은_건강지표.getCreatedAt()).isEqualTo(저장된_건강지표.getCreatedAt()),
 			() -> assertThat(찾은_건강지표.getUnit()).isEqualTo(저장된_건강지표.getUnit())
 		);
@@ -74,7 +74,7 @@ class HealthMetricRepositoryTest {
 		// given
 		User 테오 = userRepository.findById(테오_아이디).orElseThrow();
 		HealthMetric unit이_없는_건강지표 = HealthMetric.builder()
-			.commonCode(CommonCode.BS_BBF)
+			.type(CommonCode.BEFORE_BREAKFAST)
 			.createdAt(LocalDate.now())
 			.user(테오)
 			.build();
