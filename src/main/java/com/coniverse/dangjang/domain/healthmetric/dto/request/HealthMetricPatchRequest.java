@@ -14,8 +14,8 @@ import jakarta.validation.constraints.NotBlank;
 public record HealthMetricPatchRequest(@NotBlank(message = "건강지표 상세 타입은 필수로 입력해야 합니다.") String type, String newType,
 									   @ValidLocalDate String createdAt,
 									   @NumberAndPositiveOrZero @NotBlank(message = "단위는 필수로 입력해야 합니다.") String unit) {
-	public boolean isEmptyNewType() {
-		return this.newType == null;
+	public boolean isBlankNewType() {
+		return this.newType.isBlank();
 	}
 
 	public boolean isSameType() {
