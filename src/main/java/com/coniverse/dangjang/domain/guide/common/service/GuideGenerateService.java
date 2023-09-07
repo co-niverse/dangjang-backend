@@ -17,7 +17,7 @@ public interface GuideGenerateService {
 	GuideResponse updateGuide(AnalysisData analysisData);
 
 	default GuideResponse updateGuideWithType(AnalysisData analysisData, CommonCode prevType) {
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException("잘못된 메서드 호출입니다.");
 	}
 
 	GroupCode getGroupCode();
