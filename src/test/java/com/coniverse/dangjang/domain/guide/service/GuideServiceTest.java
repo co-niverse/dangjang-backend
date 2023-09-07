@@ -45,9 +45,8 @@ class GuideServiceTest {
 		);
 	}
 
-	private Stream<Arguments> provideTypeExceptBloodSugar() {
-		return Stream.of(
-			Arguments.of(체중_타입(), weightGuideGenerateService)
+	private Stream<List<CommonCode>> provideTypeExceptBloodSugar() {
+		return Stream.of(체중_타입()
 			// TODO 운동, 당화혈색소, 식단 추가
 		);
 	}
@@ -99,12 +98,11 @@ class GuideServiceTest {
 
 	@ParameterizedTest
 	@MethodSource("provideTypeExceptBloodSugar")
-	void 혈당_그룹을_제외한_나머지_그룹의_타입은_타입_변경_메서드를_호출하면_예외가_발생한다(List<CommonCode> type, GuideGenerateService guideGenerateService) {
-		// given
-
-		// when & then
+	void 혈당_그룹을_제외한_나머지_그룹의_타입은_타입_변경_메서드를_호출하면_예외가_발생한다(List<CommonCode> type) {
+		// given & when
 		type.stream()
 			.map(AnalysisDataFixture::분석_데이터)
+			// then
 			.forEach(data ->
 				assertThatThrownBy(() -> guideService.updateGuideWithType(data, data.getType()))
 					.isInstanceOf(UnsupportedOperationException.class)
