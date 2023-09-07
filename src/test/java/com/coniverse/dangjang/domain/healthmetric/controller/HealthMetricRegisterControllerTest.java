@@ -58,7 +58,10 @@ class HealthMetricRegisterControllerTest extends ControllerTest {
 			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
 			jsonPath("$.data.createdAt").value(response.createdAt().toString()),
 			jsonPath("$.data.type").value(response.type()),
-			jsonPath("$.data.unit").value(response.unit())
+			jsonPath("$.data.unit").value(response.unit()),
+			jsonPath("$.data.guide.unit").doesNotExist(),
+			jsonPath("$.data.guide.type").value(response.guide().type()),
+			jsonPath("$.data.guide.content").value(response.guide().content())
 		);
 	}
 
@@ -153,7 +156,12 @@ class HealthMetricRegisterControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isOk(),
 			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
-			jsonPath("$.data.createdAt").value(response.createdAt().toString())
+			jsonPath("$.data.createdAt").value(response.createdAt().toString()),
+			jsonPath("$.data.type").value(response.type()),
+			jsonPath("$.data.unit").value(response.unit()),
+			jsonPath("$.data.guide.unit").doesNotExist(),
+			jsonPath("$.data.guide.type").value(response.guide().type()),
+			jsonPath("$.data.guide.content").value(response.guide().content())
 		);
 	}
 }
