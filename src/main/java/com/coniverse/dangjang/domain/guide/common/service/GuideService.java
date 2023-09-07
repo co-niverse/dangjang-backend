@@ -21,7 +21,7 @@ public class GuideService {
 		);
 	}
 
-	public GuideResponse invokeGenerateGuide(AnalysisData analysisData) {
+	public GuideResponse createGuide(AnalysisData analysisData) {
 		GroupCode groupCode = GroupCode.findByCode(analysisData.getType());
 		return guideGenerateServiceMap.get(groupCode).generateGuide(analysisData);
 	}

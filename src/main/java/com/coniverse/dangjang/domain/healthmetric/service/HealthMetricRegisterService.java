@@ -103,6 +103,6 @@ public class HealthMetricRegisterService {
 	 */
 	private GuideResponse requestGuide(HealthMetric healthMetric) {
 		final AnalysisData analysisData = analysisService.analyze(healthMetric);
-		return guideService.invokeGenerateGuide(analysisData);
+		return guideService.createGuide(analysisData);
 	}
 }

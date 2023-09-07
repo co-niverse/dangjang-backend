@@ -52,7 +52,7 @@ class GuideServiceTest {
 		// when
 		type.stream()
 			.map(AnalysisDataFixture::분석_데이터)
-			.forEach(guideService::invokeGenerateGuide);
+			.forEach(guideService::createGuide);
 
 		// then
 		then(guideGenerateService).should(times(type.size())).generateGuide(any());
