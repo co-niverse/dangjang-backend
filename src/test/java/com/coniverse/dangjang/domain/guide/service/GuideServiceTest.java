@@ -47,7 +47,7 @@ class GuideServiceTest {
 	@MethodSource("provideType")
 	void 분석_데이터의_타입에_따라_알맞은_가이드_서비스를_호출한다(List<CommonCode> type, GuideGenerateService guideGenerateService) {
 		// given
-		doReturn(null).when(guideGenerateService).generateGuide(any());
+		doReturn(null).when(guideGenerateService).createGuide(any());
 
 		// when
 		type.stream()
@@ -55,6 +55,6 @@ class GuideServiceTest {
 			.forEach(guideService::createGuide);
 
 		// then
-		then(guideGenerateService).should(times(type.size())).generateGuide(any());
+		then(guideGenerateService).should(times(type.size())).createGuide(any());
 	}
 }

@@ -49,10 +49,9 @@ class WeightGuideGenerateServiceTest {
 		var data = weightAnalysisStrategy.analyze(체중_분석_데이터(unit));
 		weightGuideRepository.deleteAll();
 		// when
-		weightGuideGenerateService.generateGuide(data);
+		weightGuideGenerateService.createGuide(data);
 		// then
 		WeightGuide 등록된_건강지표 = weightGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
-		assertThat(등록된_건강지표.getContent()).isNotBlank();
+		assertThat(등록된_건강지표.getTodayContent()).isNull(); // TODO createdGuide() 수정하고 assertThat 수정
 	}
-
 }

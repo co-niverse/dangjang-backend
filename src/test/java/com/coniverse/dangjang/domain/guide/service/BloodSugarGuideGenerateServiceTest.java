@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.BloodSugarAnalysisData;
 import com.coniverse.dangjang.domain.analysis.strategy.BloodSugarAnalysisStrategy;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
-import com.coniverse.dangjang.domain.guide.bloodsugar.dto.BloodSugarGuideResponse;
+import com.coniverse.dangjang.domain.guide.bloodsugar.dto.SubGuideResponse;
 import com.coniverse.dangjang.domain.guide.bloodsugar.service.BloodSugarGuideGenerateService;
 import com.coniverse.dangjang.domain.user.entity.User;
 
@@ -33,7 +33,6 @@ class BloodSugarGuideGenerateServiceTest {
 	private BloodSugarGuideGenerateService bloodSugarGuideGenerateService;
 	@Autowired
 	private BloodSugarAnalysisStrategy bloodSugarAnalysisStrategy;
-	private String 저장된_가이드_아이디;
 
 	@Order(100)
 	@Test
@@ -44,8 +43,7 @@ class BloodSugarGuideGenerateServiceTest {
 		);
 
 		// when
-		BloodSugarGuideResponse 가이드_응답 = (BloodSugarGuideResponse)bloodSugarGuideGenerateService.generateGuide(bloodSugarAnalysisData);
-		저장된_가이드_아이디 = 가이드_응답.id();
+		SubGuideResponse 가이드_응답 = (SubGuideResponse)bloodSugarGuideGenerateService.createGuide(bloodSugarAnalysisData);
 
 		// then
 		assertAll(
@@ -59,17 +57,16 @@ class BloodSugarGuideGenerateServiceTest {
 	void 혈당_가이드를_성공적으로_수정한다() {
 		// given
 		BloodSugarAnalysisData bloodSugarAnalysisData = (BloodSugarAnalysisData)bloodSugarAnalysisStrategy.analyze(
-			혈당_분석_데이터(user, CommonCode.AFTER_DINNER, "200", 저장된_가이드_아이디)
+			혈당_분석_데이터(user, CommonCode.AFTER_DINNER, "200")
 		);
 
 		// when
-		BloodSugarGuideResponse 가이드_응답 = (BloodSugarGuideResponse)bloodSugarGuideGenerateService.generateGuide(bloodSugarAnalysisData);
+		SubGuideResponse 가이드_응답 = (SubGuideResponse)bloodSugarGuideGenerateService.updateGuide(bloodSugarAnalysisData);
 
 		// then
 		assertAll(
 			() -> assertThat(bloodSugarAnalysisData.getAlert()).isEqualTo(가이드_응답.alert()),
-			() -> assertThat(bloodSugarAnalysisData.getType().getTitle()).isEqualTo(가이드_응답.type()),
-			() -> assertThat(bloodSugarAnalysisData.getGuideId()).isEqualTo(가이드_응답.id())
+			() -> assertThat(bloodSugarAnalysisData.getType().getTitle()).isEqualTo(가이드_응답.type())
 		);
 	}
 

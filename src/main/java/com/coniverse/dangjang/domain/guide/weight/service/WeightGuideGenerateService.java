@@ -27,7 +27,7 @@ public class WeightGuideGenerateService implements GuideGenerateService {
 	private final WeightMapper weightMapper;
 
 	@Override
-	public GuideResponse generateGuide(AnalysisData weightAnalysisData) {
+	public GuideResponse createGuide(AnalysisData weightAnalysisData) {
 		//TODO: 혈당 피드백 merge한 후 positive 수정
 		WeightAnalysisData data = (WeightAnalysisData)weightAnalysisData;
 		String content = String.format("%s이에요. 평균 체중에 비해 %dkg %s", data.getAlert().getTitle(), data.getWeightDiff(),
@@ -35,6 +35,11 @@ public class WeightGuideGenerateService implements GuideGenerateService {
 		WeightGuide weightGuide = weightMapper.toDocument(data, content);
 		weightGuideRepository.save(weightGuide);
 		return null; // TODO 가이드 응답
+	}
+
+	@Override
+	public GuideResponse updateGuide(AnalysisData analysisData) {
+		return null; // TODO
 	}
 
 	@Override

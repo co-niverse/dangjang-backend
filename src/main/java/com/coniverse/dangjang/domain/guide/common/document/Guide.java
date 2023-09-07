@@ -2,8 +2,6 @@ package com.coniverse.dangjang.domain.guide.common.document;
 
 import java.time.LocalDate;
 
-import com.coniverse.dangjang.domain.code.enums.CommonCode;
-
 /**
  * 가이드 document interface
  *
@@ -15,7 +13,5 @@ public interface Guide {
 
 	LocalDate getCreatedAt();
 
-	CommonCode getType();
-
-	String getContent();
+	String getTodayContent();
 }
