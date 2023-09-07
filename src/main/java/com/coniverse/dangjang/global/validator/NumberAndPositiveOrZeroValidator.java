@@ -20,7 +20,7 @@ public class NumberAndPositiveOrZeroValidator implements ConstraintValidator<Num
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
 		try {
-			int number = Integer.parseInt(value);
+			double number = Double.parseDouble(value);
 			return number >= 0;
 		} catch (NumberFormatException e) {
 			return false;

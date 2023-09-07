@@ -100,6 +100,26 @@ class HealthMetricRegisterControllerTest extends ControllerTest {
 		);
 	}
 
+	@Order(310)
+	@ParameterizedTest
+	@ValueSource(strings = {"-1", "숫자", "1..", "number"})
+	void 건강지표_등록_RequestBody의_unit이_유효하지_않으면_예외가_발생한다(String unit) throws Exception {
+		// given
+		HealthMetricPostRequest request = new HealthMetricPostRequest("아침 식전", "2023-12-31", unit);
+		String content = objectMapper.writeValueAsString(request);
+
+		// when
+		ResultActions resultActions = post(mockMvc, URL, content);
+
+		// then
+		resultActions.andExpectAll(
+			status().isBadRequest(),
+			jsonPath("$.errorCode").value(400),
+			jsonPath("$.fieldErrors[0].field").value("unit"),
+			jsonPath("$.fieldErrors[0].rejectedValue").value(unit)
+		);
+	}
+
 	@Order(400)
 	@ParameterizedTest
 	@ValueSource(strings = {"2023-02-29", "2023-04-31", "2023-06-31", "2023-09-31", "2023-11-31", "2023.01.01", "2023/01/01"})
