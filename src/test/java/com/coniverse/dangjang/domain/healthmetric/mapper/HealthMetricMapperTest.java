@@ -25,7 +25,7 @@ class HealthMetricMapperTest {
 	void 건강지표_entity를_response_dto로_변환한다() {
 		// given
 		HealthMetric 건강지표 = 건강지표_엔티티(유저_테오());
-		GuideResponse 가이드_응답 = 혈당_가이드_응답();
+		GuideResponse 가이드_응답 = 혈당_서브_가이드_응답();
 
 		// when
 		HealthMetricResponse 건강지표_응답 = healthMetricMapper.toResponse(건강지표, 가이드_응답);

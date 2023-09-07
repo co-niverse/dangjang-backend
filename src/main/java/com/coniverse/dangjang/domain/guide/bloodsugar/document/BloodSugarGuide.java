@@ -64,13 +64,10 @@ public class BloodSugarGuide implements Guide {
 	 * 서브 가이드를 추가한다.
 	 *
 	 * @param subGuide 서브 가이드
-	 * @throws GuideAlreadyExistsException 이미 해당 가이드가 존재할 경우 발생한다.
 	 * @since 1.0.0
 	 */
 	public void add(SubGuide subGuide) {
-		if (verifySubGuideExists(subGuide.getType())) {
-			throw new GuideAlreadyExistsException();
-		}
+		verifySubGuideExists(subGuide.getType());
 		this.subGuides.add(subGuide);
 		sortSubGuides();
 	}
@@ -82,8 +79,8 @@ public class BloodSugarGuide implements Guide {
 	 * @since 1.0.0
 	 */
 	public void update(SubGuide subGuide) {
-		SubGuide newSubGuide = getSubGuide(subGuide.getType());
-		newSubGuide.update(subGuide.getContent(), subGuide.getAlert());
+		SubGuide prevSubGuide = getSubGuide(subGuide.getType());
+		prevSubGuide.update(subGuide.getContent(), subGuide.getAlert());
 	}
 
 	/**
@@ -94,19 +91,24 @@ public class BloodSugarGuide implements Guide {
 	 * @since 1.0.0
 	 */
 	public void update(SubGuide subGuide, CommonCode prevType) {
-		SubGuide newSubGuide = getSubGuide(prevType);
-		newSubGuide.update(subGuide.getType(), subGuide.getContent(), subGuide.getAlert());
+		verifySubGuideExists(subGuide.getType());
+		SubGuide prevSubGuide = getSubGuide(prevType);
+		prevSubGuide.update(subGuide.getType(), subGuide.getContent(), subGuide.getAlert());
+		sortSubGuides();
 	}
 
 	/**
-	 * 서브 가이드가 존재하는지 확인한다.
+	 * 서브 가이드가 존재하는지 검증한다.
 	 *
 	 * @param type 서브 가이드 타입
-	 * @return 서브 가이드가 존재하면 true, 존재하지 않으면 false
+	 * @throws GuideAlreadyExistsException 이미 해당 가이드가 존재할 경우 발생한다.
 	 * @since 1.0.0
 	 */
-	private boolean verifySubGuideExists(CommonCode type) {
-		return this.subGuides.stream().anyMatch(guide -> guide.isSameType(type));
+	private void verifySubGuideExists(CommonCode type) {
+		boolean exists = this.subGuides.stream().anyMatch(guide -> guide.isSameType(type));
+		if (exists) {
+			throw new GuideAlreadyExistsException();
+		}
 	}
 
 	/**
