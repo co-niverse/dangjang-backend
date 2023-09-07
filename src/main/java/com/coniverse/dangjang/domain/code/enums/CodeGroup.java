@@ -18,12 +18,14 @@ import lombok.AllArgsConstructor;
  */
 @AllArgsConstructor
 public enum CodeGroup implements EnumCode {
+
 	SL("수면", "sleep", List.of(CommonCode.SL_BTM, CommonCode.SL_WTM)),
 	BS("혈당", "blood sugar", List.of(
 		CommonCode.BS_ESM, CommonCode.BS_BBF, CommonCode.BS_ABF, CommonCode.BS_BLC, CommonCode.BS_ALC,
 		CommonCode.BS_BDN, CommonCode.BS_ADN, CommonCode.BS_BSL, CommonCode.BS_ETC)),
 	BP("혈압", "blood pressure", List.of(CommonCode.BP_SYS, CommonCode.BP_DIA)),
-	EC("운동", "exercise", List.of(CommonCode.EC_HIM, CommonCode.EC_MIM, CommonCode.EC_STC)),
+	EC("운동", "exercise",
+		List.of(CommonCode.EC_STC, CommonCode.EC_WLK, CommonCode.EC_RN, CommonCode.EC_HIK, CommonCode.EC_BIK, CommonCode.EC_SW, CommonCode.EC_HT)),
 	WT("체중", "weight", List.of(CommonCode.WT_MEM)),
 	GH("당화혈색소", "glycated hemoglobin", List.of(CommonCode.GH_A1C));
 

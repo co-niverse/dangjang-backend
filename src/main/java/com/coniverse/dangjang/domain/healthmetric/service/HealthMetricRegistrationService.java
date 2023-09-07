@@ -50,10 +50,12 @@ public class HealthMetricRegistrationService {
 		User user = userSearchService.findUserByOauthId(oauthId);
 		HealthMetric healthMetric = healthMetricRepository.save(healthMetricMapper.toEntity(request, createdAt, user));
 		// TODO: 분석 서비스 분리
-		if (healthMetric.getCommonCode().equals((CommonCode.WT_MEM))) {
+		CommonCode commonCode = healthMetric.getCommonCode();
+		if (commonCode.equals((CommonCode.WT_MEM))) {
 			analysisService.analyze(new WeightAnalysisData(healthMetric, user));
-		} else if (healthMetric.getCommonCode().equals(CommonCode.EC_STC)) {
-			analysisService.analyze(new ExerciseAnalysisData(healthMetric, user));
+		} else if (commonCode.equals(CommonCode.EC_STC) || commonCode.equals(CommonCode.EC_WLK) || commonCode.equals(CommonCode.EC_RN) || commonCode.equals(
+			CommonCode.EC_HIK) || commonCode.equals(CommonCode.EC_SW) || commonCode.equals(CommonCode.EC_HT)) {
+			analysisService.analyze(new ExerciseAnalysisData(healthMetric, user, healthMetricSearchService));
 		} else {
 			analysisService.analyze(new BloodSugarAnalysisData(healthMetric, user));
 		}

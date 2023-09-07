@@ -28,7 +28,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/auth")
 public class LoginController {
 	private final OauthLoginService oauthLoginService;
-	//Todo : merge 수정
 
 	/**
 	 * @param params 카카오 accessToken

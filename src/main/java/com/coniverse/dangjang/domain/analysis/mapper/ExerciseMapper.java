@@ -14,8 +14,16 @@ public interface ExerciseMapper {
 		@Mapping(target = "oauthId", source = "exerciseAnalysisData.oauthId"),
 		@Mapping(target = "createdAt", source = "exerciseAnalysisData.createdAt"),
 		@Mapping(target = "needStepByTTS", source = "exerciseAnalysisData.needStepByTTS"),
+		@Mapping(target = "needStepByLastWeek", source = "exerciseAnalysisData.needStepByLastWeek"),
 		@Mapping(target = "signByTTS", source = "exerciseAnalysisData.signByTTS"),
-		@Mapping(target = "content", source = "guide")
+		@Mapping(target = "content", source = "guide"),
+		@Mapping(target = "comparedToLastWeek", source = "comparedToLastWeek")
+		// @Mapping(target = "walkCalorie", ignore = true),
+		// @Mapping(target = "hikeCalorie", ignore = true),
+		// @Mapping(target = "runCalorie", ignore = true),
+		// @Mapping(target = "bikeCalorie", ignore = true),
+		// @Mapping(target = "swimCalorie", ignore = true),
+		// @Mapping(target = "healthCalorie", ignore = true)
 	})
-	ExerciseGuide toDocument(ExerciseAnalysisData exerciseAnalysisData, String guide);
+	ExerciseGuide toDocument(ExerciseAnalysisData exerciseAnalysisData, String guide, String comparedToLastWeek);
 }

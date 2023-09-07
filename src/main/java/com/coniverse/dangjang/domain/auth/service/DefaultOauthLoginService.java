@@ -52,8 +52,8 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	 * @since 1.0.0
 	 */
 	public LoginResponse login(OauthLoginRequest params) {
-		OAuthInfoResponse oAuthInfoResponse = request(params);
-		User user = userSearchService.findUserByOauthId(oAuthInfoResponse.getOauthId());
+		// OAuthInfoResponse oAuthInfoResponse = request(params); //TODO : 커밋 전에 수정
+		User user = userSearchService.findUserByOauthId("11111111"); //TODO : oAuthInfoResponse.getOauthId()
 		return new LoginResponse(user.getNickname(), false, false);
 	}
 
