@@ -18,7 +18,7 @@ import jakarta.validation.Payload;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = LocalDateValidator.class)
-public @interface LocalDateValid {
+public @interface LocalDate {
 	String message() default "유효하지 않은 날짜입니다.";
 
 	Class<?>[] groups() default {};
