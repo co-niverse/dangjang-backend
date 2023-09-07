@@ -15,7 +15,7 @@ public record HealthMetricPatchRequest(@NotBlank(message = "건강지표 상세 
 									   @ValidLocalDate String createdAt,
 									   @NumberAndPositiveOrZero @NotBlank(message = "단위는 필수로 입력해야 합니다.") String unit) {
 	public boolean isBlankNewType() {
-		return this.newType.isBlank();
+		return this.newType == null || this.newType.isBlank();
 	}
 
 	public boolean isSameType() {
