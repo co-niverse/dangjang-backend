@@ -21,7 +21,7 @@ CREATE TABLE `USERS`
     `CREATED_AT`          datetime    NOT NULL,
     `UPDATED_AT`          datetime    NOT NULL,
     `PROFILE_IMAGE_PATH`  varchar(255),
-    `DIABETIC`            boolean, -- TODO not null
+    `DIABETIC`            boolean     NOT NULL,
     `DIABETES_YEAR`       int,
     MEDICINE              boolean,
     INJECTION             boolean,
@@ -48,12 +48,11 @@ CREATE TABLE `DANGJANG_CLUB`
 
 CREATE TABLE `HEALTH_METRIC`
 (
-    `OAUTH_ID`   varchar(50)  NOT NULL,
-    `CREATED_AT` date         NOT NULL,
-    `TYPE`       varchar(20)  NOT NULL,
-    `GROUP_CODE` varchar(20)  NOT NULL,
-    `UNIT`       varchar(20)  NOT NULL,
-    `GUIDE_ID`   varchar(255) NOT NULL,
+    `OAUTH_ID`   varchar(50) NOT NULL,
+    `CREATED_AT` date        NOT NULL,
+    `TYPE`       varchar(20) NOT NULL,
+    `GROUP_CODE` varchar(20) NOT NULL,
+    `UNIT`       varchar(20) NOT NULL,
     PRIMARY KEY (`OAUTH_ID`, `CREATED_AT`, `TYPE`),
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`)
     -- FOREIGN KEY (`CODE`) REFERENCES CODE (`CODE`)

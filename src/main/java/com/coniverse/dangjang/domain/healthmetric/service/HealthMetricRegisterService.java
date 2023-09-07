@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
 
-import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
 import com.coniverse.dangjang.domain.analysis.service.AnalysisService;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
@@ -49,8 +48,7 @@ public class HealthMetricRegisterService {
 	public HealthMetricResponse register(HealthMetricPostRequest request, String oauthId) {
 		final User user = userSearchService.findUserByOauthId(oauthId);
 		final HealthMetric healthMetric = mapper.toEntity(request, user);
-		final GuideResponse guideResponse = this.requestGuide(healthMetric);
-		healthMetric.updateGuideId(guideResponse.id());
+		final GuideResponse guideResponse = guideService.createGuide(analysisService.analyze(healthMetric));
 		return mapper.toResponse(healthMetricRepository.save(healthMetric), guideResponse);
 	}
 
@@ -65,14 +63,22 @@ public class HealthMetricRegisterService {
 		final CommonCode type = EnumFindUtil.findByTitle(CommonCode.class, request.type());
 		final LocalDate createdAt = LocalDate.parse(request.createdAt());
 		HealthMetric healthMetric = healthMetricSearchService.findByHealthMetricId(oauthId, createdAt, type);
-
 		if (request.isEmptyNewType()) {
-			healthMetric.updateUnit(request.unit());
-		} else {
-			User user = userSearchService.findUserByOauthId(oauthId);
-			healthMetric = this.updateType(healthMetric, request, user);
+			return this.updateUnit(healthMetric, request.unit());
 		}
-		final GuideResponse guideResponse = this.requestGuide(healthMetric);
+		return this.updateType(healthMetric, request, oauthId);
+	}
+
+	/**
+	 * 단위를 수정한다.
+	 *
+	 * @param healthMetric 건강지표
+	 * @param unit         단위
+	 * @since 1.0.0
+	 */
+	private HealthMetricResponse updateUnit(HealthMetric healthMetric, String unit) {
+		healthMetric.updateUnit(unit);
+		final GuideResponse guideResponse = guideService.updateGuide(analysisService.analyze(healthMetric));
 		return mapper.toResponse(healthMetricRepository.save(healthMetric), guideResponse);
 	}
 
@@ -81,28 +87,17 @@ public class HealthMetricRegisterService {
 	 * <p>
 	 * type은 PK이기 때문에 삭제 후 새로운 type으로 저장한다.
 	 *
-	 * @param healthMetric 건강지표
-	 * @param request      건강지표 request patch dto
-	 * @param user         건강지표 수정 유저
+	 * @param prevHealthMetric 이전 건강지표
+	 * @param request          건강지표 request patch dto
+	 * @param oauthId          건강지표 수정 유저 PK
 	 * @since 1.0.0
 	 */
-	private HealthMetric updateType(HealthMetric healthMetric, HealthMetricPatchRequest request, User user) {
-		healthMetric.verifySameGroupCode(EnumFindUtil.findByTitle(CommonCode.class, request.newType()));
-		healthMetricRepository.delete(healthMetric);
+	private HealthMetricResponse updateType(HealthMetric prevHealthMetric, HealthMetricPatchRequest request, String oauthId) {
+		prevHealthMetric.verifySameGroupCode(EnumFindUtil.findByTitle(CommonCode.class, request.newType()));
+		healthMetricRepository.delete(prevHealthMetric);
+		final User user = userSearchService.findUserByOauthId(oauthId);
 		final HealthMetric updatedHealthMetric = mapper.toEntity(request, user);
-		updatedHealthMetric.updateGuideId(healthMetric.getGuideId());
-		return updatedHealthMetric;
-	}
-
-	/**
-	 * 가이드를 요청한다.
-	 *
-	 * @param healthMetric 건강지표
-	 * @return 가이드 응답
-	 * @since 1.0.0
-	 */
-	private GuideResponse requestGuide(HealthMetric healthMetric) {
-		final AnalysisData analysisData = analysisService.analyze(healthMetric);
-		return guideService.invokeGenerateGuide(analysisData);
+		final GuideResponse guideResponse = guideService.updateGuideWithType(analysisService.analyze(updatedHealthMetric), prevHealthMetric.getType());
+		return mapper.toResponse(healthMetricRepository.save(updatedHealthMetric), guideResponse);
 	}
 }

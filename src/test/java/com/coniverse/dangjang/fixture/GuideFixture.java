@@ -5,7 +5,8 @@ import java.time.LocalDate;
 import com.coniverse.dangjang.domain.analysis.enums.Alert;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.BloodSugarGuide;
-import com.coniverse.dangjang.domain.guide.bloodsugar.dto.BloodSugarGuideResponse;
+import com.coniverse.dangjang.domain.guide.bloodsugar.document.SubGuide;
+import com.coniverse.dangjang.domain.guide.bloodsugar.dto.SubGuideResponse;
 import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
 
 /**
@@ -19,26 +20,33 @@ public class GuideFixture {
 		return BloodSugarGuide.builder()
 			.oauthId(oauthId)
 			.createdAt(LocalDate.now())
-			.alert(Alert.CAUTION)
-			.content("가이드입니다")
+			.todayAlert(Alert.CAUTION)
+			.todayContent("가이드입니다")
 			.summary("요약입니다.")
-			.type(CommonCode.BEFORE_BREAKFAST)
 			.build();
 	}
 
-	public static GuideResponse 혈당_가이드_응답() {
-		return new BloodSugarGuideResponse("12341234", LocalDate.now(), CommonCode.BEFORE_BREAKFAST.getTitle(), Alert.CAUTION, "가이드입니다");
+	public static SubGuide 혈당_서브_가이드(CommonCode type) {
+		return SubGuide.builder()
+			.type(type)
+			.alert(Alert.CAUTION)
+			.content("가이드입니다")
+			.build();
+	}
+
+	public static GuideResponse 혈당_서브_가이드_응답() {
+		return new SubGuideResponse(CommonCode.BEFORE_BREAKFAST.getTitle(), null, Alert.CAUTION, "가이드입니다");
 	}
 
 	public static GuideResponse 운동_가이드_응답() { // TODO return 수정
-		return new BloodSugarGuideResponse("12341234", LocalDate.now(), CommonCode.STEP_COUNT.getTitle(), Alert.CAUTION, "가이드입니다");
+		return new SubGuideResponse(CommonCode.STEP_COUNT.getTitle(), null, Alert.CAUTION, "가이드입니다");
 	}
 
 	public static GuideResponse 체중_가이드_응답() { // TODO return 수정
-		return new BloodSugarGuideResponse("12341234", LocalDate.now(), CommonCode.MEASUREMENT.getTitle(), Alert.CAUTION, "가이드입니다");
+		return new SubGuideResponse(CommonCode.MEASUREMENT.getTitle(), null, Alert.CAUTION, "가이드입니다");
 	}
 
 	public static GuideResponse 당화혈색소_가이드_응답() { // TODO return 수정
-		return new BloodSugarGuideResponse("12341234", LocalDate.now(), CommonCode.HBA1C.getTitle(), Alert.CAUTION, "가이드입니다");
+		return new SubGuideResponse(CommonCode.HBA1C.getTitle(), null, Alert.CAUTION, "가이드입니다");
 	}
 }

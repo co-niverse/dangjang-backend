@@ -4,14 +4,14 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 
 import com.coniverse.dangjang.global.exception.IncorrectCreatedAtException;
-import com.coniverse.dangjang.global.validator.LocalDateValid;
+import com.coniverse.dangjang.global.validator.ValidLocalDate;
 
 /**
  * 생성일자와 관련한 util
  *
  * @author TEO
  * @since 1.0.0
- * @deprecated use {@link LocalDateValid}
+ * @deprecated use {@link ValidLocalDate}
  */
 @Deprecated(since = "1.0.0")
 public class CreatedAtUtil {

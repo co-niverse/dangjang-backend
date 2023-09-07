@@ -19,13 +19,11 @@ public abstract class HealthMetricAnalysisData implements AnalysisData {
 	private final String oauthId;
 	private final LocalDate createdAt;
 	private final CommonCode type;
-	private final String guideId;
 
 	protected HealthMetricAnalysisData(HealthMetric healthMetric) {
 		this.oauthId = healthMetric.getUser().getOauthId();
 		this.createdAt = healthMetric.getCreatedAt();
 		this.type = healthMetric.getType();
-		this.guideId = healthMetric.getGuideId();
 	}
 
 	/**

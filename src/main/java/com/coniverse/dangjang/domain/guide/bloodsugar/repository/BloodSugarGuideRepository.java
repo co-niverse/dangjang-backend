@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.BloodSugarGuide;
 
 /**
@@ -15,7 +14,5 @@ import com.coniverse.dangjang.domain.guide.bloodsugar.document.BloodSugarGuide;
  * @since 1.0.0
  */
 public interface BloodSugarGuideRepository extends MongoRepository<BloodSugarGuide, String> {
-	Optional<BloodSugarGuide> findByOauthIdAndCreatedAtAndType(String oauthId, LocalDate createdAt, CommonCode type);
-
-	void deleteByOauthIdAndCreatedAtAndType(String oauthId, LocalDate createdAt, CommonCode type);
+	Optional<BloodSugarGuide> findByOauthIdAndCreatedAt(String oauthId, LocalDate createdAt);
 }

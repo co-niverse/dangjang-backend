@@ -9,17 +9,17 @@ import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
 /**
- * LocalDate가 유효한지 검증하는 annotation
+ * String 필드를 숫자로 converting할 수 있고 0보다 크거나 같은지 검증하는 annotation
  *
  * @author TEO
- * @see LocalDateValidator
+ * @see NumberAndPositiveOrZeroValidator
  * @since 1.0.0
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = LocalDateValidator.class)
-public @interface LocalDateValid {
-	String message() default "유효하지 않은 날짜입니다.";
+@Constraint(validatedBy = NumberAndPositiveOrZeroValidator.class)
+public @interface NumberAndPositiveOrZero {
+	String message() default "유효하지 않은 숫자입니다.";
 
 	Class<?>[] groups() default {};
 

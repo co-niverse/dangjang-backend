@@ -19,10 +19,6 @@ public class AnalysisDataFixture {
 		return new BloodSugarAnalysisData(건강지표_엔티티(user, type, unit));
 	}
 
-	public static AnalysisData 혈당_분석_데이터(User user, CommonCode type, String unit, String guideId) {
-		return new BloodSugarAnalysisData(건강지표_엔티티(user, type, unit, guideId));
-	}
-
 	public static AnalysisData 운동_분석_데이터() { // TODO return 수정
 		return new BloodSugarAnalysisData(건강지표_엔티티(CommonCode.STEP_COUNT));
 	}

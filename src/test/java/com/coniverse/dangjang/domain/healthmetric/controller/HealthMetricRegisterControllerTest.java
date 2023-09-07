@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
 
+import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
@@ -58,7 +59,10 @@ class HealthMetricRegisterControllerTest extends ControllerTest {
 			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
 			jsonPath("$.data.createdAt").value(response.createdAt().toString()),
 			jsonPath("$.data.type").value(response.type()),
-			jsonPath("$.data.unit").value(response.unit())
+			jsonPath("$.data.unit").value(response.unit()),
+			jsonPath("$.data.guide.unit").doesNotExist(),
+			jsonPath("$.data.guide.type").value(response.guide().type()),
+			jsonPath("$.data.guide.content").value(response.guide().content())
 		);
 	}
 
@@ -100,6 +104,26 @@ class HealthMetricRegisterControllerTest extends ControllerTest {
 		);
 	}
 
+	@Order(310)
+	@ParameterizedTest
+	@ValueSource(strings = {"-1", "숫자", "1..", "number"})
+	void 건강지표_등록_RequestBody의_unit이_유효하지_않으면_예외가_발생한다(String unit) throws Exception {
+		// given
+		HealthMetricPostRequest request = new HealthMetricPostRequest("아침 식전", "2023-12-31", unit);
+		String content = objectMapper.writeValueAsString(request);
+
+		// when
+		ResultActions resultActions = post(mockMvc, URL, content);
+
+		// then
+		resultActions.andExpectAll(
+			status().isBadRequest(),
+			jsonPath("$.errorCode").value(400),
+			jsonPath("$.fieldErrors[0].field").value("unit"),
+			jsonPath("$.fieldErrors[0].rejectedValue").value(unit)
+		);
+	}
+
 	@Order(400)
 	@ParameterizedTest
 	@ValueSource(strings = {"2023-02-29", "2023-04-31", "2023-06-31", "2023-09-31", "2023-11-31", "2023.01.01", "2023/01/01"})
@@ -133,7 +157,30 @@ class HealthMetricRegisterControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isOk(),
 			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
-			jsonPath("$.data.createdAt").value(response.createdAt().toString())
+			jsonPath("$.data.createdAt").value(response.createdAt().toString()),
+			jsonPath("$.data.type").value(response.type()),
+			jsonPath("$.data.unit").value(response.unit()),
+			jsonPath("$.data.guide.unit").doesNotExist(),
+			jsonPath("$.data.guide.type").value(response.guide().type()),
+			jsonPath("$.data.guide.content").value(response.guide().content())
+		);
+	}
+
+	@Order(510)
+	@Test
+	void 이전_타입과_같은_타입으로_수정하면_예외가_발생한다() throws Exception {
+		// given
+		HealthMetricPatchRequest request = new HealthMetricPatchRequest("점심식후", "점심식후", "2023-12-31", "100");
+		String content = objectMapper.writeValueAsString(request);
+
+		// when
+		ResultActions resultActions = patch(mockMvc, URL, content);
+
+		// then
+		resultActions.andExpectAll(
+			status().isBadRequest(),
+			jsonPath("$.errorCode").value(400),
+			jsonPath("$.message").value("type과 newType은 같을 수 없습니다.")
 		);
 	}
 }

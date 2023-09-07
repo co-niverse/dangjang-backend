@@ -5,7 +5,8 @@ import org.mapstruct.Mapping;
 
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.BloodSugarAnalysisData;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.BloodSugarGuide;
-import com.coniverse.dangjang.domain.guide.bloodsugar.dto.BloodSugarGuideResponse;
+import com.coniverse.dangjang.domain.guide.bloodsugar.document.SubGuide;
+import com.coniverse.dangjang.domain.guide.bloodsugar.dto.SubGuideResponse;
 
 /**
  * 혈당 가이드 mapper
@@ -20,14 +21,24 @@ public interface BloodSugarGuideMapper {
 	 *
 	 * @since 1.0.0
 	 */
-	@Mapping(target = "id", ignore = true)
-	BloodSugarGuide toDocument(BloodSugarAnalysisData data, String content, String summary);
+	@Mapping(target = "todayAlert", ignore = true)
+	@Mapping(target = "todayContent", ignore = true)
+	@Mapping(target = "summary", ignore = true)
+	BloodSugarGuide toDocument(BloodSugarAnalysisData data);
 
 	/**
-	 * document를 response로 변환
+	 * 혈당 분석 데이터를 혈당 서브 가이드로 변환
+	 *
+	 * @since 1.0.0
+	 */
+	SubGuide toSubGuide(BloodSugarAnalysisData data, String content);
+
+	/**
+	 * 혈당 서브 가이드를 서브 가이드 response로 변환
 	 *
 	 * @since 1.0.0
 	 */
 	@Mapping(target = "type", source = "type.title")
-	BloodSugarGuideResponse toResponse(BloodSugarGuide guide);
+	@Mapping(target = "unit", ignore = true)
+	SubGuideResponse toSubGuideResponse(SubGuide guide);
 }
