@@ -2,6 +2,7 @@ package com.coniverse.dangjang.domain.guide.bloodsugar.document;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,6 +10,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.coniverse.dangjang.domain.analysis.enums.Alert;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.guide.common.document.Guide;
+import com.coniverse.dangjang.domain.guide.common.exception.GuideAlreadyExistsException;
+import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
 
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
@@ -61,14 +64,15 @@ public class BloodSugarGuide implements Guide {
 	 * 서브 가이드를 추가한다.
 	 *
 	 * @param subGuide 서브 가이드
-	 * @throws IllegalArgumentException 이미 해당 가이드가 존재할 경우 발생한다.
+	 * @throws GuideAlreadyExistsException 이미 해당 가이드가 존재할 경우 발생한다.
 	 * @since 1.0.0
 	 */
 	public void add(SubGuide subGuide) {
 		if (verifySubGuideExists(subGuide.getType())) {
-			throw new IllegalArgumentException("이미 해당 가이드가 존재합니다."); // TODO
+			throw new GuideAlreadyExistsException();
 		}
 		this.subGuides.add(subGuide);
+		sortSubGuides();
 	}
 
 	/**
@@ -110,13 +114,22 @@ public class BloodSugarGuide implements Guide {
 	 *
 	 * @param type 서브 가이드 타입
 	 * @return 서브 가이드
-	 * @throws IllegalArgumentException 해당 타입의 서브 가이드가 존재하지 않을 경우 발생한다.
+	 * @throws GuideNotFoundException 해당 타입의 서브 가이드가 존재하지 않을 경우 발생한다.
 	 * @since 1.0.0
 	 */
 	private SubGuide getSubGuide(CommonCode type) {
 		return this.subGuides.stream()
 			.filter(guide -> guide.isSameType(type))
 			.findFirst()
-			.orElseThrow(IllegalArgumentException::new); // TODO
+			.orElseThrow(GuideNotFoundException::new);
+	}
+
+	/**
+	 * 서브 가이드를 ordinal 순으로 정렬한다.
+	 *
+	 * @since 1.0.0
+	 */
+	private void sortSubGuides() {
+		this.subGuides.sort(Comparator.comparingInt(o -> o.getType().ordinal()));
 	}
 }
