@@ -220,10 +220,4 @@ class BloodSugarGuideGenerateServiceTest {
 			}
 		);
 	}
-
-	@Order(500)
-	@Test
-	void 가이드_내용_검증() {
-		// TODO
-	}
 }
