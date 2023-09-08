@@ -11,8 +11,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.coniverse.dangjang.domain.auth.controller.LoginController;
 import com.coniverse.dangjang.domain.auth.service.JwtTokenProvider;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
-import com.coniverse.dangjang.domain.healthmetric.controller.HealthMetricRegistrationController;
-import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegistrationService;
+import com.coniverse.dangjang.domain.healthmetric.controller.HealthMetricRegisterController;
+import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
 import com.coniverse.dangjang.domain.intro.controller.IntroController;
 import com.coniverse.dangjang.domain.intro.service.IntroService;
 import com.coniverse.dangjang.domain.user.controller.SignUpController;
@@ -32,7 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 	controllers = {
 		IntroController.class,
 		LoginController.class,
-		HealthMetricRegistrationController.class,
+		HealthMetricRegisterController.class,
 		LoginController.class,
 		SignUpController.class,
 		UserController.class
@@ -49,7 +49,7 @@ public class ControllerTest {
 	@MockBean
 	private OauthLoginService oAuthLoginService;
 	@MockBean
-	private HealthMetricRegistrationService healthMetricRegistrationService;
+	private HealthMetricRegisterService healthMetricRegisterService;
 	@MockBean
 	private UserSignupService userSignupService;
 	@MockBean

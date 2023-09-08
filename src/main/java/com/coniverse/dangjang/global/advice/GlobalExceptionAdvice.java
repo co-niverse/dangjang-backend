@@ -38,7 +38,7 @@ public class GlobalExceptionAdvice {
 	 */
 	@ExceptionHandler(BusinessException.class)
 	public ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
-		log.warn(e.getMessage());
+		log.error(e.getMessage());
 		int errorCode = e.getErrorCode();
 		ErrorResponse errorResponse = new ErrorResponse(errorCode, e.getMessage());
 		return ResponseEntity.status(errorCode).body(errorResponse);
@@ -123,5 +123,18 @@ public class GlobalExceptionAdvice {
 		log.error(e.getMessage());
 		ErrorResponse errorResponse = new ErrorResponse(409, "이미 존재하는 데이터입니다.");
 		return ResponseEntity.status(409).body(errorResponse);
+	}
+
+	/**
+	 * 부적절한 인자를 전달했을 때 발생하는 예외를 처리한다.
+	 *
+	 * @param e {@link IllegalArgumentException}
+	 * @since 1.0.0
+	 */
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException e) {
+		log.error(e.getMessage());
+		ErrorResponse errorResponse = new ErrorResponse(400, e.getMessage());
+		return ResponseEntity.badRequest().body(errorResponse);
 	}
 }

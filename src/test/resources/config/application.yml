@@ -19,7 +19,7 @@ spring:
       add-mappings: false
   data:
     mongodb:
-      port: 27018
+      port: 0
       database: test
 
 de:
@@ -59,6 +59,10 @@ logging:
             cache: debug
         transaction:
           interceptor: trace
+        data:
+          mongodb:
+            core:
+              MongoTemplate: debug
     web: trace
 
 ---

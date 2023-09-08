@@ -28,15 +28,16 @@ public class HealthMetricSearchService {
 	/**
 	 * 건강 지표를 조회한다.
 	 *
-	 * @param oauthId    유저 PK
-	 * @param createdAt  생성일
-	 * @param commonCode 건강 지표 타입
+	 * @param oauthId   유저 PK
+	 * @param createdAt 생성일
+	 * @param type      건강 지표 타입
 	 * @return HealthMetric 건강 지표
 	 * @throws HealthMetricNotFoundException 유저의 건강 지표를 찾을 수 없을 경우 발생한다.
 	 * @since 1.0.0
 	 */
-	public HealthMetric findHealthMetricById(String oauthId, LocalDate createdAt, CommonCode commonCode) {
-		return healthMetricRepository.findByHealthMetricId(oauthId, createdAt, commonCode).orElseThrow(HealthMetricNotFoundException::new);
+	public HealthMetric findByHealthMetricId(String oauthId, LocalDate createdAt, CommonCode type) {
+		System.out.println("HealthMetricSearchService.findByHealthMetricId :" + type);
+		return healthMetricRepository.findByHealthMetricId(oauthId, createdAt, type).orElseThrow(HealthMetricNotFoundException::new);
 	}
 
 	/**
@@ -49,6 +50,7 @@ public class HealthMetricSearchService {
 	 * @since 1.0.0
 	 */
 	public HealthMetric findLastHealthMetricById(String oauthId, CommonCode commonCode) {
+		System.out.println("HealthMetricSearchService.findLastHealthMetricById :" + commonCode);
 		return healthMetricRepository.findByHealthMetricId(oauthId, commonCode).orElseThrow(HealthMetricNotFoundException::new);
 	}
 

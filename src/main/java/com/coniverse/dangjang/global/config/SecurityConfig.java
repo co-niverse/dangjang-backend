@@ -16,10 +16,12 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.coniverse.dangjang.domain.auth.filter.JwtValidationFilter;
+
 /**
  * Spring Security를 설정한다.
  *
- * @author TEO
+ * @author TEO, EVE
  * @since 1.0.0
  */
 @Configuration
@@ -27,10 +29,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
 	@Value("${cors.allowed-origins}")
 	private String allowedOrigins;
-	private final JwtFilter jwtFilter;
+	private final JwtValidationFilter jwtValidationFilter;
 
-	public SecurityConfig(JwtFilter jwtFilter) {
-		this.jwtFilter = jwtFilter;
+	public SecurityConfig(JwtValidationFilter jwtValidationFilter) {
+		this.jwtValidationFilter = jwtValidationFilter;
 	}
 
 	/**
@@ -58,12 +60,12 @@ public class SecurityConfig {
 			.sessionManagement(
 				sessionManagementConfigurer -> sessionManagementConfigurer.sessionCreationPolicy(
 					SessionCreationPolicy.STATELESS))
-			.addFilterAt(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+			.addFilterAt(jwtValidationFilter, UsernamePasswordAuthenticationFilter.class) // TODO 왜 이렇게 해야하는지
 			.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers("/api/intro/prod").permitAll()
 				.requestMatchers("/api/signUp").permitAll()
 				.requestMatchers("/api/duplicateNickname").permitAll()
-				.requestMatchers("/api/**").permitAll()
+				.requestMatchers("/api/**").permitAll() // TODO 수정
 				.requestMatchers("/", "/swagger-ui/**", "/api-docs/**").permitAll()
 				.anyRequest().authenticated()
 
