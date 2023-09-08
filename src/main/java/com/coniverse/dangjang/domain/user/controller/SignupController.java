@@ -23,8 +23,8 @@ import lombok.RequiredArgsConstructor;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/signUp")
-public class SignUpController {
+@RequestMapping("/api/signup")
+public class SignupController {
 	private final UserSignupService userSignupService;
 	private final OauthLoginService oauthLoginService;
 
