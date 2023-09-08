@@ -20,8 +20,8 @@ public class BloodSugarAnalysisData extends HealthMetricAnalysisData {
 	private int unit;
 	private Alert alert;
 	private int deviation;
-	private boolean lackOfExercise;
-	private boolean overweight;
+	private boolean lackOfExercise = false;
+	private boolean overweight = false;
 
 	public BloodSugarAnalysisData(HealthMetric healthMetric) {
 		super(healthMetric);
