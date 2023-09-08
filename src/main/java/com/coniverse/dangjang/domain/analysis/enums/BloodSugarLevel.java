@@ -1,7 +1,5 @@
 package com.coniverse.dangjang.domain.analysis.enums;
 
-import java.util.List;
-
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 
 import lombok.AllArgsConstructor;
@@ -17,8 +15,8 @@ import lombok.Getter;
  * @author TEO
  * @since 1.0.0
  */
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
 public enum BloodSugarLevel {
 	PRE_DIABETES_BM(false, Meal.BEFORE_MEAL, 70, 99, 126),
 	PRE_DIABETES_AM(false, Meal.AFTER_MEAL, 90, 139, 200),
@@ -32,19 +30,6 @@ public enum BloodSugarLevel {
 	private final int cautionCriteria;
 
 	public boolean contains(CommonCode bloodSugarType) {
-		return this.meal.bloodSugarTypes.contains(bloodSugarType);
-	}
-
-	/**
-	 * 혈당 타입의 식전, 식후 구분
-	 *
-	 * @since 1.0.0
-	 */
-	@AllArgsConstructor
-	private enum Meal {
-		BEFORE_MEAL(List.of(CommonCode.EMPTY_STOMACH, CommonCode.BEFORE_BREAKFAST, CommonCode.BEFORE_LUNCH, CommonCode.BEFORE_DINNER)),
-		AFTER_MEAL(List.of(CommonCode.AFTER_BREAKFAST, CommonCode.AFTER_LUNCH, CommonCode.AFTER_DINNER, CommonCode.BEFORE_SLEEP, CommonCode.ETC));
-
-		private final List<CommonCode> bloodSugarTypes;
+		return this.meal.contains(bloodSugarType);
 	}
 }
