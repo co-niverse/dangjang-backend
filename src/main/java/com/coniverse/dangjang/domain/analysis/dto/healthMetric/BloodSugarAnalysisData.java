@@ -21,6 +21,7 @@ public class BloodSugarAnalysisData extends HealthMetricAnalysisData {
 	private Alert alert;
 	private int deviation;
 	private boolean lackOfExercise;
+	private boolean requiredWeightControl;
 
 	public BloodSugarAnalysisData(HealthMetric healthMetric) {
 		super(healthMetric);
@@ -46,5 +47,9 @@ public class BloodSugarAnalysisData extends HealthMetricAnalysisData {
 
 	public void setLackOfExercise(boolean lackOfExercise) {
 		this.lackOfExercise = lackOfExercise;
+	}
+
+	public void setRequiredWeightControl(boolean requiredWeightControl) {
+		this.requiredWeightControl = requiredWeightControl;
 	}
 }
