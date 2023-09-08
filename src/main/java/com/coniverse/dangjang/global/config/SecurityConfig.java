@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -60,17 +61,16 @@ public class SecurityConfig {
 			.sessionManagement(
 				sessionManagementConfigurer -> sessionManagementConfigurer.sessionCreationPolicy(
 					SessionCreationPolicy.STATELESS))
-			.addFilterAt(jwtValidationFilter, UsernamePasswordAuthenticationFilter.class) // TODO 왜 이렇게 해야하는지
+			.addFilterAt(jwtValidationFilter, UsernamePasswordAuthenticationFilter.class)
 			.authorizeHttpRequests(authorize -> authorize
-				.requestMatchers("/api/intro/prod").permitAll()
-				.requestMatchers("/api/signUp").permitAll()
-				.requestMatchers("/api/duplicateNickname").permitAll()
-				.requestMatchers("/api/**").permitAll() // TODO 수정
-				.requestMatchers("/", "/swagger-ui/**", "/api-docs/**").permitAll()
-				.anyRequest().authenticated()
-
+				.requestMatchers(HttpMethod.GET, "/api/intro/**").permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/signup/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/duplicateNickname/**").permitAll() // TODO 수정
+				.requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/api-docs/**").permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/health-metric/**").authenticated()
+				.anyRequest().permitAll()
 			);
-
 		return http.build();
 	}
 
