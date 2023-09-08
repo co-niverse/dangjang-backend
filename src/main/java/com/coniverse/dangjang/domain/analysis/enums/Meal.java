@@ -21,7 +21,7 @@ public enum Meal {
 
 	private final List<CommonCode> bloodSugarTypes;
 
-	boolean contains(CommonCode bloodSugarType) {
+	public boolean contains(CommonCode bloodSugarType) {
 		return this.bloodSugarTypes.contains(bloodSugarType);
 	}
 }
