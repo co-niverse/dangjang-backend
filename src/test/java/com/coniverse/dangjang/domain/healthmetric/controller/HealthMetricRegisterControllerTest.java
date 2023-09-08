@@ -22,12 +22,14 @@ import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRe
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
 import com.coniverse.dangjang.support.ControllerTest;
+import com.coniverse.dangjang.support.annotation.WithDangjangUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * @author TEO
  * @since 1.0.0
  */
+@WithDangjangUser
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class HealthMetricRegisterControllerTest extends ControllerTest {
