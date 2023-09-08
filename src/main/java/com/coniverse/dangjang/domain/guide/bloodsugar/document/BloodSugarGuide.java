@@ -35,15 +35,17 @@ public class BloodSugarGuide implements Guide {
 	private LocalDate createdAt;
 	private List<SubGuide> subGuides;
 	private Alert todayAlert;
+	private String todayTitle;
 	private String todayContent;
 	private String summary;
 
 	@Builder
-	private BloodSugarGuide(String oauthId, LocalDate createdAt, Alert todayAlert, String todayContent, String summary) {
+	private BloodSugarGuide(String oauthId, LocalDate createdAt, Alert todayAlert, String todayTitle, String todayContent, String summary) {
 		this.oauthId = oauthId;
 		this.createdAt = createdAt;
 		this.subGuides = new ArrayList<>();
 		this.todayAlert = todayAlert;
+		this.todayTitle = todayTitle;
 		this.todayContent = todayContent;
 		this.summary = summary;
 	}
@@ -55,8 +57,9 @@ public class BloodSugarGuide implements Guide {
 	 * @param todayContent 오늘의 가이드 내용
 	 * @since 1.0.0
 	 */
-	public void updateToday(Alert todayAlert, String todayContent) { // TODO 22시마다 수행
+	public void updateToday(Alert todayAlert, String todayTitle, String todayContent) { // TODO 22시마다 수행
 		this.todayAlert = todayAlert;
+		this.todayTitle = todayTitle;
 		this.todayContent = todayContent;
 	}
 
@@ -80,7 +83,7 @@ public class BloodSugarGuide implements Guide {
 	 */
 	public void update(SubGuide subGuide) {
 		SubGuide prevSubGuide = getSubGuide(subGuide.getType());
-		prevSubGuide.update(subGuide.getContent(), subGuide.getAlert());
+		prevSubGuide.update(subGuide);
 	}
 
 	/**
@@ -93,7 +96,7 @@ public class BloodSugarGuide implements Guide {
 	public void update(SubGuide subGuide, CommonCode prevType) {
 		verifySubGuideExists(subGuide.getType());
 		SubGuide prevSubGuide = getSubGuide(prevType);
-		prevSubGuide.update(subGuide.getType(), subGuide.getContent(), subGuide.getAlert());
+		prevSubGuide.update(subGuide);
 		sortSubGuides();
 	}
 
