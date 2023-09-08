@@ -40,5 +40,6 @@ public interface BloodSugarGuideMapper {
 	 */
 	@Mapping(target = "type", source = "type.title")
 	@Mapping(target = "unit", ignore = true)
+	@Mapping(target = "alert", source = "alert.title")
 	SubGuideResponse toSubGuideResponse(SubGuide guide);
 }
