@@ -2,6 +2,8 @@ package com.coniverse.dangjang.domain.healthmetric.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +31,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/health-metric")
 @RequiredArgsConstructor
 @Validated
-public class HealthMetricRegisterController { // TODO @AuthenticationPrincipal Map<String, Object> principal
+public class HealthMetricRegisterController {
 	private final HealthMetricRegisterService healthMetricRegisterService;
 
 	/**
@@ -38,22 +40,24 @@ public class HealthMetricRegisterController { // TODO @AuthenticationPrincipal M
 	 * @since 1.0.0
 	 */
 	@PostMapping
-	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> post(@Valid @RequestBody HealthMetricPostRequest postRequest) {
-		HealthMetricResponse response = healthMetricRegisterService.register(postRequest, "11111111");
+	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> post(@Valid @RequestBody HealthMetricPostRequest postRequest,
+		@AuthenticationPrincipal User principal) {
+		HealthMetricResponse response = healthMetricRegisterService.register(postRequest, principal.getUsername());
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
 
-	/**
+	/*
 	 * HTTP PATCH METHOD
 	 *
 	 * @since 1.0.0
 	 */
 	@PatchMapping
-	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> patch(@Valid @RequestBody HealthMetricPatchRequest patchRequest) {
+	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> patch(@Valid @RequestBody HealthMetricPatchRequest patchRequest,
+		@AuthenticationPrincipal User principal) {
 		if (patchRequest.isSameType()) {
 			throw new SameTypeException();
 		}
-		HealthMetricResponse response = healthMetricRegisterService.update(patchRequest, "11111111");
+		HealthMetricResponse response = healthMetricRegisterService.update(patchRequest, principal.getUsername());
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
 }
