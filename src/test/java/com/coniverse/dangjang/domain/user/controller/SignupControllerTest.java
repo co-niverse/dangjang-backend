@@ -29,7 +29,7 @@ import com.coniverse.dangjang.support.ControllerTest;
  * @since 1.0.0
  */
 class SignupControllerTest extends ControllerTest {
-	private final String URI = "/api/signUp";
+	private final String URI = "/api/signup";
 	@Autowired
 	private UserSignupService userSignupService;
 	@Autowired

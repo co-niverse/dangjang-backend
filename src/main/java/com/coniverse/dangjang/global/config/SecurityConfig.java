@@ -18,6 +18,10 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.coniverse.dangjang.domain.auth.filter.JwtValidationFilter;
+import com.coniverse.dangjang.domain.auth.handler.JwtAccessDeniedHandler;
+import com.coniverse.dangjang.domain.auth.handler.JwtAuthenticationEntryPoint;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * Spring Security를 설정한다.
@@ -27,14 +31,13 @@ import com.coniverse.dangjang.domain.auth.filter.JwtValidationFilter;
  */
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+	private final JwtValidationFilter jwtValidationFilter;
+	private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	@Value("${cors.allowed-origins}")
 	private String allowedOrigins;
-	private final JwtValidationFilter jwtValidationFilter;
-
-	public SecurityConfig(JwtValidationFilter jwtValidationFilter) {
-		this.jwtValidationFilter = jwtValidationFilter;
-	}
 
 	/**
 	 * SecurityFilterChain 설정
@@ -55,12 +58,14 @@ public class SecurityConfig {
 			.headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions(
 				HeadersConfigurer.FrameOptionsConfig::sameOrigin))
 			.csrf(AbstractHttpConfigurer::disable)
-			.cors(corsConfigurer -> corsConfigurer.configurationSource(configurationSource()))
+			.cors(
+				corsConfigurer -> corsConfigurer.configurationSource(configurationSource())
+			)
 			.formLogin(AbstractHttpConfigurer::disable)
 			.httpBasic(AbstractHttpConfigurer::disable)
 			.sessionManagement(
-				sessionManagementConfigurer -> sessionManagementConfigurer.sessionCreationPolicy(
-					SessionCreationPolicy.STATELESS))
+				sessionManagementConfigurer -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			)
 			.addFilterAt(jwtValidationFilter, UsernamePasswordAuthenticationFilter.class)
 			.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers(HttpMethod.GET, "/api/intro/**").permitAll()
@@ -70,6 +75,10 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/api-docs/**").permitAll()
 				.requestMatchers(HttpMethod.POST, "/api/health-metric/**").authenticated()
 				.anyRequest().permitAll()
+			)
+			.exceptionHandling(
+				handler -> handler.accessDeniedHandler(jwtAccessDeniedHandler)
+					.authenticationEntryPoint(jwtAuthenticationEntryPoint)
 			);
 		return http.build();
 	}

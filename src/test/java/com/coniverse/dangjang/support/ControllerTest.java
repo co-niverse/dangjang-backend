@@ -37,6 +37,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 		UserController.class
 	},
 	includeFilters = @ComponentScan.Filter(classes = {EnableWebSecurity.class}))
+@ComponentScan(basePackages = "com.coniverse.dangjang.domain.auth.handler")
 @MockBean(JpaMetamodelMappingContext.class)
 public class ControllerTest {
 	@Autowired
@@ -53,5 +54,4 @@ public class ControllerTest {
 	private UserSignupService userSignupService;
 	@MockBean
 	private JwtTokenProvider jwtTokenProvider;
-
 }
