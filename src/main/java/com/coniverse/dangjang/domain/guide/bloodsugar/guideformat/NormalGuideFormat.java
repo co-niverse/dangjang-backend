@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.guide.bloodsugar.enums;
+package com.coniverse.dangjang.domain.guide.bloodsugar.guideformat;
 
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;

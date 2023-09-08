@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.guide.bloodsugar.enums;
+package com.coniverse.dangjang.domain.guide.bloodsugar.guideformat;
 
 import lombok.AllArgsConstructor;
 

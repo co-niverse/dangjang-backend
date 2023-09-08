@@ -1,40 +1,37 @@
-package com.coniverse.dangjang.domain.guide.bloodsugar.enums;
+package com.coniverse.dangjang.domain.guide.bloodsugar.guideformat;
 
 import java.util.Arrays;
-
-import com.coniverse.dangjang.domain.analysis.enums.Meal;
-import com.coniverse.dangjang.domain.code.enums.CommonCode;
 
 import lombok.AllArgsConstructor;
 
 /**
- * 주의 가이드 format
+ * 경고 가이드 format
  *
  * @author TEO
  * @since 1.0.0
  */
-public class CautionGuideFormat implements GuideFormat {
+public class WarningGuideFormat implements GuideFormat {
+	private String content;
 	private final int deviation;
 	private final boolean lackOfExercise;
 	private final boolean overweight;
-	private String content;
 
-	public CautionGuideFormat(int deviation, boolean lackOfExercise, boolean overweight) {
+	public WarningGuideFormat(int deviation, boolean lackOfExercise, boolean overweight) {
 		this.deviation = deviation;
 		this.lackOfExercise = lackOfExercise;
 		this.overweight = overweight;
 	}
 
-	public void setContent(boolean diabetic, CommonCode type) {
+	public void setContent(boolean diabetic) {
 		Arrays.stream(Content.values())
-			.filter(c -> c.diabetic == diabetic && c.meal.contains(type))
+			.filter(c -> c.diabetic == diabetic)
 			.findFirst()
 			.ifPresent(c -> this.content = c.content);
 	}
 
 	@Override
 	public String getTitle() {
-		return String.format("혈당이 정상수치보다 높아요. %d만큼 낮춰야해요", deviation);
+		return String.format("혈당 수치가 심각하게 높아요! %d만큼 낮춰야해요", deviation);
 	}
 
 	@Override
@@ -51,13 +48,10 @@ public class CautionGuideFormat implements GuideFormat {
 
 	@AllArgsConstructor
 	private enum Content {
-		PRE_DIABETES_BM(false, Meal.BEFORE_MEAL, "공복 혈당 장애가 의심돼요."),
-		PRE_DIABETES_AM(false, Meal.AFTER_MEAL, "내당능 장애가 의심돼요."),
-		DIABETES_BM(true, Meal.BEFORE_MEAL, "정상 수치까지 조금만 노력해볼까요?"),
-		DIABETES_AM(true, Meal.AFTER_MEAL, "정상 수치까지 조금만 노력해볼까요?");
+		PRE_DIABETES(false, "당뇨병이 의심돼요. 병원 내방을 권고드려요!"),
+		DIABETES(true, "혈당 수치 관리를 더더욱 신경써야 해요!");
 
 		private final boolean diabetic;
-		private final Meal meal;
 		private final String content;
 	}
 }
