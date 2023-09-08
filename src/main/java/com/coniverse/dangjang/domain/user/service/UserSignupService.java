@@ -140,7 +140,7 @@ public class UserSignupService {
 	 * @return 중복된 닉네임이면 false, 중복되지 않았으면 true를 담은 DuplicateNicknameResponse 객체 리턴
 	 * @since 1.0.0
 	 */
-	public DuplicateNicknameResponse checkDuplicatedNickname(String nickname) {
+	public DuplicateNicknameResponse checkDuplicatedNickname(String nickname) { // TODO 수정 필요 (중복됐으면 에러뱉게)
 		Optional<User> findNickname = userRepository.findByNickname(nickname);
 		if (findNickname.isPresent()) {
 			return new DuplicateNicknameResponse(false);
