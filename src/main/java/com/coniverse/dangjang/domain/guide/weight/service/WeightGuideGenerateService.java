@@ -15,10 +15,9 @@ import com.coniverse.dangjang.domain.guide.weight.repository.WeightGuideReposito
 import lombok.RequiredArgsConstructor;
 
 /**
- * 체중 조언서비스
+ * 체중 가이드 생성 및 업데이트
  *
  * @author EVE
- * @see WeightAnalysisData
  * @since 1.0.0
  */
 @Component
@@ -28,21 +27,34 @@ public class WeightGuideGenerateService implements GuideGenerateService {
 	private final WeightGuideRepository weightGuideRepository;
 	private final WeightMapper weightMapper;
 
+	/**
+	 * 체중 가이드를 생성한다.
+	 *
+	 * @param analysisData 체중 분석 데이터
+	 * @return 가이드 응답
+	 * @since 1.0.0
+	 */
 	@Override
 	public GuideResponse createGuide(AnalysisData analysisData) {
 		WeightAnalysisData data = (WeightAnalysisData)analysisData;
-		String content = String.format("%s이에요. 평균 체중에 비해 %dkg %s", data.getAlert().getTitle(), data.getWeightDiff(),
-			data.getWeightDiff() > 0 ? "많아요" : "적어요");
+		String content = createContent(data);
 		WeightGuide weightGuide = weightMapper.toDocument(data, content);
 		return weightMapper.toResponse(weightGuideRepository.save(weightGuide));
 	}
 
+	/**
+	 * 체중 가이드를 업데이트한다.
+	 *
+	 * @param analysisData 체중 분석 데이터
+	 * @return 가이드 응답
+	 * @since 1.0.0
+	 */
 	@Override
 	public GuideResponse updateGuide(AnalysisData analysisData) {
 		WeightAnalysisData data = (WeightAnalysisData)analysisData;
 		WeightGuide weightGuide = weightGuideSearchService.findByOauthIdAndCreatedAt(data.getOauthId(), data.getCreatedAt());
 		String content = createContent(data);
-		WeightGuide updatedWeightGuide = updateGuide(weightGuide, data, content);
+		WeightGuide updatedWeightGuide = updatedGuide(weightGuide, data, content);
 		updatedWeightGuide.setId(weightGuide.getId());
 		return weightMapper.toResponse(weightGuideRepository.save(updatedWeightGuide));
 	}
@@ -57,7 +69,16 @@ public class WeightGuideGenerateService implements GuideGenerateService {
 		return GroupCode.WEIGHT;
 	}
 
-	public WeightGuide updateGuide(WeightGuide existGuide, WeightAnalysisData data, String content) {
+	/**
+	 * 수정된 체중 가이드 생성한다.
+	 *
+	 * @param existGuide 수정될 체중 가이드
+	 * @param data       체중 분석 데이터
+	 * @param content    가이드 내용
+	 * @return 체중 가이드
+	 * @since 1.0.0
+	 */
+	public WeightGuide updatedGuide(WeightGuide existGuide, WeightAnalysisData data, String content) {
 		return existGuide.toBuilder()
 			.todayContent(content)
 			.weightDiff(data.getWeightDiff())
@@ -65,6 +86,13 @@ public class WeightGuideGenerateService implements GuideGenerateService {
 			.build();
 	}
 
+	/**
+	 * 체중 가이드 내용을 생성한다.
+	 *
+	 * @param data 체중 분석 데이터
+	 * @return 가이드 내용
+	 * @since 1.0.0
+	 */
 	private String createContent(WeightAnalysisData data) {
 		return String.format("%s이에요. 평균 체중에 비해 %dkg %s", data.getAlert().getTitle(), data.getWeightDiff(),
 			data.getWeightDiff() > 0 ? "많아요" : "적어요");

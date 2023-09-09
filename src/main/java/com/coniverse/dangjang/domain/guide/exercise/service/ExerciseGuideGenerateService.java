@@ -20,6 +20,12 @@ import com.coniverse.dangjang.domain.guide.exercise.repository.ExerciseGuideRepo
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 운동 가이드 생성 및 업데이트
+ *
+ * @author EVE
+ * @since 1.0.0
+ */
 @Component
 @RequiredArgsConstructor
 public class ExerciseGuideGenerateService implements GuideGenerateService {
@@ -29,6 +35,16 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 	private String content;
 	private String comparedToLastWeek;
 
+	/**
+	 * 운동 가이드를 생성한다.
+	 * <p>
+	 * 기존에 운동 가이드가 존재하면, 걸음수 또는 운동타입(걸음수 외의 type)에 따라 가이드를 추가한다.
+	 * 기존에 운동 가이드가 존재하지 않는다면, 걸음수 또는 운동타입(걸음수 외의 type)에 따라 가이드를 생성한다.
+	 *
+	 * @param analysisData 운동 분석 데이터
+	 * @return 가이드 응답
+	 * @since 1.0.0
+	 */
 	@Override
 	public GuideResponse createGuide(AnalysisData analysisData) {
 		ExerciseAnalysisData exerciseAnalysisData = (ExerciseAnalysisData)analysisData;
@@ -40,7 +56,7 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 			// 걸음 수 추가
 			if (exerciseAnalysisData.getType().equals(CommonCode.STEP_COUNT)) {
 				createContent_STC_CNT(exerciseAnalysisData);
-				ExerciseGuide newExerciseGuide = createNewGuideSTC_CNT(existExerciseGuide.get(), exerciseAnalysisData);
+				ExerciseGuide newExerciseGuide = updateNewGuideSTC_CNT(existExerciseGuide.get(), exerciseAnalysisData);
 				newExerciseGuide.setId(existExerciseGuide.get().getId());
 				return exerciseMapper.toResponse(exerciseGuideRepository.save(newExerciseGuide));
 
@@ -51,19 +67,30 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 			newExerciseGuide.setId(exerciseGuide.getId());
 			return exerciseMapper.toResponse(exerciseGuideRepository.save(newExerciseGuide));
 		}
-		// 날짜에 해당하는 가이드가 존재하지 않음, 새로운 걸음수 가이드 생성
+		// 날짜에 해당하는 가이드가 존재하지 않음
+		// 새로운 걸음수 가이드 생성
 		if (exerciseAnalysisData.getType().equals(CommonCode.STEP_COUNT)) {
 			createContent_STC_CNT(exerciseAnalysisData);
 			ExerciseGuide newExerciseGuide = exerciseMapper.toDocument(exerciseAnalysisData, content, comparedToLastWeek);
 			return exerciseMapper.toResponse(exerciseGuideRepository.save(newExerciseGuide));
 
 		}
-		// 날짜에 해당하는 가이드가 존재하지 않음, 새로운 운동 가이드 생성
+		//새로운 운동 가이드 생성
 		ExerciseCalorie newExerciseCalorie = new ExerciseCalorie(exerciseAnalysisData.getType(), exerciseAnalysisData.getCalorie());
 		ExerciseGuide newExerciseGuide = exerciseMapper.toDocument(exerciseAnalysisData, List.of(newExerciseCalorie));
 		return exerciseMapper.toResponse(exerciseGuideRepository.save(newExerciseGuide));
 	}
 
+	/**
+	 * 운동 가이드를 수정한다.
+	 * <p>
+	 * 수정하는 type이 걸음수라면, 걸음수 가이드에 따라 가이드를 업데이트한다.
+	 * 수정하는 type이 운동종류라면 , 운동종류 가이드에 따라 가이드를 업데이트한다.
+	 *
+	 * @param analysisData 운동 분석 데이터
+	 * @return 가이드 응답
+	 * @since 1.0.0
+	 */
 	@Override
 	public GuideResponse updateGuide(AnalysisData analysisData) {
 		ExerciseAnalysisData exerciseAnalysisData = (ExerciseAnalysisData)analysisData;
@@ -74,7 +101,7 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 		}
 		if (analysisData.getType().equals(CommonCode.STEP_COUNT)) {
 			createContent_STC_CNT(exerciseAnalysisData);
-			ExerciseGuide newExerciseGuide = createNewGuideSTC_CNT(existExerciseGuide.get(), exerciseAnalysisData);
+			ExerciseGuide newExerciseGuide = updateNewGuideSTC_CNT(existExerciseGuide.get(), exerciseAnalysisData);
 			newExerciseGuide.setId(existExerciseGuide.get().getId());
 			return exerciseMapper.toResponse(exerciseGuideRepository.save(newExerciseGuide));
 		}
@@ -94,6 +121,16 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 		return GroupCode.EXERCISE;
 	}
 
+	/**
+	 * 수정된 운동 칼로리를 업데이트한다.
+	 * <p>
+	 * 기존에 존재하는 운동 칼로리를 삭제하고, 새로운 운동 칼로리를 추가한다.
+	 *
+	 * @param existGuide 수정될 기존 가이드
+	 * @param data       분석한 운동 데이터
+	 * @return 운동 가이드
+	 * @since 1.0.0
+	 */
 	public ExerciseGuide updateExerciseCalorie(ExerciseGuide existGuide, ExerciseAnalysisData data) {
 		ExerciseCalorie exerciseCalorie = new ExerciseCalorie(data.getType(), data.getCalorie());
 		List<ExerciseCalorie> exerciseCalories = existGuide.getExerciseCalories();
@@ -109,7 +146,15 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 			.build();
 	}
 
-	public ExerciseGuide createNewGuideSTC_CNT(ExerciseGuide existGuide, ExerciseAnalysisData data) {
+	/**
+	 * 걸음수에 대한 가이드를 수정한다.
+	 *
+	 * @param existGuide 수정될 기존 가이드
+	 * @param data       분석한 운동 데이터
+	 * @return 운동 가이드
+	 * @since 1.0.0
+	 */
+	public ExerciseGuide updateNewGuideSTC_CNT(ExerciseGuide existGuide, ExerciseAnalysisData data) {
 		return existGuide.toBuilder()
 			.content(content)
 			.needStepByLastWeek(data.getNeedStepByLastWeek())
@@ -117,6 +162,15 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 			.comparedToLastWeek(comparedToLastWeek)
 			.build();
 	}
+
+	/**
+	 * 걸음수에 대한 가이드 내용을 생성한다.
+	 * <p>
+	 * 만보보다 많이 걸었는지 , 저번주 대비 얼마나 걸었는지에 대해 String으로 생성한다.
+	 *
+	 * @param data 분석한 운동 데이터
+	 * @since 1.0.0
+	 */
 
 	public void createContent_STC_CNT(ExerciseAnalysisData data) {
 		if (data.getNeedStepByTTS() > 0) {

@@ -23,6 +23,13 @@ public class WeightAnalysisStrategy implements AnalysisStrategy {
 		return new WeightAnalysisData(healthMetric);
 	}
 
+	/**
+	 * 체중 분석 데이터를 생성한다.
+	 *
+	 * @param analysisData 건강지표
+	 * @return 체중 분석 데이터
+	 * @since 1.0.0
+	 */
 	@Override
 	public AnalysisData analyze(AnalysisData analysisData) {
 		WeightAnalysisData data = (WeightAnalysisData)analysisData;

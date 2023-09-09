@@ -15,6 +15,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * 운동 가이드 Document
+ *
+ * @author EVE
+ * @since 1.0.0
+ */
 @Setter
 @Getter
 @Document
@@ -42,15 +48,22 @@ public class ExerciseGuide implements Guide {
 		this.exerciseCalories = exerciseCalories;
 	}
 
-	public void addExerciseCalorie(ExerciseCalorie exerciseCalorie) {
-		this.exerciseCalories.add(exerciseCalorie);
-	}
-
+	/**
+	 * 가이드 내용을 전달한다.
+	 *
+	 * @return 가이드 내용
+	 * @since 1.0.0
+	 */
 	@Override
 	public String getTodayContent() {
 		return this.content;
 	}
 
+	/**
+	 * 가이드 ID를 설정한다.
+	 *
+	 * @since 1.0.0
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}

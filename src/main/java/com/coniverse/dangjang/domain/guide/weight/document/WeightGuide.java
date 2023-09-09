@@ -44,6 +44,11 @@ public class WeightGuide implements Guide {
 		this.todayContent = todayContent;
 	}
 
+	/**
+	 * 가이드 ID를 설정한다.
+	 *
+	 * @since 1.0.0
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
