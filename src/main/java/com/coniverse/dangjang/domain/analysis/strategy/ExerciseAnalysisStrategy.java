@@ -25,7 +25,8 @@ public class ExerciseAnalysisStrategy implements AnalysisStrategy {
 	private final HealthMetricSearchService healthMetricSearchService;
 	private LocalDate startDate;
 	private LocalDate endDate;
-	private List exerciseLsit = new ArrayList<>(Arrays.asList(CommonCode.EC_WLK, CommonCode.EC_RN, CommonCode.EC_HIK, CommonCode.EC_SW, CommonCode.EC_HT));
+	private List exerciseLsit = new ArrayList<>(
+		Arrays.asList(CommonCode.EC_WLK, CommonCode.EC_RN, CommonCode.EC_HIK, CommonCode.EC_SW, CommonCode.EC_HT, CommonCode.EC_BIK));
 
 	@Override
 	public AnalysisData createAnalysisData(HealthMetric healthMetric) {

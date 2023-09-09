@@ -41,8 +41,7 @@ public class WeightGuideGenerateService implements GuideGenerateService {
 	public GuideResponse updateGuide(AnalysisData analysisData) {
 		WeightAnalysisData data = (WeightAnalysisData)analysisData;
 		WeightGuide weightGuide = weightGuideSearchService.findByOauthIdAndCreatedAt(data.getOauthId(), data.getCreatedAt());
-		String content = String.format("%s이에요. 평균 체중에 비해 %dkg %s", data.getAlert().getTitle(), data.getWeightDiff(),
-			data.getWeightDiff() > 0 ? "많아요" : "적어요");
+		String content = createContent(data);
 		WeightGuide updatedWeightGuide = updateGuide(weightGuide, data, content);
 		updatedWeightGuide.setId(weightGuide.getId());
 		return weightMapper.toResponse(weightGuideRepository.save(updatedWeightGuide));
@@ -64,6 +63,11 @@ public class WeightGuideGenerateService implements GuideGenerateService {
 			.weightDiff(data.getWeightDiff())
 			.alert(data.getAlert())
 			.build();
+	}
+
+	private String createContent(WeightAnalysisData data) {
+		return String.format("%s이에요. 평균 체중에 비해 %dkg %s", data.getAlert().getTitle(), data.getWeightDiff(),
+			data.getWeightDiff() > 0 ? "많아요" : "적어요");
 	}
 
 }

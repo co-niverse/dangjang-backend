@@ -2,9 +2,8 @@ package com.coniverse.dangjang.domain.analysis.dto.healthMetric;
 
 import java.util.List;
 
-import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
-import com.coniverse.dangjang.domain.user.entity.User;
+import com.coniverse.dangjang.global.exception.EnumNonExistentException;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,8 +19,6 @@ public class ExerciseAnalysisData extends HealthMetricAnalysisData {
 	public ExerciseAnalysisData(HealthMetric healthMetric) {
 		super(healthMetric);
 		convertUnit(healthMetric.getUnit());
-		User user = healthMetric.getUser();
-		CommonCode commonCode = healthMetric.getType();
 	}
 
 	@Override
@@ -69,7 +66,7 @@ public class ExerciseAnalysisData extends HealthMetricAnalysisData {
 				percent = 1.5;
 				break;
 			default:
-				throw new IllegalStateException(this.getType() + ": 지원하지 않는 운동입니다.");
+				throw new EnumNonExistentException();
 		}
 		this.calorie = (int)(percent * weight / 15 * this.unit);
 	}
