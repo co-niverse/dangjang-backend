@@ -1,4 +1,6 @@
-package com.coniverse.dangjang.domain.analysis.mapper;
+package com.coniverse.dangjang.domain.guide.exercise.mapper;
+
+import java.util.List;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -22,7 +24,14 @@ public interface ExerciseMapper {
 	})
 	ExerciseGuide toDocument(ExerciseAnalysisData exerciseAnalysisData, String guide, String comparedToLastWeek);
 
-	ExerciseGuide toDocument(ExerciseAnalysisData exerciseAnalysisData, ExerciseCalorie exerciseCalorie);
+	@Mappings({
+		@Mapping(target = "oauthId", source = "exerciseAnalysisData.oauthId"),
+		@Mapping(target = "createdAt", source = "exerciseAnalysisData.createdAt"),
+		@Mapping(target = "needStepByTTS", source = "exerciseAnalysisData.needStepByTTS"),
+		@Mapping(target = "needStepByLastWeek", source = "exerciseAnalysisData.needStepByLastWeek"),
+		@Mapping(target = "exerciseCalories", source = "exerciseCalorie")
+	})
+	ExerciseGuide toDocument(ExerciseAnalysisData exerciseAnalysisData, List<ExerciseCalorie> exerciseCalorie);
 
 	ExerciseGuideResponse toResponse(ExerciseGuide exerciseGuide);
 

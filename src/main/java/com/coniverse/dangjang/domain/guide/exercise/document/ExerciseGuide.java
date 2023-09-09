@@ -5,11 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.FieldType;
 
-import com.coniverse.dangjang.domain.analysis.enums.GuideSign;
-import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.guide.common.document.Guide;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseCalorie;
 
@@ -25,7 +21,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ExerciseGuide implements Guide {
 	@Id
-	@Field(value = "_id", targetType = FieldType.OBJECT_ID)
 	private String id;
 	private String oauthId;
 	private int needStepByTTS;
@@ -35,8 +30,8 @@ public class ExerciseGuide implements Guide {
 	private String comparedToLastWeek;
 	private List<ExerciseCalorie> exerciseCalories = new ArrayList<>();
 
-	@Builder
-	private ExerciseGuide(String oauthId, LocalDate createdAt, int needStepByTTS, String content, GuideSign signByTTS, String comparedToLastWeek,
+	@Builder(toBuilder = true)
+	private ExerciseGuide(String oauthId, LocalDate createdAt, int needStepByTTS, String content, String comparedToLastWeek,
 		int needStepByLastWeek, List<ExerciseCalorie> exerciseCalories) {
 		this.oauthId = oauthId;
 		this.createdAt = createdAt;
@@ -47,12 +42,16 @@ public class ExerciseGuide implements Guide {
 		this.exerciseCalories = exerciseCalories;
 	}
 
-	@Override
-	public CommonCode getType() {
-		return CommonCode.STEP_COUNT;
-	}
-
 	public void addExerciseCalorie(ExerciseCalorie exerciseCalorie) {
 		this.exerciseCalories.add(exerciseCalorie);
+	}
+
+	@Override
+	public String getTodayContent() {
+		return this.content;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 }

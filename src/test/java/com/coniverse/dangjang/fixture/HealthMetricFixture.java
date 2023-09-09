@@ -40,40 +40,34 @@ public class HealthMetricFixture {
 	}
 
 	public static HealthMetricResponse 건강지표_등록_응답() {
-		return new HealthMetricResponse(등록_건강지표_상세명, LocalDate.parse(생성일자), 등록_건강지표_단위, 혈당_가이드_응답());
+		return new HealthMetricResponse(등록_건강지표_상세명, LocalDate.parse(생성일자), 등록_건강지표_단위, 혈당_서브_가이드_응답());
 	}
 
 	public static HealthMetric 건강지표_엔티티(User user) {
-		HealthMetric healthMetric = HealthMetric.builder()
+		return HealthMetric.builder()
 			.createdAt(LocalDate.parse(생성일자))
 			.type(등록_건강지표)
 			.user(user)
 			.unit(등록_건강지표_단위)
 			.build();
-		healthMetric.updateGuideId(가이드_아이디);
-		return healthMetric;
 	}
 
 	public static HealthMetric 건강지표_엔티티(CommonCode type) {
-		HealthMetric healthMetric = HealthMetric.builder()
+		return HealthMetric.builder()
 			.createdAt(LocalDate.parse(생성일자))
 			.type(type)
 			.user(유저_테오())
 			.unit(등록_건강지표_단위)
 			.build();
-		healthMetric.updateGuideId(가이드_아이디);
-		return healthMetric;
 	}
 
 	public static HealthMetric 건강지표_엔티티(String unit) {
-		HealthMetric healthMetric = HealthMetric.builder()
+		return HealthMetric.builder()
 			.createdAt(LocalDate.parse(생성일자))
 			.type(등록_건강지표)
 			.user(유저_테오())
 			.unit(unit)
 			.build();
-		healthMetric.updateGuideId(가이드_아이디);
-		return healthMetric;
 	}
 
 	/**
@@ -95,16 +89,5 @@ public class HealthMetricFixture {
 			.user(user)
 			.unit(unit)
 			.build();
-	}
-
-	public static HealthMetric 건강지표_엔티티(User user, CommonCode type, String unit, String guideId) {
-		HealthMetric healthMetric = HealthMetric.builder()
-			.createdAt(LocalDate.parse(생성일자))
-			.type(type)
-			.user(user)
-			.unit(unit)
-			.build();
-		healthMetric.updateGuideId(guideId);
-		return healthMetric;
 	}
 }

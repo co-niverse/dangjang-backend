@@ -8,4 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public record ExerciseGuideResponse(@JsonIgnore String id, LocalDate createdAt, int needStepByTTS, int needStepByLastWeek, String comparedToLastWeek,
 									String content, List<ExerciseCalorie> exerciseCalories) implements GuideResponse {
+	@Override
+	public String type() {
+		return null;
+	}
 }

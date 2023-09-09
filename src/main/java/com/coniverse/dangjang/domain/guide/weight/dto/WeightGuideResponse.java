@@ -6,6 +6,7 @@ import com.coniverse.dangjang.domain.analysis.enums.Alert;
 import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public record WeightGuideResponse(@JsonIgnore String id, LocalDate createdAt, int weightDiff, Alert alert, String content) implements GuideResponse {
+public record WeightGuideResponse(String type, @JsonIgnore String id, LocalDate createdAt, int weightDiff, Alert alert, String content)
+	implements GuideResponse {
 
 }

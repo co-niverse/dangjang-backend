@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.WeightAnalysisData;
+import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
 import com.coniverse.dangjang.domain.guide.common.service.GuideGenerateService;
@@ -23,12 +24,13 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class WeightGuideGenerateService implements GuideGenerateService {
+	private final WeightGuideSearchService weightGuideSearchService;
 	private final WeightGuideRepository weightGuideRepository;
 	private final WeightMapper weightMapper;
 
 	@Override
-	public GuideResponse generateGuide(AnalysisData weightAnalysisData) {
-		WeightAnalysisData data = (WeightAnalysisData)weightAnalysisData;
+	public GuideResponse createGuide(AnalysisData analysisData) {
+		WeightAnalysisData data = (WeightAnalysisData)analysisData;
 		String content = String.format("%s이에요. 평균 체중에 비해 %dkg %s", data.getAlert().getTitle(), data.getWeightDiff(),
 			data.getWeightDiff() > 0 ? "많아요" : "적어요");
 		WeightGuide weightGuide = weightMapper.toDocument(data, content);
@@ -36,7 +38,32 @@ public class WeightGuideGenerateService implements GuideGenerateService {
 	}
 
 	@Override
+	public GuideResponse updateGuide(AnalysisData analysisData) {
+		WeightAnalysisData data = (WeightAnalysisData)analysisData;
+		WeightGuide weightGuide = weightGuideSearchService.findByOauthIdAndCreatedAt(data.getOauthId(), data.getCreatedAt());
+		String content = String.format("%s이에요. 평균 체중에 비해 %dkg %s", data.getAlert().getTitle(), data.getWeightDiff(),
+			data.getWeightDiff() > 0 ? "많아요" : "적어요");
+		WeightGuide updatedWeightGuide = updateGuide(weightGuide, data, content);
+		updatedWeightGuide.setId(weightGuide.getId());
+		return weightMapper.toResponse(weightGuideRepository.save(updatedWeightGuide));
+	}
+
+	@Override
+	public GuideResponse updateGuideWithType(AnalysisData analysisData, CommonCode prevType) {
+		return GuideGenerateService.super.updateGuideWithType(analysisData, prevType);
+	}
+
+	@Override
 	public GroupCode getGroupCode() {
 		return GroupCode.WEIGHT;
 	}
+
+	public WeightGuide updateGuide(WeightGuide existGuide, WeightAnalysisData data, String content) {
+		return existGuide.toBuilder()
+			.todayContent(content)
+			.weightDiff(data.getWeightDiff())
+			.alert(data.getAlert())
+			.build();
+	}
+
 }

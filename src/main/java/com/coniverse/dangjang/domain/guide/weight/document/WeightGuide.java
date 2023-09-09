@@ -3,8 +3,6 @@ package com.coniverse.dangjang.domain.guide.weight.document;
 import java.time.LocalDate;
 
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import com.coniverse.dangjang.domain.analysis.enums.Alert;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
@@ -27,23 +25,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class WeightGuide implements Guide {
 	@Id
-	@Field(value = "_id", targetType = FieldType.OBJECT_ID)
 	private String id;
 	private String oauthId;
 	private CommonCode type;
 	private int weightDiff;
 	private Alert alert;
 	private LocalDate createdAt;
-	private String content;
+	private String todayContent;
 
-	@Builder
-	private WeightGuide(String oauthId, CommonCode type, int weightDiff, Alert alert, LocalDate createdAt, String content) {
+	@Builder(toBuilder = true)
+	private WeightGuide(String oauthId, CommonCode type, int weightDiff, Alert alert, LocalDate createdAt, String todayContent, String id) {
+		this.id = id;
 		this.oauthId = oauthId;
 		this.type = type;
 		this.weightDiff = weightDiff;
 		this.alert = alert;
 		this.createdAt = createdAt;
-		this.content = content;
+		this.todayContent = todayContent;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }
