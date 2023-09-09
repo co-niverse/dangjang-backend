@@ -22,14 +22,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.coniverse.dangjang.domain.analysis.strategy.ExerciseAnalysisStrategy;
-import com.coniverse.dangjang.domain.analysis.strategy.WeightAnalysisStrategy;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseCalorie;
 import com.coniverse.dangjang.domain.guide.exercise.repository.ExerciseGuideRepository;
 import com.coniverse.dangjang.domain.guide.exercise.service.ExerciseGuideGenerateService;
-import com.coniverse.dangjang.domain.guide.weight.repository.WeightGuideRepository;
-import com.coniverse.dangjang.domain.guide.weight.service.WeightGuideGenerateService;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.mapper.HealthMetricMapper;
 import com.coniverse.dangjang.domain.healthmetric.repository.HealthMetricRepository;
@@ -40,26 +37,22 @@ import com.coniverse.dangjang.domain.user.repository.UserRepository;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class ExerciseGuideGenerateServiceTest {
+class ExerciseGuideGenerateServiceTest {
 	private final LocalDate 등록_일자 = LocalDate.of(2023, 12, 31);
 	@Autowired
 	private ExerciseGuideGenerateService exerciseGuideGenerateService;
-	@Autowired
-	private WeightGuideGenerateService weightGuideGenerateService;
 	@Autowired
 	private HealthMetricRepository healthMetricRepository;
 	@Autowired
 	private HealthMetricSearchService healthMetricSearchService;
 	@Autowired
 	private ExerciseGuideRepository exerciseGuideRepository;
-	@Autowired
-	private WeightGuideRepository weightGuideRepository;
+
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
 	private ExerciseAnalysisStrategy exerciseAnalysisStrategy;
-	@Autowired
-	private WeightAnalysisStrategy weightAnalysisStrategy;
+
 	@Autowired
 	private HealthMetricMapper mapper;
 
@@ -96,15 +89,13 @@ public class ExerciseGuideGenerateServiceTest {
 	void 걸음수_조언을_성공적으로_수정한다(String unit) {
 		// given
 		var data = exerciseAnalysisStrategy.analyze(운동_분석_데이터(user, CommonCode.STEP_COUNT, unit));
-		// exerciseGuideRepository.deleteAll();
+
 		// when
 		exerciseGuideGenerateService.updateGuide(data);
 		// then
 		Optional<ExerciseGuide> 등록된_건강지표 = exerciseGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
-		assertThat(등록된_건강지표.get().getTodayContent()).isEqualTo(
-			걸음수_만보대비_가이드_데이터(등록된_건강지표.get()));
-		assertThat(등록된_건강지표.get().getComparedToLastWeek()).isEqualTo(
-			걸음수_지난주대비_가이드_데이터(등록된_건강지표.get()));
+		assertThat(등록된_건강지표.get().getTodayContent()).isEqualTo(걸음수_만보대비_가이드_데이터(등록된_건강지표.get()));
+		assertThat(등록된_건강지표.get().getComparedToLastWeek()).isEqualTo(걸음수_지난주대비_가이드_데이터(등록된_건강지표.get()));
 	}
 
 	@Order(300)
@@ -136,9 +127,9 @@ public class ExerciseGuideGenerateServiceTest {
 		}
 		exerciseCalories.add(운동_칼로리_데이터(type, Integer.parseInt(unit), weight));
 
-		assertThat(등록된_운동가이드.get().getExerciseCalories().size()).isEqualTo(등록되어있는_운동칼로리수 + 1);
+		assertThat(등록된_운동가이드.get().getExerciseCalories()).hasSize(등록되어있는_운동칼로리수 + 1);
 		assertThat(등록된_운동가이드.get().getExerciseCalories()).isEqualTo(exerciseCalories);
-		// exerciseGuideRepository.deleteAll();
+
 	}
 
 	@Order(450)
@@ -149,7 +140,6 @@ public class ExerciseGuideGenerateServiceTest {
 		int weight = Integer.parseInt(healthMetricSearchService.findLastHealthMetricById(user.getOauthId(), CommonCode.MEASUREMENT).getUnit());
 		var data = exerciseAnalysisStrategy.analyze(운동_분석_데이터(user, type, unit));
 		Optional<ExerciseGuide> 이전_등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
-		List<ExerciseCalorie> exerciseCalories = new ArrayList<>();
 		List<ExerciseCalorie> 수정된_운동칼로리 = new ArrayList<>();
 		int 등록되어있는_운동칼로리수 = 0;
 		//when
@@ -161,7 +151,7 @@ public class ExerciseGuideGenerateServiceTest {
 			등록되어있는_운동칼로리수 = 이전_등록된_운동가이드.get().getExerciseCalories().size();
 			수정된_운동칼로리 = 이전_등록된_운동가이드.get().getExerciseCalories();
 		}
-		assertThat(등록된_운동가이드.get().getExerciseCalories().size()).isEqualTo(등록되어있는_운동칼로리수);
+		assertThat(등록된_운동가이드.get().getExerciseCalories()).hasSize(등록되어있는_운동칼로리수);
 		if (등록된_운동가이드.isPresent()) {
 			for (int i = 0; i < 등록된_운동가이드.get().getExerciseCalories().size(); i++) {
 				if (등록된_운동가이드.get().getExerciseCalories().get(i).type().equals(type)) {

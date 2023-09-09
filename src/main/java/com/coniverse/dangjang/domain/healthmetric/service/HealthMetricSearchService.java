@@ -36,7 +36,6 @@ public class HealthMetricSearchService {
 	 * @since 1.0.0
 	 */
 	public HealthMetric findByHealthMetricId(String oauthId, LocalDate createdAt, CommonCode type) {
-		System.out.println("HealthMetricSearchService.findByHealthMetricId :" + type);
 		return healthMetricRepository.findByHealthMetricId(oauthId, createdAt, type).orElseThrow(HealthMetricNotFoundException::new);
 	}
 
@@ -50,7 +49,6 @@ public class HealthMetricSearchService {
 	 * @since 1.0.0
 	 */
 	public HealthMetric findLastHealthMetricById(String oauthId, CommonCode commonCode) {
-		System.out.println("HealthMetricSearchService.findLastHealthMetricById :" + commonCode);
 		return healthMetricRepository.findByHealthMetricId(oauthId, commonCode).orElseThrow(HealthMetricNotFoundException::new);
 	}
 
