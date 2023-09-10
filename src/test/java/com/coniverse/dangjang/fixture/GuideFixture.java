@@ -1,5 +1,8 @@
 package com.coniverse.dangjang.fixture;
 
+import static com.coniverse.dangjang.fixture.CommonCodeFixture.*;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,17 +23,15 @@ import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
  */
 public class GuideFixture {
 	public static BloodSugarGuide 혈당_가이드_도큐먼트(String oauthId, String createdAt) {
-		return BloodSugarGuide.builder()
+		BloodSugarGuide guide = BloodSugarGuide.builder()
 			.oauthId(oauthId)
 			.createdAt(createdAt)
 			.build();
-	}
 
-	public static BloodSugarGuideResponse 혈당_가이드_응답(String createdAt) {
-		List<TodayGuide> 오늘의_가이드 = 혈당_가이드_도큐먼트("11111111", createdAt).getTodayGuides();
-		List<SubGuideResponse> 서브_가이드 = new ArrayList<>();
-		서브_가이드.add((SubGuideResponse)혈당_서브_가이드_응답());
-		return new BloodSugarGuideResponse(createdAt, 오늘의_가이드, 서브_가이드);
+		혈당_타입().stream()
+			.map(GuideFixture::혈당_서브_가이드)
+			.forEach(guide::addSubGuide);
+		return guide;
 	}
 
 	public static SubGuide 혈당_서브_가이드(CommonCode type) {
@@ -43,19 +44,35 @@ public class GuideFixture {
 			.build();
 	}
 
-	public static GuideResponse 혈당_서브_가이드_응답() {
+	public static List<TodayGuide> 혈당_오늘의_가이드(String createdAt) {
+		return 혈당_가이드_도큐먼트("11111111", createdAt).getTodayGuides();
+	}
+
+	public static BloodSugarGuideResponse 혈당_가이드_응답(String createdAt) {
+		List<TodayGuide> 오늘의_가이드 = 혈당_오늘의_가이드(createdAt);
+		List<SubGuideResponse> 서브_가이드 = new ArrayList<>();
+		서브_가이드.add((SubGuideResponse)혈당_가이드_응답용_서브_가이드_응답());
+		return new BloodSugarGuideResponse(createdAt, 오늘의_가이드, 서브_가이드);
+	}
+
+	public static GuideResponse 혈당_가이드_응답용_서브_가이드_응답() {
 		return new SubGuideResponse(CommonCode.BEFORE_BREAKFAST.getTitle(), "100", Alert.CAUTION.getTitle(), "제목입니다", "가이드입니다", null);
 	}
 
+	public static GuideResponse 혈당_서브_가이드_응답() {
+		return new SubGuideResponse(CommonCode.BEFORE_BREAKFAST.getTitle(), null, Alert.CAUTION.getTitle(), "제목입니다", "가이드입니다",
+			혈당_오늘의_가이드(LocalDate.now().toString()));
+	}
+
 	public static GuideResponse 운동_가이드_응답() { // TODO return 수정
-		return new SubGuideResponse(CommonCode.STEP_COUNT.getTitle(), null, Alert.CAUTION.getTitle(), "제목입니다.", "가이드입니다", null);
+		return null;
 	}
 
 	public static GuideResponse 체중_가이드_응답() { // TODO return 수정
-		return new SubGuideResponse(CommonCode.MEASUREMENT.getTitle(), null, Alert.CAUTION.getTitle(), "제목입니다.", "가이드입니다", null);
+		return null;
 	}
 
 	public static GuideResponse 당화혈색소_가이드_응답() { // TODO return 수정
-		return new SubGuideResponse(CommonCode.HBA1C.getTitle(), null, Alert.CAUTION.getTitle(), "제목입니다.", "가이드입니다", null);
+		return null;
 	}
 }
