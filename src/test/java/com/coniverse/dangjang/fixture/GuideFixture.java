@@ -34,18 +34,18 @@ public class GuideFixture {
 	}
 
 	public static GuideResponse 혈당_서브_가이드_응답() {
-		return new SubGuideResponse(CommonCode.BEFORE_BREAKFAST.getTitle(), null, Alert.CAUTION.getTitle(), "제목입니다", "가이드입니다");
+		return new SubGuideResponse(CommonCode.BEFORE_BREAKFAST.getTitle(), null, Alert.CAUTION.getTitle(), "제목입니다", "가이드입니다", null);
 	}
 
 	public static GuideResponse 운동_가이드_응답() { // TODO return 수정
-		return new SubGuideResponse(CommonCode.STEP_COUNT.getTitle(), null, Alert.CAUTION.getTitle(), "제목입니다.", "가이드입니다");
+		return new SubGuideResponse(CommonCode.STEP_COUNT.getTitle(), null, Alert.CAUTION.getTitle(), "제목입니다.", "가이드입니다", null);
 	}
 
 	public static GuideResponse 체중_가이드_응답() { // TODO return 수정
-		return new SubGuideResponse(CommonCode.MEASUREMENT.getTitle(), null, Alert.CAUTION.getTitle(), "제목입니다.", "가이드입니다");
+		return new SubGuideResponse(CommonCode.MEASUREMENT.getTitle(), null, Alert.CAUTION.getTitle(), "제목입니다.", "가이드입니다", null);
 	}
 
 	public static GuideResponse 당화혈색소_가이드_응답() { // TODO return 수정
-		return new SubGuideResponse(CommonCode.HBA1C.getTitle(), null, Alert.CAUTION.getTitle(), "제목입니다.", "가이드입니다");
+		return new SubGuideResponse(CommonCode.HBA1C.getTitle(), null, Alert.CAUTION.getTitle(), "제목입니다.", "가이드입니다", null);
 	}
 }

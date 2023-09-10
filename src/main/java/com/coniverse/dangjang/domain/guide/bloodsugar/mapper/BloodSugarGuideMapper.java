@@ -2,15 +2,14 @@ package com.coniverse.dangjang.domain.guide.bloodsugar.mapper;
 
 import java.util.List;
 
-import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
-import org.mapstruct.Named;
 
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.BloodSugarAnalysisData;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.BloodSugarGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.SubGuide;
+import com.coniverse.dangjang.domain.guide.bloodsugar.document.TodayGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.dto.BloodSugarGuideResponse;
 import com.coniverse.dangjang.domain.guide.bloodsugar.dto.SubGuideResponse;
 import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.GuideFormat;
@@ -56,13 +55,12 @@ public interface BloodSugarGuideMapper {
 	 * @since 1.0.0
 	 */
 	@Mapping(target = "unit", ignore = true)
-	@Mapping(target = "type", source = "type.title")
-	SubGuideResponse toSubGuideResponseNoUnit(SubGuide guide);
+	@Mapping(target = "type", source = "guide.type.title")
+	SubGuideResponse toSubGuideResponse(SubGuide guide, List<TodayGuide> todayGuides);
 
 	/**
 	 * 혈당 서브 가이드를 서브 가이드 response로 변환
 	 */
-	@Named("toSubGuideResponse")
 	@Mapping(target = "type", source = "type.title")
 	SubGuideResponse toSubGuideResponse(SubGuide guide);
 
@@ -73,6 +71,5 @@ public interface BloodSugarGuideMapper {
 	 *
 	 * @since 1.0.0
 	 */
-	@IterableMapping(qualifiedByName = "toSubGuideResponse")
 	List<SubGuideResponse> toSubGuideResponses(List<SubGuide> guides);
 }

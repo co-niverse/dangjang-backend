@@ -54,7 +54,7 @@ public class BloodSugarGuideGenerateService implements GuideGenerateService {
 		SubGuide subGuide = mapper.toSubGuide(data, guideFormat);
 		guide.addSubGuide(subGuide);
 		bloodSugarGuideRepository.save(guide);
-		return mapper.toSubGuideResponseNoUnit(subGuide);
+		return mapper.toSubGuideResponse(subGuide, guide.getTodayGuides());
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class BloodSugarGuideGenerateService implements GuideGenerateService {
 		SubGuide subGuide = mapper.toSubGuide(data, guideFormat);
 		guide.updateSubGuide(subGuide);
 		bloodSugarGuideRepository.save(guide);
-		return mapper.toSubGuideResponseNoUnit(subGuide);
+		return mapper.toSubGuideResponse(subGuide, guide.getTodayGuides());
 
 	}
 
@@ -94,7 +94,7 @@ public class BloodSugarGuideGenerateService implements GuideGenerateService {
 		SubGuide subGuide = mapper.toSubGuide(data, guideFormat);
 		guide.updateSubGuide(subGuide, prevType);
 		bloodSugarGuideRepository.save(guide);
-		return mapper.toSubGuideResponseNoUnit(subGuide);
+		return mapper.toSubGuideResponse(subGuide, guide.getTodayGuides());
 	}
 
 	@Override
