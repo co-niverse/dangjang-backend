@@ -30,10 +30,4 @@ public class BloodSugarGuideController {
 		BloodSugarGuideResponse response = bloodSugarGuideSearchService.findGuide(principal.getUsername(), date);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
-
-	@GetMapping("/test")
-	public ResponseEntity<SuccessSingleResponse<BloodSugarGuideResponse>> get1(@ValidLocalDate @RequestParam(value = "date") String date) {
-		BloodSugarGuideResponse response = bloodSugarGuideSearchService.findGuide("11111111", date);
-		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
-	}
 }
