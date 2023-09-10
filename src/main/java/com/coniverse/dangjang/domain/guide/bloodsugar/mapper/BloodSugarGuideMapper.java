@@ -62,6 +62,7 @@ public interface BloodSugarGuideMapper {
 	 * 혈당 서브 가이드를 서브 가이드 response로 변환
 	 */
 	@Mapping(target = "type", source = "type.title")
+	@Mapping(target = "todayGuides", ignore = true)
 	SubGuideResponse toSubGuideResponse(SubGuide guide);
 
 	/**

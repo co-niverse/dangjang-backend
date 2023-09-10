@@ -1,6 +1,7 @@
 package com.coniverse.dangjang.domain.guide.weight.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.WeightAnalysisData;
 import com.coniverse.dangjang.domain.guide.weight.document.WeightGuide;
@@ -13,5 +14,6 @@ import com.coniverse.dangjang.domain.guide.weight.document.WeightGuide;
  */
 @Mapper(componentModel = "spring")
 public interface WeightMapper {
-	WeightGuide toDocument(WeightAnalysisData weightAnalysisData, String content);
+	@Mapping(target = "title", source = "data.alert.title")
+	WeightGuide toDocument(WeightAnalysisData data, String content);
 }
