@@ -19,6 +19,12 @@ public enum NormalGuideFormat implements GuideFormat {
 
 	private final String title;
 
+	/**
+	 * 가이드 중 하나를 랜덤으로 반환한다.
+	 *
+	 * @return 정상 가이드 format
+	 * @since 1.0.0
+	 */
 	public static NormalGuideFormat getRandomOne() {
 		int idx = ThreadLocalRandom.current().nextInt(3);
 		return Arrays.stream(NormalGuideFormat.values()).toList().get(idx);

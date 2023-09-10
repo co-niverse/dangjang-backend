@@ -49,6 +49,11 @@ public class CautionGuideFormat implements GuideFormat {
 		return content;
 	}
 
+	/**
+	 * 당뇨 여부, 식전/식후 혈당에 따른 가이드 내용
+	 *
+	 * @since 1.0.0
+	 */
 	@AllArgsConstructor
 	private enum Content {
 		PRE_DIABETES_BM(false, Meal.BEFORE_MEAL, "공복 혈당 장애가 의심돼요."),
