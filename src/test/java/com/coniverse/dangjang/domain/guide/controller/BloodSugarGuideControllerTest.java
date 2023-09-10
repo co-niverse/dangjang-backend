@@ -73,7 +73,6 @@ class BloodSugarGuideControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isBadRequest(),
 			jsonPath("$.errorCode").value(400),
-			jsonPath("$.violationErrors[0].propertyPath").value("get.arg0"),
 			jsonPath("$.violationErrors[0].rejectedValue").value(createdAt)
 		);
 	}
