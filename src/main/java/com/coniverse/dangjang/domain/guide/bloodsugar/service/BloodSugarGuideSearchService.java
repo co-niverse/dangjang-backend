@@ -9,6 +9,7 @@ import com.coniverse.dangjang.domain.guide.bloodsugar.dto.BloodSugarGuideRespons
 import com.coniverse.dangjang.domain.guide.bloodsugar.mapper.BloodSugarGuideMapper;
 import com.coniverse.dangjang.domain.guide.bloodsugar.repository.BloodSugarGuideRepository;
 import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
+import com.coniverse.dangjang.domain.user.service.UserSearchService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class BloodSugarGuideSearchService {
 	private final BloodSugarGuideRepository bloodSugarGuideRepository;
 	private final BloodSugarGuideMapper bloodSugarGuideMapper;
+	private final UserSearchService userSearchService;
 
 	/**
 	 * 사용자 PK와 생성일자로 혈당 가이드를 조회한다.
@@ -47,6 +49,7 @@ public class BloodSugarGuideSearchService {
 	 * @since 1.0.0
 	 */
 	public BloodSugarGuideResponse findGuide(String oauthId, String findAt) {
+		userSearchService.findUserByOauthId(oauthId);
 		return bloodSugarGuideRepository.findByOauthIdAndCreatedAt(oauthId, findAt)
 			.map(bloodSugarGuideMapper::toResponse)
 			.orElseThrow(GuideNotFoundException::new);
