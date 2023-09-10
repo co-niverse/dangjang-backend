@@ -1,11 +1,14 @@
 package com.coniverse.dangjang.domain.guide.bloodsugar.document;
 
+import lombok.Getter;
+
 /**
  * 혈당 오늘의 가이드
  *
  * @author TEO
  * @since 1.0.0
  */
+@Getter
 public class TodayGuide {
 	private final String alert;
 	private int count;
