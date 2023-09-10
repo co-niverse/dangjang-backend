@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.guide.bloodsugar.guideformat;
+package com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format;
 
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;

@@ -22,11 +22,11 @@ import com.coniverse.dangjang.domain.analysis.dto.healthMetric.BloodSugarAnalysi
 import com.coniverse.dangjang.domain.analysis.strategy.BloodSugarAnalysisStrategy;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.guide.bloodsugar.dto.SubGuideResponse;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.CautionGuideFormat;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.HypoglycemiaGuideFormat;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.HypoglycemiaSuspectGuideFormat;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.NormalGuideFormat;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.WarningGuideFormat;
+import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.CautionGuideFormat;
+import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.HypoglycemiaGuideFormat;
+import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.HypoglycemiaSuspectGuideFormat;
+import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.NormalGuideFormat;
+import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.WarningGuideFormat;
 import com.coniverse.dangjang.domain.guide.bloodsugar.repository.BloodSugarGuideRepository;
 import com.coniverse.dangjang.domain.guide.bloodsugar.service.BloodSugarGuideGenerateService;
 import com.coniverse.dangjang.domain.user.entity.User;

@@ -11,12 +11,12 @@ import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.BloodSugarGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.SubGuide;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.CautionGuideFormat;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.GuideFormat;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.HypoglycemiaGuideFormat;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.HypoglycemiaSuspectGuideFormat;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.NormalGuideFormat;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.WarningGuideFormat;
+import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.CautionGuideFormat;
+import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.GuideFormat;
+import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.HypoglycemiaGuideFormat;
+import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.HypoglycemiaSuspectGuideFormat;
+import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.NormalGuideFormat;
+import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.WarningGuideFormat;
 import com.coniverse.dangjang.domain.guide.bloodsugar.mapper.BloodSugarGuideMapper;
 import com.coniverse.dangjang.domain.guide.bloodsugar.repository.BloodSugarGuideRepository;
 import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
@@ -60,7 +60,7 @@ public class BloodSugarGuideGenerateService implements GuideGenerateService {
 		SubGuide subGuide = mapper.toSubGuide(data, guideFormat);
 		guide.add(subGuide);
 		bloodSugarGuideRepository.save(guide);
-		return mapper.toSubGuideResponse(subGuide);
+		return mapper.toSubGuideResponseNoUnit(subGuide);
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class BloodSugarGuideGenerateService implements GuideGenerateService {
 		SubGuide subGuide = mapper.toSubGuide(data, guideFormat);
 		guide.update(subGuide);
 		bloodSugarGuideRepository.save(guide);
-		return mapper.toSubGuideResponse(subGuide);
+		return mapper.toSubGuideResponseNoUnit(subGuide);
 
 	}
 
@@ -100,7 +100,7 @@ public class BloodSugarGuideGenerateService implements GuideGenerateService {
 		SubGuide subGuide = mapper.toSubGuide(data, guideFormat);
 		guide.update(subGuide, prevType);
 		bloodSugarGuideRepository.save(guide);
-		return mapper.toSubGuideResponse(subGuide);
+		return mapper.toSubGuideResponseNoUnit(subGuide);
 	}
 
 	@Override
