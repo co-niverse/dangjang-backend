@@ -12,7 +12,7 @@ import com.coniverse.dangjang.domain.guide.bloodsugar.document.SubGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.TodayGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.dto.BloodSugarGuideResponse;
 import com.coniverse.dangjang.domain.guide.bloodsugar.dto.SubGuideResponse;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.GuideFormat;
+import com.coniverse.dangjang.domain.guide.bloodsugar.factory.guideformat.GuideFormat;
 
 /**
  * 혈당 가이드 mapper

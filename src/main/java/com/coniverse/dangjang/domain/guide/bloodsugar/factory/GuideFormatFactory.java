@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.guide.bloodsugar.guideformat;
+package com.coniverse.dangjang.domain.guide.bloodsugar.factory;
 
 import java.util.Arrays;
 
@@ -6,12 +6,12 @@ import org.springframework.stereotype.Component;
 
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.BloodSugarAnalysisData;
 import com.coniverse.dangjang.domain.analysis.enums.Alert;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.CautionGuideFormat;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.GuideFormat;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.HypoglycemiaGuideFormat;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.HypoglycemiaSuspectGuideFormat;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.NormalGuideFormat;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.WarningGuideFormat;
+import com.coniverse.dangjang.domain.guide.bloodsugar.factory.guideformat.CautionGuideFormat;
+import com.coniverse.dangjang.domain.guide.bloodsugar.factory.guideformat.GuideFormat;
+import com.coniverse.dangjang.domain.guide.bloodsugar.factory.guideformat.HypoglycemiaGuideFormat;
+import com.coniverse.dangjang.domain.guide.bloodsugar.factory.guideformat.HypoglycemiaSuspectGuideFormat;
+import com.coniverse.dangjang.domain.guide.bloodsugar.factory.guideformat.NormalGuideFormat;
+import com.coniverse.dangjang.domain.guide.bloodsugar.factory.guideformat.WarningGuideFormat;
 
 @Component
 public class GuideFormatFactory {
