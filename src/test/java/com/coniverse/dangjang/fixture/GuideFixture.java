@@ -20,9 +20,6 @@ public class GuideFixture {
 		return BloodSugarGuide.builder()
 			.oauthId(oauthId)
 			.createdAt(LocalDate.now())
-			.alert(Alert.CAUTION)
-			.content("가이드입니다")
-			.summary("요약입니다.")
 			.build();
 	}
 
