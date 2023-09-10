@@ -1,22 +1,15 @@
 package com.coniverse.dangjang.domain.guide.bloodsugar.service;
 
-import java.util.Arrays;
-
 import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.BloodSugarAnalysisData;
-import com.coniverse.dangjang.domain.analysis.enums.Alert;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.BloodSugarGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.SubGuide;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.CautionGuideFormat;
+import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.GuideFormatFactory;
 import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.GuideFormat;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.HypoglycemiaGuideFormat;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.HypoglycemiaSuspectGuideFormat;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.NormalGuideFormat;
-import com.coniverse.dangjang.domain.guide.bloodsugar.guideformat.format.WarningGuideFormat;
 import com.coniverse.dangjang.domain.guide.bloodsugar.mapper.BloodSugarGuideMapper;
 import com.coniverse.dangjang.domain.guide.bloodsugar.repository.BloodSugarGuideRepository;
 import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
@@ -37,6 +30,7 @@ public class BloodSugarGuideGenerateService implements GuideGenerateService {
 	private final BloodSugarGuideSearchService bloodSugarGuideSearchService;
 	private final BloodSugarGuideRepository bloodSugarGuideRepository;
 	private final BloodSugarGuideMapper mapper;
+	private final GuideFormatFactory guideFormatFactory;
 
 	/**
 	 * 서브 가이드를 생성해서 혈당 가이드에 저장한다.
@@ -56,7 +50,7 @@ public class BloodSugarGuideGenerateService implements GuideGenerateService {
 		} catch (GuideNotFoundException e) {
 			guide = mapper.toDocument(data);
 		}
-		GuideFormat guideFormat = getGuideFormat(data);
+		GuideFormat guideFormat = guideFormatFactory.createGuideFormat(data);
 		SubGuide subGuide = mapper.toSubGuide(data, guideFormat);
 		guide.add(subGuide);
 		bloodSugarGuideRepository.save(guide);
@@ -75,7 +69,7 @@ public class BloodSugarGuideGenerateService implements GuideGenerateService {
 		BloodSugarAnalysisData data = (BloodSugarAnalysisData)analysisData;
 		BloodSugarGuide guide = bloodSugarGuideSearchService.findByUserIdAndCreatedAt(data.getOauthId(), data.getCreatedAt());
 
-		GuideFormat guideFormat = getGuideFormat(data);
+		GuideFormat guideFormat = guideFormatFactory.createGuideFormat(data);
 		SubGuide subGuide = mapper.toSubGuide(data, guideFormat);
 		guide.update(subGuide);
 		bloodSugarGuideRepository.save(guide);
@@ -96,7 +90,7 @@ public class BloodSugarGuideGenerateService implements GuideGenerateService {
 		BloodSugarAnalysisData data = (BloodSugarAnalysisData)analysisData;
 		BloodSugarGuide guide = bloodSugarGuideSearchService.findByUserIdAndCreatedAt(data.getOauthId(), data.getCreatedAt());
 
-		GuideFormat guideFormat = getGuideFormat(data);
+		GuideFormat guideFormat = guideFormatFactory.createGuideFormat(data);
 		SubGuide subGuide = mapper.toSubGuide(data, guideFormat);
 		guide.update(subGuide, prevType);
 		bloodSugarGuideRepository.save(guide);
@@ -106,26 +100,5 @@ public class BloodSugarGuideGenerateService implements GuideGenerateService {
 	@Override
 	public GroupCode getGroupCode() {
 		return GroupCode.BLOOD_SUGAR;
-	}
-
-	private GuideFormat getGuideFormat(BloodSugarAnalysisData data) {
-		if (data.getAlert().equals(Alert.HYPOGLYCEMIA)) {
-			return Arrays.stream(HypoglycemiaGuideFormat.values())
-				.filter(format -> format.verifyMedicine(data.isMedicine()))
-				.filter(format -> format.verifyInjection(data.isInjection()))
-				.findAny()
-				.orElseThrow();
-		} else if (data.getAlert().equals(Alert.HYPOGLYCEMIA_SUSPECT)) {
-			return new HypoglycemiaSuspectGuideFormat(data.getDeviation());
-		} else if (data.getAlert().equals(Alert.NORMAL)) {
-			return NormalGuideFormat.getRandomOne();
-		} else if (data.getAlert().equals(Alert.CAUTION)) {
-			CautionGuideFormat format = new CautionGuideFormat(data.getDeviation(), data.isLackOfExercise(), data.isOverweight());
-			format.setContent(data.isDiabetic(), data.getType());
-			return format;
-		}
-		WarningGuideFormat format = new WarningGuideFormat(data.getDeviation(), data.isLackOfExercise(), data.isOverweight());
-		format.setContent(data.isDiabetic());
-		return format;
 	}
 }
