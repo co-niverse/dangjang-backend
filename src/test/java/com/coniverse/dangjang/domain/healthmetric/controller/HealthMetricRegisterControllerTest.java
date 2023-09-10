@@ -64,6 +64,7 @@ class HealthMetricRegisterControllerTest extends ControllerTest {
 			jsonPath("$.data.unit").value(response.unit()),
 			jsonPath("$.data.guide.unit").doesNotExist(),
 			jsonPath("$.data.guide.type").value(response.guide().type()),
+			jsonPath("$.data.guide.title").value(response.guide().title()),
 			jsonPath("$.data.guide.content").value(response.guide().content())
 		);
 	}
@@ -164,6 +165,7 @@ class HealthMetricRegisterControllerTest extends ControllerTest {
 			jsonPath("$.data.unit").value(response.unit()),
 			jsonPath("$.data.guide.unit").doesNotExist(),
 			jsonPath("$.data.guide.type").value(response.guide().type()),
+			jsonPath("$.data.guide.title").value(response.guide().title()),
 			jsonPath("$.data.guide.content").value(response.guide().content())
 		);
 	}
