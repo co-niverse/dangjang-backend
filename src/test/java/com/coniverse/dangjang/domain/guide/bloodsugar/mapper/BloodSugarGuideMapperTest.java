@@ -62,7 +62,7 @@ public class BloodSugarGuideMapperTest {
 				})
 			),
 			() -> assertTrue(
-				IntStream.range(0, 5).allMatch(i -> {
+				IntStream.range(0, guide.getSubGuides().size()).allMatch(i -> {
 					SubGuideResponse 서브_가이드_응답 = response.guides().get(i);
 					SubGuide 저장된_서브_가이드 = guide.getSubGuides().get(i);
 					return 서브_가이드_응답.type().equals(저장된_서브_가이드.getType().getTitle())
