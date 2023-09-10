@@ -23,6 +23,7 @@ public interface BloodSugarGuideMapper {
 	 * @since 1.0.0
 	 */
 	@Mapping(target = "todayAlert", ignore = true)
+	@Mapping(target = "todayTitle", ignore = true)
 	@Mapping(target = "todayContent", ignore = true)
 	@Mapping(target = "summary", ignore = true)
 	BloodSugarGuide toDocument(BloodSugarAnalysisData data);
