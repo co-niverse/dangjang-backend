@@ -9,5 +9,7 @@ package com.coniverse.dangjang.domain.guide.common.dto;
 public interface GuideResponse {
 	String type();
 
+	String title();
+
 	String content();
 }

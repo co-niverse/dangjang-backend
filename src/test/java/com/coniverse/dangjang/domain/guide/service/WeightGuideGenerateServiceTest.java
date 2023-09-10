@@ -52,6 +52,6 @@ class WeightGuideGenerateServiceTest {
 		weightGuideGenerateService.createGuide(data);
 		// then
 		WeightGuide 등록된_건강지표 = weightGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
-		assertThat(등록된_건강지표.getTodayContent()).isNotBlank(); // TODO 더 자세하게 테스트 검증
+		assertThat(등록된_건강지표.getContent()).isNotBlank(); // TODO 더 자세하게 테스트 검증
 	}
 }

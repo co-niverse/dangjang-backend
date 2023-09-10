@@ -34,33 +34,36 @@ public class BloodSugarGuide implements Guide {
 	private String oauthId;
 	private LocalDate createdAt;
 	private List<SubGuide> subGuides;
-	private Alert todayAlert;
-	private String todayTitle;
-	private String todayContent;
+	private Alert alert;
+	private String title;
+	private String content;
+	private String unit;
 	private String summary;
 
 	@Builder
-	private BloodSugarGuide(String oauthId, LocalDate createdAt, Alert todayAlert, String todayTitle, String todayContent, String summary) {
+	private BloodSugarGuide(String oauthId, LocalDate createdAt, Alert alert, String title, String content, String unit, String summary) {
 		this.oauthId = oauthId;
 		this.createdAt = createdAt;
 		this.subGuides = new ArrayList<>();
-		this.todayAlert = todayAlert;
-		this.todayTitle = todayTitle;
-		this.todayContent = todayContent;
+		this.alert = alert;
+		this.title = title;
+		this.content = content;
+		this.unit = unit;
 		this.summary = summary;
 	}
 
 	/**
 	 * 오늘의 경보, 오늘의 가이드 내용을 업데이트한다.
 	 *
-	 * @param todayAlert   오늘의 경보
-	 * @param todayContent 오늘의 가이드 내용
+	 * @param alert   오늘의 경보
+	 * @param title   오늘의 가이드 제목
+	 * @param content 오늘의 가이드 내용
 	 * @since 1.0.0
 	 */
-	public void updateToday(Alert todayAlert, String todayTitle, String todayContent) { // TODO 22시마다 수행
-		this.todayAlert = todayAlert;
-		this.todayTitle = todayTitle;
-		this.todayContent = todayContent;
+	public void updateToday(Alert alert, String title, String content) { // TODO 22시마다 수행
+		this.alert = alert;
+		this.title = title;
+		this.content = content;
 	}
 
 	/**

@@ -13,5 +13,9 @@ public interface Guide {
 
 	LocalDate getCreatedAt();
 
-	String getTodayContent();
+	String getUnit();
+
+	String getTitle();
+
+	String getContent();
 }

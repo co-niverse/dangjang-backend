@@ -1,6 +1,5 @@
 package com.coniverse.dangjang.domain.guide.bloodsugar.document;
 
-import com.coniverse.dangjang.domain.analysis.enums.Alert;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 
 import lombok.Builder;
@@ -15,13 +14,15 @@ import lombok.Getter;
 @Getter
 public class SubGuide {
 	private CommonCode type;
+	private String unit;
 	private String title;
 	private String content;
-	private Alert alert;
+	private String alert;
 
 	@Builder
-	private SubGuide(CommonCode type, String title, String content, Alert alert) {
+	private SubGuide(CommonCode type, String unit, String title, String content, String alert) {
 		this.type = type;
+		this.unit = unit;
 		this.title = title;
 		this.content = content;
 		this.alert = alert;
@@ -35,6 +36,7 @@ public class SubGuide {
 	 */
 	protected void update(SubGuide subGuide) {
 		this.type = subGuide.getType();
+		this.unit = subGuide.getUnit();
 		this.title = subGuide.getTitle();
 		this.content = subGuide.getContent();
 		this.alert = subGuide.getAlert();

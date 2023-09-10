@@ -9,6 +9,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * @author TEO
  * @since 1.0.0
  */
-public record SubGuideResponse(@JsonInclude(JsonInclude.Include.NON_NULL) String type, @JsonInclude(JsonInclude.Include.NON_NULL) String unit, String alert,
-							   String title, String content) implements GuideResponse {
+public record SubGuideResponse(String type, @JsonInclude(JsonInclude.Include.NON_NULL) String unit, String alert, String title, String content)
+	implements GuideResponse {
 }

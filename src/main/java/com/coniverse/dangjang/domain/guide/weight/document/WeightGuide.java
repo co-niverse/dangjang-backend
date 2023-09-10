@@ -34,15 +34,19 @@ public class WeightGuide implements Guide {
 	private int weightDiff;
 	private Alert alert;
 	private LocalDate createdAt;
-	private String todayContent;
+	private String title;
+	private String content;
+	private String unit;
 
 	@Builder
-	private WeightGuide(String oauthId, CommonCode type, int weightDiff, Alert alert, LocalDate createdAt, String todayContent) {
+	private WeightGuide(String oauthId, CommonCode type, int weightDiff, Alert alert, LocalDate createdAt, String title, String content, String unit) {
 		this.oauthId = oauthId;
 		this.type = type;
 		this.weightDiff = weightDiff;
 		this.alert = alert;
 		this.createdAt = createdAt;
-		this.todayContent = todayContent;
+		this.title = title;
+		this.content = content;
+		this.unit = unit;
 	}
 }

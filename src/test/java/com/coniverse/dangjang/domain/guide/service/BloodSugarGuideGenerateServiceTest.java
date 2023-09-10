@@ -62,7 +62,7 @@ class BloodSugarGuideGenerateServiceTest {
 				SubGuide 서브_가이드 = 혈당_가이드.getSubGuides().get(0);
 				assertThat(서브_가이드.getType()).isEqualTo(bloodSugarAnalysisData.getType());
 				assertThat(서브_가이드.getContent()).isEqualTo(서브_가이드_응답.content());
-				assertThat(서브_가이드.getAlert().getTitle()).isEqualTo(서브_가이드_응답.alert());
+				assertThat(서브_가이드.getAlert()).isEqualTo(서브_가이드_응답.alert());
 			}
 		);
 	}
@@ -88,7 +88,7 @@ class BloodSugarGuideGenerateServiceTest {
 				SubGuide 서브_가이드 = 혈당_가이드.getSubGuides().get(1);
 				assertThat(서브_가이드.getType()).isEqualTo(bloodSugarAnalysisData.getType());
 				assertThat(서브_가이드.getContent()).isEqualTo(서브_가이드_응답.content());
-				assertThat(서브_가이드.getAlert().getTitle()).isEqualTo(서브_가이드_응답.alert());
+				assertThat(서브_가이드.getAlert()).isEqualTo(서브_가이드_응답.alert());
 			}
 		);
 	}
@@ -127,7 +127,7 @@ class BloodSugarGuideGenerateServiceTest {
 				SubGuide 서브_가이드 = 혈당_가이드.getSubGuides().get(0);
 				assertThat(서브_가이드.getType()).isEqualTo(bloodSugarAnalysisData.getType());
 				assertThat(서브_가이드.getContent()).isEqualTo(서브_가이드_응답.content());
-				assertThat(서브_가이드.getAlert().getTitle()).isEqualTo(서브_가이드_응답.alert());
+				assertThat(서브_가이드.getAlert()).isEqualTo(서브_가이드_응답.alert());
 			}
 		);
 	}
@@ -167,7 +167,7 @@ class BloodSugarGuideGenerateServiceTest {
 				SubGuide 서브_가이드 = 혈당_가이드.getSubGuides().get(1);
 				assertThat(서브_가이드.getType()).isEqualTo(bloodSugarAnalysisData.getType());
 				assertThat(서브_가이드.getContent()).isEqualTo(서브_가이드_응답.content());
-				assertThat(서브_가이드.getAlert().getTitle()).isEqualTo(서브_가이드_응답.alert());
+				assertThat(서브_가이드.getAlert()).isEqualTo(서브_가이드_응답.alert());
 			}
 		);
 	}
