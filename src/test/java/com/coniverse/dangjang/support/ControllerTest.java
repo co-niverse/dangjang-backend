@@ -11,6 +11,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.coniverse.dangjang.domain.auth.controller.LoginController;
 import com.coniverse.dangjang.domain.auth.service.JwtTokenProvider;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
+import com.coniverse.dangjang.domain.guide.bloodsugar.controller.BloodSugarGuideController;
+import com.coniverse.dangjang.domain.guide.bloodsugar.service.BloodSugarGuideSearchService;
 import com.coniverse.dangjang.domain.healthmetric.controller.HealthMetricRegisterController;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
 import com.coniverse.dangjang.domain.intro.controller.IntroController;
@@ -34,7 +36,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 		HealthMetricRegisterController.class,
 		LoginController.class,
 		SignupController.class,
-		UserController.class
+		UserController.class,
+		BloodSugarGuideController.class
 	},
 	includeFilters = @ComponentScan.Filter(classes = {EnableWebSecurity.class}))
 @ComponentScan(basePackages = "com.coniverse.dangjang.domain.auth.handler")
@@ -54,4 +57,6 @@ public class ControllerTest {
 	private UserSignupService userSignupService;
 	@MockBean
 	private JwtTokenProvider jwtTokenProvider;
+	@MockBean
+	private BloodSugarGuideSearchService bloodSugarGuideSearchService;
 }

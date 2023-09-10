@@ -1,6 +1,5 @@
 package com.coniverse.dangjang.domain.guide.bloodsugar.dto;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.TodayGuide;
@@ -11,5 +10,5 @@ import com.coniverse.dangjang.domain.guide.bloodsugar.document.TodayGuide;
  * @author TEO
  * @since 1.0.0
  */
-public record BloodSugarGuideResponse(LocalDate createdAt, List<TodayGuide> todayGuides, List<SubGuideResponse> guides) {
+public record BloodSugarGuideResponse(String createdAt, List<TodayGuide> todayGuides, List<SubGuideResponse> guides) {
 }
