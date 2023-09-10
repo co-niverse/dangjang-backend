@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.guide.service;
+package com.coniverse.dangjang.domain.guide.weight.service;
 
 import static com.coniverse.dangjang.fixture.AnalysisDataFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
@@ -16,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.coniverse.dangjang.domain.analysis.strategy.WeightAnalysisStrategy;
 import com.coniverse.dangjang.domain.guide.weight.document.WeightGuide;
 import com.coniverse.dangjang.domain.guide.weight.repository.WeightGuideRepository;
-import com.coniverse.dangjang.domain.guide.weight.service.WeightGuideGenerateService;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
 /**

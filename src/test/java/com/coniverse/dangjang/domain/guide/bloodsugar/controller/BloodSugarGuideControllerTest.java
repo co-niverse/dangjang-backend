@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.guide.controller;
+package com.coniverse.dangjang.domain.guide.bloodsugar.controller;
 
 import static com.coniverse.dangjang.fixture.GuideFixture.*;
 import static com.coniverse.dangjang.support.SimpleMockMvc.*;

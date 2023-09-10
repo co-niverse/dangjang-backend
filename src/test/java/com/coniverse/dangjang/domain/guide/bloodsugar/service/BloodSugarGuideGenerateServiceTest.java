@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.guide.service;
+package com.coniverse.dangjang.domain.guide.bloodsugar.service;
 
 import static com.coniverse.dangjang.fixture.AnalysisDataFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
@@ -19,8 +19,6 @@ import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.BloodSugarGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.SubGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.dto.SubGuideResponse;
-import com.coniverse.dangjang.domain.guide.bloodsugar.service.BloodSugarGuideGenerateService;
-import com.coniverse.dangjang.domain.guide.bloodsugar.service.BloodSugarGuideSearchService;
 import com.coniverse.dangjang.domain.guide.common.exception.GuideAlreadyExistsException;
 import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
 import com.coniverse.dangjang.domain.user.entity.User;

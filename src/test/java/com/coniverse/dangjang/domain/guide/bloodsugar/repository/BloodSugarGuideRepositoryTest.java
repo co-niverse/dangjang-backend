@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.guide.repository;
+package com.coniverse.dangjang.domain.guide.bloodsugar.repository;
 
 import static com.coniverse.dangjang.fixture.GuideFixture.*;
 import static org.assertj.core.api.Assertions.*;
@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.BloodSugarGuide;
-import com.coniverse.dangjang.domain.guide.bloodsugar.repository.BloodSugarGuideRepository;
 import com.coniverse.dangjang.support.annotation.MongoRepositoryTest;
 
 /**

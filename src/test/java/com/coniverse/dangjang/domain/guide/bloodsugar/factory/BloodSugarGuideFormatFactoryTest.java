@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.guide.factory;
+package com.coniverse.dangjang.domain.guide.bloodsugar.factory;
 
 import static com.coniverse.dangjang.fixture.AnalysisDataFixture.*;
 import static org.assertj.core.api.Assertions.*;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.coniverse.dangjang.domain.analysis.enums.Alert;
-import com.coniverse.dangjang.domain.guide.bloodsugar.factory.BloodSugarGuideFormatFactory;
 import com.coniverse.dangjang.domain.guide.bloodsugar.factory.guideformat.CautionGuideFormat;
 import com.coniverse.dangjang.domain.guide.bloodsugar.factory.guideformat.GuideFormat;
 import com.coniverse.dangjang.domain.guide.bloodsugar.factory.guideformat.HypoglycemiaGuideFormat;

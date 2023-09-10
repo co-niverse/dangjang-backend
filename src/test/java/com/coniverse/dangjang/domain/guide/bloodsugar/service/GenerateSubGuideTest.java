@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.guide.service;
+package com.coniverse.dangjang.domain.guide.bloodsugar.service;
 
 import static com.coniverse.dangjang.fixture.AnalysisDataFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
@@ -28,7 +28,6 @@ import com.coniverse.dangjang.domain.guide.bloodsugar.factory.guideformat.Hypogl
 import com.coniverse.dangjang.domain.guide.bloodsugar.factory.guideformat.NormalGuideFormat;
 import com.coniverse.dangjang.domain.guide.bloodsugar.factory.guideformat.WarningGuideFormat;
 import com.coniverse.dangjang.domain.guide.bloodsugar.repository.BloodSugarGuideRepository;
-import com.coniverse.dangjang.domain.guide.bloodsugar.service.BloodSugarGuideGenerateService;
 import com.coniverse.dangjang.domain.user.entity.User;
 
 /**
@@ -37,7 +36,7 @@ import com.coniverse.dangjang.domain.user.entity.User;
  */
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class BloodSugarSubGuideGenerateTest {
+public class GenerateSubGuideTest {
 	private static final User 전단계_환자 = 전단계_환자();
 	private static final User 당뇨_환자_강하제X_주사X = 당뇨_환자(false, false);
 	private static final User 당뇨_환자_강하제O_주사X = 당뇨_환자(true, false);

@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.guide.service;
+package com.coniverse.dangjang.domain.guide.bloodsugar.service;
 
 import static com.coniverse.dangjang.fixture.GuideFixture.*;
 import static org.assertj.core.api.Assertions.*;
@@ -19,7 +19,6 @@ import com.coniverse.dangjang.domain.guide.bloodsugar.document.BloodSugarGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.TodayGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.dto.BloodSugarGuideResponse;
 import com.coniverse.dangjang.domain.guide.bloodsugar.repository.BloodSugarGuideRepository;
-import com.coniverse.dangjang.domain.guide.bloodsugar.service.BloodSugarGuideSearchService;
 import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
 

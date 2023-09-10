@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.guide.service;
+package com.coniverse.dangjang.domain.guide.common;
 
 import static com.coniverse.dangjang.fixture.CommonCodeFixture.*;
 import static org.assertj.core.api.Assertions.*;
