@@ -24,8 +24,9 @@ public class WithDangjangUserSecurityContextFactory implements WithSecurityConte
 	@Override
 	public SecurityContext createSecurityContext(WithDangjangUser dangjangUser) {
 		Role role = dangjangUser.role();
+		String oauthId = dangjangUser.oauthId();
 		List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(role.toString());
-		User principal = new User("11111111", "", authorities);
+		User principal = new User(oauthId, "", authorities);
 
 		Authentication authentication = new UsernamePasswordAuthenticationToken(principal, null, authorities);
 		SecurityContext context = SecurityContextHolder.createEmptyContext();

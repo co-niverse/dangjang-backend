@@ -23,4 +23,6 @@ import com.coniverse.dangjang.domain.user.entity.enums.Role;
 @WithSecurityContext(factory = WithDangjangUserSecurityContextFactory.class)
 public @interface WithDangjangUser {
 	Role role() default Role.USER;
+
+	String oauthId() default "11111111";
 }
