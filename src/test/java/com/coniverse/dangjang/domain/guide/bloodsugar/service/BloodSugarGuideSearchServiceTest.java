@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
-import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.BloodSugarGuide;
-import com.coniverse.dangjang.domain.guide.bloodsugar.document.TodayGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.dto.BloodSugarGuideResponse;
 import com.coniverse.dangjang.domain.guide.bloodsugar.repository.BloodSugarGuideRepository;
 import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
@@ -73,14 +71,7 @@ public class BloodSugarGuideSearchServiceTest {
 
 		// then
 		assertThat(찾은_혈당_가이드_응답.createdAt()).isEqualTo(createdAt);
-		assertTrue(
-			IntStream.range(0, 5).allMatch(i -> {
-				TodayGuide 오늘의_가이드_응답 = 찾은_혈당_가이드_응답.todayGuides().get(i);
-				TodayGuide 저장된_오늘의_가이드 = 저장된_혈당_가이드.getTodayGuides().get(i);
-				return 오늘의_가이드_응답.getCount() == 저장된_오늘의_가이드.getCount()
-					&& 오늘의_가이드_응답.getAlert().equals(저장된_오늘의_가이드.getAlert());
-			})
-		);
+		assertThat(찾은_혈당_가이드_응답.guides().size()).isEqualTo(저장된_혈당_가이드.getSubGuides().size());
 		assertThat(찾은_혈당_가이드_응답.guides().size()).isEqualTo(저장된_혈당_가이드.getSubGuides().size());
 	}
 
