@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.healthmetric.service;
+package com.coniverse.dangjang.domain.guide.service;
 
 import static com.coniverse.dangjang.fixture.AnalysisDataFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
@@ -37,7 +37,7 @@ import com.coniverse.dangjang.domain.user.entity.User;
  */
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class SubGuideGenerateTest {
+public class BloodSugarSubGuideGenerateTest {
 	private static final User 전단계_환자 = 전단계_환자();
 	private static final User 당뇨_환자_강하제X_주사X = 당뇨_환자(false, false);
 	private static final User 당뇨_환자_강하제O_주사X = 당뇨_환자(true, false);
@@ -153,7 +153,7 @@ public class SubGuideGenerateTest {
 
 	@ParameterizedTest
 	@MethodSource("provideCaution")
-	void 주의_의심_가이드의_제목과_내용을_올바르게_생성한다(User user, CommonCode type, String unit, boolean lackOfExercise, boolean overweight, int deviation) {
+	void 주의_가이드의_제목과_내용을_올바르게_생성한다(User user, CommonCode type, String unit, boolean lackOfExercise, boolean overweight, int deviation) {
 		// given
 		BloodSugarAnalysisData bloodSugarAnalysisData = (BloodSugarAnalysisData)bloodSugarAnalysisStrategy.analyze(
 			혈당_분석_데이터(user, type, unit)
