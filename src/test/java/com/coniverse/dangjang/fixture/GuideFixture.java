@@ -1,6 +1,5 @@
 package com.coniverse.dangjang.fixture;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,15 +19,15 @@ import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
  * @since 1.0.0
  */
 public class GuideFixture {
-	public static BloodSugarGuide 혈당_가이드_도큐먼트(String oauthId) {
+	public static BloodSugarGuide 혈당_가이드_도큐먼트(String oauthId, String createdAt) {
 		return BloodSugarGuide.builder()
 			.oauthId(oauthId)
-			.createdAt(LocalDate.now().toString())
+			.createdAt(createdAt)
 			.build();
 	}
 
 	public static BloodSugarGuideResponse 혈당_가이드_응답(String createdAt) {
-		List<TodayGuide> 오늘의_가이드 = 혈당_가이드_도큐먼트("11111111").getTodayGuides();
+		List<TodayGuide> 오늘의_가이드 = 혈당_가이드_도큐먼트("11111111", createdAt).getTodayGuides();
 		List<SubGuideResponse> 서브_가이드 = new ArrayList<>();
 		서브_가이드.add((SubGuideResponse)혈당_서브_가이드_응답());
 		return new BloodSugarGuideResponse(createdAt, 오늘의_가이드, 서브_가이드);
