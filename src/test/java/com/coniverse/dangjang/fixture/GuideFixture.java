@@ -19,7 +19,7 @@ public class GuideFixture {
 	public static BloodSugarGuide 혈당_가이드_도큐먼트(String oauthId) {
 		return BloodSugarGuide.builder()
 			.oauthId(oauthId)
-			.createdAt(LocalDate.now())
+			.createdAt(LocalDate.now().toString())
 			.build();
 	}
 

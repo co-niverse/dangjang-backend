@@ -1,6 +1,5 @@
 package com.coniverse.dangjang.domain.guide.bloodsugar.document;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -31,12 +30,12 @@ public class BloodSugarGuide {
 	@Id
 	private String id;
 	private String oauthId;
-	private LocalDate createdAt;
+	private String createdAt;
 	private List<TodayGuide> todayGuides;
 	private List<SubGuide> subGuides;
 
 	@Builder
-	private BloodSugarGuide(String oauthId, LocalDate createdAt) {
+	private BloodSugarGuide(String oauthId, String createdAt) {
 		this.oauthId = oauthId;
 		this.createdAt = createdAt;
 		this.subGuides = new ArrayList<>();
