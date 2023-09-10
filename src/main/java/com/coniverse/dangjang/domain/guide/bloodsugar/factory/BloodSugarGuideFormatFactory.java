@@ -14,7 +14,7 @@ import com.coniverse.dangjang.domain.guide.bloodsugar.factory.guideformat.Normal
 import com.coniverse.dangjang.domain.guide.bloodsugar.factory.guideformat.WarningGuideFormat;
 
 @Component
-public class GuideFormatFactory {
+public class BloodSugarGuideFormatFactory {
 	public GuideFormat createGuideFormat(BloodSugarAnalysisData data) {
 		Alert alert = data.getAlert();
 		return switch (alert) {

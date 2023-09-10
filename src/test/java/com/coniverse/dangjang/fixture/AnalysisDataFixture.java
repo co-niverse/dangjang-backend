@@ -1,10 +1,12 @@
 package com.coniverse.dangjang.fixture;
 
 import static com.coniverse.dangjang.fixture.HealthMetricFixture.*;
+import static com.coniverse.dangjang.fixture.UserFixture.*;
 
 import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.BloodSugarAnalysisData;
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.WeightAnalysisData;
+import com.coniverse.dangjang.domain.analysis.enums.Alert;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.user.entity.User;
 
@@ -15,19 +17,25 @@ import com.coniverse.dangjang.domain.user.entity.User;
  * @since 1.0.0
  */
 public class AnalysisDataFixture {
-	public static AnalysisData 혈당_분석_데이터(User user, CommonCode type, String unit) {
+	public static BloodSugarAnalysisData 혈당_분석_데이터(User user, CommonCode type, String unit) {
 		return new BloodSugarAnalysisData(건강지표_엔티티(user, type, unit));
+	}
+
+	public static BloodSugarAnalysisData 경보_주입_혈당_분석_데이터(Alert alert) {
+		BloodSugarAnalysisData data = new BloodSugarAnalysisData(건강지표_엔티티(유저_테오()));
+		data.setAlert(alert);
+		return data;
 	}
 
 	public static AnalysisData 운동_분석_데이터() { // TODO return 수정
 		return new BloodSugarAnalysisData(건강지표_엔티티(CommonCode.STEP_COUNT));
 	}
 
-	public static AnalysisData 체중_분석_데이터() {
+	public static WeightAnalysisData 체중_분석_데이터() {
 		return new WeightAnalysisData(건강지표_엔티티(CommonCode.MEASUREMENT));
 	}
 
-	public static AnalysisData 체중_분석_데이터(String unit) {
+	public static WeightAnalysisData 체중_분석_데이터(String unit) {
 		return new WeightAnalysisData(건강지표_엔티티(CommonCode.MEASUREMENT, unit));
 	}
 
