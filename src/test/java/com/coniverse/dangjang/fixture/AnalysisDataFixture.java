@@ -35,23 +35,23 @@ public class AnalysisDataFixture {
 
 	public static String 걸음수_만보대비_가이드_데이터(ExerciseGuide exerciseGuide) {
 		if (exerciseGuide.getNeedStepByTTS() > 0) {
-			return String.format("만보보다 %d 걸음 %s", exerciseGuide.getNeedStepByTTS(), GuideString.WLK_enough.getGuide());
+			return String.format("만보보다 %d 걸음 %s", exerciseGuide.getNeedStepByTTS(), GuideString.ENOUGH.getTTSMode());
 		} else if (exerciseGuide.getNeedStepByTTS() == 0) {
 			return "와우! 만보를 걸었어요";
 		} else {
-			return String.format("만보를 걷기 위해 %d 걸음 %s", exerciseGuide.getNeedStepByTTS(), GuideString.WLK_needMore.getGuide());
+			return String.format("만보를 걷기 위해 %d 걸음 %s", exerciseGuide.getNeedStepByTTS(), GuideString.NEEDMORE.getTTSMode());
 		}
 	}
 
 	public static String 걸음수_지난주대비_가이드_데이터(ExerciseGuide exerciseGuide) {
 		if (exerciseGuide.getNeedStepByLastWeek() > 0) {
 			return String.format("지난주 평균 걸음 수보다 %d 걸음 %s", exerciseGuide.getNeedStepByLastWeek(),
-				GuideString.LSTWK_enough.getGuide());
+				GuideString.ENOUGH.getLastWeekMode());
 		} else if (exerciseGuide.getNeedStepByLastWeek() == 0) {
 			return "지난주와 동일하게 걸었어요~ 조금 더 걸어보는건 어때요?";
 		} else {
 			return String.format("지난주 평균 걸음 수보다 %d 걸음 %s", Math.abs(exerciseGuide.getNeedStepByLastWeek()),
-				GuideString.LSTWK_needMore.getGuide());
+				GuideString.NEEDMORE.getLastWeekMode());
 		}
 	}
 
