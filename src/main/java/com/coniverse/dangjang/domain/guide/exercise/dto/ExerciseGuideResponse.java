@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * 운동 가이드 반응
@@ -12,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @author EVE
  * @since 1.0.0
  */
-public record ExerciseGuideResponse(@JsonIgnore String id, LocalDate createdAt, int needStepByTTS, int needStepByLastWeek, String comparedToLastWeek,
+public record ExerciseGuideResponse(LocalDate createdAt, int needStepByTTS, int needStepByLastWeek, String comparedToLastWeek,
 									String content, List<ExerciseCalorie> exerciseCalories) implements GuideResponse {
 	@Override
 	public String type() {
