@@ -29,19 +29,20 @@ public class WeightGuide implements Guide {
 	private String oauthId;
 	private CommonCode type;
 	private int weightDiff;
+	private double bmi;
 	private Alert alert;
 	private LocalDate createdAt;
 	private String todayContent;
 
 	@Builder(toBuilder = true)
-	private WeightGuide(String oauthId, CommonCode type, int weightDiff, Alert alert, LocalDate createdAt, String todayContent, String id) {
-		this.id = id;
+	private WeightGuide(String oauthId, CommonCode type, int weightDiff, Alert alert, LocalDate createdAt, String todayContent, double bmi) {
 		this.oauthId = oauthId;
 		this.type = type;
 		this.weightDiff = weightDiff;
 		this.alert = alert;
 		this.createdAt = createdAt;
 		this.todayContent = todayContent;
+		this.bmi = bmi;
 	}
 
 	/**
@@ -52,10 +53,11 @@ public class WeightGuide implements Guide {
 	 * @param todayContent 가이드 내용
 	 * @since 1.0.0
 	 */
-	public void changeAboutWeight(int weightDiff, Alert alert, String todayContent) {
+	public void changeAboutWeight(int weightDiff, Alert alert, String todayContent, double bmi) {
 		this.weightDiff = weightDiff;
 		this.alert = alert;
 		this.todayContent = todayContent;
+		this.bmi = bmi;
 	}
 
 }

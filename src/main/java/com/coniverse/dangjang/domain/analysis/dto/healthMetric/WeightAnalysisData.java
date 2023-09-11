@@ -18,6 +18,7 @@ public class WeightAnalysisData extends HealthMetricAnalysisData {
 	private final int height;
 	private final Gender gender;
 	private int unit;
+	private double bmi;
 	private int weightDiff;
 	private Alert alert;
 
@@ -40,5 +41,9 @@ public class WeightAnalysisData extends HealthMetricAnalysisData {
 
 	public void setWeightDiff(int weightDiff) {
 		this.weightDiff = weightDiff;
+	}
+
+	public void setBmi(double bmi) {
+		this.bmi = bmi;
 	}
 }
