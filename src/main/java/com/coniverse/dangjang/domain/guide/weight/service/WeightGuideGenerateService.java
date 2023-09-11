@@ -54,9 +54,8 @@ public class WeightGuideGenerateService implements GuideGenerateService {
 		WeightAnalysisData data = (WeightAnalysisData)analysisData;
 		WeightGuide weightGuide = weightGuideSearchService.findByOauthIdAndCreatedAt(data.getOauthId(), data.getCreatedAt());
 		String content = createContent(data);
-		WeightGuide updatedWeightGuide = updatedGuide(weightGuide, data, content);
-		updatedWeightGuide.setId(weightGuide.getId());
-		return weightMapper.toResponse(weightGuideRepository.save(updatedWeightGuide));
+		weightGuide.changeAboutWeight(data.getWeightDiff(), data.getAlert(), content);
+		return weightMapper.toResponse(weightGuideRepository.save(weightGuide));
 	}
 
 	@Override
@@ -67,23 +66,6 @@ public class WeightGuideGenerateService implements GuideGenerateService {
 	@Override
 	public GroupCode getGroupCode() {
 		return GroupCode.WEIGHT;
-	}
-
-	/**
-	 * 수정된 체중 가이드 생성한다.
-	 *
-	 * @param existGuide 수정될 체중 가이드
-	 * @param data       체중 분석 데이터
-	 * @param content    가이드 내용
-	 * @return 체중 가이드
-	 * @since 1.0.0
-	 */
-	public WeightGuide updatedGuide(WeightGuide existGuide, WeightAnalysisData data, String content) {
-		return existGuide.toBuilder()
-			.todayContent(content)
-			.weightDiff(data.getWeightDiff())
-			.alert(data.getAlert())
-			.build();
 	}
 
 	/**

@@ -45,12 +45,17 @@ public class WeightGuide implements Guide {
 	}
 
 	/**
-	 * 가이드 ID를 설정한다.
+	 * 체중 속성을 변경한다.
 	 *
+	 * @param weightDiff   정상체중까지의 차이
+	 * @param alert        체중 경보
+	 * @param todayContent 가이드 내용
 	 * @since 1.0.0
 	 */
-	public void setId(String id) {
-		this.id = id;
+	public void changeAboutWeight(int weightDiff, Alert alert, String todayContent) {
+		this.weightDiff = weightDiff;
+		this.alert = alert;
+		this.todayContent = todayContent;
 	}
 
 }
