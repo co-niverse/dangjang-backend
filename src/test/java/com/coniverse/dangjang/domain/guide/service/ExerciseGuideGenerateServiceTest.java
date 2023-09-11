@@ -25,6 +25,7 @@ import com.coniverse.dangjang.domain.analysis.strategy.ExerciseAnalysisStrategy;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseCalorie;
+import com.coniverse.dangjang.domain.guide.exercise.dto.WalkGuideContent;
 import com.coniverse.dangjang.domain.guide.exercise.repository.ExerciseGuideRepository;
 import com.coniverse.dangjang.domain.guide.exercise.service.ExerciseGuideGenerateService;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
@@ -80,11 +81,10 @@ class ExerciseGuideGenerateServiceTest {
 		// when
 		exerciseGuideGenerateService.createGuide(data);
 		// then
-		Optional<ExerciseGuide> 등록된_건강지표 = exerciseGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
-		assertThat(등록된_건강지표.get().getTodayContent()).isEqualTo(
-			걸음수_만보대비_가이드_데이터(등록된_건강지표.get()));
-		assertThat(등록된_건강지표.get().getComparedToLastWeek()).isEqualTo(
-			걸음수_지난주대비_가이드_데이터(등록된_건강지표.get()));
+		Optional<ExerciseGuide> 등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
+		WalkGuideContent walkGuideContent = new WalkGuideContent(등록된_운동가이드.get().getNeedStepByTTS(), 등록된_운동가이드.get().getNeedStepByLastWeek());
+		assertThat(등록된_운동가이드.get().getTodayContent()).isEqualTo(walkGuideContent.guideTTS);
+		assertThat(등록된_운동가이드.get().getComparedToLastWeek()).isEqualTo(walkGuideContent.guideLastWeek);
 	}
 
 	@Order(250)
@@ -97,9 +97,10 @@ class ExerciseGuideGenerateServiceTest {
 		// when
 		exerciseGuideGenerateService.updateGuide(data);
 		// then
-		Optional<ExerciseGuide> 등록된_건강지표 = exerciseGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
-		assertThat(등록된_건강지표.get().getTodayContent()).isEqualTo(걸음수_만보대비_가이드_데이터(등록된_건강지표.get()));
-		assertThat(등록된_건강지표.get().getComparedToLastWeek()).isEqualTo(걸음수_지난주대비_가이드_데이터(등록된_건강지표.get()));
+		Optional<ExerciseGuide> 등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
+		WalkGuideContent walkGuideContent = new WalkGuideContent(등록된_운동가이드.get().getNeedStepByTTS(), 등록된_운동가이드.get().getNeedStepByLastWeek());
+		assertThat(등록된_운동가이드.get().getTodayContent()).isEqualTo(walkGuideContent.guideTTS);
+		assertThat(등록된_운동가이드.get().getComparedToLastWeek()).isEqualTo(walkGuideContent.guideLastWeek);
 	}
 
 	@Order(300)

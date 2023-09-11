@@ -61,7 +61,7 @@ class WeightGuideGenerateServiceTest {
 		weightGuideGenerateService.createGuide(data);
 		// then
 		WeightGuide 등록된_건강지표 = weightGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
-		assertThat(등록된_건강지표.getTodayContent()).isEqualTo(체중_가이드_생성((WeightAnalysisData)data));
+		assertThat(등록된_건강지표.getTodayContent()).isEqualTo(weightGuideGenerateService.createContent((WeightAnalysisData)data));
 	}
 
 	@Order(400)
@@ -73,6 +73,6 @@ class WeightGuideGenerateServiceTest {
 		weightGuideGenerateService.updateGuide(data);
 		// then
 		WeightGuide 등록된_건강지표 = weightGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
-		assertThat(등록된_건강지표.getTodayContent()).isEqualTo(체중_가이드_생성((WeightAnalysisData)data));
+		assertThat(등록된_건강지표.getTodayContent()).isEqualTo(weightGuideGenerateService.createContent((WeightAnalysisData)data));
 	}
 }

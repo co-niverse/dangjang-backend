@@ -69,7 +69,7 @@ public class WeightGuideGenerateService implements GuideGenerateService {
 	 * @return 가이드 내용
 	 * @since 1.0.0
 	 */
-	private String createContent(WeightAnalysisData data) {
+	public String createContent(WeightAnalysisData data) {
 		return String.format("%s이에요. 평균 체중에 비해 %dkg %s", data.getAlert().getTitle(), data.getWeightDiff(),
 			data.getWeightDiff() > 0 ? "많아요" : "적어요");
 	}
