@@ -34,6 +34,10 @@ import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricSearchServ
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
+/**
+ * @author EVE
+ * @since 1.0.0
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

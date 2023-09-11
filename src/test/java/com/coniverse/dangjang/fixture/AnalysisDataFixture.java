@@ -21,7 +21,7 @@ import com.coniverse.dangjang.global.exception.EnumNonExistentException;
 /**
  * 분석 데이터 fixture
  *
- * @author TEO
+ * @author TEO, EVE
  * @since 1.0.0
  */
 public class AnalysisDataFixture {
