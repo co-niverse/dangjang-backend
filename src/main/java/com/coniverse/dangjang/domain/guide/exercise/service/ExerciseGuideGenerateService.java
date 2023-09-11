@@ -120,23 +120,6 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 	}
 
 	/**
-	 * 걸음수에 대한 가이드를 수정한다.
-	 *
-	 * @param existGuide 수정될 기존 가이드
-	 * @param data       분석한 운동 데이터
-	 * @return 운동 가이드
-	 * @since 1.0.0
-	 */
-	public ExerciseGuide updateNewGuideSTC_CNT(ExerciseGuide existGuide, ExerciseAnalysisData data) {
-		return existGuide.toBuilder()
-			.content(content)
-			.needStepByLastWeek(data.getNeedStepByLastWeek())
-			.needStepByTTS(data.getNeedStepByTTS())
-			.comparedToLastWeek(comparedToLastWeek)
-			.build();
-	}
-
-	/**
 	 * 걸음수에 대한 가이드 내용을 생성한다.
 	 * <p>
 	 * 만보보다 많이 걸었는지 , 저번주 대비 얼마나 걸었는지에 대해 String으로 생성한다.
