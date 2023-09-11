@@ -1,7 +1,7 @@
 package com.coniverse.dangjang.domain.guide.bloodsugar.factory.guideformat;
 
 import java.util.Arrays;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.random.RandomGenerator;
 
 import lombok.AllArgsConstructor;
 
@@ -26,7 +26,8 @@ public enum NormalGuideFormat implements GuideFormat {
 	 * @since 1.0.0
 	 */
 	public static NormalGuideFormat getRandomOne() {
-		int idx = ThreadLocalRandom.current().nextInt(3);
+		RandomGenerator randomGenerator = RandomGenerator.getDefault();
+		int idx = randomGenerator.nextInt(3);
 		return Arrays.stream(NormalGuideFormat.values()).toList().get(idx);
 	}
 
