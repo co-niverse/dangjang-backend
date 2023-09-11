@@ -19,11 +19,4 @@ public enum GuideString {
 	private final String TTSMode;
 	private final String lastWeekMode;
 
-	// public String getTTSMode() {
-	// 	return TTSMode;
-	// }
-	//
-	// public String getLastWeekMode() {
-	// 	return lastWeekMode;
-	// }
 }
