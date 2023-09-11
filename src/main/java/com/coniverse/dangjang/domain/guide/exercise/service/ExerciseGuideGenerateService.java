@@ -147,20 +147,20 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 
 	public void createContent_STC_CNT(ExerciseAnalysisData data) {
 		if (data.getNeedStepByTTS() > 0) {
-			content = String.format("만보보다 %d 걸음 %s", data.needStepByTTS, GuideString.WLK_enough.getGuide());
+			content = String.format("만보보다 %d 걸음 %s", data.needStepByTTS, GuideString.ENOUGH.getTTSMode());
 		} else if (data.getNeedStepByTTS() == 0) {
 			content = "와우! 만보를 걸었어요";
 		} else {
-			content = String.format("만보를 걷기 위해 %d 걸음 %s", data.needStepByTTS, GuideString.WLK_needMore.getGuide());
+			content = String.format("만보를 걷기 위해 %d 걸음 %s", data.needStepByTTS, GuideString.NEEDMORE.getTTSMode());
 		}
 		if (data.needStepByLastWeek > 0) {
 			comparedToLastWeek = String.format("지난주 평균 걸음 수보다 %d 걸음 %s", data.needStepByLastWeek,
-				GuideString.LSTWK_enough.getGuide());
+				GuideString.ENOUGH.getLastWeekMode());
 		} else if (data.needStepByLastWeek == 0) {
 			comparedToLastWeek = "지난주와 동일하게 걸었어요~ 조금 더 걸어보는건 어때요?";
 		} else {
 			comparedToLastWeek = String.format("지난주 평균 걸음 수보다 %d 걸음 %s", Math.abs(data.needStepByLastWeek),
-				GuideString.LSTWK_needMore.getGuide());
+				GuideString.ENOUGH.getLastWeekMode());
 		}
 	}
 }
