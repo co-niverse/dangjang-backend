@@ -14,18 +14,42 @@ import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
  * 건강지표 repository
  *
  * @author TEO , EVE
- * @Method Name : findByHealthMetricId(String oauthId, CommonCode commonCode) 최근 마지막 건강지표 조회
- * @Method Name : findByHealthMetricId(String oauthId, LocalDate createdAt, CommonCode commonCode) 해당 날짜 건강지표 조회
  * @since 1.0.0
  */
 public interface HealthMetricRepository extends JpaRepository<HealthMetric, Long> {
-
+	/**
+	 * HealthMetricId로 건강지표 조회
+	 *
+	 * @param oauthId   사용자 ID
+	 * @param type      건강지표
+	 * @param createdAt 생성일
+	 * @return HealthMetric
+	 * @since 1.0.0
+	 */
 	@Query("SELECT h FROM HealthMetric h WHERE h.healthMetricId.oauthId = ?1 AND h.healthMetricId.createdAt = ?2 AND h.healthMetricId.type = ?3")
 	Optional<HealthMetric> findByHealthMetricId(String oauthId, LocalDate createdAt, CommonCode type);
 
+	/**
+	 * HealthMetricId로 최근 마지막 건강지표 조회
+	 *
+	 * @param oauthId    사용자 ID
+	 * @param commonCode 건강지표
+	 * @return HealthMetric
+	 * @since 1.0.0
+	 */
 	@Query("SELECT h FROM HealthMetric h WHERE h.healthMetricId.oauthId = ?1 AND h.healthMetricId.type = ?2 order by h.healthMetricId.createdAt desc limit 1")
 	Optional<HealthMetric> findByHealthMetricId(String oauthId, CommonCode commonCode);
 
+	/**
+	 * HealthMetricId로 지난주 건강지표조회
+	 *
+	 * @param oauthId    사용자 ID
+	 * @param commonCode 건강지표
+	 * @param startDate  시작일
+	 * @param endDate    종료일
+	 * @return HealthMetric
+	 * @since 1.0.0
+	 */
 	@Query("SELECT h FROM HealthMetric h WHERE h.healthMetricId.oauthId = ?1 AND h.healthMetricId.type = ?2 and h.healthMetricId.createdAt between ?3 and ?4")
 	List<HealthMetric> findLastWeekByHealthMetricId(String oauthId, CommonCode commonCode, LocalDate startDate, LocalDate endDate);
 }
