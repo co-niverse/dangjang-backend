@@ -22,7 +22,7 @@ import com.coniverse.dangjang.domain.guide.bloodsugar.factory.guideformat.GuideF
 import com.coniverse.dangjang.domain.guide.bloodsugar.factory.guideformat.NormalGuideFormat;
 import com.coniverse.dangjang.domain.user.entity.User;
 
-public class BloodSugarGuideMapperTest {
+class BloodSugarGuideMapperTest {
 	private final BloodSugarGuideMapper bloodSugarGuideMapper = new BloodSugarGuideMapperImpl();
 
 	@Test
@@ -38,7 +38,8 @@ public class BloodSugarGuideMapperTest {
 
 		// that
 		assertAll(() -> assertThat(guide.getOauthId()).isEqualTo(data.getOauthId()),
-			() -> assertThat(guide.getCreatedAt()).isEqualTo(data.getCreatedAt().toString()), () -> assertThat(guide.getTodayGuides()).hasSize(5),
+			() -> assertThat(guide.getCreatedAt()).isEqualTo(data.getCreatedAt().toString()),
+			() -> assertThat(guide.getTodayGuides()).hasSize(5),
 			() -> assertThat(guide.getSubGuides()).isNotNull());
 	}
 

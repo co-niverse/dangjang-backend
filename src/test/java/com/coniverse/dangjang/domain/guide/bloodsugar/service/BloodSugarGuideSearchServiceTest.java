@@ -22,7 +22,7 @@ import com.coniverse.dangjang.domain.user.service.UserSearchService;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class BloodSugarGuideSearchServiceTest {
+class BloodSugarGuideSearchServiceTest {
 	@Autowired
 	private BloodSugarGuideSearchService bloodSugarGuideSearchService;
 	@Autowired
@@ -47,17 +47,17 @@ public class BloodSugarGuideSearchServiceTest {
 		assertAll(
 			() -> assertThat(찾은_혈당_가이드.getOauthId()).isEqualTo(oauthId),
 			() -> assertThat(찾은_혈당_가이드.getCreatedAt()).isEqualTo(createdAt),
-			() -> assertThat(찾은_혈당_가이드.getSubGuides().size()).isEqualTo(저장된_혈당_가이드.getSubGuides().size())
+			() -> assertThat(찾은_혈당_가이드.getSubGuides()).hasSameSizeAs(저장된_혈당_가이드.getSubGuides())
 		);
 	}
 
 	@Test
 	void 존재하지_않는_생성일자로_혈당_가이드를_조회하면_예외를_발생한다() {
 		// given
-		String 없는_생성일자 = "2023-12-30";
+		LocalDate 없는_생성일자 = LocalDate.parse("2023-12-30");
 
 		// when & then
-		assertThatThrownBy(() -> bloodSugarGuideSearchService.findByUserIdAndCreatedAt(oauthId, LocalDate.parse(없는_생성일자)))
+		assertThatThrownBy(() -> bloodSugarGuideSearchService.findByUserIdAndCreatedAt(oauthId, 없는_생성일자))
 			.isInstanceOf(GuideNotFoundException.class);
 	}
 
@@ -71,8 +71,8 @@ public class BloodSugarGuideSearchServiceTest {
 
 		// then
 		assertThat(찾은_혈당_가이드_응답.createdAt()).isEqualTo(createdAt);
-		assertThat(찾은_혈당_가이드_응답.guides().size()).isEqualTo(저장된_혈당_가이드.getSubGuides().size());
-		assertThat(찾은_혈당_가이드_응답.guides().size()).isEqualTo(저장된_혈당_가이드.getSubGuides().size());
+		assertThat(찾은_혈당_가이드_응답.guides()).hasSameSizeAs(저장된_혈당_가이드.getSubGuides());
+		assertThat(찾은_혈당_가이드_응답.guides()).hasSameSizeAs(저장된_혈당_가이드.getSubGuides());
 	}
 
 	@Test

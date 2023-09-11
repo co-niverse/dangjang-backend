@@ -36,7 +36,7 @@ import com.coniverse.dangjang.domain.user.entity.User;
  */
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class GenerateSubGuideTest {
+class GenerateSubGuideTest {
 	private static final User 전단계_환자 = 전단계_환자();
 	private static final User 당뇨_환자_강하제X_주사X = 당뇨_환자(false, false);
 	private static final User 당뇨_환자_강하제O_주사X = 당뇨_환자(true, false);
@@ -137,7 +137,7 @@ public class GenerateSubGuideTest {
 				Arrays.stream(NormalGuideFormat.values())
 					.anyMatch(t -> t.getTitle().equals(서브_가이드_응답.title()))
 			),
-			() -> assertThat(서브_가이드_응답.content()).isEqualTo("")
+			() -> assertThat(서브_가이드_응답.content()).isEmpty()
 		);
 	}
 

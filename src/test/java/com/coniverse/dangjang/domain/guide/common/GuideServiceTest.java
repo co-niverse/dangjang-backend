@@ -98,14 +98,15 @@ class GuideServiceTest {
 
 	@ParameterizedTest
 	@MethodSource("provideTypeExceptBloodSugar")
-	void 혈당_그룹을_제외한_나머지_그룹의_타입은_타입_변경_메서드를_호출하면_예외가_발생한다(List<CommonCode> type) {
+	void 혈당_그룹을_제외한_나머지_그룹의_타입은_타입_변경_메서드를_호출하면_예외가_발생한다(List<CommonCode> types) {
 		// given & when
-		type.stream()
+		types.stream()
 			.map(AnalysisDataFixture::분석_데이터)
 			// then
-			.forEach(data ->
-				assertThatThrownBy(() -> guideService.updateGuideWithType(data, data.getType()))
-					.isInstanceOf(UnsupportedOperationException.class)
-			);
+			.forEach(data -> {
+				CommonCode type = data.getType();
+				assertThatThrownBy(() -> guideService.updateGuideWithType(data, type))
+					.isInstanceOf(UnsupportedOperationException.class);
+			});
 	}
 }

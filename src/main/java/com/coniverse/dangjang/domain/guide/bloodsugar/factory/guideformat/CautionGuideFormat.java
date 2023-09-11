@@ -29,7 +29,7 @@ public class CautionGuideFormat implements GuideFormat {
 		Arrays.stream(Content.values())
 			.filter(c -> c.diabetic == diabetic && c.meal.contains(type))
 			.findFirst()
-			.ifPresent(c -> this.content = c.content);
+			.ifPresent(c -> this.content = c.body);
 	}
 
 	@Override
@@ -39,14 +39,13 @@ public class CautionGuideFormat implements GuideFormat {
 
 	@Override
 	public String getContent() {
-		String content = this.content;
 		if (this.lackOfExercise) {
-			content = String.format("%s%n운동량이 부족하면 혈당 수치가 높아질 수 있어요. 🏃🏻", content);
+			this.content = String.format("%s%n운동량이 부족하면 혈당 수치가 높아질 수 있어요. 🏃🏻", this.content);
 		}
 		if (this.overweight) {
-			content = String.format("%s%n과체중은 혈당 수치에 영향을 줄 수 있어요. 체중 조절이 필요해요!", content);
+			this.content = String.format("%s%n과체중은 혈당 수치에 영향을 줄 수 있어요. 체중 조절이 필요해요!", this.content);
 		}
-		return content;
+		return this.content;
 	}
 
 	/**
@@ -63,6 +62,6 @@ public class CautionGuideFormat implements GuideFormat {
 
 		private final boolean diabetic;
 		private final Meal meal;
-		private final String content;
+		private final String body;
 	}
 }
