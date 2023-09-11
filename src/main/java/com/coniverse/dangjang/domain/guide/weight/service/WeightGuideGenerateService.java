@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 
 import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.WeightAnalysisData;
-import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
 import com.coniverse.dangjang.domain.guide.common.service.GuideGenerateService;
@@ -56,11 +55,6 @@ public class WeightGuideGenerateService implements GuideGenerateService {
 		String content = createContent(data);
 		weightGuide.changeAboutWeight(data.getWeightDiff(), data.getAlert(), content, data.getBmi());
 		return weightMapper.toResponse(weightGuideRepository.save(weightGuide));
-	}
-
-	@Override
-	public GuideResponse updateGuideWithType(AnalysisData analysisData, CommonCode prevType) {
-		return GuideGenerateService.super.updateGuideWithType(analysisData, prevType);
 	}
 
 	@Override
