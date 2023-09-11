@@ -7,7 +7,6 @@ import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 /**
  * 건강 지표 분석 데이터 추상 클래스
@@ -16,13 +15,12 @@ import lombok.RequiredArgsConstructor;
  * @since 1.0.0
  */
 @Getter
-@RequiredArgsConstructor
 public abstract class HealthMetricAnalysisData implements AnalysisData {
 
 	private final String oauthId;
 	private final LocalDate createdAt;
 	private final CommonCode type;
-
+	
 	protected HealthMetricAnalysisData(HealthMetric healthMetric) {
 		this.oauthId = healthMetric.getUser().getOauthId();
 		this.createdAt = healthMetric.getCreatedAt();
