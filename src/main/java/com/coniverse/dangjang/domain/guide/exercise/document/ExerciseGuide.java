@@ -36,7 +36,7 @@ public class ExerciseGuide implements Guide {
 	private String comparedToLastWeek;
 	private List<ExerciseCalorie> exerciseCalories = new ArrayList<>();
 
-	@Builder(toBuilder = true)
+	@Builder
 	private ExerciseGuide(String oauthId, LocalDate createdAt, int needStepByTTS, String content, String comparedToLastWeek,
 		int needStepByLastWeek, List<ExerciseCalorie> exerciseCalories) {
 		this.oauthId = oauthId;
@@ -57,15 +57,6 @@ public class ExerciseGuide implements Guide {
 	@Override
 	public String getTodayContent() {
 		return this.content;
-	}
-
-	/**
-	 * 가이드 ID를 설정한다.
-	 *
-	 * @since 1.0.0
-	 */
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	/**

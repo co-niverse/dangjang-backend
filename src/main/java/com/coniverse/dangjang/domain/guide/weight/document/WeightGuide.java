@@ -34,7 +34,7 @@ public class WeightGuide implements Guide {
 	private LocalDate createdAt;
 	private String todayContent;
 
-	@Builder(toBuilder = true)
+	@Builder
 	private WeightGuide(String oauthId, CommonCode type, int weightDiff, Alert alert, LocalDate createdAt, String todayContent, double bmi) {
 		this.oauthId = oauthId;
 		this.type = type;
