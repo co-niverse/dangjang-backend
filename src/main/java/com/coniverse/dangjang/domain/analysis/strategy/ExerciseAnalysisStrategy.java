@@ -28,8 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ExerciseAnalysisStrategy implements AnalysisStrategy {
 	private final HealthMetricSearchService healthMetricSearchService;
-	private LocalDate startDate;
-	private LocalDate endDate;
+
 	private List exerciseList = new ArrayList<>(
 		Arrays.asList(CommonCode.WALK, CommonCode.RUN, CommonCode.HIKING, CommonCode.SWIM, CommonCode.HEALTH, CommonCode.BIKE));
 
@@ -60,10 +59,10 @@ public class ExerciseAnalysisStrategy implements AnalysisStrategy {
 
 			int needStepByTTS = data.calculateTTSDiff(data.unit);
 			data.setNeedStepByTTS(needStepByTTS);
-
-			setLastWeekDate(data.getCreatedAt());
+			LocalDate endDate = calculateEndDate(data.getCreatedAt());
+			LocalDate startDate = endDate.minusDays(6);
 			List<HealthMetric> lastWeekHealthMetricList = healthMetricSearchService.findLastWeekHealthMetricById(data.getOauthId(), data.getType(),
-				this.startDate, this.endDate);
+				startDate, endDate);
 			int needStepByLastWeek = data.calculateLastWeekDiff(data.unit, lastWeekHealthMetricList);
 			data.setNeedStepByLastWeek(needStepByLastWeek);
 
@@ -87,9 +86,8 @@ public class ExerciseAnalysisStrategy implements AnalysisStrategy {
 	 * @param now 현재 날짜
 	 * @since 1.0.0
 	 */
-	public void setLastWeekDate(LocalDate now) {
+	public LocalDate calculateEndDate(LocalDate now) {
 		int numberOfDay = now.getDayOfWeek().getValue();
-		this.endDate = now.minusDays(numberOfDay);
-		this.startDate = endDate.minusDays(6);
+		return now.minusDays(numberOfDay);
 	}
 }

@@ -28,8 +28,7 @@ public interface HealthMetricMapper {
 	 */
 	@Mappings({
 		@Mapping(target = "type", expression = "java(EnumFindUtil.findByTitle(CommonCode.class, request.type()))"),
-		@Mapping(target = "createdAt", source = "request.createdAt"),
-		@Mapping(target = "user", source = "user")
+		@Mapping(target = "createdAt", source = "request.createdAt")
 	})
 	HealthMetric toEntity(HealthMetricPostRequest request, User user);
 
