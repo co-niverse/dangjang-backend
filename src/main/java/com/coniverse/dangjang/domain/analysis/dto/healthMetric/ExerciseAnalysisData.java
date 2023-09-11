@@ -47,22 +47,22 @@ public class ExerciseAnalysisData extends HealthMetricAnalysisData {
 	public void setExerciseCalorie(int weight) {
 		double percent = 0;
 		switch (this.getType()) {
-			case EC_WLK:
+			case WALK:
 				percent = 0.9;
 				break;
-			case EC_RN:
+			case RUN:
 				percent = 2;
 				break;
-			case EC_BIK:
+			case BIKE:
 				percent = 2.3;
 				break;
-			case EC_SW:
+			case SWIM:
 				percent = 2;
 				break;
-			case EC_HIK:
+			case HIKING:
 				percent = 1.5;
 				break;
-			case EC_HT:
+			case HEALTH:
 				percent = 1.5;
 				break;
 			default:

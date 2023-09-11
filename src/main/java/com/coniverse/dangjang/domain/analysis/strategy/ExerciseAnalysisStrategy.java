@@ -31,7 +31,7 @@ public class ExerciseAnalysisStrategy implements AnalysisStrategy {
 	private LocalDate startDate;
 	private LocalDate endDate;
 	private List exerciseList = new ArrayList<>(
-		Arrays.asList(CommonCode.EC_WLK, CommonCode.EC_RN, CommonCode.EC_HIK, CommonCode.EC_SW, CommonCode.EC_HT, CommonCode.EC_BIK));
+		Arrays.asList(CommonCode.WALK, CommonCode.RUN, CommonCode.HIKING, CommonCode.SWIM, CommonCode.HEALTH, CommonCode.BIKE));
 
 	/**
 	 * 운동 분석 데이터를 생성한다.

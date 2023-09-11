@@ -56,36 +56,36 @@ public class AnalysisDataFixture {
 	}
 
 	public static Stream<Arguments> 운동_시간_목록() {
-		return Stream.of(arguments(CommonCode.EC_BIK, "60"), arguments(CommonCode.EC_HIK, "120"), arguments(CommonCode.EC_HT, "50"),
-			arguments(CommonCode.EC_RN, "60"),
-			arguments(CommonCode.EC_SW, "60"), arguments(CommonCode.EC_WLK, "60"));
+		return Stream.of(arguments(CommonCode.BIKE, "60"), arguments(CommonCode.HIKING, "120"), arguments(CommonCode.HEALTH, "50"),
+			arguments(CommonCode.RUN, "60"),
+			arguments(CommonCode.SWIM, "60"), arguments(CommonCode.WALK, "60"));
 	}
 
 	public static Stream<Arguments> 운동_시간_수정목록() {
-		return Stream.of(arguments(CommonCode.EC_BIK, "900"), arguments(CommonCode.EC_HIK, "0"), arguments(CommonCode.EC_HT, "50"),
-			arguments(CommonCode.EC_RN, "40"),
-			arguments(CommonCode.EC_SW, "80"), arguments(CommonCode.EC_WLK, "120"));
+		return Stream.of(arguments(CommonCode.BIKE, "900"), arguments(CommonCode.HIKING, "0"), arguments(CommonCode.HEALTH, "50"),
+			arguments(CommonCode.RUN, "40"),
+			arguments(CommonCode.SWIM, "80"), arguments(CommonCode.WALK, "120"));
 	}
 
 	public static ExerciseCalorie 운동_칼로리_데이터(CommonCode type, int unit, int weight) {
 		double percent = 0;
 		switch (type) {
-			case EC_WLK:
+			case WALK:
 				percent = 0.9;
 				break;
-			case EC_RN:
+			case RUN:
 				percent = 2;
 				break;
-			case EC_BIK:
+			case BIKE:
 				percent = 2.3;
 				break;
-			case EC_SW:
+			case SWIM:
 				percent = 2;
 				break;
-			case EC_HIK:
+			case HIKING:
 				percent = 1.5;
 				break;
-			case EC_HT:
+			case HEALTH:
 				percent = 1.5;
 				break;
 			default:
