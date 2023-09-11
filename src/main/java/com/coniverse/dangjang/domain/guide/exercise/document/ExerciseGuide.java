@@ -67,4 +67,35 @@ public class ExerciseGuide implements Guide {
 	public void setId(String id) {
 		this.id = id;
 	}
+
+	/**
+	 * 가이드 ID를 설정한다.
+	 *
+	 * @since 1.0.0
+	 */
+
+	public void changeAboutWalk(int needStepByTTS, int needStepByLastWeek, String comparedToLastWeek, String content) {
+		this.needStepByTTS = needStepByTTS;
+		this.needStepByLastWeek = needStepByLastWeek;
+		this.comparedToLastWeek = comparedToLastWeek;
+		this.content = content;
+	}
+
+	/**
+	 * 수정된 운동 칼로리를 업데이트한다.
+	 * <p>
+	 * 기존에 존재하는 운동 칼로리를 삭제하고, 새로운 운동 칼로리를 추가한다.
+	 *
+	 * @param exerciseCalorie 운동칼로리 객체
+	 * @since 1.0.0
+	 */
+	public void changeExerciseCalories(ExerciseCalorie exerciseCalorie) {
+		for (ExerciseCalorie existExerciseCalorie : exerciseCalories) {
+			if (existExerciseCalorie.type().equals(exerciseCalorie.type())) {
+				exerciseCalories.remove(existExerciseCalorie);
+				break;
+			}
+		}
+		exerciseCalories.add(exerciseCalorie);
+	}
 }

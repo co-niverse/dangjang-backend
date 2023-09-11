@@ -49,23 +49,21 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 	public GuideResponse createGuide(AnalysisData analysisData) {
 		ExerciseAnalysisData exerciseAnalysisData = (ExerciseAnalysisData)analysisData;
 
-		Optional<ExerciseGuide> existExerciseGuide = exerciseGuideSearchService.findByOauthIdAndCreatedAt(exerciseAnalysisData.getOauthId(),
+		Optional<ExerciseGuide> exerciseGuide = exerciseGuideSearchService.findByOauthIdAndCreatedAt(exerciseAnalysisData.getOauthId(),
 			exerciseAnalysisData.getCreatedAt());
 		// 이미 날짜에 해당하는 가이드가 존재
-		if (existExerciseGuide.isPresent()) {
+		if (exerciseGuide.isPresent()) {
+			ExerciseGuide existExerciseGuide = exerciseGuide.get();
 			// 걸음 수 추가
 			if (exerciseAnalysisData.getType().equals(CommonCode.STEP_COUNT)) {
 				createContent_STC_CNT(exerciseAnalysisData);
-				ExerciseGuide newExerciseGuide = updateNewGuideSTC_CNT(existExerciseGuide.get(), exerciseAnalysisData);
-				newExerciseGuide.setId(existExerciseGuide.get().getId());
-				return exerciseMapper.toResponse(exerciseGuideRepository.save(newExerciseGuide));
-
+				existExerciseGuide.changeAboutWalk(exerciseAnalysisData.needStepByTTS, exerciseAnalysisData.needStepByLastWeek, comparedToLastWeek, content);
+				return exerciseMapper.toResponse(exerciseGuideRepository.save(existExerciseGuide));
 			}
 			//운동 추가
-			ExerciseGuide exerciseGuide = existExerciseGuide.get();
-			ExerciseGuide newExerciseGuide = updateExerciseCalorie(exerciseGuide, exerciseAnalysisData);
-			newExerciseGuide.setId(exerciseGuide.getId());
-			return exerciseMapper.toResponse(exerciseGuideRepository.save(newExerciseGuide));
+			ExerciseCalorie exerciseCalorie = new ExerciseCalorie(exerciseAnalysisData.getType(), exerciseAnalysisData.getCalorie());
+			existExerciseGuide.changeExerciseCalories(exerciseCalorie);
+			return exerciseMapper.toResponse(exerciseGuideRepository.save(existExerciseGuide));
 		}
 		// 날짜에 해당하는 가이드가 존재하지 않음
 		// 새로운 걸음수 가이드 생성
@@ -94,21 +92,21 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 	@Override
 	public GuideResponse updateGuide(AnalysisData analysisData) {
 		ExerciseAnalysisData exerciseAnalysisData = (ExerciseAnalysisData)analysisData;
-		Optional<ExerciseGuide> existExerciseGuide = exerciseGuideSearchService.findByOauthIdAndCreatedAt(exerciseAnalysisData.getOauthId(),
+		Optional<ExerciseGuide> exerciseGuide = exerciseGuideSearchService.findByOauthIdAndCreatedAt(exerciseAnalysisData.getOauthId(),
 			exerciseAnalysisData.getCreatedAt());
-		if (existExerciseGuide.isEmpty()) {
+		if (exerciseGuide.isEmpty()) {
 			throw new GuideNotFoundException();
 		}
+		ExerciseGuide updateExerciseGuide = exerciseGuide.get();
 		if (analysisData.getType().equals(CommonCode.STEP_COUNT)) {
 			createContent_STC_CNT(exerciseAnalysisData);
-			ExerciseGuide newExerciseGuide = updateNewGuideSTC_CNT(existExerciseGuide.get(), exerciseAnalysisData);
-			newExerciseGuide.setId(existExerciseGuide.get().getId());
-			return exerciseMapper.toResponse(exerciseGuideRepository.save(newExerciseGuide));
+			updateExerciseGuide.changeAboutWalk(exerciseAnalysisData.needStepByTTS, exerciseAnalysisData.needStepByLastWeek, comparedToLastWeek, content);
+			return exerciseMapper.toResponse(exerciseGuideRepository.save(updateExerciseGuide));
 		}
 		//운동 수정
-		ExerciseGuide newExerciseGuide = updateExerciseCalorie(existExerciseGuide.get(), exerciseAnalysisData);
-		newExerciseGuide.setId(existExerciseGuide.get().getId());
-		return exerciseMapper.toResponse(exerciseGuideRepository.save(newExerciseGuide));
+		ExerciseCalorie exerciseCalorie = new ExerciseCalorie(exerciseAnalysisData.getType(), exerciseAnalysisData.getCalorie());
+		updateExerciseGuide.changeExerciseCalories(exerciseCalorie);
+		return exerciseMapper.toResponse(exerciseGuideRepository.save(updateExerciseGuide));
 	}
 
 	@Override
@@ -119,31 +117,6 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 	@Override
 	public GroupCode getGroupCode() {
 		return GroupCode.EXERCISE;
-	}
-
-	/**
-	 * 수정된 운동 칼로리를 업데이트한다.
-	 * <p>
-	 * 기존에 존재하는 운동 칼로리를 삭제하고, 새로운 운동 칼로리를 추가한다.
-	 *
-	 * @param existGuide 수정될 기존 가이드
-	 * @param data       분석한 운동 데이터
-	 * @return 운동 가이드
-	 * @since 1.0.0
-	 */
-	public ExerciseGuide updateExerciseCalorie(ExerciseGuide existGuide, ExerciseAnalysisData data) {
-		ExerciseCalorie exerciseCalorie = new ExerciseCalorie(data.getType(), data.getCalorie());
-		List<ExerciseCalorie> exerciseCalories = existGuide.getExerciseCalories();
-		for (ExerciseCalorie existExerciseCalorie : exerciseCalories) {
-			if (existExerciseCalorie.type().equals(data.getType())) {
-				exerciseCalories.remove(existExerciseCalorie);
-				break;
-			}
-		}
-		exerciseCalories.add(exerciseCalorie);
-		return existGuide.toBuilder()
-			.exerciseCalories(exerciseCalories)
-			.build();
 	}
 
 	/**
