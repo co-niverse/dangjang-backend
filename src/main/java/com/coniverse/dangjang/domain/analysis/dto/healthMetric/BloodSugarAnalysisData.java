@@ -1,7 +1,6 @@
 package com.coniverse.dangjang.domain.analysis.dto.healthMetric;
 
 import com.coniverse.dangjang.domain.analysis.enums.Alert;
-import com.coniverse.dangjang.domain.analysis.exception.UnitLessThanZeroException;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.user.entity.User;
 
@@ -33,15 +32,8 @@ public class BloodSugarAnalysisData extends HealthMetricAnalysisData {
 	}
 
 	@Override
-	void convertUnit(String unit) { // TODO 테스트, validator로 변경
-		try {
-			this.unit = Integer.parseInt(unit);
-		} catch (NumberFormatException e) {
-			throw new NumberFormatException("혈당 단위가 숫자가 아닙니다.");
-		}
-		if (this.unit < 0) {
-			throw new UnitLessThanZeroException();
-		}
+	void convertUnit(String unit) {
+		this.unit = Integer.parseInt(unit);
 	}
 
 	public void setAlert(Alert alert) {
