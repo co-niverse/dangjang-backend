@@ -1,6 +1,6 @@
 package com.coniverse.dangjang.domain.guide.weight.service;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.WeightAnalysisData;
@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
  * @author EVE
  * @since 1.0.0
  */
-@Component
+@Service
 @RequiredArgsConstructor
 public class WeightGuideGenerateService implements GuideGenerateService {
 	private final WeightGuideSearchService weightGuideSearchService;
