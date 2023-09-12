@@ -46,7 +46,7 @@ public class HealthConnectRegisterService {
 			.stream()
 			.map(postRequest -> healthMetricMapper.toEntity(postRequest, user))
 			.filter(h -> healthMetricRepository
-				.findByHealthMetricId(h.getOauthId(), h.getCreatedAt(), h.getType())
+				.findByHealthMetricId(oauthId, h.getCreatedAt(), h.getType())
 				.isEmpty()
 			)
 			.toList();
