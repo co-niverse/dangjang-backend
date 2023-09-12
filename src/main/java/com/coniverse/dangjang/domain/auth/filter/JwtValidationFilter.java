@@ -65,8 +65,6 @@ public class JwtValidationFilter extends OncePerRequestFilter {
 	}
 
 	/**
-	 * Authentication 을 생성한다
-	 *
 	 * @param token
 	 * @return boolean 토큰 유효성 확인
 	 * @throws InvalidTokenException // TODO 각 exception이 언제 발생하는지

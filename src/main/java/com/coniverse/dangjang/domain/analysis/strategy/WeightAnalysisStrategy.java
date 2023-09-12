@@ -23,10 +23,18 @@ public class WeightAnalysisStrategy implements AnalysisStrategy {
 		return new WeightAnalysisData(healthMetric);
 	}
 
+	/**
+	 * 체중 분석 데이터를 생성한다.
+	 *
+	 * @param analysisData 건강지표
+	 * @return 체중 분석 데이터
+	 * @since 1.0.0
+	 */
 	@Override
 	public AnalysisData analyze(AnalysisData analysisData) {
 		WeightAnalysisData data = (WeightAnalysisData)analysisData;
-		Alert alert = this.findAlert(data.getHeight(), data.getUnit());
+		data.setBmi(calculateBmi(data.getHeight(), data.getUnit()));
+		Alert alert = this.findAlert(data.getBmi());
 		int weightDiff = this.calculateWeightDiff(data.getHeight(), data.getUnit(), data.getGender());
 		data.setAlert(alert);
 		data.setWeightDiff(weightDiff);
@@ -41,13 +49,11 @@ public class WeightAnalysisStrategy implements AnalysisStrategy {
 	/**
 	 * BMI 수치에 따라 경보를 찾는다.
 	 *
-	 * @param height 키
-	 * @param weight 몸무게
+	 * @param bmi BMI 수치
 	 * @return 경보
 	 * @since 1.0.0
 	 */
-	private Alert findAlert(int height, int weight) {
-		double bmi = (weight / Math.pow(height / 100.0, 2.0));
+	private Alert findAlert(double bmi) {
 		if (bmi < 18.5) {
 			return Alert.LOW_WEIGHT;
 		} else if (bmi < 22.9) {
@@ -60,6 +66,18 @@ public class WeightAnalysisStrategy implements AnalysisStrategy {
 			return Alert.LEVEL_2_OBESITY;
 		}
 		return Alert.LEVEL_3_OBESITY;
+	}
+
+	/**
+	 * BMI 수치를 계산한다.
+	 *
+	 * @param height 키
+	 * @param weight 몸무게
+	 * @return bmi
+	 * @since 1.0.0
+	 */
+	private double calculateBmi(int height, int weight) {
+		return weight / Math.pow(height / 100.0, 2.0);
 	}
 
 	/**
@@ -80,4 +98,5 @@ public class WeightAnalysisStrategy implements AnalysisStrategy {
 		}
 		return weight - standardWeight;
 	}
+
 }

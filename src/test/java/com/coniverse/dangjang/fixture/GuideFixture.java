@@ -75,4 +75,5 @@ public class GuideFixture {
 	public static GuideResponse 당화혈색소_가이드_응답() { // TODO return 수정
 		return null;
 	}
+
 }

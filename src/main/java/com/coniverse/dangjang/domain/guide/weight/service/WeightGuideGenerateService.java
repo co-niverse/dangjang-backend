@@ -1,6 +1,6 @@
 package com.coniverse.dangjang.domain.guide.weight.service;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.WeightAnalysisData;
@@ -14,36 +14,64 @@ import com.coniverse.dangjang.domain.guide.weight.repository.WeightGuideReposito
 import lombok.RequiredArgsConstructor;
 
 /**
- * 체중 조언서비스
+ * 체중 가이드 생성 및 업데이트
  *
  * @author EVE
- * @see WeightAnalysisData
  * @since 1.0.0
  */
-@Component
+@Service
 @RequiredArgsConstructor
 public class WeightGuideGenerateService implements GuideGenerateService {
+	private final WeightGuideSearchService weightGuideSearchService;
 	private final WeightGuideRepository weightGuideRepository;
 	private final WeightMapper weightMapper;
 
+	/**
+	 * 체중 가이드를 생성한다.
+	 *
+	 * @param analysisData 체중 분석 데이터
+	 * @return 가이드 응답
+	 * @since 1.0.0
+	 */
 	@Override
-	public GuideResponse createGuide(AnalysisData weightAnalysisData) {
-		//TODO: 혈당 피드백 merge한 후 positive 수정
-		WeightAnalysisData data = (WeightAnalysisData)weightAnalysisData;
-		String content = String.format("%s이에요. 평균 체중에 비해 %dkg %s", data.getAlert().getTitle(), data.getWeightDiff(),
-			data.getWeightDiff() > 0 ? "많아요" : "적어요");
+	public GuideResponse createGuide(AnalysisData analysisData) {
+		WeightAnalysisData data = (WeightAnalysisData)analysisData;
+		String content = createContent(data);
 		WeightGuide weightGuide = weightMapper.toDocument(data, content);
-		weightGuideRepository.save(weightGuide);
-		return null; // TODO 가이드 응답
+		return weightMapper.toResponse(weightGuideRepository.save(weightGuide));
 	}
 
+	/**
+	 * 체중 가이드를 업데이트한다.
+	 *
+	 * @param analysisData 체중 분석 데이터
+	 * @return 가이드 응답
+	 * @since 1.0.0
+	 */
 	@Override
 	public GuideResponse updateGuide(AnalysisData analysisData) {
-		return null; // TODO
+		WeightAnalysisData data = (WeightAnalysisData)analysisData;
+		WeightGuide weightGuide = weightGuideSearchService.findByOauthIdAndCreatedAt(data.getOauthId(), data.getCreatedAt());
+		String content = createContent(data);
+		weightGuide.changeAboutWeight(data.getWeightDiff(), data.getAlert(), content, data.getBmi());
+		return weightMapper.toResponse(weightGuideRepository.save(weightGuide));
 	}
 
 	@Override
 	public GroupCode getGroupCode() {
 		return GroupCode.WEIGHT;
 	}
+
+	/**
+	 * 체중 가이드 내용을 생성한다.
+	 *
+	 * @param data 체중 분석 데이터
+	 * @return 가이드 내용
+	 * @since 1.0.0
+	 */
+	public String createContent(WeightAnalysisData data) {
+		return String.format("%s이에요. 평균 체중에 비해 %dkg %s", data.getAlert().getTitle(), data.getWeightDiff(),
+			data.getWeightDiff() > 0 ? "많아요" : "적어요");
+	}
+
 }
