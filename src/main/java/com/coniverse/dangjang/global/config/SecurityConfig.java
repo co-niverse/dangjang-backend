@@ -67,6 +67,7 @@ public class SecurityConfig {
 				.requestMatchers("/api/duplicateNickname").permitAll()
 				.requestMatchers("/api/**").permitAll() // TODO 수정
 				.requestMatchers("/", "/swagger-ui/**", "/api-docs/**").permitAll()
+				.requestMatchers("/api/health-connect/**").authenticated()
 				.anyRequest().authenticated()
 
 			);
