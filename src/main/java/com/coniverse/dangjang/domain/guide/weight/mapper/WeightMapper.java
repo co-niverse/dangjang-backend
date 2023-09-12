@@ -18,12 +18,11 @@ public interface WeightMapper {
 	/**
 	 * 체중 가이드 Document 생성
 	 *
-	 * @param data 체중 분석 데이터
-	 * @param content            체중 가이드 내용
+	 * @param data    체중 분석 데이터
+	 * @param content 체중 가이드 내용
 	 * @return WeightGuide
 	 * @since 1.0.0
 	 */
-	@Mapping(target = "title", source = "data.alert.title")
 	WeightGuide toDocument(WeightAnalysisData data, String content);
 
 	/**
@@ -33,6 +32,7 @@ public interface WeightMapper {
 	 * @return WeightGuideResponse
 	 * @since 1.0.0
 	 */
-	@Mapping(target = "content", source = "weightGuide.content")
+	@Mapping(target = "type", source = "type.title")
+	@Mapping(target = "title", source = "alert.title")
 	WeightGuideResponse toResponse(WeightGuide weightGuide);
 }

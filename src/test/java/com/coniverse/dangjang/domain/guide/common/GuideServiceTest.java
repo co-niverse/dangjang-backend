@@ -20,6 +20,7 @@ import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.guide.bloodsugar.service.BloodSugarGuideGenerateService;
 import com.coniverse.dangjang.domain.guide.common.service.GuideGenerateService;
 import com.coniverse.dangjang.domain.guide.common.service.GuideService;
+import com.coniverse.dangjang.domain.guide.exercise.service.ExerciseGuideGenerateService;
 import com.coniverse.dangjang.domain.guide.weight.service.WeightGuideGenerateService;
 import com.coniverse.dangjang.fixture.AnalysisDataFixture;
 
@@ -36,19 +37,21 @@ class GuideServiceTest {
 	private BloodSugarGuideGenerateService bloodSugarGuideGenerateService;
 	@SpyBean
 	private WeightGuideGenerateService weightGuideGenerateService;
+	@SpyBean
+	ExerciseGuideGenerateService exerciseGuideGenerateService;
 
 	private Stream<Arguments> provideType() {
 		return Stream.of(
 			Arguments.of(혈당_타입(), bloodSugarGuideGenerateService),
-			Arguments.of(체중_타입(), weightGuideGenerateService)
-			// TODO 운동, 당화혈색소, 식단 추가
+			Arguments.of(체중_타입(), weightGuideGenerateService),
+			Arguments.of(운동_타입(), exerciseGuideGenerateService)
+			// TODO 당화혈색소, 식단 추가
 		);
 	}
 
 	private Stream<List<CommonCode>> provideTypeExceptBloodSugar() {
-		return Stream.of(체중_타입()
-			// TODO 운동, 당화혈색소, 식단 추가
-		);
+		return Stream.of(체중_타입(), 운동_타입());
+		// TODO 당화혈색소, 식단 추가
 	}
 
 	@ParameterizedTest

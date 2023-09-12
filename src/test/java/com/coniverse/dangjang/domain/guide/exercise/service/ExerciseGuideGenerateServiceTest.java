@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.guide.service;
+package com.coniverse.dangjang.domain.guide.exercise.service;
 
 import static com.coniverse.dangjang.fixture.AnalysisDataFixture.*;
 import static com.coniverse.dangjang.fixture.HealthMetricFixture.*;
@@ -29,7 +29,6 @@ import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseCalorie;
 import com.coniverse.dangjang.domain.guide.exercise.dto.WalkGuideContent;
 import com.coniverse.dangjang.domain.guide.exercise.repository.ExerciseGuideRepository;
-import com.coniverse.dangjang.domain.guide.exercise.service.ExerciseGuideGenerateService;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricSearchService;
 import com.coniverse.dangjang.domain.user.entity.User;
 
@@ -71,12 +70,14 @@ class ExerciseGuideGenerateServiceTest {
 		// given
 		var data = exerciseAnalysisStrategy.analyze(운동_분석_데이터(user, CommonCode.STEP_COUNT, unit));
 		exerciseGuideRepository.deleteAll();
+
 		// when
 		exerciseGuideGenerateService.createGuide(data);
+
 		// then
 		Optional<ExerciseGuide> 등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
 		WalkGuideContent walkGuideContent = new WalkGuideContent(등록된_운동가이드.get().getNeedStepByTTS(), 등록된_운동가이드.get().getNeedStepByLastWeek());
-		assertThat(등록된_운동가이드.get().getTodayContent()).isEqualTo(walkGuideContent.guideTTS);
+		assertThat(등록된_운동가이드.get().getContent()).isEqualTo(walkGuideContent.guideTTS);
 		assertThat(등록된_운동가이드.get().getComparedToLastWeek()).isEqualTo(walkGuideContent.guideLastWeek);
 	}
 
@@ -89,10 +90,11 @@ class ExerciseGuideGenerateServiceTest {
 
 		// when
 		exerciseGuideGenerateService.updateGuide(data);
+
 		// then
 		Optional<ExerciseGuide> 등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
 		WalkGuideContent walkGuideContent = new WalkGuideContent(등록된_운동가이드.get().getNeedStepByTTS(), 등록된_운동가이드.get().getNeedStepByLastWeek());
-		assertThat(등록된_운동가이드.get().getTodayContent()).isEqualTo(walkGuideContent.guideTTS);
+		assertThat(등록된_운동가이드.get().getContent()).isEqualTo(walkGuideContent.guideTTS);
 		assertThat(등록된_운동가이드.get().getComparedToLastWeek()).isEqualTo(walkGuideContent.guideLastWeek);
 	}
 
@@ -101,14 +103,12 @@ class ExerciseGuideGenerateServiceTest {
 	@MethodSource("com.coniverse.dangjang.fixture.AnalysisDataFixture#운동_시간_목록")
 	void 운동별_조언을_성공적으로_등록한다(CommonCode type, String unit) {
 		// given
-
 		var data = exerciseAnalysisStrategy.analyze(운동_분석_데이터(user, type, unit));
 		Optional<ExerciseGuide> 이전_등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
 		List<ExerciseCalorie> exerciseCalories = new ArrayList<>();
 		int 등록되어있는_운동칼로리수 = 0;
 
 		//when
-
 		exerciseGuideGenerateService.createGuide(data);
 
 		// then
@@ -133,8 +133,8 @@ class ExerciseGuideGenerateServiceTest {
 		int weight = Integer.parseInt(healthMetricSearchService.findLastHealthMetricById(user.getOauthId(), CommonCode.MEASUREMENT).getUnit());
 		var data = exerciseAnalysisStrategy.analyze(운동_분석_데이터(user, type, unit));
 		Optional<ExerciseGuide> 이전_등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
-
 		int 등록되어있는_운동칼로리수 = 0;
+
 		//when
 		exerciseGuideGenerateService.updateGuide(data);
 

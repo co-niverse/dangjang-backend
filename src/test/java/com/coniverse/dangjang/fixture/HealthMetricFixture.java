@@ -91,12 +91,12 @@ public class HealthMetricFixture {
 			.build();
 	}
 
-	public static HealthMetric 건강지표_엔티티(User user, CommonCode type, String unit, LocalDate createdAt) {
+	public static HealthMetric 건강지표_엔티티(User user, CommonCode type, LocalDate createdAt) {
 		return HealthMetric.builder()
 			.createdAt(createdAt)
 			.type(type)
 			.user(user)
-			.unit(unit)
+			.unit("1")
 			.build();
 	}
 

@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.coniverse.dangjang.domain.guide.common.document.Guide;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseCalorie;
 
 import jakarta.persistence.Id;
@@ -25,7 +24,7 @@ import lombok.Setter;
 @Getter
 @Document
 @NoArgsConstructor
-public class ExerciseGuide implements Guide {
+public class ExerciseGuide {
 	@Id
 	private String id;
 	private String oauthId;
@@ -49,22 +48,10 @@ public class ExerciseGuide implements Guide {
 	}
 
 	/**
-	 * 가이드 내용을 전달한다.
-	 *
-	 * @return 가이드 내용
-	 * @since 1.0.0
-	 */
-	@Override
-	public String getTodayContent() {
-		return this.content;
-	}
-
-	/**
 	 * 가이드 ID를 설정한다.
 	 *
 	 * @since 1.0.0
 	 */
-
 	public void changeAboutWalk(int needStepByTTS, int needStepByLastWeek, String comparedToLastWeek, String content) {
 		this.needStepByTTS = needStepByTTS;
 		this.needStepByLastWeek = needStepByLastWeek;
