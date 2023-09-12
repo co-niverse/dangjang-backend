@@ -49,4 +49,5 @@ public class GuideFixture {
 	public static GuideResponse 당화혈색소_가이드_응답() { // TODO return 수정
 		return new SubGuideResponse(CommonCode.HBA1C.getTitle(), null, Alert.CAUTION, "가이드입니다");
 	}
+
 }

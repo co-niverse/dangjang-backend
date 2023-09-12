@@ -22,7 +22,8 @@ public enum GroupCode implements EnumCode {
 		CommonCode.EMPTY_STOMACH, CommonCode.BEFORE_BREAKFAST, CommonCode.AFTER_BREAKFAST, CommonCode.BEFORE_LUNCH, CommonCode.AFTER_LUNCH,
 		CommonCode.BEFORE_DINNER, CommonCode.AFTER_DINNER, CommonCode.BEFORE_SLEEP, CommonCode.ETC)
 	),
-	EXERCISE("운동", "exercise", List.of(CommonCode.STEP_COUNT)),
+	EXERCISE("운동", "exercise",
+		List.of(CommonCode.STEP_COUNT, CommonCode.HEALTH, CommonCode.BIKE, CommonCode.HIKING, CommonCode.RUN, CommonCode.SWIM, CommonCode.WALK)),
 	WEIGHT("체중", "weight", List.of(CommonCode.MEASUREMENT)),
 	GLYCATED_HEMOGLOBIN("당화혈색소", "glycated hemoglobin", List.of(CommonCode.HBA1C));
 

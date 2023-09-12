@@ -22,6 +22,12 @@ public enum CommonCode implements EnumCode {
 	BEFORE_SLEEP("취침전", "before sleep"),
 	ETC("기타", "etc"),
 	STEP_COUNT("걸음수", "step count"),
+	WALK("걷기", "walk"),
+	RUN("달리기", "run"),
+	HIKING("하이킹", "hiking"),
+	BIKE("자전거", "bike"),
+	SWIM("수영", "swim"),
+	HEALTH("헬스", "health"),
 	MEASUREMENT("체중", "measurement"),
 	HBA1C("당화혈색소", "HBA1C");
 

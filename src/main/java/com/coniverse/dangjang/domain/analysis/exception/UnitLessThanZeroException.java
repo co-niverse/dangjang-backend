@@ -7,7 +7,6 @@ import com.coniverse.dangjang.global.exception.BusinessException;
  *
  * @author TEO
  * @since 1.0.0
- * @deprecated
  */
 @Deprecated(since = "1.0.0")
 public class UnitLessThanZeroException extends BusinessException {
