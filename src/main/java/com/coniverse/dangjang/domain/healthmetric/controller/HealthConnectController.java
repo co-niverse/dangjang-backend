@@ -1,6 +1,7 @@
 package com.coniverse.dangjang.domain.healthmetric.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthConnectRegisterService;
+import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +38,10 @@ public class HealthConnectController {
 	 */
 	@PostMapping
 	@ResponseStatus(HttpStatus.OK)
-	public void postHealthConnect(@Valid @RequestBody HealthConnectPostRequest requests, @AuthenticationPrincipal User principal) {
+	public ResponseEntity<SuccessSingleResponse<?>> postHealthConnect(@Valid @RequestBody HealthConnectPostRequest requests,
+		@AuthenticationPrincipal User principal) {
 		String oauthId = principal.getUsername();
 		healthConnectRegisterService.registerHealthConnect(requests, oauthId);
+		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}
 }
