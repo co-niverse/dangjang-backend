@@ -40,12 +40,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtValidationFilter extends OncePerRequestFilter {
 	private final JwtTokenProvider jwtTokenProvider;
+	private static final String AUTHORIZATION = "Authorization";
+	private static final String BEARER = "Bearer";
 
 	@Override
 	protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain filterChain) throws
 		ServletException,
 		IOException {
-		String token = getToken(request.getHeader("Authorization"));
+		String token = getToken(request.getHeader(AUTHORIZATION));
 
 		if (validationToken(token)) {
 			Authentication auth = getAuthentication(token);
@@ -57,11 +59,8 @@ public class JwtValidationFilter extends OncePerRequestFilter {
 
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-		String authorization = request.getHeader("Authorization");
-		return authorization == null || !authorization.startsWith("Bearer ");
-		// String[] excludePath = {"/api/auth/", "/api/signUp", "/api/intro/", "/api/duplicateNickname", "/api/health-metric", "/swagger-ui/", "/api-docs"};
-		// String path = request.getRequestURI();
-		// return Arrays.stream(excludePath).anyMatch(path::startsWith);
+		String authorization = request.getHeader(AUTHORIZATION);
+		return authorization == null || !authorization.startsWith(BEARER);
 	}
 
 	/**
@@ -79,7 +78,7 @@ public class JwtValidationFilter extends OncePerRequestFilter {
 				.parseClaimsJws(token);
 			return true;
 		} catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
-			throw new InvalidTokenException(e.getMessage());
+			return false;
 		}
 	}
 
@@ -106,7 +105,7 @@ public class JwtValidationFilter extends OncePerRequestFilter {
 	}
 
 	private String getToken(final String authHeader) {
-		if (StringUtils.hasLength(authHeader) && authHeader.startsWith("Bearer")) {
+		if (StringUtils.hasLength(authHeader) && authHeader.startsWith(BEARER)) {
 			return authHeader.substring(7);
 		} else {
 			throw new InvalidTokenException("잘못된 Authorization Header 입니다.");
