@@ -85,7 +85,7 @@ public class BloodSugarAnalysisStrategy implements AnalysisStrategy {
 			alert = Alert.HYPOGLYCEMIA;
 			deviation = normalMinCriteria - unit;
 		} else if (unit < normalMinCriteria) {
-			alert = Alert.CAUTION;
+			alert = Alert.HYPOGLYCEMIA_SUSPECT;
 			deviation = normalMinCriteria - unit;
 		} else if (unit <= normalMaxCriteria) {
 			alert = Alert.NORMAL;

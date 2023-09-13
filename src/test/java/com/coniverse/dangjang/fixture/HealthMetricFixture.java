@@ -101,4 +101,26 @@ public class HealthMetricFixture {
 			.unit(unit)
 			.build();
 	}
+
+	public static HealthMetric 건강지표_엔티티(User user, CommonCode type, LocalDate createdAt) {
+		return HealthMetric.builder()
+			.createdAt(createdAt)
+			.type(type)
+			.user(user)
+			.unit("1")
+			.build();
+	}
+
+	/**
+	 * 가이드 데이터 fixture에서 사용
+	 */
+	public static HealthMetric 체중건강지표_엔티티(User user, LocalDate 등록_일자) {
+		return HealthMetric.builder()
+			.user(user)
+			.type(CommonCode.MEASUREMENT)
+			.unit("70")
+			.createdAt(등록_일자)
+			.build();
+	}
+
 }

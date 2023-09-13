@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.guide.service;
+package com.coniverse.dangjang.domain.guide.common;
 
 import static com.coniverse.dangjang.fixture.CommonCodeFixture.*;
 import static org.assertj.core.api.Assertions.*;
@@ -20,6 +20,7 @@ import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.guide.bloodsugar.service.BloodSugarGuideGenerateService;
 import com.coniverse.dangjang.domain.guide.common.service.GuideGenerateService;
 import com.coniverse.dangjang.domain.guide.common.service.GuideService;
+import com.coniverse.dangjang.domain.guide.exercise.service.ExerciseGuideGenerateService;
 import com.coniverse.dangjang.domain.guide.weight.service.WeightGuideGenerateService;
 import com.coniverse.dangjang.fixture.AnalysisDataFixture;
 
@@ -36,19 +37,21 @@ class GuideServiceTest {
 	private BloodSugarGuideGenerateService bloodSugarGuideGenerateService;
 	@SpyBean
 	private WeightGuideGenerateService weightGuideGenerateService;
+	@SpyBean
+	ExerciseGuideGenerateService exerciseGuideGenerateService;
 
 	private Stream<Arguments> provideType() {
 		return Stream.of(
 			Arguments.of(혈당_타입(), bloodSugarGuideGenerateService),
-			Arguments.of(체중_타입(), weightGuideGenerateService)
-			// TODO 운동, 당화혈색소, 식단 추가
+			Arguments.of(체중_타입(), weightGuideGenerateService),
+			Arguments.of(운동_타입(), exerciseGuideGenerateService)
+			// TODO 당화혈색소, 식단 추가
 		);
 	}
 
 	private Stream<List<CommonCode>> provideTypeExceptBloodSugar() {
-		return Stream.of(체중_타입()
-			// TODO 운동, 당화혈색소, 식단 추가
-		);
+		return Stream.of(체중_타입(), 운동_타입());
+		// TODO 당화혈색소, 식단 추가
 	}
 
 	@ParameterizedTest
@@ -98,14 +101,15 @@ class GuideServiceTest {
 
 	@ParameterizedTest
 	@MethodSource("provideTypeExceptBloodSugar")
-	void 혈당_그룹을_제외한_나머지_그룹의_타입은_타입_변경_메서드를_호출하면_예외가_발생한다(List<CommonCode> type) {
+	void 혈당_그룹을_제외한_나머지_그룹의_타입은_타입_변경_메서드를_호출하면_예외가_발생한다(List<CommonCode> types) {
 		// given & when
-		type.stream()
+		types.stream()
 			.map(AnalysisDataFixture::분석_데이터)
 			// then
-			.forEach(data ->
-				assertThatThrownBy(() -> guideService.updateGuideWithType(data, data.getType()))
-					.isInstanceOf(UnsupportedOperationException.class)
-			);
+			.forEach(data -> {
+				CommonCode type = data.getType();
+				assertThatThrownBy(() -> guideService.updateGuideWithType(data, type))
+					.isInstanceOf(UnsupportedOperationException.class);
+			});
 	}
 }

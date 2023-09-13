@@ -61,15 +61,6 @@ public class SimpleMockMvc {
 		);
 	}
 
-	public static ResultActions get(final MockMvc mockMvc, final String uri, String authorization, final Object... pathVariables) throws
-		Exception {
-		return mockMvc.perform(
-			MockMvcRequestBuilders.get(uri, pathVariables)
-				.header(HttpHeaders.AUTHORIZATION, "Bearer " + authorization)
-				.accept(MediaType.APPLICATION_JSON)
-		);
-	}
-
 	public static ResultActions delete(final MockMvc mockMvc, final String uri, final Object... pathVariables) throws Exception {
 		return mockMvc.perform(
 			MockMvcRequestBuilders.delete(uri, pathVariables)

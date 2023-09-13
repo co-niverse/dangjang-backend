@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -17,6 +18,10 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.coniverse.dangjang.domain.auth.filter.JwtValidationFilter;
+import com.coniverse.dangjang.domain.auth.handler.JwtAccessDeniedHandler;
+import com.coniverse.dangjang.domain.auth.handler.JwtAuthenticationEntryPoint;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * Spring Security를 설정한다.
@@ -26,14 +31,13 @@ import com.coniverse.dangjang.domain.auth.filter.JwtValidationFilter;
  */
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+	private final JwtValidationFilter jwtValidationFilter;
+	private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	@Value("${cors.allowed-origins}")
 	private String allowedOrigins;
-	private final JwtValidationFilter jwtValidationFilter;
-
-	public SecurityConfig(JwtValidationFilter jwtValidationFilter) {
-		this.jwtValidationFilter = jwtValidationFilter;
-	}
 
 	/**
 	 * SecurityFilterChain 설정
@@ -54,24 +58,30 @@ public class SecurityConfig {
 			.headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions(
 				HeadersConfigurer.FrameOptionsConfig::sameOrigin))
 			.csrf(AbstractHttpConfigurer::disable)
-			.cors(corsConfigurer -> corsConfigurer.configurationSource(configurationSource()))
+			.cors(
+				corsConfigurer -> corsConfigurer.configurationSource(configurationSource())
+			)
 			.formLogin(AbstractHttpConfigurer::disable)
 			.httpBasic(AbstractHttpConfigurer::disable)
 			.sessionManagement(
-				sessionManagementConfigurer -> sessionManagementConfigurer.sessionCreationPolicy(
-					SessionCreationPolicy.STATELESS))
-			.addFilterAt(jwtValidationFilter, UsernamePasswordAuthenticationFilter.class) // TODO 왜 이렇게 해야하는지
+				sessionManagementConfigurer -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			)
+			.addFilterAt(jwtValidationFilter, UsernamePasswordAuthenticationFilter.class)
 			.authorizeHttpRequests(authorize -> authorize
-				.requestMatchers("/api/intro/prod").permitAll()
-				.requestMatchers("/api/signUp").permitAll()
-				.requestMatchers("/api/duplicateNickname").permitAll()
-				.requestMatchers("/api/**").permitAll() // TODO 수정
-				.requestMatchers("/", "/swagger-ui/**", "/api-docs/**").permitAll()
-				.requestMatchers("/api/health-connect/**").authenticated()
-				.anyRequest().authenticated()
-
+				.requestMatchers(HttpMethod.GET, "/api/intro/**").permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/signup/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/duplicateNickname/**").permitAll() // TODO 수정
+				.requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/api-docs/**").permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/health-metric/**").authenticated()
+				.requestMatchers(HttpMethod.GET, "/api/guide/**").authenticated()
+				.requestMatchers(HttpMethod.POST, "/api/health-connect/**").authenticated()
+				.anyRequest().permitAll()
+			)
+			.exceptionHandling(
+				handler -> handler.accessDeniedHandler(jwtAccessDeniedHandler)
+					.authenticationEntryPoint(jwtAuthenticationEntryPoint)
 			);
-
 		return http.build();
 	}
 

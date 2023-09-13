@@ -30,6 +30,9 @@ public class UserFixture {
 			.status(Status.ACTIVE)
 			.profileImagePath("/images/profile/.png")
 			.diabetic(false)
+			.diabetesYear(0)
+			.medicine(false)
+			.injection(false)
 			.build();
 	}
 
@@ -50,6 +53,46 @@ public class UserFixture {
 			.diabetesYear(1)
 			.medicine(false)
 			.injection(false)
+			.build();
+	}
+
+	public static User 전단계_환자() {
+		return User.builder()
+			.oauthId("33333333")
+			.oauthProvider(OauthProvider.NAVER)
+			.nickname("전단계임")
+			.gender(Gender.F)
+			.birthday(LocalDate.of(2000, 1, 1))
+			.activityAmount(ActivityAmount.LOW)
+			.height(180)
+			.recommendedCalorie(1500)
+			.role(Role.USER)
+			.status(Status.ACTIVE)
+			.profileImagePath("/images/profile/.png")
+			.diabetic(false)
+			.diabetesYear(0)
+			.medicine(false)
+			.injection(false)
+			.build();
+	}
+
+	public static User 당뇨_환자(boolean medicine, boolean injection) {
+		return User.builder()
+			.oauthId("44444444")
+			.oauthProvider(OauthProvider.NAVER)
+			.nickname("당뇨임")
+			.gender(Gender.F)
+			.birthday(LocalDate.of(2000, 1, 1))
+			.activityAmount(ActivityAmount.LOW)
+			.height(180)
+			.recommendedCalorie(1500)
+			.role(Role.USER)
+			.status(Status.ACTIVE)
+			.profileImagePath("/images/profile/.png")
+			.diabetic(true)
+			.diabetesYear(0)
+			.medicine(medicine)
+			.injection(injection)
 			.build();
 	}
 }

@@ -8,6 +8,8 @@ import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.BloodSugarGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.SubGuide;
+import com.coniverse.dangjang.domain.guide.bloodsugar.factory.BloodSugarGuideFormatFactory;
+import com.coniverse.dangjang.domain.guide.bloodsugar.factory.guideformat.GuideFormat;
 import com.coniverse.dangjang.domain.guide.bloodsugar.mapper.BloodSugarGuideMapper;
 import com.coniverse.dangjang.domain.guide.bloodsugar.repository.BloodSugarGuideRepository;
 import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
@@ -28,6 +30,7 @@ public class BloodSugarGuideGenerateService implements GuideGenerateService {
 	private final BloodSugarGuideSearchService bloodSugarGuideSearchService;
 	private final BloodSugarGuideRepository bloodSugarGuideRepository;
 	private final BloodSugarGuideMapper mapper;
+	private final BloodSugarGuideFormatFactory bloodSugarGuideFormatFactory;
 
 	/**
 	 * 서브 가이드를 생성해서 혈당 가이드에 저장한다.
@@ -47,11 +50,11 @@ public class BloodSugarGuideGenerateService implements GuideGenerateService {
 		} catch (GuideNotFoundException e) {
 			guide = mapper.toDocument(data);
 		}
-		String content = "가이드 내용입니다."; // TODO 가이드, 요약
-		SubGuide subGuide = mapper.toSubGuide(data, content);
-		guide.add(subGuide);
+		GuideFormat guideFormat = bloodSugarGuideFormatFactory.createGuideFormat(data);
+		SubGuide subGuide = mapper.toSubGuide(data, guideFormat);
+		guide.addSubGuide(subGuide);
 		bloodSugarGuideRepository.save(guide);
-		return mapper.toSubGuideResponse(subGuide);
+		return mapper.toSubGuideResponse(subGuide, guide.getTodayGuides());
 	}
 
 	/**
@@ -66,11 +69,11 @@ public class BloodSugarGuideGenerateService implements GuideGenerateService {
 		BloodSugarAnalysisData data = (BloodSugarAnalysisData)analysisData;
 		BloodSugarGuide guide = bloodSugarGuideSearchService.findByUserIdAndCreatedAt(data.getOauthId(), data.getCreatedAt());
 
-		String content = "가이드 내용입니다.";
-		SubGuide subGuide = mapper.toSubGuide(data, content);
-		guide.update(subGuide);
+		GuideFormat guideFormat = bloodSugarGuideFormatFactory.createGuideFormat(data);
+		SubGuide subGuide = mapper.toSubGuide(data, guideFormat);
+		guide.updateSubGuide(subGuide);
 		bloodSugarGuideRepository.save(guide);
-		return mapper.toSubGuideResponse(subGuide);
+		return mapper.toSubGuideResponse(subGuide, guide.getTodayGuides());
 
 	}
 
@@ -87,11 +90,11 @@ public class BloodSugarGuideGenerateService implements GuideGenerateService {
 		BloodSugarAnalysisData data = (BloodSugarAnalysisData)analysisData;
 		BloodSugarGuide guide = bloodSugarGuideSearchService.findByUserIdAndCreatedAt(data.getOauthId(), data.getCreatedAt());
 
-		String content = "가이드 내용입니다.";
-		SubGuide subGuide = mapper.toSubGuide(data, content);
-		guide.update(subGuide, prevType);
+		GuideFormat guideFormat = bloodSugarGuideFormatFactory.createGuideFormat(data);
+		SubGuide subGuide = mapper.toSubGuide(data, guideFormat);
+		guide.updateSubGuide(subGuide, prevType);
 		bloodSugarGuideRepository.save(guide);
-		return mapper.toSubGuideResponse(subGuide);
+		return mapper.toSubGuideResponse(subGuide, guide.getTodayGuides());
 	}
 
 	@Override

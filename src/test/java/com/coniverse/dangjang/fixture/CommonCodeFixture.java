@@ -27,7 +27,13 @@ public class CommonCodeFixture {
 
 	public static List<CommonCode> 운동_타입() {
 		return List.of(
-			CommonCode.STEP_COUNT
+			CommonCode.STEP_COUNT,
+			CommonCode.WALK,
+			CommonCode.RUN,
+			CommonCode.HIKING,
+			CommonCode.BIKE,
+			CommonCode.SWIM,
+			CommonCode.HEALTH
 		);
 	}
 

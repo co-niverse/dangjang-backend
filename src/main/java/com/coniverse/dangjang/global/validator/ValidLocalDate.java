@@ -1,6 +1,7 @@
 package com.coniverse.dangjang.global.validator;
 
-import java.lang.annotation.ElementType;
+import static java.lang.annotation.ElementType.*;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -15,7 +16,7 @@ import jakarta.validation.Payload;
  * @see LocalDateValidator
  * @since 1.0.0
  */
-@Target({ElementType.FIELD})
+@Target({FIELD, PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = LocalDateValidator.class)
 public @interface ValidLocalDate {

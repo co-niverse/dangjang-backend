@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum Alert implements EnumCode {
 	HYPOGLYCEMIA("저혈당"),
+	HYPOGLYCEMIA_SUSPECT("저혈당 의심"),
 	NORMAL("정상"),
 	CAUTION("주의"),
 	WARNING("경고"),
