@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectPostRequest;
@@ -37,7 +36,6 @@ public class HealthConnectController {
 	 * @since 1.0.0
 	 */
 	@PostMapping
-	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<SuccessSingleResponse<?>> postHealthConnect(@Valid @RequestBody HealthConnectPostRequest requests,
 		@AuthenticationPrincipal User principal) {
 		String oauthId = principal.getUsername();
