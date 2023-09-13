@@ -19,9 +19,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.WeightAnalysisData;
 import com.coniverse.dangjang.domain.analysis.strategy.WeightAnalysisStrategy;
+import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
 import com.coniverse.dangjang.domain.guide.weight.document.WeightGuide;
 import com.coniverse.dangjang.domain.guide.weight.repository.WeightGuideRepository;
-import com.coniverse.dangjang.domain.guide.weight.service.WeightGuideGenerateService;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
 /**
@@ -60,7 +60,7 @@ class WeightGuideGenerateServiceTest {
 		// when
 		weightGuideGenerateService.createGuide(data);
 		// then
-		WeightGuide 등록된_건강지표 = weightGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
+		WeightGuide 등록된_건강지표 = weightGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자).orElseThrow(GuideNotFoundException::new);
 		assertThat(등록된_건강지표.getContent()).isEqualTo(weightGuideGenerateService.createContent((WeightAnalysisData)data));
 	}
 
@@ -74,7 +74,7 @@ class WeightGuideGenerateServiceTest {
 		weightGuideGenerateService.updateGuide(data);
 
 		// then
-		WeightGuide 등록된_건강지표 = weightGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
+		WeightGuide 등록된_건강지표 = weightGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자).orElseThrow(GuideNotFoundException::new);
 		assertThat(등록된_건강지표.getContent()).isEqualTo(weightGuideGenerateService.createContent((WeightAnalysisData)data));
 	}
 }

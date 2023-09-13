@@ -15,6 +15,7 @@ import com.coniverse.dangjang.domain.analysis.dto.healthMetric.WeightAnalysisDat
 import com.coniverse.dangjang.domain.analysis.enums.Alert;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseCalorie;
+import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.global.exception.EnumNonExistentException;
 
@@ -25,6 +26,7 @@ import com.coniverse.dangjang.global.exception.EnumNonExistentException;
  * @since 1.0.0
  */
 public class AnalysisDataFixture {
+
 	public static BloodSugarAnalysisData 혈당_분석_데이터(User user, CommonCode type, String unit) {
 		return new BloodSugarAnalysisData(건강지표_엔티티(user, type, unit));
 	}
@@ -94,4 +96,24 @@ public class AnalysisDataFixture {
 	public static AnalysisData 분석_데이터(CommonCode type) {
 		return new BloodSugarAnalysisData(건강지표_엔티티(type));
 	}
+
+	public static HealthMetricPostRequest 체중_요청(String unit) {
+		return new HealthMetricPostRequest("체중", "2023-05-06", unit);
+	}
+
+	private static Stream<Arguments> 체중분석_입력_파라미터() {
+		UserFixture userFixture = new UserFixture();
+
+		return Stream.of(
+			Arguments.of(체중_요청("40"), userFixture.유저_테오()),
+			Arguments.of(체중_요청("50"), userFixture.유저_테오()),
+			Arguments.of(체중_요청("60"), userFixture.유저_테오()),
+			Arguments.of(체중_요청("70"), userFixture.유저_테오()),
+			Arguments.of(체중_요청("90"), userFixture.유저_테오()),
+			Arguments.of(체중_요청("100"), userFixture.유저_테오()),
+			Arguments.of(체중_요청("120"), userFixture.유저_테오()),
+			Arguments.of(체중_요청("180"), userFixture.유저_테오())
+		);
+	}
+
 }
