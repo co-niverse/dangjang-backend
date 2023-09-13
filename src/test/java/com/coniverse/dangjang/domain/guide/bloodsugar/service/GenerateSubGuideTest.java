@@ -4,12 +4,10 @@ import static com.coniverse.dangjang.fixture.AnalysisDataFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -48,13 +46,6 @@ class GenerateSubGuideTest {
 	private BloodSugarAnalysisStrategy bloodSugarAnalysisStrategy;
 	@MockBean
 	private BloodSugarGuideRepository bloodSugarGuideRepository;
-
-	@BeforeAll
-	void tearDown() {
-		doReturn(null)
-			.when(bloodSugarGuideRepository)
-			.save(any());
-	}
 
 	private Stream<Arguments> provideHypoglycemia() {
 		return Stream.of(
