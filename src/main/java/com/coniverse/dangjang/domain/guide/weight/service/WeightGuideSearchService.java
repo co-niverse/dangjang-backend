@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
 
+import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
 import com.coniverse.dangjang.domain.guide.weight.document.WeightGuide;
 import com.coniverse.dangjang.domain.guide.weight.dto.WeightGuideResponse;
 import com.coniverse.dangjang.domain.guide.weight.mapper.WeightMapper;
@@ -44,7 +45,7 @@ public class WeightGuideSearchService {
 	 * @since 1.0.0
 	 */
 	public WeightGuide findByOauthIdAndCreatedAt(String oauthId, LocalDate createdAt) {
-		return weightGuideRepository.findByOauthIdAndCreatedAt(oauthId, createdAt);
+		return weightGuideRepository.findByOauthIdAndCreatedAt(oauthId, createdAt).orElseThrow(GuideNotFoundException::new);
 	}
 
 }
