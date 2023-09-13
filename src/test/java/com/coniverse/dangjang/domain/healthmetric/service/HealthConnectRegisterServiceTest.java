@@ -4,6 +4,7 @@ import static com.coniverse.dangjang.fixture.HealthMetricFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -40,6 +41,12 @@ class HealthConnectRegisterServiceTest {
 	@BeforeAll
 	void setUp() {
 		oauthId = userRepository.save(유저_테오()).getOauthId();
+	}
+
+	@AfterAll
+	void tearDown() {
+		healthMetricRepository.deleteAll();
+		userRepository.deleteAll();
 	}
 
 	@Test
