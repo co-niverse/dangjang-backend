@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.healthmetric.repository;
+package com.coniverse.dangjang.domain.performance;
 
 import static com.coniverse.dangjang.fixture.HealthMetricFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
@@ -6,31 +6,35 @@ import static com.coniverse.dangjang.fixture.UserFixture.*;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.healthmetric.mapper.HealthMetricMapper;
+import com.coniverse.dangjang.domain.healthmetric.repository.HealthConnectRepository;
+import com.coniverse.dangjang.domain.healthmetric.repository.HealthMetricRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
+import com.coniverse.dangjang.support.annotation.PerformanceTest;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
+/**
+ * @author TEO
+ * @since 1.0.0
+ */
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Transactional
-@Disabled
-@ActiveProfiles("performance")
-public class HealthConnectPerformanceTest {
+@PerformanceTest
+class HealthConnectPerformanceTest {
 	@Autowired
 	private HealthMetricRepository healthMetricRepository;
 	@Autowired
