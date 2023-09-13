@@ -10,7 +10,7 @@ import com.coniverse.dangjang.domain.guide.common.service.GuideService;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.healthmetric.mapper.HealthMetricMapper;
-import com.coniverse.dangjang.domain.healthmetric.repository.HealthMetricRepository;
+import com.coniverse.dangjang.domain.healthmetric.repository.HealthConnectRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
 
@@ -28,9 +28,9 @@ import lombok.RequiredArgsConstructor;
 public class HealthConnectRegisterService {
 	private final UserSearchService userSearchService;
 	private final HealthMetricMapper healthMetricMapper;
-	private final HealthMetricRepository healthMetricRepository;
 	private final GuideService guideService;
 	private final AnalysisService analysisService;
+	private final HealthConnectRepository healthConnectRepository;
 
 	/**
 	 * health connect로 받은 n개의 건강 지표 데이터를 등록한다.
@@ -44,13 +44,9 @@ public class HealthConnectRegisterService {
 
 		List<HealthMetric> healthMetrics = request.data()
 			.stream()
-			.map(postRequest -> healthMetricMapper.toEntity(postRequest, user))
-			.filter(h -> healthMetricRepository
-				.findByHealthMetricId(oauthId, h.getCreatedAt(), h.getType())
-				.isEmpty()
-			)
+			.map(data -> healthMetricMapper.toEntity(data, user))
 			.toList();
-		healthMetricRepository.saveAll(healthMetrics);
+		healthConnectRepository.insertBatch(healthMetrics);
 		healthMetrics.forEach(h -> guideService.createGuide(analysisService.analyze(h)));
 	}
 }
