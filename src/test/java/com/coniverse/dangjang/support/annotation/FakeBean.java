@@ -6,6 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 /**
@@ -18,5 +19,6 @@ import org.springframework.stereotype.Component;
 @Target(ElementType.TYPE)
 @Primary
 @Component
+@Profile("test")
 public @interface FakeBean {
 }
