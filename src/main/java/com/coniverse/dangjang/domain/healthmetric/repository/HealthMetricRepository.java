@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
+import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetricId;
 
 /**
  * 건강지표 repository
@@ -16,7 +17,7 @@ import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
  * @author TEO , EVE
  * @since 1.0.0
  */
-public interface HealthMetricRepository extends JpaRepository<HealthMetric, Long> {
+public interface HealthMetricRepository extends JpaRepository<HealthMetric, HealthMetricId> {
 	/**
 	 * HealthMetricId로 건강지표 조회
 	 *
