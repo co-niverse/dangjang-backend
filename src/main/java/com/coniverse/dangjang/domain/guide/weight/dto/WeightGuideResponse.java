@@ -10,5 +10,6 @@ import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
  * @author EVE
  * @since 1.0.0
  */
-public record WeightGuideResponse(String type, LocalDate createdAt, int weightDiff, String title, String content, double bmi) implements GuideResponse {
+public record WeightGuideResponse(String type, LocalDate createdAt, int weightDiff, String title, String content, double bmi, String unit)
+	implements GuideResponse {
 }
