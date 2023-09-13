@@ -2,6 +2,7 @@ package com.coniverse.dangjang.domain.performance;
 
 import static com.coniverse.dangjang.fixture.HealthMetricFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
+import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
 
@@ -79,10 +80,10 @@ class HealthConnectPerformanceTest {
 
 		// then
 		System.out.println("--------------------------");
-		System.out.println("건강지표 추가된 개수: " + healthMetrics.size());
 		System.out.println("걸린 시간: " + (endTime - startTime) + "ms");
-		System.out.println("저장된 건강지표 개수:" + healthMetricRepository.findAll().size());
 		System.out.println("--------------------------");
+		assertThat(healthMetrics).hasSize(count);
+		assertThat(healthMetricRepository.findAll()).hasSize(count);
 	}
 
 	@Test
@@ -103,8 +104,8 @@ class HealthConnectPerformanceTest {
 		// then
 		System.out.println("--------------------------");
 		System.out.println("걸린 시간: " + (endTime - startTime) + "ms");
-		System.out.println("저장된 건강지표 개수:" + healthMetricRepository.findAll().size());
 		System.out.println("--------------------------");
+		assertThat(healthMetricRepository.findAll()).hasSize(count);
 	}
 
 	@Test
@@ -141,10 +142,11 @@ class HealthConnectPerformanceTest {
 
 		// then
 		System.out.println("--------------------------");
-		System.out.println("건강지표 추가된 개수: " + healthMetrics.size());
 		System.out.println("걸린 시간: " + (endTime - startTime) + "ms");
-		System.out.println("저장된 건강지표 개수:" + healthMetricRepository.findAll().size());
 		System.out.println("--------------------------");
+		assertThat(healthMetrics).hasSize(count - duplicatedCount);
+		assertThat(healthMetricRepository.findAll()).hasSize(count);
+
 	}
 
 	@Test
@@ -176,8 +178,8 @@ class HealthConnectPerformanceTest {
 		// then
 		System.out.println("--------------------------");
 		System.out.println("걸린 시간: " + (endTime - startTime) + "ms");
-		System.out.println("저장된 건강지표 개수:" + healthMetricRepository.findAll().size());
 		System.out.println("--------------------------");
+		assertThat(healthMetricRepository.findAll()).hasSize(count);
 	}
 
 }
