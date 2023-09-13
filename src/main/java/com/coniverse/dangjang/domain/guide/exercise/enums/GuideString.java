@@ -13,10 +13,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum GuideString {
 
-	NEEDMORE("부족해요! 조금만 더 걸어볼까요?", "덜 걸었어요~ "),
+	NEED_MORE("부족해요! 조금만 더 걸어볼까요?", "덜 걸었어요~ "),
 	ENOUGH("더 걸었군요! 멋져요~", "더 걸었어요. 좋아요~");
 
-	private final String TTSMode;
+	private final String tenThousandStepMode;
 	private final String lastWeekMode;
-
 }

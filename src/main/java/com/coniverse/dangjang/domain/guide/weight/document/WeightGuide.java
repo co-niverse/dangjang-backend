@@ -6,7 +6,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.coniverse.dangjang.domain.analysis.enums.Alert;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
-import com.coniverse.dangjang.domain.guide.common.document.Guide;
 
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
@@ -23,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Document
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class WeightGuide implements Guide {
+public class WeightGuide {
 	@Id
 	private String id;
 	private String oauthId;
@@ -32,16 +31,18 @@ public class WeightGuide implements Guide {
 	private double bmi;
 	private Alert alert;
 	private LocalDate createdAt;
-	private String todayContent;
+	private String content;
+	private String unit;
 
 	@Builder
-	private WeightGuide(String oauthId, CommonCode type, int weightDiff, Alert alert, LocalDate createdAt, String todayContent, double bmi) {
+	private WeightGuide(String oauthId, CommonCode type, int weightDiff, Alert alert, LocalDate createdAt, String content, String unit, double bmi) {
 		this.oauthId = oauthId;
 		this.type = type;
 		this.weightDiff = weightDiff;
 		this.alert = alert;
 		this.createdAt = createdAt;
-		this.todayContent = todayContent;
+		this.content = content;
+		this.unit = unit;
 		this.bmi = bmi;
 	}
 
@@ -50,14 +51,13 @@ public class WeightGuide implements Guide {
 	 *
 	 * @param weightDiff   정상체중까지의 차이
 	 * @param alert        체중 경보
-	 * @param todayContent 가이드 내용
+	 * @param content 가이드 내용
 	 * @since 1.0.0
 	 */
-	public void changeAboutWeight(int weightDiff, Alert alert, String todayContent, double bmi) {
+	public void changeAboutWeight(int weightDiff, Alert alert, String content, double bmi) {
 		this.weightDiff = weightDiff;
 		this.alert = alert;
-		this.todayContent = todayContent;
+		this.content = content;
 		this.bmi = bmi;
 	}
-
 }

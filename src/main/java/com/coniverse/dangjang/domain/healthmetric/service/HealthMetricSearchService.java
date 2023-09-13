@@ -42,26 +42,25 @@ public class HealthMetricSearchService {
 	/**
 	 * 최근 건강 지표를 조회한다.
 	 *
-	 * @param oauthId    유저 PK
-	 * @param commonCode 건강 지표 타입
+	 * @param oauthId 유저 PK
+	 * @param type    건강 지표 타입
 	 * @return HealthMetric 건강 지표
 	 * @throws HealthMetricNotFoundException 유저의 건강 지표를 찾을 수 없을 경우 발생한다.
 	 * @since 1.0.0
 	 */
-	public HealthMetric findLastHealthMetricById(String oauthId, CommonCode commonCode) {
-		return healthMetricRepository.findByHealthMetricId(oauthId, commonCode).orElseThrow(HealthMetricNotFoundException::new);
+	public HealthMetric findLastHealthMetricById(String oauthId, CommonCode type) {
+		return healthMetricRepository.findByHealthMetricId(oauthId, type).orElseThrow(HealthMetricNotFoundException::new);
 	}
 
 	/**
-	 * 기간내의 건강 지표를 조회한다.
+	 * 주간 건강 지표를 조회한다.
 	 *
-	 * @param oauthId    유저 PK
-	 * @param commonCode 건강 지표 타입
+	 * @param oauthId 유저 PK
+	 * @param type    건강 지표 타입
 	 * @return HealthMetric 건강 지표
-	 * @throws HealthMetricNotFoundException 유저의 건강 지표를 찾을 수 없을 경우 발생한다.
 	 * @since 1.0.0
 	 */
-	public List<HealthMetric> findLastWeekHealthMetricById(String oauthId, CommonCode commonCode, LocalDate startDate, LocalDate endDate) {
-		return healthMetricRepository.findLastWeekByHealthMetricId(oauthId, commonCode, startDate, endDate);
+	public List<HealthMetric> findWeeklyHealthMetricById(String oauthId, CommonCode type, LocalDate startDate, LocalDate endDate) {
+		return healthMetricRepository.findLastWeekByHealthMetricId(oauthId, type, startDate, endDate);
 	}
 }

@@ -15,7 +15,7 @@ import com.coniverse.dangjang.domain.guide.common.service.GuideGenerateService;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseCalorie;
 import com.coniverse.dangjang.domain.guide.exercise.dto.WalkGuideContent;
-import com.coniverse.dangjang.domain.guide.exercise.mapper.ExerciseMapper;
+import com.coniverse.dangjang.domain.guide.exercise.mapper.ExerciseGuideMapper;
 import com.coniverse.dangjang.domain.guide.exercise.repository.ExerciseGuideRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ExerciseGuideGenerateService implements GuideGenerateService {
 	private final ExerciseGuideSearchService exerciseGuideSearchService;
-	private final ExerciseMapper exerciseMapper;
+	private final ExerciseGuideMapper exerciseGuideMapper;
 	private final ExerciseGuideRepository exerciseGuideRepository;
 
 	/**
@@ -57,24 +57,25 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 			if (exerciseAnalysisData.getType().equals(CommonCode.STEP_COUNT)) {
 				existExerciseGuide.changeAboutWalk(exerciseAnalysisData.needStepByTTS, exerciseAnalysisData.needStepByLastWeek,
 					walkGuideContent.getGuideLastWeek(), walkGuideContent.getGuideTTS());
-				return exerciseMapper.toResponse(exerciseGuideRepository.save(existExerciseGuide));
+				return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(existExerciseGuide));
 			}
 			//운동 추가
 			ExerciseCalorie exerciseCalorie = new ExerciseCalorie(exerciseAnalysisData.getType(), exerciseAnalysisData.getCalorie());
 			existExerciseGuide.changeExerciseCalories(exerciseCalorie);
-			return exerciseMapper.toResponse(exerciseGuideRepository.save(existExerciseGuide));
+			return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(existExerciseGuide));
 		}
 		// 날짜에 해당하는 가이드가 존재하지 않음
 		// 새로운 걸음수 가이드 생성
 		if (exerciseAnalysisData.getType().equals(CommonCode.STEP_COUNT)) {
-			ExerciseGuide newExerciseGuide = exerciseMapper.toDocument(exerciseAnalysisData, walkGuideContent.guideTTS, walkGuideContent.getGuideLastWeek());
-			return exerciseMapper.toResponse(exerciseGuideRepository.save(newExerciseGuide));
+			ExerciseGuide newExerciseGuide = exerciseGuideMapper.toDocument(exerciseAnalysisData, walkGuideContent.guideTTS,
+				walkGuideContent.getGuideLastWeek());
+			return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(newExerciseGuide));
 
 		}
 		//새로운 운동 가이드 생성
 		ExerciseCalorie newExerciseCalorie = new ExerciseCalorie(exerciseAnalysisData.getType(), exerciseAnalysisData.getCalorie());
-		ExerciseGuide newExerciseGuide = exerciseMapper.toDocument(exerciseAnalysisData, List.of(newExerciseCalorie));
-		return exerciseMapper.toResponse(exerciseGuideRepository.save(newExerciseGuide));
+		ExerciseGuide newExerciseGuide = exerciseGuideMapper.toDocument(exerciseAnalysisData, List.of(newExerciseCalorie));
+		return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(newExerciseGuide));
 	}
 
 	/**
@@ -101,12 +102,12 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 			WalkGuideContent walkGuideContent = new WalkGuideContent(exerciseAnalysisData.getNeedStepByTTS(), exerciseAnalysisData.getNeedStepByLastWeek());
 			updateExerciseGuide.changeAboutWalk(exerciseAnalysisData.needStepByTTS, exerciseAnalysisData.needStepByLastWeek,
 				walkGuideContent.getGuideLastWeek(), walkGuideContent.getGuideTTS());
-			return exerciseMapper.toResponse(exerciseGuideRepository.save(updateExerciseGuide));
+			return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(updateExerciseGuide));
 		}
 		//운동 수정
 		ExerciseCalorie exerciseCalorie = new ExerciseCalorie(exerciseAnalysisData.getType(), exerciseAnalysisData.getCalorie());
 		updateExerciseGuide.changeExerciseCalories(exerciseCalorie);
-		return exerciseMapper.toResponse(exerciseGuideRepository.save(updateExerciseGuide));
+		return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(updateExerciseGuide));
 	}
 
 	@Override

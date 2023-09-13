@@ -28,8 +28,8 @@ import com.coniverse.dangjang.support.ControllerTest;
  * @author EVE
  * @since 1.0.0
  */
-class SignUpControllerTest extends ControllerTest {
-	private final String URI = "/api/signUp";
+class SignupControllerTest extends ControllerTest {
+	private final String URI = "/api/signup";
 	@Autowired
 	private UserSignupService userSignupService;
 	@Autowired

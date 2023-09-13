@@ -25,11 +25,11 @@ public class WalkGuideContent {
 
 	private String createWalkGuideContent(int needStepByTTS) {
 		if (needStepByTTS > 0) {
-			return String.format("만보보다 %d 걸음 %s", needStepByTTS, GuideString.ENOUGH.getTTSMode());
+			return String.format("만보보다 %d 걸음 %s", needStepByTTS, GuideString.ENOUGH.getTenThousandStepMode());
 		} else if (needStepByTTS == 0) {
 			return "와우! 만보를 걸었어요";
 		} else {
-			return String.format("만보를 걷기 위해 %d 걸음 %s", needStepByTTS, GuideString.NEEDMORE.getTTSMode());
+			return String.format("만보를 걷기 위해 %d 걸음 %s", needStepByTTS, GuideString.NEED_MORE.getTenThousandStepMode());
 		}
 
 	}

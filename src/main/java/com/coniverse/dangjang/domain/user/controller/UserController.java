@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 @Validated
-public class UserController {
+public class UserController { // TODO 전체 수정 (위치: signup, 이름: duplicated-nickname, 바디없어도됨)
 	private final UserSignupService userSignupService;
 
 	/**

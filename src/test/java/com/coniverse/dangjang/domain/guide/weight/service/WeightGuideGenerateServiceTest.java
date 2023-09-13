@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.guide.service;
+package com.coniverse.dangjang.domain.guide.weight.service;
 
 import static com.coniverse.dangjang.fixture.AnalysisDataFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
@@ -61,7 +61,7 @@ class WeightGuideGenerateServiceTest {
 		weightGuideGenerateService.createGuide(data);
 		// then
 		WeightGuide 등록된_건강지표 = weightGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
-		assertThat(등록된_건강지표.getTodayContent()).isEqualTo(weightGuideGenerateService.createContent((WeightAnalysisData)data));
+		assertThat(등록된_건강지표.getContent()).isEqualTo(weightGuideGenerateService.createContent((WeightAnalysisData)data));
 	}
 
 	@Order(400)
@@ -69,10 +69,12 @@ class WeightGuideGenerateServiceTest {
 	void 체중별_조언을_성공적으로_수정한다() {
 		// given
 		var data = weightAnalysisStrategy.analyze(체중_분석_데이터(수정된_체중));
+
 		// when
 		weightGuideGenerateService.updateGuide(data);
+
 		// then
 		WeightGuide 등록된_건강지표 = weightGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
-		assertThat(등록된_건강지표.getTodayContent()).isEqualTo(weightGuideGenerateService.createContent((WeightAnalysisData)data));
+		assertThat(등록된_건강지표.getContent()).isEqualTo(weightGuideGenerateService.createContent((WeightAnalysisData)data));
 	}
 }

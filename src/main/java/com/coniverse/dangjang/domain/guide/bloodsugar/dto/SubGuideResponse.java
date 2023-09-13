@@ -1,6 +1,8 @@
 package com.coniverse.dangjang.domain.guide.bloodsugar.dto;
 
-import com.coniverse.dangjang.domain.analysis.enums.Alert;
+import java.util.List;
+
+import com.coniverse.dangjang.domain.guide.bloodsugar.document.TodayGuide;
 import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -10,5 +12,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * @author TEO
  * @since 1.0.0
  */
-public record SubGuideResponse(String type, @JsonInclude(JsonInclude.Include.NON_NULL) String unit, Alert alert, String content) implements GuideResponse {
+public record SubGuideResponse(String type, @JsonInclude(JsonInclude.Include.NON_NULL) String unit, String alert, String title, String content,
+							   @JsonInclude(JsonInclude.Include.NON_NULL) List<TodayGuide> todayGuides) implements GuideResponse {
 }

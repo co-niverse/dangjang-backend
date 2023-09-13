@@ -6,129 +6,124 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.healthmetric.exception.HealthMetricNotFoundException;
 import com.coniverse.dangjang.domain.healthmetric.repository.HealthMetricRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
-
-import jakarta.transaction.Transactional;
+import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
 /**
- * @author EVE
+ * @author EVE, TEO
  * @since 1.0.0
  */
-@Transactional
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class HealthMetricSearchServiceTest {
+@Transactional
+class HealthMetricSearchServiceTest {
+	private final CommonCode 조회_타입 = CommonCode.STEP_COUNT;
+	private final LocalDate 조회_날짜 = LocalDate.of(2021, 8, 1);
 	@Autowired
 	private HealthMetricRepository healthMetricRepository;
 	@Autowired
 	private HealthMetricSearchService healthMetricSearchService;
-	private User user;
+	@Autowired
+	private UserRepository userRepository;
+	private String oauthId;
 
-	private HealthMetric 최근_건강지표;
-	private HealthMetric 조회할_건강지표;
-	private LocalDate 시작_날짜;
-	private LocalDate 종료_날짜;
-
-	@BeforeAll
-	void setUp() {
-		user = 유저_테오();
-		시작_날짜 = LocalDate.of(2021, 8, 1);
-		List<HealthMetric> healthMetrics = new ArrayList<>();
-		조회할_건강지표 = 건강지표_엔티티(user, CommonCode.STEP_COUNT, "10000", 시작_날짜);
-		종료_날짜 = 시작_날짜.plusDays(9);
-		최근_건강지표 = 건강지표_엔티티(user, CommonCode.STEP_COUNT, "1000", 종료_날짜);
-
-		for (int i = 0; i < 10; i++) {
-			String unit = String.valueOf(10000 - i * 1000);
-			healthMetrics.add(건강지표_엔티티(user, CommonCode.STEP_COUNT, unit, 시작_날짜.plusDays(i)));
-		}
-
-		healthMetricRepository.saveAll(healthMetrics);
+	@BeforeEach
+	void setUpUser() {
+		User user = userRepository.save(유저_테오());
+		oauthId = user.getOauthId();
+		healthMetricRepository.saveAll(
+			IntStream.range(0, 10)
+				.mapToObj(i -> 건강지표_엔티티(user, 조회_타입, 조회_날짜.plusDays(i)))
+				.toList()
+		);
 	}
 
 	@Test
 	void 건강지표를_성공적으로_조회한다() {
-		//given
+		// when
+		HealthMetric 조회된_건강지표 = healthMetricSearchService.findByHealthMetricId(oauthId, 조회_날짜, 조회_타입);
 
-		//when
-		HealthMetric 조회된_건강지표 = healthMetricSearchService.findByHealthMetricId(user.getOauthId(), 시작_날짜, CommonCode.STEP_COUNT);
-
-		//then
+		// then
 		assertAll(
-			() -> assertThat(조회된_건강지표.getUnit()).isEqualTo(조회할_건강지표.getUnit()),
-			() -> assertThat(조회된_건강지표.getType()).isEqualTo(조회할_건강지표.getType()),
-			() -> assertThat(조회된_건강지표.getUser().getId()).isEqualTo(조회할_건강지표.getUser().getId())
+			() -> assertThat(조회된_건강지표.getType()).isEqualTo(조회_타입),
+			() -> assertThat(조회된_건강지표.getCreatedAt()).isEqualTo(조회_날짜),
+			() -> assertThat(조회된_건강지표.getOauthId()).isEqualTo(oauthId)
 		);
 	}
 
 	@Test
-	void 건강지표_조회실패로_예외를_발생한다() {
-		//given
-		LocalDate 등록_날짜 = LocalDate.of(2025, 1, 1);
+	void 해당_날짜에_존재하지_않는_건강지표를_조회하면_예외를_발생한다() {
+		// given
+		LocalDate 없는_날짜 = LocalDate.of(2025, 1, 1);
 
-		//when&then
-		Assertions.assertThrows(HealthMetricNotFoundException.class, () -> {
-			healthMetricSearchService.findByHealthMetricId(user.getOauthId(), 등록_날짜, CommonCode.STEP_COUNT);
-		});
-
+		// when & then
+		assertThatThrownBy(() -> healthMetricSearchService.findByHealthMetricId(oauthId, 없는_날짜, 조회_타입))
+			.isInstanceOf(HealthMetricNotFoundException.class);
 	}
 
 	@Test
-	void 최근_건강지표를_조회한다() {
-		//given
+	void 타입이_존재하지_않는_건강지표를_조회하면_예외를_발생한다() {
+		// given
+		CommonCode 없는_타입 = CommonCode.HEALTH;
 
-		//when
-		HealthMetric 조회된_건강지표 = healthMetricSearchService.findLastHealthMetricById(user.getOauthId(), CommonCode.STEP_COUNT);
+		// when & then
+		assertThatThrownBy(() -> healthMetricSearchService.findByHealthMetricId(oauthId, 조회_날짜, 없는_타입))
+			.isInstanceOf(HealthMetricNotFoundException.class);
+	}
 
-		//then
+	@Test
+	void 최근_날짜의_건강지표_타입을_조회한다() {
+		// when
+		HealthMetric 조회된_건강지표 = healthMetricSearchService.findLastHealthMetricById(oauthId, 조회_타입);
+
+		// then
 		assertAll(
-			() -> assertThat(조회된_건강지표.getUnit()).isEqualTo(최근_건강지표.getUnit()),
-			() -> assertThat(조회된_건강지표.getType()).isEqualTo(최근_건강지표.getType()),
-			() -> assertThat(조회된_건강지표.getUser().getId()).isEqualTo(최근_건강지표.getUser().getId())
+			() -> assertThat(조회된_건강지표.getType()).isEqualTo(조회_타입),
+			() -> assertThat(조회된_건강지표.getCreatedAt()).isEqualTo(조회_날짜.plusDays(9)),
+			() -> assertThat(조회된_건강지표.getOauthId()).isEqualTo(oauthId)
 		);
 	}
 
 	@Test
-	void 최근_건강지표를_조회실패로_예외를_발생한다() {
-		//given
+	void 존재하지_않는_건강지표의_최근_날짜를_조회하면_예외를_발생한다() {
+		// given
+		CommonCode 없는_타입 = CommonCode.HEALTH;
 
-		//when&then
-		Assertions.assertThrows(HealthMetricNotFoundException.class, () -> {
-			healthMetricSearchService.findLastHealthMetricById(user.getOauthId(), CommonCode.HEALTH);
-		});
+		// when & then
+		assertThatThrownBy(() -> healthMetricSearchService.findLastHealthMetricById(oauthId, 없는_타입))
+			.isInstanceOf(HealthMetricNotFoundException.class);
 	}
 
 	@Test
 	void 기간내의_건강지표를_조회한다() {
-		//given
+		// given
+		LocalDate 시작_날짜 = 조회_날짜.plusDays(1);
+		LocalDate 끝_날짜 = 조회_날짜.plusDays(6);
 
-		//when
-		List<HealthMetric> 조회된_건강지표리스트 = healthMetricSearchService.findLastWeekHealthMetricById(user.getOauthId(), CommonCode.STEP_COUNT, 시작_날짜,
-			시작_날짜.plusDays(6));
-		var ind = 0;
-		//then
-		for (ind = 0; ind < 조회된_건강지표리스트.size(); ind++) {
-			String unit = String.valueOf(10000 - ind * 1000);
-			assertThat(조회된_건강지표리스트.get(ind).getUnit()).isEqualTo(unit);
-			assertThat(조회된_건강지표리스트.get(ind).getType()).isEqualTo(조회할_건강지표.getType());
-			assertThat(조회된_건강지표리스트.get(ind).getUser().getId()).isEqualTo(조회할_건강지표.getUser().getId());
-			assertThat(조회된_건강지표리스트.get(ind).getCreatedAt()).isEqualTo(조회할_건강지표.getCreatedAt().plusDays(ind));
-		}
+		// when
+		List<HealthMetric> 조회된_건강지표_리스트 = healthMetricSearchService.findWeeklyHealthMetricById(oauthId, 조회_타입, 시작_날짜, 끝_날짜);
 
+		// then
+		assertThat(조회된_건강지표_리스트).hasSize(6);
+		assertTrue(
+			IntStream.range(1, 6)
+				.allMatch(i -> 조회된_건강지표_리스트.get(i - 1).getType().equals(조회_타입)
+					&& 조회된_건강지표_리스트.get(i - 1).getOauthId().equals(oauthId)
+					&& 조회된_건강지표_리스트.get(i - 1).getCreatedAt().equals(조회_날짜.plusDays(i)))
+		);
 	}
-
 }
