@@ -13,10 +13,10 @@ import com.coniverse.dangjang.domain.analysis.dto.healthMetric.BloodSugarAnalysi
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.ExerciseAnalysisData;
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.WeightAnalysisData;
 import com.coniverse.dangjang.domain.analysis.enums.Alert;
+import com.coniverse.dangjang.domain.analysis.enums.ExerciseCaloriePercent;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseCalorie;
 import com.coniverse.dangjang.domain.user.entity.User;
-import com.coniverse.dangjang.global.exception.EnumNonExistentException;
 
 /**
  * 분석 데이터 fixture
@@ -52,29 +52,7 @@ public class AnalysisDataFixture {
 	}
 
 	public static ExerciseCalorie 운동_칼로리_데이터(CommonCode type, int unit, int weight) {
-		double percent = 0;
-		switch (type) {
-			case WALK:
-				percent = 0.9;
-				break;
-			case RUN:
-				percent = 2;
-				break;
-			case BIKE:
-				percent = 2.3;
-				break;
-			case SWIM:
-				percent = 2;
-				break;
-			case HIKING:
-				percent = 1.5;
-				break;
-			case HEALTH:
-				percent = 1.5;
-				break;
-			default:
-				throw new EnumNonExistentException();
-		}
+		double percent = ExerciseCaloriePercent.findPercentByExercise(type);
 		int calorie = (int)(percent * weight / 15 * unit);
 		return new ExerciseCalorie(type, calorie);
 	}
