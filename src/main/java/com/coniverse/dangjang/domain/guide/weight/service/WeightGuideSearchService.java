@@ -33,7 +33,7 @@ public class WeightGuideSearchService {
 	 * @since 1.0.0
 	 */
 	public WeightGuideResponse findGuide(String oauthId, LocalDate createdAt) {
-		return weightMapper.toResponse(findByOauthIdAndCreatedAt(oauthId, createdAt));
+		return weightMapper.toResponse(findByUserIdAndCreatedAt(oauthId, createdAt));
 	}
 
 	/**
@@ -44,7 +44,7 @@ public class WeightGuideSearchService {
 	 * @Param createdAt 생성일
 	 * @since 1.0.0
 	 */
-	public WeightGuide findByOauthIdAndCreatedAt(String oauthId, LocalDate createdAt) {
+	public WeightGuide findByUserIdAndCreatedAt(String oauthId, LocalDate createdAt) {
 		return weightGuideRepository.findByOauthIdAndCreatedAt(oauthId, createdAt).orElseThrow(GuideNotFoundException::new);
 	}
 
