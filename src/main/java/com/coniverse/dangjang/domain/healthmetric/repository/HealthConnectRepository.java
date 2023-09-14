@@ -10,6 +10,12 @@ import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * health connect 데이터를 batch insert 하기 위한 repository
+ *
+ * @author TEO
+ * @since 1.0.0
+ */
 @Repository
 @RequiredArgsConstructor
 public class HealthConnectRepository {

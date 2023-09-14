@@ -13,6 +13,10 @@ import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectPostR
 import com.coniverse.dangjang.support.ControllerTest;
 import com.coniverse.dangjang.support.annotation.WithDangjangUser;
 
+/**
+ * @author TEO
+ * @since 1.0.0
+ */
 @WithDangjangUser
 class HealthConnectControllerTest extends ControllerTest {
 	public static final String URL = "/api/health-connect";
