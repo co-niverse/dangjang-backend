@@ -27,6 +27,7 @@ class WeightGuideControllerTest extends ControllerTest {
 	private WeightGuideSearchService weightGuideSearchService;
 	public static final String URL = "/api/guide/weight";
 	private static final String createdAt = "2023-12-31";
+	private static final String 등록되지_않은_날짜 = "3000-12-31";
 
 	@Test
 	void 체중_조회를_성공한다() throws Exception {
@@ -59,7 +60,7 @@ class WeightGuideControllerTest extends ControllerTest {
 		doReturn(null).when(weightGuideSearchService).findGuide(any(), any());
 		// when
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		params.add("date", "3000-12-33");
+		params.add("date", 등록되지_않은_날짜);
 
 		// when
 		ResultActions resultActions = get(mockMvc, URL, params);
