@@ -1,7 +1,5 @@
 package com.coniverse.dangjang.domain.guide.weight.controller;
 
-import java.time.LocalDate;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -44,7 +42,7 @@ public class WeightGuideController {
 	@GetMapping
 	public ResponseEntity<SuccessSingleResponse<WeightGuideResponse>> get(@ValidLocalDate @RequestParam String date,
 		@AuthenticationPrincipal User principal) {
-		WeightGuideResponse response = weightGuideSearchService.findGuide(principal.getUsername(), LocalDate.parse(date));
+		WeightGuideResponse response = weightGuideSearchService.findGuide(principal.getUsername(), date);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
 }

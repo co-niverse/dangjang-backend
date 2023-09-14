@@ -1,7 +1,5 @@
 package com.coniverse.dangjang.domain.guide.weight.service;
 
-import java.time.LocalDate;
-
 import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
@@ -32,7 +30,7 @@ public class WeightGuideSearchService {
 	 * @return 운동 가이드 반응
 	 * @since 1.0.0
 	 */
-	public WeightGuideResponse findGuide(String oauthId, LocalDate createdAt) {
+	public WeightGuideResponse findGuide(String oauthId, String createdAt) {
 		return weightMapper.toResponse(findByUserIdAndCreatedAt(oauthId, createdAt));
 	}
 
@@ -44,7 +42,7 @@ public class WeightGuideSearchService {
 	 * @Param createdAt 생성일
 	 * @since 1.0.0
 	 */
-	public WeightGuide findByUserIdAndCreatedAt(String oauthId, LocalDate createdAt) {
+	public WeightGuide findByUserIdAndCreatedAt(String oauthId, String createdAt) {
 		return weightGuideRepository.findByOauthIdAndCreatedAt(oauthId, createdAt).orElseThrow(GuideNotFoundException::new);
 	}
 

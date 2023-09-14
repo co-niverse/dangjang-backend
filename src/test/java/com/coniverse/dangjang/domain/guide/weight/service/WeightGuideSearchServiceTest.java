@@ -5,8 +5,6 @@ import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalDate;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -49,7 +47,7 @@ class WeightGuideSearchServiceTest {
 		// given
 		WeightGuideResponse 저장된_체중_가이드_응답 = weightMapper.toResponse(저장된_체중_가이드);
 		// when
-		WeightGuideResponse weightGuideResponse = weightGuideSearchService.findGuide(테오_아이디, LocalDate.parse(생성일자));
+		WeightGuideResponse weightGuideResponse = weightGuideSearchService.findGuide(테오_아이디, 생성일자);
 		// then
 		assertAll(
 			() -> assertThat(weightGuideResponse.bmi()).isEqualTo(저장된_체중_가이드_응답.bmi()),
@@ -65,7 +63,7 @@ class WeightGuideSearchServiceTest {
 	@Test
 	void 존재하지_않는_날짜의_가이드조회를_실패한다() {
 		// given
-		LocalDate 존재하지_않는_날짜 = LocalDate.parse("3000-12-30");
+		String 존재하지_않는_날짜 = "3000-12-30";
 
 		// when
 		// then
@@ -79,7 +77,7 @@ class WeightGuideSearchServiceTest {
 		// given
 
 		// when
-		WeightGuide weightGuideResponse = weightGuideSearchService.findByUserIdAndCreatedAt(테오_아이디, LocalDate.parse(생성일자));
+		WeightGuide weightGuideResponse = weightGuideSearchService.findByUserIdAndCreatedAt(테오_아이디, 생성일자);
 
 		// then
 		assertAll(
@@ -95,7 +93,7 @@ class WeightGuideSearchServiceTest {
 	@Test
 	void 존재하지_않는_가이드조회를_실패한다() {
 		// given
-		LocalDate 존재하지_않는_날짜 = LocalDate.parse("3000-12-30");
+		String 존재하지_않는_날짜 = "3000-12-30";
 		// when
 
 		// then

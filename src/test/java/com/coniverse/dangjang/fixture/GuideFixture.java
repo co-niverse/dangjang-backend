@@ -53,7 +53,7 @@ public class GuideFixture {
 	public static WeightGuide 체중_가이드(String oauthId, String createdAt) {
 		return WeightGuide.builder()
 			.oauthId(oauthId)
-			.createdAt(LocalDate.parse(createdAt))
+			.createdAt(createdAt)
 			.bmi(18.5)
 			.unit("80")
 			.weightDiff(10)
@@ -83,7 +83,7 @@ public class GuideFixture {
 	}
 
 	public static WeightGuideResponse 체중_가이드_응답(String createdAt) {
-		return new WeightGuideResponse(CommonCode.MEASUREMENT.getTitle(), LocalDate.parse(createdAt), 20, Alert.LEVEL_1_OBESITY.getTitle(), "가이드입니다", 18.0,
+		return new WeightGuideResponse(CommonCode.MEASUREMENT.getTitle(), createdAt, 20, Alert.LEVEL_1_OBESITY.getTitle(), "가이드입니다", 18.0,
 			"50");
 	}
 

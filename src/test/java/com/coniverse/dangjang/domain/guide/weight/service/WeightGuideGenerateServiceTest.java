@@ -4,8 +4,6 @@ import static com.coniverse.dangjang.fixture.AnalysisDataFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
 
-import java.time.LocalDate;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -32,7 +30,7 @@ import com.coniverse.dangjang.domain.user.repository.UserRepository;
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class WeightGuideGenerateServiceTest {
-	private final LocalDate 등록_일자 = LocalDate.of(2023, 12, 31);
+	private final String 등록_일자 = "2023-12-31";
 	@Autowired
 	private WeightGuideGenerateService weightGuideGenerateService;
 	@Autowired
