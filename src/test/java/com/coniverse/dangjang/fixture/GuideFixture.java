@@ -14,11 +14,13 @@ import com.coniverse.dangjang.domain.guide.bloodsugar.document.TodayGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.dto.BloodSugarGuideResponse;
 import com.coniverse.dangjang.domain.guide.bloodsugar.dto.SubGuideResponse;
 import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
+import com.coniverse.dangjang.domain.guide.weight.document.WeightGuide;
+import com.coniverse.dangjang.domain.guide.weight.dto.WeightGuideResponse;
 
 /**
  * 가이드 fixture
  *
- * @author TEO
+ * @author TEO, EVE
  * @since 1.0.0
  */
 public class GuideFixture {
@@ -48,6 +50,18 @@ public class GuideFixture {
 		return 혈당_가이드_도큐먼트("11111111", createdAt).getTodayGuides();
 	}
 
+	public static WeightGuide 체중_가이드(String oauthId, String createdAt) {
+		return WeightGuide.builder()
+			.oauthId(oauthId)
+			.createdAt(createdAt)
+			.bmi(18.5)
+			.unit("80")
+			.weightDiff(10)
+			.alert(Alert.LEVEL_1_OBESITY)
+			.content("가이드 내용입니다.")
+			.build();
+	}
+
 	public static BloodSugarGuideResponse 혈당_가이드_응답(String createdAt) {
 		List<TodayGuide> 오늘의_가이드 = 혈당_오늘의_가이드(createdAt);
 		List<SubGuideResponse> 서브_가이드 = new ArrayList<>();
@@ -68,8 +82,9 @@ public class GuideFixture {
 		return null;
 	}
 
-	public static GuideResponse 체중_가이드_응답() { // TODO return 수정
-		return null;
+	public static WeightGuideResponse 체중_가이드_응답(String createdAt) {
+		return new WeightGuideResponse(CommonCode.MEASUREMENT.getTitle(), createdAt, 20, Alert.LEVEL_1_OBESITY.getTitle(), "가이드입니다", 18.0,
+			"50");
 	}
 
 	public static GuideResponse 당화혈색소_가이드_응답() { // TODO return 수정

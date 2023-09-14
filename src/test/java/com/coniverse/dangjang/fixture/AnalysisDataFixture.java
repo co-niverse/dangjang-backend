@@ -15,7 +15,9 @@ import com.coniverse.dangjang.domain.analysis.dto.healthMetric.WeightAnalysisDat
 import com.coniverse.dangjang.domain.analysis.enums.Alert;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseCalorie;
+import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.user.entity.User;
+import com.coniverse.dangjang.domain.user.entity.enums.Gender;
 import com.coniverse.dangjang.global.exception.EnumNonExistentException;
 
 /**
@@ -25,6 +27,7 @@ import com.coniverse.dangjang.global.exception.EnumNonExistentException;
  * @since 1.0.0
  */
 public class AnalysisDataFixture {
+
 	public static BloodSugarAnalysisData 혈당_분석_데이터(User user, CommonCode type, String unit) {
 		return new BloodSugarAnalysisData(건강지표_엔티티(user, type, unit));
 	}
@@ -94,4 +97,59 @@ public class AnalysisDataFixture {
 	public static AnalysisData 분석_데이터(CommonCode type) {
 		return new BloodSugarAnalysisData(건강지표_엔티티(type));
 	}
+
+	public static HealthMetricPostRequest 체중_요청(String unit) {
+		return new HealthMetricPostRequest("체중", "2023-05-06", unit);
+	}
+
+	public static Stream<Arguments> 체중분석_입력_파라미터() {
+		UserFixture userFixture = new UserFixture();
+		User user = userFixture.유저_테오();
+		int 테오_키 = user.getHeight();
+
+		return Stream.of(
+			Arguments.of(체중_요청("40"), user, 표준체중과의_차이(테오_키, 40, user.getGender()), 체질량지수(테오_키, 40), 체중_비만도(테오_키, 40)),
+			Arguments.of(체중_요청("50"), user, 표준체중과의_차이(테오_키, 50, user.getGender()), 체질량지수(테오_키, 50), 체중_비만도(테오_키, 50)),
+			Arguments.of(체중_요청("60"), user, 표준체중과의_차이(테오_키, 60, user.getGender()), 체질량지수(테오_키, 60), 체중_비만도(테오_키, 60)),
+			Arguments.of(체중_요청("70"), user, 표준체중과의_차이(테오_키, 70, user.getGender()), 체질량지수(테오_키, 70), 체중_비만도(테오_키, 70)),
+			Arguments.of(체중_요청("90"), user, 표준체중과의_차이(테오_키, 90, user.getGender()), 체질량지수(테오_키, 90), 체중_비만도(테오_키, 90)),
+			Arguments.of(체중_요청("100"), user, 표준체중과의_차이(테오_키, 100, user.getGender()), 체질량지수(테오_키, 100), 체중_비만도(테오_키, 100)),
+			Arguments.of(체중_요청("120"), user, 표준체중과의_차이(테오_키, 120, user.getGender()), 체질량지수(테오_키, 120), 체중_비만도(테오_키, 120)),
+			Arguments.of(체중_요청("180"), user, 표준체중과의_차이(테오_키, 180, user.getGender()), 체질량지수(테오_키, 180), 체중_비만도(테오_키, 180))
+		);
+	}
+
+	/**
+	 * 체중 분석에 필요한 메서드
+	 */
+	public static int 표준체중과의_차이(int height, int weight, Gender gender) {
+		int standardWeight;
+		if (gender.equals(Gender.M)) {
+			standardWeight = (int)(Math.pow(height / 100.0, 2.0) * 22);
+		} else {
+			standardWeight = (int)(Math.pow(height / 100.0, 2.0) * 21);
+		}
+		return weight - standardWeight;
+	}
+
+	public static double 체질량지수(int height, int weight) {
+		return weight / Math.pow(height / 100.0, 2.0);
+	}
+
+	public static Alert 체중_비만도(int height, int weight) {
+		double bmi = weight / Math.pow(height / 100.0, 2.0);
+		if (bmi < 18.5) {
+			return Alert.LOW_WEIGHT;
+		} else if (bmi < 22.9) {
+			return Alert.NORMAL_WEIGHT;
+		} else if (bmi < 24.9) {
+			return Alert.OVERWEIGHT;
+		} else if (bmi < 29.9) {
+			return Alert.LEVEL_1_OBESITY;
+		} else if (bmi < 34.9) {
+			return Alert.LEVEL_2_OBESITY;
+		}
+		return Alert.LEVEL_3_OBESITY;
+	}
+
 }

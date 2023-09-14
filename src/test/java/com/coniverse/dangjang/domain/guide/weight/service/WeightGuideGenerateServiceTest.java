@@ -4,8 +4,6 @@ import static com.coniverse.dangjang.fixture.AnalysisDataFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
 
-import java.time.LocalDate;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -19,9 +17,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.WeightAnalysisData;
 import com.coniverse.dangjang.domain.analysis.strategy.WeightAnalysisStrategy;
+import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
 import com.coniverse.dangjang.domain.guide.weight.document.WeightGuide;
 import com.coniverse.dangjang.domain.guide.weight.repository.WeightGuideRepository;
-import com.coniverse.dangjang.domain.guide.weight.service.WeightGuideGenerateService;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
 /**
@@ -32,7 +30,7 @@ import com.coniverse.dangjang.domain.user.repository.UserRepository;
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class WeightGuideGenerateServiceTest {
-	private final LocalDate 등록_일자 = LocalDate.of(2023, 12, 31);
+	private final String 등록_일자 = "2023-12-31";
 	@Autowired
 	private WeightGuideGenerateService weightGuideGenerateService;
 	@Autowired
@@ -60,7 +58,7 @@ class WeightGuideGenerateServiceTest {
 		// when
 		weightGuideGenerateService.createGuide(data);
 		// then
-		WeightGuide 등록된_건강지표 = weightGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
+		WeightGuide 등록된_건강지표 = weightGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자).orElseThrow(GuideNotFoundException::new);
 		assertThat(등록된_건강지표.getContent()).isEqualTo(weightGuideGenerateService.createContent((WeightAnalysisData)data));
 	}
 
@@ -74,7 +72,7 @@ class WeightGuideGenerateServiceTest {
 		weightGuideGenerateService.updateGuide(data);
 
 		// then
-		WeightGuide 등록된_건강지표 = weightGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
+		WeightGuide 등록된_건강지표 = weightGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자).orElseThrow(GuideNotFoundException::new);
 		assertThat(등록된_건강지표.getContent()).isEqualTo(weightGuideGenerateService.createContent((WeightAnalysisData)data));
 	}
 }

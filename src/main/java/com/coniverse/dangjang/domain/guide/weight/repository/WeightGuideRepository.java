@@ -1,6 +1,6 @@
 package com.coniverse.dangjang.domain.guide.weight.repository;
 
-import java.time.LocalDate;
+import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
@@ -22,5 +22,5 @@ public interface WeightGuideRepository extends MongoRepository<WeightGuide, Stri
 	 * @return 체중 가이드
 	 * @since 1.0.0
 	 */
-	WeightGuide findByOauthIdAndCreatedAt(String oauthId, LocalDate createdAt);
+	Optional<WeightGuide> findByOauthIdAndCreatedAt(String oauthId, String createdAt);
 }
