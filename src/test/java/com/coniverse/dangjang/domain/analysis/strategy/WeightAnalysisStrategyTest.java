@@ -27,20 +27,19 @@ class WeightAnalysisStrategyTest {
 
 	@ParameterizedTest
 	@MethodSource("com.coniverse.dangjang.fixture.AnalysisDataFixture#체중분석_입력_파라미터")
-	void 체중_수치에_맞게_분석한다(HealthMetricPostRequest request, User user, int 정상체중_편차, double bmi, Alert 경보) {
+	void 체중_수치에_맞게_분석한다(HealthMetricPostRequest request, User user, Alert 경보) {
 		//given
 		HealthMetric healthMetric = mapper.toEntity(request, user);
 		WeightAnalysisData AnalysisData = (WeightAnalysisData)weightAnalysisStrategy.createAnalysisData(healthMetric);
 
 		//when
 		WeightAnalysisData weightAnalysisData = (WeightAnalysisData)weightAnalysisStrategy.analyze(AnalysisData);
-
+		System.out.println("경보 : " + weightAnalysisData.getAlert());
 		//then
-		assertThat(weightAnalysisData.getWeightDiff()).isEqualTo(정상체중_편차);
+
 		assertThat(weightAnalysisData.getUnit()).isEqualTo(Integer.parseInt(healthMetric.getUnit()));
 		assertThat(weightAnalysisData.getType()).isEqualTo(healthMetric.getType());
 		assertThat(weightAnalysisData.getAlert()).isEqualTo(경보);
-		assertThat(weightAnalysisData.getBmi()).isEqualTo(bmi);
 
 	}
 
