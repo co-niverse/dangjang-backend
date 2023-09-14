@@ -1,7 +1,6 @@
 package com.coniverse.dangjang.domain.guide.exercise.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -47,37 +46,34 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 	public GuideResponse createGuide(AnalysisData analysisData) {
 		ExerciseAnalysisData exerciseAnalysisData = (ExerciseAnalysisData)analysisData;
 		WalkGuideContent walkGuideContent = new WalkGuideContent(exerciseAnalysisData.getNeedStepByTTS(), exerciseAnalysisData.getNeedStepByLastWeek());
-
-		Optional<ExerciseGuide> exerciseGuide = exerciseGuideSearchService.findByOauthIdAndCreatedAt(exerciseAnalysisData.getOauthId(),
-			exerciseAnalysisData.getCreatedAt().toString());
-		// 이미 날짜에 해당하는 가이드가 존재
-		if (exerciseGuide.isPresent()) {
-			ExerciseGuide existExerciseGuide = exerciseGuide.get();
-			// 걸음 수 추가
+		ExerciseGuide existExerciseGuide;
+		try {
+			existExerciseGuide = exerciseGuideSearchService.findByOauthIdAndCreatedAt(exerciseAnalysisData.getOauthId(),
+				exerciseAnalysisData.getCreatedAt().toString());
+		} catch (GuideNotFoundException e) {
 			if (exerciseAnalysisData.getType().equals(CommonCode.STEP_COUNT)) {
-				existExerciseGuide.changeAboutWalk(exerciseAnalysisData.needStepByTTS, exerciseAnalysisData.needStepByLastWeek,
-					walkGuideContent.getGuideLastWeek(), walkGuideContent.getGuideTTS());
-				return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(existExerciseGuide));
+				ExerciseGuide newExerciseGuide = exerciseGuideMapper.toDocument(exerciseAnalysisData, walkGuideContent.guideTTS,
+					walkGuideContent.getGuideLastWeek());
+				return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(newExerciseGuide));
 			}
-			//운동 추가
-			ExerciseCalorie exerciseCalorie = new ExerciseCalorie(exerciseAnalysisData.getType(), exerciseAnalysisData.getCalorie(),
+			//새로운 운동 가이드 생성
+			ExerciseCalorie newExerciseCalorie = new ExerciseCalorie(exerciseAnalysisData.getType(), exerciseAnalysisData.getCalorie(),
 				exerciseAnalysisData.getUnit());
-			existExerciseGuide.changeExerciseCalories(exerciseCalorie);
+			ExerciseGuide newExerciseGuide = exerciseGuideMapper.toDocument(exerciseAnalysisData, List.of(newExerciseCalorie));
+			return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(newExerciseGuide));
+		}
+		// 걸음 수 추가
+		if (exerciseAnalysisData.getType().equals(CommonCode.STEP_COUNT)) {
+			existExerciseGuide.changeAboutWalk(exerciseAnalysisData.needStepByTTS, exerciseAnalysisData.needStepByLastWeek,
+				walkGuideContent.getGuideLastWeek(), walkGuideContent.getGuideTTS());
 			return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(existExerciseGuide));
 		}
-		// 날짜에 해당하는 가이드가 존재하지 않음
-		// 새로운 걸음수 가이드 생성
-		if (exerciseAnalysisData.getType().equals(CommonCode.STEP_COUNT)) {
-			ExerciseGuide newExerciseGuide = exerciseGuideMapper.toDocument(exerciseAnalysisData, walkGuideContent.guideTTS,
-				walkGuideContent.getGuideLastWeek());
-			return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(newExerciseGuide));
-
-		}
-		//새로운 운동 가이드 생성
-		ExerciseCalorie newExerciseCalorie = new ExerciseCalorie(exerciseAnalysisData.getType(), exerciseAnalysisData.getCalorie(),
+		//운동 추가
+		ExerciseCalorie exerciseCalorie = new ExerciseCalorie(exerciseAnalysisData.getType(), exerciseAnalysisData.getCalorie(),
 			exerciseAnalysisData.getUnit());
-		ExerciseGuide newExerciseGuide = exerciseGuideMapper.toDocument(exerciseAnalysisData, List.of(newExerciseCalorie));
-		return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(newExerciseGuide));
+		existExerciseGuide.changeExerciseCalories(exerciseCalorie);
+		return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(existExerciseGuide));
+
 	}
 
 	/**
@@ -94,12 +90,9 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 	@Override
 	public GuideResponse updateGuide(AnalysisData analysisData) {
 		ExerciseAnalysisData exerciseAnalysisData = (ExerciseAnalysisData)analysisData;
-		Optional<ExerciseGuide> exerciseGuide = exerciseGuideSearchService.findByOauthIdAndCreatedAt(exerciseAnalysisData.getOauthId(),
+		ExerciseGuide updateExerciseGuide = exerciseGuideSearchService.findByOauthIdAndCreatedAt(exerciseAnalysisData.getOauthId(),
 			exerciseAnalysisData.getCreatedAt().toString());
-		if (exerciseGuide.isEmpty()) {
-			throw new GuideNotFoundException();
-		}
-		ExerciseGuide updateExerciseGuide = exerciseGuide.get();
+
 		if (analysisData.getType().equals(CommonCode.STEP_COUNT)) {
 			WalkGuideContent walkGuideContent = new WalkGuideContent(exerciseAnalysisData.getNeedStepByTTS(), exerciseAnalysisData.getNeedStepByLastWeek());
 			updateExerciseGuide.changeAboutWalk(exerciseAnalysisData.needStepByTTS, exerciseAnalysisData.needStepByLastWeek,

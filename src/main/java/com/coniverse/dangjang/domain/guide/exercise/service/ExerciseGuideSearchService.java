@@ -1,10 +1,11 @@
 package com.coniverse.dangjang.domain.guide.exercise.service;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 
+import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
+import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseGuideResponse;
+import com.coniverse.dangjang.domain.guide.exercise.mapper.ExerciseGuideMapper;
 import com.coniverse.dangjang.domain.guide.exercise.repository.ExerciseGuideRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ExerciseGuideSearchService {
 	private final ExerciseGuideRepository exerciseGuideRepository;
+	private final ExerciseGuideMapper exerciseGuideMapper;
+
+	public ExerciseGuideResponse findGuide(String oauthId, String createdAt) {
+		return exerciseGuideMapper.toResponse(findByOauthIdAndCreatedAt(oauthId, createdAt));
+	}
 
 	/**
 	 * 운동 가이드를 조회한다.
@@ -28,8 +34,8 @@ public class ExerciseGuideSearchService {
 	 * @Param createdAt 생성일
 	 * @since 1.0.0
 	 */
-	public Optional<ExerciseGuide> findByOauthIdAndCreatedAt(String oauthId, String createdAt) {
-		return exerciseGuideRepository.findByOauthIdAndCreatedAt(oauthId, createdAt);
+	public ExerciseGuide findByOauthIdAndCreatedAt(String oauthId, String createdAt) {
+		return exerciseGuideRepository.findByOauthIdAndCreatedAt(oauthId, createdAt).orElseThrow(GuideNotFoundException::new);
 	}
 
 }
