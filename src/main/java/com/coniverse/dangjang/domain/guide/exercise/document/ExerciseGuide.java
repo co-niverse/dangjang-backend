@@ -33,11 +33,12 @@ public class ExerciseGuide {
 	private LocalDate createdAt;
 	private String content;
 	private String comparedToLastWeek;
+	private int stepsCount;
 	private List<ExerciseCalorie> exerciseCalories = new ArrayList<>();
 
 	@Builder
 	private ExerciseGuide(String oauthId, LocalDate createdAt, int needStepByTTS, String content, String comparedToLastWeek,
-		int needStepByLastWeek, List<ExerciseCalorie> exerciseCalories) {
+		int needStepByLastWeek, List<ExerciseCalorie> exerciseCalories, int stepsCount) {
 		this.oauthId = oauthId;
 		this.createdAt = createdAt;
 		this.needStepByTTS = needStepByTTS;
@@ -45,6 +46,7 @@ public class ExerciseGuide {
 		this.comparedToLastWeek = comparedToLastWeek;
 		this.needStepByLastWeek = needStepByLastWeek;
 		this.exerciseCalories = exerciseCalories;
+		this.stepsCount = stepsCount;
 	}
 
 	/**

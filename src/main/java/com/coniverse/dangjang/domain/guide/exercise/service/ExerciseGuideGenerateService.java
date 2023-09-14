@@ -60,7 +60,8 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 				return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(existExerciseGuide));
 			}
 			//운동 추가
-			ExerciseCalorie exerciseCalorie = new ExerciseCalorie(exerciseAnalysisData.getType(), exerciseAnalysisData.getCalorie());
+			ExerciseCalorie exerciseCalorie = new ExerciseCalorie(exerciseAnalysisData.getType(), exerciseAnalysisData.getCalorie(),
+				exerciseAnalysisData.getUnit());
 			existExerciseGuide.changeExerciseCalories(exerciseCalorie);
 			return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(existExerciseGuide));
 		}
@@ -73,7 +74,8 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 
 		}
 		//새로운 운동 가이드 생성
-		ExerciseCalorie newExerciseCalorie = new ExerciseCalorie(exerciseAnalysisData.getType(), exerciseAnalysisData.getCalorie());
+		ExerciseCalorie newExerciseCalorie = new ExerciseCalorie(exerciseAnalysisData.getType(), exerciseAnalysisData.getCalorie(),
+			exerciseAnalysisData.getUnit());
 		ExerciseGuide newExerciseGuide = exerciseGuideMapper.toDocument(exerciseAnalysisData, List.of(newExerciseCalorie));
 		return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(newExerciseGuide));
 	}
@@ -105,7 +107,8 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 			return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(updateExerciseGuide));
 		}
 		//운동 수정
-		ExerciseCalorie exerciseCalorie = new ExerciseCalorie(exerciseAnalysisData.getType(), exerciseAnalysisData.getCalorie());
+		ExerciseCalorie exerciseCalorie = new ExerciseCalorie(exerciseAnalysisData.getType(), exerciseAnalysisData.getCalorie(),
+			exerciseAnalysisData.getUnit());
 		updateExerciseGuide.changeExerciseCalories(exerciseCalorie);
 		return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(updateExerciseGuide));
 	}
