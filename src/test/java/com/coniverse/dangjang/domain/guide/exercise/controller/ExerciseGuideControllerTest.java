@@ -20,7 +20,7 @@ import com.coniverse.dangjang.support.ControllerTest;
 import com.coniverse.dangjang.support.annotation.WithDangjangUser;
 
 @WithDangjangUser
-public class ExerciseGuideControllerTest extends ControllerTest {
+class ExerciseGuideControllerTest extends ControllerTest {
 	private static final String URL = "/api/guide/exercise";
 	@Autowired
 	private ExerciseGuideSearchService exerciseGuideSearchService;

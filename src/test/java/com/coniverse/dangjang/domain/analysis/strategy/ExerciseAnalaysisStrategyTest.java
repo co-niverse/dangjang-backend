@@ -19,7 +19,7 @@ import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricSearchServ
 import com.coniverse.dangjang.domain.user.entity.User;
 
 @SpringBootTest
-public class ExerciseAnalaysisStrategyTest {
+class ExerciseAnalaysisStrategyTest {
 	@Autowired
 	private ExerciseAnalysisStrategy exerciseAnalysisStrategy;
 	@Autowired

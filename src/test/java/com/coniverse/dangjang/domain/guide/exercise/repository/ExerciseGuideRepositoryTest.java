@@ -16,7 +16,7 @@ import com.coniverse.dangjang.domain.user.entity.User;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ExerciseGuideRepositoryTest {
+class ExerciseGuideRepositoryTest {
 	@Autowired
 	private ExerciseGuideRepository exerciseGuideRepository;
 	private User 테오 = 유저_테오();
