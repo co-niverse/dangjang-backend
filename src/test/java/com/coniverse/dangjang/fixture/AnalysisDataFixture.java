@@ -78,7 +78,7 @@ public class AnalysisDataFixture {
 				throw new EnumNonExistentException();
 		}
 		int calorie = (int)(percent * weight / 15 * unit);
-		return new ExerciseCalorie(type, calorie);
+		return new ExerciseCalorie(type, calorie, unit);
 	}
 
 	public static WeightAnalysisData 체중_분석_데이터() {
