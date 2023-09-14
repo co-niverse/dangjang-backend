@@ -40,7 +40,7 @@ import com.coniverse.dangjang.domain.user.entity.User;
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ExerciseGuideGenerateServiceTest {
-	private final LocalDate 등록_일자 = LocalDate.of(2023, 12, 31);
+	private final String 등록_일자 = "2023-12-31";
 	@Autowired
 	private ExerciseGuideGenerateService exerciseGuideGenerateService;
 	@MockBean
@@ -58,9 +58,9 @@ class ExerciseGuideGenerateServiceTest {
 	void setUp() {
 		user = 유저_테오();
 		테오_아이디 = user.getOauthId();
-
+		LocalDate 등록_일자_LocalDate = LocalDate.parse(this.등록_일자);
 		when(healthMetricSearchService.findLastHealthMetricById(any(), any()))
-			.thenReturn(체중건강지표_엔티티(user, 등록_일자));
+			.thenReturn(체중건강지표_엔티티(user, 등록_일자_LocalDate));
 	}
 
 	@Order(200)

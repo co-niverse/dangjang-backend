@@ -1,6 +1,5 @@
 package com.coniverse.dangjang.domain.guide.exercise.service;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -29,7 +28,7 @@ public class ExerciseGuideSearchService {
 	 * @Param createdAt 생성일
 	 * @since 1.0.0
 	 */
-	public Optional<ExerciseGuide> findByOauthIdAndCreatedAt(String oauthId, LocalDate createdAt) {
+	public Optional<ExerciseGuide> findByOauthIdAndCreatedAt(String oauthId, String createdAt) {
 		return exerciseGuideRepository.findByOauthIdAndCreatedAt(oauthId, createdAt);
 	}
 

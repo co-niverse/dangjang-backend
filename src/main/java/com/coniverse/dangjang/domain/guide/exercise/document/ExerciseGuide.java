@@ -1,6 +1,5 @@
 package com.coniverse.dangjang.domain.guide.exercise.document;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,14 +29,14 @@ public class ExerciseGuide {
 	private String oauthId;
 	private int needStepByTTS;
 	private int needStepByLastWeek;
-	private LocalDate createdAt;
+	private String createdAt;
 	private String content;
 	private String comparedToLastWeek;
 	private int stepsCount;
 	private List<ExerciseCalorie> exerciseCalories = new ArrayList<>();
 
 	@Builder
-	private ExerciseGuide(String oauthId, LocalDate createdAt, int needStepByTTS, String content, String comparedToLastWeek,
+	private ExerciseGuide(String oauthId, String createdAt, int needStepByTTS, String content, String comparedToLastWeek,
 		int needStepByLastWeek, List<ExerciseCalorie> exerciseCalories, int stepsCount) {
 		this.oauthId = oauthId;
 		this.createdAt = createdAt;

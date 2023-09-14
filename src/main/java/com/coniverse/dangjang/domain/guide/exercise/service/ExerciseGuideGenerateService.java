@@ -49,7 +49,7 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 		WalkGuideContent walkGuideContent = new WalkGuideContent(exerciseAnalysisData.getNeedStepByTTS(), exerciseAnalysisData.getNeedStepByLastWeek());
 
 		Optional<ExerciseGuide> exerciseGuide = exerciseGuideSearchService.findByOauthIdAndCreatedAt(exerciseAnalysisData.getOauthId(),
-			exerciseAnalysisData.getCreatedAt());
+			exerciseAnalysisData.getCreatedAt().toString());
 		// 이미 날짜에 해당하는 가이드가 존재
 		if (exerciseGuide.isPresent()) {
 			ExerciseGuide existExerciseGuide = exerciseGuide.get();
@@ -95,7 +95,7 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 	public GuideResponse updateGuide(AnalysisData analysisData) {
 		ExerciseAnalysisData exerciseAnalysisData = (ExerciseAnalysisData)analysisData;
 		Optional<ExerciseGuide> exerciseGuide = exerciseGuideSearchService.findByOauthIdAndCreatedAt(exerciseAnalysisData.getOauthId(),
-			exerciseAnalysisData.getCreatedAt());
+			exerciseAnalysisData.getCreatedAt().toString());
 		if (exerciseGuide.isEmpty()) {
 			throw new GuideNotFoundException();
 		}
