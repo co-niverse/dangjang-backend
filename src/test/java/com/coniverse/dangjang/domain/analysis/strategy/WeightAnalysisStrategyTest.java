@@ -19,7 +19,7 @@ import com.coniverse.dangjang.domain.user.entity.User;
  * @since 1.0.0
  */
 @SpringBootTest
-public class WeightAnalysisStrategyTest {
+class WeightAnalysisStrategyTest {
 	@Autowired
 	private WeightAnalysisStrategy weightAnalysisStrategy;
 	@Autowired
