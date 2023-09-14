@@ -27,7 +27,7 @@ class WeightGuideControllerTest extends ControllerTest {
 	private WeightGuideSearchService weightGuideSearchService;
 	public static final String URL = "/api/guide/weight";
 	private static final String createdAt = "2023-12-31";
-	private static final String 등록되지_않은_날짜 = "3000-12-31";
+	private static final String 등록되지_않은_날짜 = "3000-12-33";
 
 	@Test
 	void 체중_조회를_성공한다() throws Exception {
