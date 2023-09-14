@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 
@@ -21,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 public class HealthConnectRepository {
 	private final JdbcTemplate jdbcTemplate;
 
-	@Transactional
 	public void insertBatch(List<HealthMetric> healthMetrics) {
 		String query = "INSERT IGNORE INTO health_metric (oauth_id, created_at, type, group_code, unit) VALUES (?, ?, ?, ?, ?)";
 		jdbcTemplate.batchUpdate(
