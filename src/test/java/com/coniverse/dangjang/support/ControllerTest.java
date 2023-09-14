@@ -13,6 +13,8 @@ import com.coniverse.dangjang.domain.auth.service.JwtTokenProvider;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
 import com.coniverse.dangjang.domain.guide.bloodsugar.controller.BloodSugarGuideController;
 import com.coniverse.dangjang.domain.guide.bloodsugar.service.BloodSugarGuideSearchService;
+import com.coniverse.dangjang.domain.guide.exercise.controller.ExerciseGuideController;
+import com.coniverse.dangjang.domain.guide.exercise.service.ExerciseGuideSearchService;
 import com.coniverse.dangjang.domain.guide.weight.controller.WeightGuideController;
 import com.coniverse.dangjang.domain.guide.weight.service.WeightGuideSearchService;
 import com.coniverse.dangjang.domain.healthmetric.controller.HealthMetricRegisterController;
@@ -40,7 +42,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 		SignupController.class,
 		UserController.class,
 		BloodSugarGuideController.class,
-		WeightGuideController.class
+		WeightGuideController.class,
+		ExerciseGuideController.class
 	},
 	includeFilters = @ComponentScan.Filter(classes = {EnableWebSecurity.class}))
 @ComponentScan(basePackages = "com.coniverse.dangjang.domain.auth.handler")
@@ -64,4 +67,6 @@ public class ControllerTest {
 	private BloodSugarGuideSearchService bloodSugarGuideSearchService;
 	@MockBean
 	private WeightGuideSearchService weightGuideSearchService;
+	@MockBean
+	private ExerciseGuideSearchService exerciseGuideSearchService;
 }
