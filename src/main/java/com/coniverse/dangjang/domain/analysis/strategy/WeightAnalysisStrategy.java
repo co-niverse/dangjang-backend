@@ -53,7 +53,7 @@ public class WeightAnalysisStrategy implements AnalysisStrategy {
 	 * @return 경보
 	 * @since 1.0.0
 	 */
-	public Alert findAlert(double bmi) {
+	private Alert findAlert(double bmi) {
 		if (bmi < 18.5) {
 			return Alert.LOW_WEIGHT;
 		} else if (bmi < 22.9) {
@@ -76,7 +76,7 @@ public class WeightAnalysisStrategy implements AnalysisStrategy {
 	 * @return bmi
 	 * @since 1.0.0
 	 */
-	public double calculateBmi(int height, int weight) {
+	private double calculateBmi(int height, int weight) {
 		return weight / Math.pow(height / 100.0, 2.0);
 	}
 
@@ -89,7 +89,7 @@ public class WeightAnalysisStrategy implements AnalysisStrategy {
 	 * @return 정상 체중 대비 편차
 	 * @since 1.0.0
 	 */
-	public int calculateWeightDiff(int height, int weight, Gender gender) {
+	private int calculateWeightDiff(int height, int weight, Gender gender) {
 		int standardWeight;
 		if (gender.equals(Gender.M)) {
 			standardWeight = (int)(Math.pow(height / 100.0, 2.0) * 22);
