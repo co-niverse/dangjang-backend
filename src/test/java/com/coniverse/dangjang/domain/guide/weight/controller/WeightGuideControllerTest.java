@@ -22,7 +22,7 @@ import com.coniverse.dangjang.support.annotation.WithDangjangUser;
  * @since 1.0.0
  */
 @WithDangjangUser
-public class WeightGuideControllerTest extends ControllerTest {
+class WeightGuideControllerTest extends ControllerTest {
 	@Autowired
 	private WeightGuideSearchService weightGuideSearchService;
 	public static final String URL = "/api/guide/weight";

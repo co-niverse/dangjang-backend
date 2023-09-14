@@ -25,7 +25,7 @@ import com.coniverse.dangjang.domain.guide.weight.repository.WeightGuideReposito
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
-public class WeightGuideSearchServiceTest {
+class WeightGuideSearchServiceTest {
 	@Autowired
 	private WeightGuideRepository weightGuideRepository;
 	@Autowired
@@ -65,12 +65,12 @@ public class WeightGuideSearchServiceTest {
 	@Test
 	void 존재하지_않는_날짜의_가이드조회를_실패한다() {
 		// given
+		LocalDate 존재하지_않는_날짜 = LocalDate.parse("3000-12-30");
 
 		// when
-
 		// then
 		assertThrows(GuideNotFoundException.class, () -> {
-			weightGuideSearchService.findGuide(테오_아이디, LocalDate.parse("3000-12-30"));
+			weightGuideSearchService.findGuide(테오_아이디, 존재하지_않는_날짜);
 		});
 	}
 
@@ -95,12 +95,12 @@ public class WeightGuideSearchServiceTest {
 	@Test
 	void 존재하지_않는_가이드조회를_실패한다() {
 		// given
-
+		LocalDate 존재하지_않는_날짜 = LocalDate.parse("3000-12-30");
 		// when
 
 		// then
 		assertThrows(GuideNotFoundException.class, () -> {
-			weightGuideSearchService.findByUserIdAndCreatedAt(테오_아이디, LocalDate.parse("3000-12-30"));
+			weightGuideSearchService.findByUserIdAndCreatedAt(테오_아이디, 존재하지_않는_날짜);
 		});
 	}
 }

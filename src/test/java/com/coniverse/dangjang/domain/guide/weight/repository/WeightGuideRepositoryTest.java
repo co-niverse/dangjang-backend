@@ -18,7 +18,7 @@ import com.coniverse.dangjang.support.annotation.MongoRepositoryTest;
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @MongoRepositoryTest
-public class WeightGuideRepositoryTest {
+class WeightGuideRepositoryTest {
 	@Autowired
 	private WeightGuideRepository weightGuideRepository;
 	private static final String 아이디 = "11111111";
