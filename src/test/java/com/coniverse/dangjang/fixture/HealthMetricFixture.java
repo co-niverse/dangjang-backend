@@ -100,6 +100,15 @@ public class HealthMetricFixture {
 			.build();
 	}
 
+	public static HealthMetric 건강지표_엔티티(User user, CommonCode type, LocalDate createdAt, String unit) {
+		return HealthMetric.builder()
+			.createdAt(createdAt)
+			.type(type)
+			.user(user)
+			.unit(unit)
+			.build();
+	}
+
 	/**
 	 * 가이드 데이터 fixture에서 사용
 	 */

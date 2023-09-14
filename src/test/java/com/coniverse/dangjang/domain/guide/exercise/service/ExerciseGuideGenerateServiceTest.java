@@ -68,7 +68,7 @@ class ExerciseGuideGenerateServiceTest {
 	@ValueSource(strings = {"0", "11000", "1506", "33000", "9000"})
 	void 걸음수_조언을_성공적으로_등록한다(String unit) {
 		// given
-		var data = exerciseAnalysisStrategy.analyze(운동_분석_데이터(user, CommonCode.STEP_COUNT, unit));
+		var data = exerciseAnalysisStrategy.analyze(걸음수_분석_데이터(user, CommonCode.STEP_COUNT, unit));
 		exerciseGuideRepository.deleteAll();
 
 		// when
@@ -86,7 +86,7 @@ class ExerciseGuideGenerateServiceTest {
 	@ValueSource(strings = {"10000", "0", "3000", "200", "11000"})
 	void 걸음수_조언을_성공적으로_수정한다(String unit) {
 		// given
-		var data = exerciseAnalysisStrategy.analyze(운동_분석_데이터(user, CommonCode.STEP_COUNT, unit));
+		var data = exerciseAnalysisStrategy.analyze(걸음수_분석_데이터(user, CommonCode.STEP_COUNT, unit));
 
 		// when
 		exerciseGuideGenerateService.updateGuide(data);
@@ -101,37 +101,39 @@ class ExerciseGuideGenerateServiceTest {
 	@Order(400)
 	@ParameterizedTest
 	@MethodSource("com.coniverse.dangjang.fixture.AnalysisDataFixture#운동_시간_목록")
-	void 운동별_조언을_성공적으로_등록한다(CommonCode type, String unit) {
+	void 운동_조언을_성공적으로_등록한다(CommonCode type, String createdAt, String unit) {
 		// given
-		var data = exerciseAnalysisStrategy.analyze(운동_분석_데이터(user, type, unit));
-		Optional<ExerciseGuide> 이전_등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
+		var data = exerciseAnalysisStrategy.analyze(운동_분석_데이터(user, type, createdAt, unit));
+		Optional<ExerciseGuide> 이전_등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, createdAt);
 		List<ExerciseCalorie> exerciseCalories = new ArrayList<>();
-		int 등록되어있는_운동칼로리수 = 0;
+		int 등록되어야할_칼로리수 = 0;
+		if (이전_등록된_운동가이드.isPresent()) {
+			exerciseCalories = 이전_등록된_운동가이드.get().getExerciseCalories();
+			등록되어야할_칼로리수 = 이전_등록된_운동가이드.get().getExerciseCalories().size();
+		}
+		if (type.equals(CommonCode.STEP_COUNT) == false) {
+			exerciseCalories.add(운동_칼로리_데이터(type, Integer.parseInt(unit), 70));
+			등록되어야할_칼로리수 += 1;
+		}
 
 		//when
 		exerciseGuideGenerateService.createGuide(data);
 
 		// then
-		Optional<ExerciseGuide> 등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
-		if (이전_등록된_운동가이드.isPresent()) {
-			등록되어있는_운동칼로리수 = 이전_등록된_운동가이드.get().getExerciseCalories().size();
-			exerciseCalories = 이전_등록된_운동가이드.get().getExerciseCalories();
-		}
+		Optional<ExerciseGuide> 등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, createdAt);
 
-		exerciseCalories.add(운동_칼로리_데이터(type, Integer.parseInt(unit), 70));
-
-		assertThat(등록된_운동가이드.get().getExerciseCalories()).hasSize(등록되어있는_운동칼로리수 + 1);
+		assertThat(등록된_운동가이드.get().getExerciseCalories()).hasSize(등록되어야할_칼로리수);
 		assertThat(등록된_운동가이드.get().getExerciseCalories()).isEqualTo(exerciseCalories);
 	}
 
 	@Order(450)
 	@ParameterizedTest
 	@MethodSource("com.coniverse.dangjang.fixture.AnalysisDataFixture#운동_시간_수정목록")
-	void 운동별_조언을_성공적으로_수정한다(CommonCode type, String unit) {
+	void 운동_조언을_성공적으로_수정한다(CommonCode type, String createdAt, String unit) {
 
 		// given
 		int weight = Integer.parseInt(healthMetricSearchService.findLastHealthMetricById(user.getOauthId(), CommonCode.MEASUREMENT).getUnit());
-		var data = exerciseAnalysisStrategy.analyze(운동_분석_데이터(user, type, unit));
+		var data = exerciseAnalysisStrategy.analyze(운동_분석_데이터(user, type, createdAt, unit));
 		Optional<ExerciseGuide> 이전_등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
 		int 등록되어있는_운동칼로리수 = 0;
 
