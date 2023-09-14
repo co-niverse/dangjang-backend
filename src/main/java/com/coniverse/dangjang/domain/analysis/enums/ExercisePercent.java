@@ -16,7 +16,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum ExerciseCalorie {
+public enum ExercisePercent {
 	WALK(0.9),
 	RUN(2),
 	BIKE(2.3),
@@ -30,10 +30,10 @@ public enum ExerciseCalorie {
 	 *
 	 */
 	public static double findPercentByExercise(CommonCode type) {
-		return Arrays.stream(ExerciseCalorie.values())
+		return Arrays.stream(ExercisePercent.values())
 			.filter(c -> c.name().equals(type.name()))
 			.findFirst()
-			.map(ExerciseCalorie::getPercentage)
+			.map(ExercisePercent::getPercentage)
 			.orElseThrow(EnumNonExistentException::new);
 	}
 }

@@ -73,7 +73,7 @@ class WeightGuideSearchServiceTest {
 	}
 
 	@Test
-	void 체중_가이드를_조회히여_Document를_반환한다() {
+	void 체중_가이드를_조회하여_Document를_반환한다() {
 		// given
 
 		// when

@@ -1,0 +1,83 @@
+package com.coniverse.dangjang.domain.guide.exercise.service;
+
+import static com.coniverse.dangjang.fixture.GuideFixture.*;
+import static com.coniverse.dangjang.fixture.UserFixture.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
+import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
+import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseGuideResponse;
+import com.coniverse.dangjang.domain.guide.exercise.repository.ExerciseGuideRepository;
+import com.coniverse.dangjang.domain.user.entity.User;
+
+@SpringBootTest
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class ExerciseGuideSearchServiceTest {
+	@Autowired
+	private ExerciseGuideSearchService exerciseGuideSearchService;
+	@Autowired
+	private ExerciseGuideRepository exerciseGuideRepository;
+	private User 테오 = 유저_테오();
+	private String 테오_아이디 = 테오.getOauthId();
+	private String 조회_날짜 = "2023-12-31";
+	private String 가이드가_존재하지_않는_날짜 = "3000-12-31";
+	private ExerciseGuide 저장한_운동_가이드;
+
+	@BeforeAll
+	void setup() {
+		exerciseGuideRepository.deleteAll();
+		저장한_운동_가이드 = exerciseGuideRepository.save(운동_가이드(테오_아이디, 조회_날짜));
+	}
+
+	@Test
+	void 운동_가이드를_조회하여_Document를_반환한다() {
+		//given
+
+		//when&then
+		ExerciseGuide exerciseGuide = exerciseGuideSearchService.findByOauthIdAndCreatedAt(테오_아이디, 조회_날짜);
+		assertThat(exerciseGuide.getOauthId()).isEqualTo(테오_아이디);
+		assertThat(exerciseGuide.getCreatedAt()).isEqualTo(조회_날짜);
+		assertThat(exerciseGuide.getContent()).isEqualTo(저장한_운동_가이드.getContent());
+		assertThat(exerciseGuide.getComparedToLastWeek()).isEqualTo(저장한_운동_가이드.getComparedToLastWeek());
+		assertThat(exerciseGuide.getNeedStepByLastWeek()).isEqualTo(저장한_운동_가이드.getNeedStepByLastWeek());
+		assertThat(exerciseGuide.getStepsCount()).isEqualTo(저장한_운동_가이드.getStepsCount());
+		assertThat(exerciseGuide.getExerciseCalories()).hasSize(저장한_운동_가이드.getExerciseCalories().size());
+		assertThat(exerciseGuide.getNeedStepByTTS()).isEqualTo(저장한_운동_가이드.getNeedStepByTTS());
+
+	}
+
+	@Test
+	void 운동_가이드를_조회하여_Response를_반환한다() {
+		//given
+		ExerciseGuideResponse 운동_가이드_응답 = 운동_가이드_응답(테오_아이디, 조회_날짜);
+
+		//when&then
+		ExerciseGuideResponse exerciseGuide = exerciseGuideSearchService.findGuide(테오_아이디, 조회_날짜);
+
+		assertThat(exerciseGuide.createdAt()).isEqualTo(조회_날짜);
+		assertThat(exerciseGuide.content()).isEqualTo(저장한_운동_가이드.getContent());
+		assertThat(exerciseGuide.comparedToLastWeek()).isEqualTo(저장한_운동_가이드.getComparedToLastWeek());
+		assertThat(exerciseGuide.needStepByLastWeek()).isEqualTo(저장한_운동_가이드.getNeedStepByLastWeek());
+		assertThat(exerciseGuide.stepsCount()).isEqualTo(저장한_운동_가이드.getStepsCount());
+		assertThat(exerciseGuide.exerciseCalories()).hasSize(저장한_운동_가이드.getExerciseCalories().size());
+		assertThat(exerciseGuide.needStepByTTS()).isEqualTo(저장한_운동_가이드.getNeedStepByTTS());
+
+	}
+
+	@Test
+	void 유효하지_않는_날짜로_조회하여_예외를_발생시킨다() {
+		//given
+
+		//when&then
+		assertThrows(GuideNotFoundException.class, () -> {
+			exerciseGuideSearchService.findGuide(테오_아이디, 가이드가_존재하지_않는_날짜);
+		});
+	}
+}

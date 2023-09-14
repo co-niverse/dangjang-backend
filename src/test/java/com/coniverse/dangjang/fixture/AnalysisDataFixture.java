@@ -14,6 +14,7 @@ import com.coniverse.dangjang.domain.analysis.dto.healthMetric.BloodSugarAnalysi
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.ExerciseAnalysisData;
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.WeightAnalysisData;
 import com.coniverse.dangjang.domain.analysis.enums.Alert;
+import com.coniverse.dangjang.domain.analysis.enums.ExercisePercent;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseCalorie;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
@@ -110,6 +111,10 @@ public class AnalysisDataFixture {
 		return new HealthMetricPostRequest("체중", "2023-05-06", unit);
 	}
 
+	public static HealthMetricPostRequest 운동_요청(CommonCode type, String unit) {
+		return new HealthMetricPostRequest(type.getTitle(), "2023-05-06", unit);
+	}
+
 	private static Stream<Arguments> 체중분석_입력_파라미터() {
 		UserFixture userFixture = new UserFixture();
 
@@ -122,6 +127,25 @@ public class AnalysisDataFixture {
 			Arguments.of(체중_요청("100"), userFixture.유저_테오()),
 			Arguments.of(체중_요청("120"), userFixture.유저_테오()),
 			Arguments.of(체중_요청("180"), userFixture.유저_테오())
+		);
+	}
+
+	private static int calculateCalorie(CommonCode type, int unit, int weight) {
+		double percent = ExercisePercent.findPercentByExercise(type);
+		return (int)(percent * weight / 15 * unit);
+	}
+
+	private static Stream<Arguments> 운동분석_입력_파라미터() {
+		UserFixture userFixture = new UserFixture();
+
+		return Stream.of(
+			Arguments.of(운동_요청(CommonCode.STEP_COUNT, "10000"), userFixture.유저_테오(), 0, 10000, 0),
+			Arguments.of(운동_요청(CommonCode.RUN, "100"), userFixture.유저_테오(), 0, 0, calculateCalorie(CommonCode.RUN, 100, 70)),
+			Arguments.of(운동_요청(CommonCode.HEALTH, "80"), userFixture.유저_테오(), 0, 0, calculateCalorie(CommonCode.HEALTH, 80, 70)),
+			Arguments.of(운동_요청(CommonCode.BIKE, "10"), userFixture.유저_테오(), 0, 0, calculateCalorie(CommonCode.BIKE, 10, 70)),
+			Arguments.of(운동_요청(CommonCode.HIKING, "60"), userFixture.유저_테오(), 0, 0, calculateCalorie(CommonCode.HIKING, 60, 70)),
+			Arguments.of(운동_요청(CommonCode.WALK, "120"), userFixture.유저_테오(), 0, 0, calculateCalorie(CommonCode.WALK, 120, 70)),
+			Arguments.of(운동_요청(CommonCode.SWIM, "120"), userFixture.유저_테오(), 0, 0, calculateCalorie(CommonCode.SWIM, 120, 70))
 		);
 	}
 
