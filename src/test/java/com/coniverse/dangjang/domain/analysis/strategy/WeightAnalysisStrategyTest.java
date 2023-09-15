@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.WeightAnalysisData;
 import com.coniverse.dangjang.domain.analysis.enums.Alert;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
-import com.coniverse.dangjang.domain.healthmetric.mapper.HealthMetricMapper;
 
 /**
  * @author EVE
@@ -20,8 +19,6 @@ import com.coniverse.dangjang.domain.healthmetric.mapper.HealthMetricMapper;
 class WeightAnalysisStrategyTest {
 	@Autowired
 	private WeightAnalysisStrategy weightAnalysisStrategy;
-	@Autowired
-	private HealthMetricMapper mapper;
 
 	@ParameterizedTest
 	@MethodSource("com.coniverse.dangjang.fixture.AnalysisDataFixture#체중분석_입력_파라미터")

@@ -14,7 +14,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.ExerciseAnalysisData;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
-import com.coniverse.dangjang.domain.healthmetric.mapper.HealthMetricMapper;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricSearchService;
 
 /**
@@ -25,8 +24,7 @@ import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricSearchServ
 class ExerciseAnalaysisStrategyTest {
 	@Autowired
 	private ExerciseAnalysisStrategy exerciseAnalysisStrategy;
-	@Autowired
-	private HealthMetricMapper mapper;
+
 	@MockBean
 	private HealthMetricSearchService healthMetricSearchService;
 
