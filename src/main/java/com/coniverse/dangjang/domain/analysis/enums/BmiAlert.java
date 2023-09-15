@@ -15,12 +15,12 @@ import lombok.Getter;
  */
 @Getter
 public enum BmiAlert {
-	LOW_WEIGHT((bmi) -> (0 <= bmi && bmi < 18.5), Alert.LOW_WEIGHT),
-	NORMAL_WEIGHT((bmi) -> (18.5 <= bmi && bmi < 22.9), Alert.NORMAL_WEIGHT),
-	OVERWEIGHT((bmi) -> (22.9 <= bmi && bmi < 24.9), Alert.OVERWEIGHT),
-	LEVEL_1_OBESITY((bmi) -> (24.9 <= bmi && bmi < 29.9), Alert.LEVEL_1_OBESITY),
-	LEVEL_2_OBESITY((bmi) -> (29.9 <= bmi && bmi < 34.9), Alert.LEVEL_2_OBESITY),
-	LEVEL_3_OBESITY((bmi) -> (34.9 <= bmi), Alert.LEVEL_3_OBESITY);
+	LOW_WEIGHT(bmi -> (0 <= bmi && bmi < 18.5), Alert.LOW_WEIGHT),
+	NORMAL_WEIGHT(bmi -> (18.5 <= bmi && bmi < 22.9), Alert.NORMAL_WEIGHT),
+	OVERWEIGHT(bmi -> (22.9 <= bmi && bmi < 24.9), Alert.OVERWEIGHT),
+	LEVEL_1_OBESITY(bmi -> (24.9 <= bmi && bmi < 29.9), Alert.LEVEL_1_OBESITY),
+	LEVEL_2_OBESITY(bmi -> (29.9 <= bmi && bmi < 34.9), Alert.LEVEL_2_OBESITY),
+	LEVEL_3_OBESITY(bmi -> (34.9 <= bmi), Alert.LEVEL_3_OBESITY);
 
 	private final Alert alert;
 	private final Function<Double, Boolean> alertFunction;

@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.coniverse.dangjang.domain.analysis.exception.NonAnalyticDataException;
 
 @SpringBootTest
-public class BmiAlertTest {
+class BmiAlertTest {
 
 	@ParameterizedTest
 	@MethodSource("com.coniverse.dangjang.fixture.AnalysisDataFixture#bmi_입력_파라미터")
