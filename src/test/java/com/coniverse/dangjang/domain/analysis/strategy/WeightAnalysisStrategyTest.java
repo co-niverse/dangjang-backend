@@ -9,10 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.WeightAnalysisData;
 import com.coniverse.dangjang.domain.analysis.enums.Alert;
-import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.healthmetric.mapper.HealthMetricMapper;
-import com.coniverse.dangjang.domain.user.entity.User;
 
 /**
  * @author EVE
@@ -27,18 +25,17 @@ class WeightAnalysisStrategyTest {
 
 	@ParameterizedTest
 	@MethodSource("com.coniverse.dangjang.fixture.AnalysisDataFixture#체중분석_입력_파라미터")
-	void 체중_수치에_맞게_분석한다(HealthMetricPostRequest request, User user, Alert 경보) {
+	void 체중_수치에_맞게_분석한다(HealthMetric weightHealthMetric, Alert 경보) {
 		//given
-		HealthMetric healthMetric = mapper.toEntity(request, user);
-		WeightAnalysisData AnalysisData = (WeightAnalysisData)weightAnalysisStrategy.createAnalysisData(healthMetric);
+
+		WeightAnalysisData AnalysisData = (WeightAnalysisData)weightAnalysisStrategy.createAnalysisData(weightHealthMetric);
 
 		//when
 		WeightAnalysisData weightAnalysisData = (WeightAnalysisData)weightAnalysisStrategy.analyze(AnalysisData);
-		System.out.println("경보 : " + weightAnalysisData.getAlert());
 		//then
 
-		assertThat(weightAnalysisData.getUnit()).isEqualTo(Integer.parseInt(healthMetric.getUnit()));
-		assertThat(weightAnalysisData.getType()).isEqualTo(healthMetric.getType());
+		assertThat(weightAnalysisData.getUnit()).isEqualTo(Integer.parseInt(weightHealthMetric.getUnit()));
+		assertThat(weightAnalysisData.getType()).isEqualTo(weightHealthMetric.getType());
 		assertThat(weightAnalysisData.getAlert()).isEqualTo(경보);
 
 	}
