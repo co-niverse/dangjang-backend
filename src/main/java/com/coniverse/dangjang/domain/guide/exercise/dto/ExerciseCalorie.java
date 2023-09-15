@@ -8,5 +8,5 @@ import com.coniverse.dangjang.domain.code.enums.CommonCode;
  * @author EVE
  * @since 1.0.0
  */
-public record ExerciseCalorie(CommonCode type, int calorie) {
+public record ExerciseCalorie(CommonCode type, int calorie, int exerciseTime) {
 }

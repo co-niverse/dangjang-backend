@@ -8,15 +8,21 @@ import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * User 성별
+ *
+ * @author EVE
+ * @since 1.0.0
+ */
+@Getter
 @AllArgsConstructor
 public enum Gender {
-	M("male", false),
-	F("female", true);
+	M("male", false, 22),
+	F("female", true, 21);
 
-	@Getter
 	private final String title;
-	@Getter
 	private final boolean isTrue;
+	private final int standardWeightRatio;
 
 	public static final Map<Boolean, String> byTitle = Collections.unmodifiableMap(
 		Stream.of(values()).collect(Collectors.toMap(Gender::isTrue, Gender::name)));
@@ -24,4 +30,5 @@ public enum Gender {
 	public static Gender of(Boolean isTrue) {
 		return Gender.valueOf(byTitle.get(isTrue));
 	}
+
 }

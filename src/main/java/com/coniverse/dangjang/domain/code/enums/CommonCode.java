@@ -24,7 +24,7 @@ public enum CommonCode implements EnumCode {
 	STEP_COUNT("걸음수", "step count"),
 	WALK("걷기", "walk"),
 	RUN("달리기", "run"),
-	HIKING("하이킹", "hiking"),
+	HIKING("등산", "hiking"),
 	BIKE("자전거", "bike"),
 	SWIM("수영", "swim"),
 	HEALTH("헬스", "health"),

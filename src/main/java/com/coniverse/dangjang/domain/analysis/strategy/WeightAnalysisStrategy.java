@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.WeightAnalysisData;
 import com.coniverse.dangjang.domain.analysis.enums.Alert;
+import com.coniverse.dangjang.domain.analysis.enums.BmiAlert;
 import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
@@ -34,7 +35,7 @@ public class WeightAnalysisStrategy implements AnalysisStrategy {
 	public AnalysisData analyze(AnalysisData analysisData) {
 		WeightAnalysisData data = (WeightAnalysisData)analysisData;
 		data.setBmi(calculateBmi(data.getHeight(), data.getUnit()));
-		Alert alert = this.findAlert(data.getBmi());
+		Alert alert = BmiAlert.findAlertByBmi(data.getBmi());
 		int weightDiff = this.calculateWeightDiff(data.getHeight(), data.getUnit(), data.getGender());
 		data.setAlert(alert);
 		data.setWeightDiff(weightDiff);
@@ -44,28 +45,6 @@ public class WeightAnalysisStrategy implements AnalysisStrategy {
 	@Override
 	public GroupCode getGroupCode() {
 		return GroupCode.WEIGHT;
-	}
-
-	/**
-	 * BMI 수치에 따라 경보를 찾는다.
-	 *
-	 * @param bmi BMI 수치
-	 * @return 경보
-	 * @since 1.0.0
-	 */
-	private Alert findAlert(double bmi) {
-		if (bmi < 18.5) {
-			return Alert.LOW_WEIGHT;
-		} else if (bmi < 22.9) {
-			return Alert.NORMAL_WEIGHT;
-		} else if (bmi < 24.9) {
-			return Alert.OVERWEIGHT;
-		} else if (bmi < 29.9) {
-			return Alert.LEVEL_1_OBESITY;
-		} else if (bmi < 34.9) {
-			return Alert.LEVEL_2_OBESITY;
-		}
-		return Alert.LEVEL_3_OBESITY;
 	}
 
 	/**
@@ -90,12 +69,7 @@ public class WeightAnalysisStrategy implements AnalysisStrategy {
 	 * @since 1.0.0
 	 */
 	private int calculateWeightDiff(int height, int weight, Gender gender) {
-		int standardWeight;
-		if (gender.equals(Gender.M)) {
-			standardWeight = (int)(Math.pow(height / 100.0, 2.0) * 22);
-		} else {
-			standardWeight = (int)(Math.pow(height / 100.0, 2.0) * 21);
-		}
+		int standardWeight = (int)(Math.pow(height / 100.0, 2.0) * gender.getStandardWeightRatio());
 		return weight - standardWeight;
 	}
 

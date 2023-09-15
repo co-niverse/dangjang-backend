@@ -4,6 +4,7 @@ import static com.coniverse.dangjang.fixture.HealthMetricFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.junit.jupiter.params.provider.Arguments.*;
 
+import java.time.LocalDate;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.params.provider.Arguments;
@@ -13,11 +14,11 @@ import com.coniverse.dangjang.domain.analysis.dto.healthMetric.BloodSugarAnalysi
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.ExerciseAnalysisData;
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.WeightAnalysisData;
 import com.coniverse.dangjang.domain.analysis.enums.Alert;
+import com.coniverse.dangjang.domain.analysis.enums.ExercisePercent;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseCalorie;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.user.entity.User;
-import com.coniverse.dangjang.domain.user.entity.enums.Gender;
 import com.coniverse.dangjang.global.exception.EnumNonExistentException;
 
 /**
@@ -38,20 +39,28 @@ public class AnalysisDataFixture {
 		return data;
 	}
 
-	public static AnalysisData 운동_분석_데이터(User user, CommonCode type, String unit) {
+	public static AnalysisData 운동_분석_데이터(User user, CommonCode type, String createdAt, String unit) {
+		return new ExerciseAnalysisData(건강지표_엔티티(user, type, LocalDate.parse(createdAt), unit));
+	}
+
+	public static AnalysisData 걸음수_분석_데이터(User user, CommonCode type, String unit) {
 		return new ExerciseAnalysisData(건강지표_엔티티(user, type, unit));
 	}
 
 	public static Stream<Arguments> 운동_시간_목록() {
-		return Stream.of(arguments(CommonCode.BIKE, "60"), arguments(CommonCode.HIKING, "120"), arguments(CommonCode.HEALTH, "50"),
-			arguments(CommonCode.RUN, "60"),
-			arguments(CommonCode.SWIM, "60"), arguments(CommonCode.WALK, "60"));
+		return Stream.of(arguments(CommonCode.BIKE, "2023-12-01", "60"), arguments(CommonCode.HIKING, "2023-12-01", "60"),
+			arguments(CommonCode.STEP_COUNT, "2023-12-01", "6000"),
+			arguments(CommonCode.STEP_COUNT, "2023-12-02", "6000"), arguments(CommonCode.HEALTH, "2023-12-02", "60"),
+			arguments(CommonCode.RUN, "2023-12-02", "60"),
+			arguments(CommonCode.SWIM, "2023-12-02", "60"), arguments(CommonCode.WALK, "2023-12-02", "60"));
 	}
 
 	public static Stream<Arguments> 운동_시간_수정목록() {
-		return Stream.of(arguments(CommonCode.BIKE, "900"), arguments(CommonCode.HIKING, "0"), arguments(CommonCode.HEALTH, "50"),
-			arguments(CommonCode.RUN, "40"),
-			arguments(CommonCode.SWIM, "80"), arguments(CommonCode.WALK, "120"));
+		return Stream.of(arguments(CommonCode.BIKE, "2023-12-01", "80"), arguments(CommonCode.HIKING, "2023-12-01", "69"),
+			arguments(CommonCode.STEP_COUNT, "2023-12-01", "8000"),
+			arguments(CommonCode.STEP_COUNT, "2023-12-02", "10000"), arguments(CommonCode.HEALTH, "2023-12-02", "40"),
+			arguments(CommonCode.RUN, "2023-12-02", "20"),
+			arguments(CommonCode.SWIM, "2023-12-02", "10"), arguments(CommonCode.WALK, "2023-12-02", "70"));
 	}
 
 	public static ExerciseCalorie 운동_칼로리_데이터(CommonCode type, int unit, int weight) {
@@ -79,7 +88,7 @@ public class AnalysisDataFixture {
 				throw new EnumNonExistentException();
 		}
 		int calorie = (int)(percent * weight / 15 * unit);
-		return new ExerciseCalorie(type, calorie);
+		return new ExerciseCalorie(type, calorie, unit);
 	}
 
 	public static WeightAnalysisData 체중_분석_데이터() {
@@ -102,54 +111,49 @@ public class AnalysisDataFixture {
 		return new HealthMetricPostRequest("체중", "2023-05-06", unit);
 	}
 
+	public static HealthMetricPostRequest 운동_요청(CommonCode type, String unit) {
+		return new HealthMetricPostRequest(type.getTitle(), "2023-05-06", unit);
+	}
+
 	public static Stream<Arguments> 체중분석_입력_파라미터() {
-		UserFixture userFixture = new UserFixture();
-		User user = userFixture.유저_테오();
-		int 테오_키 = user.getHeight();
 
 		return Stream.of(
-			Arguments.of(체중_요청("40"), user, 표준체중과의_차이(테오_키, 40, user.getGender()), 체질량지수(테오_키, 40), 체중_비만도(테오_키, 40)),
-			Arguments.of(체중_요청("50"), user, 표준체중과의_차이(테오_키, 50, user.getGender()), 체질량지수(테오_키, 50), 체중_비만도(테오_키, 50)),
-			Arguments.of(체중_요청("60"), user, 표준체중과의_차이(테오_키, 60, user.getGender()), 체질량지수(테오_키, 60), 체중_비만도(테오_키, 60)),
-			Arguments.of(체중_요청("70"), user, 표준체중과의_차이(테오_키, 70, user.getGender()), 체질량지수(테오_키, 70), 체중_비만도(테오_키, 70)),
-			Arguments.of(체중_요청("90"), user, 표준체중과의_차이(테오_키, 90, user.getGender()), 체질량지수(테오_키, 90), 체중_비만도(테오_키, 90)),
-			Arguments.of(체중_요청("100"), user, 표준체중과의_차이(테오_키, 100, user.getGender()), 체질량지수(테오_키, 100), 체중_비만도(테오_키, 100)),
-			Arguments.of(체중_요청("120"), user, 표준체중과의_차이(테오_키, 120, user.getGender()), 체질량지수(테오_키, 120), 체중_비만도(테오_키, 120)),
-			Arguments.of(체중_요청("180"), user, 표준체중과의_차이(테오_키, 180, user.getGender()), 체질량지수(테오_키, 180), 체중_비만도(테오_키, 180))
+			Arguments.of(건강지표_엔티티(CommonCode.MEASUREMENT, "40"), Alert.LOW_WEIGHT),
+			Arguments.of(건강지표_엔티티(CommonCode.MEASUREMENT, "90"), Alert.NORMAL_WEIGHT),
+			Arguments.of(건강지표_엔티티(CommonCode.MEASUREMENT, "95"), Alert.OVERWEIGHT),
+			Arguments.of(건강지표_엔티티(CommonCode.MEASUREMENT, "100"), Alert.LEVEL_1_OBESITY),
+			Arguments.of(건강지표_엔티티(CommonCode.MEASUREMENT, "120"), Alert.LEVEL_2_OBESITY),
+			Arguments.of(건강지표_엔티티(CommonCode.MEASUREMENT, "180"), Alert.LEVEL_3_OBESITY)
 		);
 	}
 
-	/**
-	 * 체중 분석에 필요한 메서드
-	 */
-	public static int 표준체중과의_차이(int height, int weight, Gender gender) {
-		int standardWeight;
-		if (gender.equals(Gender.M)) {
-			standardWeight = (int)(Math.pow(height / 100.0, 2.0) * 22);
-		} else {
-			standardWeight = (int)(Math.pow(height / 100.0, 2.0) * 21);
-		}
-		return weight - standardWeight;
+	public static Stream<Arguments> bmi_입력_파라미터() {
+
+		return Stream.of(
+			Arguments.of(14.5, Alert.LOW_WEIGHT),
+			Arguments.of(20.9, Alert.NORMAL_WEIGHT),
+			Arguments.of(23.7, Alert.OVERWEIGHT),
+			Arguments.of(28.6, Alert.LEVEL_1_OBESITY),
+			Arguments.of(32.6, Alert.LEVEL_2_OBESITY),
+			Arguments.of(35.3, Alert.LEVEL_3_OBESITY)
+		);
 	}
 
-	public static double 체질량지수(int height, int weight) {
-		return weight / Math.pow(height / 100.0, 2.0);
+	private static int calculateCalorie(CommonCode type, int unit, int weight) {
+		double percent = ExercisePercent.findPercentByExercise(type);
+		return (int)(percent * weight / 15 * unit);
 	}
 
-	public static Alert 체중_비만도(int height, int weight) {
-		double bmi = weight / Math.pow(height / 100.0, 2.0);
-		if (bmi < 18.5) {
-			return Alert.LOW_WEIGHT;
-		} else if (bmi < 22.9) {
-			return Alert.NORMAL_WEIGHT;
-		} else if (bmi < 24.9) {
-			return Alert.OVERWEIGHT;
-		} else if (bmi < 29.9) {
-			return Alert.LEVEL_1_OBESITY;
-		} else if (bmi < 34.9) {
-			return Alert.LEVEL_2_OBESITY;
-		}
-		return Alert.LEVEL_3_OBESITY;
+	private static Stream<Arguments> 운동분석_입력_파라미터() {
+
+		return Stream.of(
+			Arguments.of(건강지표_엔티티(CommonCode.STEP_COUNT, "10000"), 0, 10000, 0),
+			Arguments.of(건강지표_엔티티(CommonCode.RUN, "100"), 0, 0, calculateCalorie(CommonCode.RUN, 100, 70)),
+			Arguments.of(건강지표_엔티티(CommonCode.BIKE, "10"), 0, 0, calculateCalorie(CommonCode.BIKE, 10, 70)),
+			Arguments.of(건강지표_엔티티(CommonCode.HIKING, "60"), 0, 0, calculateCalorie(CommonCode.HIKING, 60, 70)),
+			Arguments.of(건강지표_엔티티(CommonCode.WALK, "120"), 0, 0, calculateCalorie(CommonCode.WALK, 120, 70)),
+			Arguments.of(건강지표_엔티티(CommonCode.SWIM, "120"), 0, 0, calculateCalorie(CommonCode.SWIM, 120, 70))
+		);
 	}
 
 }
