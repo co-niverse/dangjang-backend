@@ -128,6 +128,18 @@ public class AnalysisDataFixture {
 		);
 	}
 
+	public static Stream<Arguments> bmi_입력_파라미터() {
+
+		return Stream.of(
+			Arguments.of(14.5, Alert.LOW_WEIGHT),
+			Arguments.of(20.9, Alert.NORMAL_WEIGHT),
+			Arguments.of(23.7, Alert.OVERWEIGHT),
+			Arguments.of(28.6, Alert.LEVEL_1_OBESITY),
+			Arguments.of(32.6, Alert.LEVEL_2_OBESITY),
+			Arguments.of(35.3, Alert.LEVEL_3_OBESITY)
+		);
+	}
+
 	private static int calculateCalorie(CommonCode type, int unit, int weight) {
 		double percent = ExercisePercent.findPercentByExercise(type);
 		return (int)(percent * weight / 15 * unit);
