@@ -10,8 +10,16 @@ spring:
         use_sql_comments: true
         highlight_sql: true
         show_sql: true
+        jdbc:
+          batch_size: 1000
+        order_inserts: true
+        order_updates: true
     database-platform: org.hibernate.dialect.MySQL8Dialect
-  #    open-in-view: false
+    open-in-view: false
+  datasource:
+    hikari:
+      data-source-properties:
+        rewriteBatchedStatements: true
   mvc:
     throw-exception-if-no-handler-found: true
   web:
@@ -90,4 +98,16 @@ spring:
   config:
     activate:
       on-profile: performance
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/local?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&cacheDefaultTimezone=false&allowPublicKeyRetrieval=true&profileSQL=true&logger=Slf4JLogger&maxQuerySizeToLog=999999
+    username: root
+    password: rootroot
+  jpa:
+    hibernate:
+      ddl-auto: none
+  sql:
+    init:
+      mode: always
+
   # ...

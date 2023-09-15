@@ -21,6 +21,5 @@ public interface ExerciseGuideRepository extends MongoRepository<ExerciseGuide, 
 	 * @return 운동 가이드
 	 * @since 1.0.0
 	 */
-
 	Optional<ExerciseGuide> findByOauthIdAndCreatedAt(String oauthId, String createdAt);
 }

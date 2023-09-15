@@ -14,7 +14,6 @@ import jakarta.annotation.PostConstruct;
  */
 @Configuration
 public class TimeConfig {
-
 	@PostConstruct
 	public void setTimeZone() {
 		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
