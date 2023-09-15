@@ -38,7 +38,7 @@ public enum ExercisePercent {
 		return Arrays.stream(ExercisePercent.values())
 			.filter(c -> c.name().equals(type.name()))
 			.findFirst()
-			.map(ExercisePercent::getPercentage)
+			.map(ExercisePercent::getPercent)
 			.orElseThrow(EnumNonExistentException::new);
 	}
 }

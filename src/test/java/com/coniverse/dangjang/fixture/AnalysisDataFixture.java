@@ -14,10 +14,9 @@ import com.coniverse.dangjang.domain.analysis.dto.healthMetric.BloodSugarAnalysi
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.ExerciseAnalysisData;
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.WeightAnalysisData;
 import com.coniverse.dangjang.domain.analysis.enums.Alert;
-import com.coniverse.dangjang.domain.analysis.enums.ExerciseCaloriePercent;
+import com.coniverse.dangjang.domain.analysis.enums.ExercisePercent;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseCalorie;
-import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.user.entity.User;
 
 /**
@@ -62,9 +61,9 @@ public class AnalysisDataFixture {
 	}
 
 	public static ExerciseCalorie 운동_칼로리_데이터(CommonCode type, int unit, int weight) {
-		double percent = ExerciseCaloriePercent.findPercentByExercise(type);
+		double percent = ExercisePercent.findPercentByExercise(type);
 		int calorie = (int)(percent * weight / 15 * unit);
-		return new ExerciseCalorie(type, calorie);
+		return new ExerciseCalorie(type, calorie, unit);
 	}
 
 	public static WeightAnalysisData 체중_분석_데이터() {
