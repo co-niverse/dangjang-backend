@@ -1,7 +1,6 @@
 package com.coniverse.dangjang.domain.analysis.enums;
 
 import java.util.Arrays;
-import java.util.NoSuchElementException;
 import java.util.function.Function;
 
 import com.coniverse.dangjang.domain.analysis.exception.NonAnalyticDataException;
@@ -15,7 +14,7 @@ import lombok.Getter;
  * @since 1.0.0
  */
 @Getter
-public enum Bmi {
+public enum BmiAlert {
 	LOW_WEIGHT((bmi) -> (0 <= bmi && bmi < 18.5), Alert.LOW_WEIGHT),
 	NORMAL_WEIGHT((bmi) -> (18.5 <= bmi && bmi < 22.9), Alert.NORMAL_WEIGHT),
 	OVERWEIGHT((bmi) -> (22.9 <= bmi && bmi < 24.9), Alert.OVERWEIGHT),
@@ -26,7 +25,7 @@ public enum Bmi {
 	private final Alert alert;
 	private final Function<Double, Boolean> alertFunction;
 
-	Bmi(Function<Double, Boolean> alertFunction, Alert alert) {
+	BmiAlert(Function<Double, Boolean> alertFunction, Alert alert) {
 		this.alertFunction = alertFunction;
 		this.alert = alert;
 	}
@@ -39,14 +38,13 @@ public enum Bmi {
 	 * @throws NonAnalyticDataException 분석할 수 없는 데이터일 때 발생하는 예외
 	 * @since 1.0.0
 	 */
-	public static Alert calculateBmi(Double bmi) {
-		try {
-			return Arrays.stream(Bmi.values()).filter(value -> value.getAlertFunction().apply(bmi)).findFirst().get().getAlert();
+	public static Alert findAlertByBmi(Double bmi) {
 
-		} catch (NoSuchElementException e) {
-			throw new NonAnalyticDataException();
-		}
+		return Arrays.stream(BmiAlert.values())
+			.filter(value -> value.getAlertFunction().apply(bmi))
+			.findFirst()
+			.orElseThrow(NonAnalyticDataException::new)
+			.getAlert();
 
 	}
-
 }

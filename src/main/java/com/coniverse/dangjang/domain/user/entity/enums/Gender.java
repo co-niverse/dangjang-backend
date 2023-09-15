@@ -22,7 +22,7 @@ public enum Gender {
 
 	private final String title;
 	private final boolean isTrue;
-	private final int percent;
+	private final int standardWeightRatio;
 
 	public static final Map<Boolean, String> byTitle = Collections.unmodifiableMap(
 		Stream.of(values()).collect(Collectors.toMap(Gender::isTrue, Gender::name)));
@@ -31,7 +31,4 @@ public enum Gender {
 		return Gender.valueOf(byTitle.get(isTrue));
 	}
 
-	public int getPercent() {
-		return this.percent;
-	}
 }

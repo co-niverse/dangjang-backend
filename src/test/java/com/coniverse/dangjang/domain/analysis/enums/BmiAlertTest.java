@@ -11,13 +11,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.coniverse.dangjang.domain.analysis.exception.NonAnalyticDataException;
 
 @SpringBootTest
-public class BmiTest {
+public class BmiAlertTest {
 
 	@ParameterizedTest
 	@MethodSource("com.coniverse.dangjang.fixture.AnalysisDataFixture#bmi_입력_파라미터")
 	void bmi_수치에_맞게_분석한다(double bmi, Alert alert) {
 		//when&then
-		assertThat(Bmi.calculateBmi(bmi)).isEqualTo(alert);
+		assertThat(BmiAlert.findAlertByBmi(bmi)).isEqualTo(alert);
 
 	}
 
@@ -29,7 +29,7 @@ public class BmiTest {
 		//when
 
 		//then
-		assertThrows(NonAnalyticDataException.class, () -> Bmi.calculateBmi(bmi));
+		assertThrows(NonAnalyticDataException.class, () -> BmiAlert.findAlertByBmi(bmi));
 
 	}
 }
