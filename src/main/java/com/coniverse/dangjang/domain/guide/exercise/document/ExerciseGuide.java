@@ -49,8 +49,12 @@ public class ExerciseGuide {
 	}
 
 	/**
-	 * 가이드 ID를 설정한다.
+	 * 걸음수와 관련된 속성들을 변경한다.
 	 *
+	 * @param needStepByTTS      만보 대비 필요한 걸음수
+	 * @param needStepByLastWeek 지난주 평균 걸음수 대비 필요한 걸음수
+	 * @param comparedToLastWeek 지난주 걸음수와 비교한 가이드
+	 * @param content            만보 대비 걸음수에 대한 가이드
 	 * @since 1.0.0
 	 */
 	public void changeAboutWalk(int needStepByTTS, int needStepByLastWeek, String comparedToLastWeek, String content) {
@@ -65,16 +69,12 @@ public class ExerciseGuide {
 	 * <p>
 	 * 기존에 존재하는 운동 칼로리를 삭제하고, 새로운 운동 칼로리를 추가한다.
 	 *
-	 * @param exerciseCalorie 운동칼로리 객체
+	 * @param updateExerciseCalorie 운동칼로리 객체
 	 * @since 1.0.0
 	 */
-	public void changeExerciseCalories(ExerciseCalorie exerciseCalorie) {
-		for (ExerciseCalorie existExerciseCalorie : exerciseCalories) {
-			if (existExerciseCalorie.type().equals(exerciseCalorie.type())) {
-				exerciseCalories.remove(existExerciseCalorie);
-				break;
-			}
-		}
-		exerciseCalories.add(exerciseCalorie);
+	public void changeExerciseCalories(ExerciseCalorie updateExerciseCalorie) {
+		exerciseCalories.stream().filter(existExerciseCalorie -> existExerciseCalorie.type().equals(updateExerciseCalorie.type()))
+			.findFirst().ifPresent(existExerciseCalorie -> exerciseCalories.remove(existExerciseCalorie));
+		exerciseCalories.add(updateExerciseCalorie);
 	}
 }

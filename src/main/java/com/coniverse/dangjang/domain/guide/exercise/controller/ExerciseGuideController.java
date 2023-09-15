@@ -17,12 +17,28 @@ import com.coniverse.dangjang.global.validator.ValidLocalDate;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 운동 가이드 Controller
+ *
+ * @author EVE
+ * @since 1.0.0
+ */
+
 @RestController
 @RequiredArgsConstructor
 @Validated
 @RequestMapping("/api/guide/exercise")
 public class ExerciseGuideController {
 	private final ExerciseGuideSearchService exerciseGuideSearchService;
+
+	/**
+	 * 운동 조회
+	 *
+	 * @param date      조회하는 날짜
+	 * @param principal 유저 정보
+	 * @return 운동 가이드 응답
+	 * @since 1.0.0
+	 */
 
 	@GetMapping
 	public ResponseEntity<SuccessSingleResponse<ExerciseGuideResponse>> get(@ValidLocalDate @RequestParam String date,

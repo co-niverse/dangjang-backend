@@ -22,15 +22,23 @@ public class ExerciseGuideSearchService {
 	private final ExerciseGuideRepository exerciseGuideRepository;
 	private final ExerciseGuideMapper exerciseGuideMapper;
 
+	/**
+	 * 운동 가이드를 전달한다.
+	 *
+	 * @param oauthId 유저ID
+	 * @return 운동 가이드 response
+	 * @Param createdAt 생성일
+	 * @since 1.0.0
+	 */
 	public ExerciseGuideResponse findGuide(String oauthId, String createdAt) {
 		return exerciseGuideMapper.toResponse(findByOauthIdAndCreatedAt(oauthId, createdAt));
 	}
 
 	/**
-	 * 운동 가이드를 조회한다.
+	 * 운동 가이드를 repository에서 조회한다.
 	 *
 	 * @param oauthId 유저ID
-	 * @return 운동 가이드
+	 * @return 운동 가이드 document
 	 * @Param createdAt 생성일
 	 * @since 1.0.0
 	 */
