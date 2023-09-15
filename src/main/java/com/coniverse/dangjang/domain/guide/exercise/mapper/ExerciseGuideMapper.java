@@ -29,6 +29,7 @@ public interface ExerciseGuideMapper {
 	 * @since 1.0.0
 	 */
 	@Mapping(target = "exerciseCalories", ignore = true)
+	@Mapping(target = "stepsCount", source = "exerciseAnalysisData.unit")
 	ExerciseGuide toDocument(ExerciseAnalysisData exerciseAnalysisData, String content, String comparedToLastWeek);
 
 	/**

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.ExerciseAnalysisData;
-import com.coniverse.dangjang.domain.analysis.enums.ExerciseCaloriePercent;
+import com.coniverse.dangjang.domain.analysis.enums.ExercisePercent;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
@@ -114,7 +114,7 @@ public class ExerciseAnalysisStrategy implements AnalysisStrategy {
 	 */
 	private int calculateCalorie(ExerciseAnalysisData data) {
 		String weight = healthMetricSearchService.findLastHealthMetricById(data.getOauthId(), CommonCode.MEASUREMENT).getUnit();
-		double percent = ExerciseCaloriePercent.findPercentByExercise(data.getType());
+		double percent = ExercisePercent.findPercentByExercise(data.getType());
 		return (int)(percent * Integer.parseInt(weight) / 15 * data.unit);
 	}
 }

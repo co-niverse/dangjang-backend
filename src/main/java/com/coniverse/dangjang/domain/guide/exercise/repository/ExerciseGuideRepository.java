@@ -1,6 +1,5 @@
 package com.coniverse.dangjang.domain.guide.exercise.repository;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -22,6 +21,6 @@ public interface ExerciseGuideRepository extends MongoRepository<ExerciseGuide, 
 	 * @return 운동 가이드
 	 * @since 1.0.0
 	 */
-	
-	Optional<ExerciseGuide> findByOauthIdAndCreatedAt(String oauthId, LocalDate createdAt);
+
+	Optional<ExerciseGuide> findByOauthIdAndCreatedAt(String oauthId, String createdAt);
 }
