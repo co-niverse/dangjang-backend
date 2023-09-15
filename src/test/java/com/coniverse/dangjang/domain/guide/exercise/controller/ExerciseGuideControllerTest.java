@@ -49,7 +49,7 @@ class ExerciseGuideControllerTest extends ControllerTest {
 			jsonPath("$.data.needStepByLastWeek").value(운동_가이드_응답.needStepByLastWeek()),
 			jsonPath("$.data.comparedToLastWeek").value(운동_가이드_응답.comparedToLastWeek()),
 			jsonPath("$.data.content").value(운동_가이드_응답.content()),
-			jsonPath("$.data.stepsCount").value(운동_가이드_응답.stepsCount()),
+			jsonPath("$.data.stepCount").value(운동_가이드_응답.stepCount()),
 			jsonPath("$.data.exerciseCalories").isArray()
 		);
 	}

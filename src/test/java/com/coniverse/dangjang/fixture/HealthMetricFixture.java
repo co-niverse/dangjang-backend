@@ -119,17 +119,4 @@ public class HealthMetricFixture {
 			.unit(unit)
 			.build();
 	}
-
-	/**
-	 * 가이드 데이터 fixture에서 사용
-	 */
-	public static HealthMetric 체중건강지표_엔티티(User user, LocalDate 등록_일자) {
-		return HealthMetric.builder()
-			.user(user)
-			.type(CommonCode.MEASUREMENT)
-			.unit("70")
-			.createdAt(등록_일자)
-			.build();
-	}
-
 }

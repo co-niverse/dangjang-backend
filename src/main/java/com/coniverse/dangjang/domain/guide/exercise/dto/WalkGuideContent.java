@@ -57,6 +57,5 @@ public class WalkGuideContent { //TODO if-else문 다른 방법으로 해결
 		}
 		return String.format("지난주 평균 걸음 수보다 %d 걸음 %s", Math.abs(needStepByLastWeek),
 			GuideString.ENOUGH.getLastWeekMode());
-
 	}
 }

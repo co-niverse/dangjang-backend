@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.coniverse.dangjang.domain.analysis.enums.Alert;
+import com.coniverse.dangjang.domain.analysis.enums.ExerciseCoefficient;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.BloodSugarGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.SubGuide;
@@ -14,8 +15,8 @@ import com.coniverse.dangjang.domain.guide.bloodsugar.document.TodayGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.dto.BloodSugarGuideResponse;
 import com.coniverse.dangjang.domain.guide.bloodsugar.dto.SubGuideResponse;
 import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
+import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseCalorie;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
-import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseCalorie;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseGuideResponse;
 import com.coniverse.dangjang.domain.guide.weight.document.WeightGuide;
 import com.coniverse.dangjang.domain.guide.weight.dto.WeightGuideResponse;
@@ -74,7 +75,7 @@ public class GuideFixture {
 			.comparedToLastWeek("저번주 대비 가이드입니다.")
 			.content("가이드 내용입니다.")
 			.createdAt(조회_날짜)
-			.stepsCount(0)
+			.stepCount(0)
 			.exerciseCalories(exerciseCalories)
 			.build();
 	}
@@ -103,6 +104,12 @@ public class GuideFixture {
 	public static ExerciseGuideResponse 운동_가이드_응답(String 조회_날짜) {
 		List<ExerciseCalorie> exerciseCalories = List.of(new ExerciseCalorie(CommonCode.HEALTH, 100, 60), new ExerciseCalorie(CommonCode.RUN, 200, 120));
 		return new ExerciseGuideResponse(조회_날짜, 5, 55, "저번주 대비 가이드입니다.", "가이드 내용입니다.", 0, exerciseCalories);
+	}
+
+	public static ExerciseCalorie 운동_칼로리(CommonCode type, int unit, int weight) {
+		double percent = ExerciseCoefficient.findCoefficientByType(type);
+		int calorie = (int)(percent * weight / 15 * unit);
+		return new ExerciseCalorie(type, calorie, unit);
 	}
 
 	public static GuideResponse 당화혈색소_가이드_응답() { // TODO return 수정

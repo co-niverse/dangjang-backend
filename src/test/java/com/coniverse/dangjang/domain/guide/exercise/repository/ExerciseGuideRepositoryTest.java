@@ -50,7 +50,7 @@ class ExerciseGuideRepositoryTest {
 		//then
 		assertThat(조회하는_운동_가이드.getOauthId()).isEqualTo(테오_아이디);
 		assertThat(조회하는_운동_가이드.getCreatedAt()).isEqualTo(조회_날짜);
-		assertThat(조회하는_운동_가이드.getStepsCount()).isEqualTo(저장하는_운동_가이드.getStepsCount());
+		assertThat(조회하는_운동_가이드.getStepCount()).isEqualTo(저장하는_운동_가이드.getStepCount());
 		assertThat(조회하는_운동_가이드.getContent()).isEqualTo(저장하는_운동_가이드.getContent());
 		assertThat(조회하는_운동_가이드.getExerciseCalories()).isEqualTo(저장하는_운동_가이드.getExerciseCalories());
 	}

@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseCalorie;
-
 import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,12 +30,12 @@ public class ExerciseGuide {
 	private String createdAt;
 	private String content;
 	private String comparedToLastWeek;
-	private int stepsCount;
+	private int stepCount;
 	private List<ExerciseCalorie> exerciseCalories = new ArrayList<>();
 
 	@Builder
 	private ExerciseGuide(String oauthId, String createdAt, int needStepByTTS, String content, String comparedToLastWeek,
-		int needStepByLastWeek, List<ExerciseCalorie> exerciseCalories, int stepsCount) {
+		int needStepByLastWeek, List<ExerciseCalorie> exerciseCalories, int stepCount) {
 		this.oauthId = oauthId;
 		this.createdAt = createdAt;
 		this.needStepByTTS = needStepByTTS;
@@ -45,7 +43,7 @@ public class ExerciseGuide {
 		this.comparedToLastWeek = comparedToLastWeek;
 		this.needStepByLastWeek = needStepByLastWeek;
 		this.exerciseCalories = exerciseCalories;
-		this.stepsCount = stepsCount;
+		this.stepCount = stepCount;
 	}
 
 	/**
@@ -73,8 +71,10 @@ public class ExerciseGuide {
 	 * @since 1.0.0
 	 */
 	public void changeExerciseCalories(ExerciseCalorie updateExerciseCalorie) {
-		exerciseCalories.stream().filter(existExerciseCalorie -> existExerciseCalorie.type().equals(updateExerciseCalorie.type()))
-			.findFirst().ifPresent(existExerciseCalorie -> exerciseCalories.remove(existExerciseCalorie));
+		exerciseCalories.stream()
+			.filter(existExerciseCalorie -> existExerciseCalorie.type().equals(updateExerciseCalorie.type()))
+			.findFirst()
+			.ifPresent(existExerciseCalorie -> exerciseCalories.remove(existExerciseCalorie));
 		exerciseCalories.add(updateExerciseCalorie);
 	}
 }

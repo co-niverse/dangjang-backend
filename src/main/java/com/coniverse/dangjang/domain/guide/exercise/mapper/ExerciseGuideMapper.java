@@ -6,8 +6,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.ExerciseAnalysisData;
+import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseCalorie;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
-import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseCalorie;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseGuideResponse;
 
 /**
@@ -29,7 +29,7 @@ public interface ExerciseGuideMapper {
 	 * @since 1.0.0
 	 */
 	@Mapping(target = "exerciseCalories", ignore = true)
-	@Mapping(target = "stepsCount", source = "exerciseAnalysisData.unit")
+	@Mapping(target = "stepCount", source = "exerciseAnalysisData.unit")
 	ExerciseGuide toDocument(ExerciseAnalysisData exerciseAnalysisData, String content, String comparedToLastWeek);
 
 	/**
@@ -42,6 +42,7 @@ public interface ExerciseGuideMapper {
 	 */
 	@Mapping(target = "content", ignore = true)
 	@Mapping(target = "comparedToLastWeek", ignore = true)
+	@Mapping(target = "stepCount", ignore = true)
 	ExerciseGuide toDocument(ExerciseAnalysisData exerciseAnalysisData, List<ExerciseCalorie> exerciseCalories);
 
 	/**

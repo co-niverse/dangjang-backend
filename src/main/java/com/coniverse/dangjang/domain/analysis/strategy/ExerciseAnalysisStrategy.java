@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.ExerciseAnalysisData;
-import com.coniverse.dangjang.domain.analysis.enums.ExercisePercent;
+import com.coniverse.dangjang.domain.analysis.enums.ExerciseCoefficient;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
@@ -106,7 +106,11 @@ public class ExerciseAnalysisStrategy implements AnalysisStrategy {
 	}
 
 	/**
-	 * 운동 소모 칼로리를 계산한다.
+	 * 운동 소모 칼로리를 계산한다.	운동 계수는 {@link ExerciseCoefficient}에서 찾는다.
+	 * <p>
+	 * 분당 소모 칼로리 = (운동 계수 * 체중) / 15(분)
+	 * <p>
+	 * 총 소모 칼로리 = 분당 소모 칼로리 * 운동 시간(분)
 	 *
 	 * @param data 운동 분석 데이터
 	 * @return 칼로리
@@ -114,7 +118,7 @@ public class ExerciseAnalysisStrategy implements AnalysisStrategy {
 	 */
 	private int calculateCalorie(ExerciseAnalysisData data) {
 		String weight = healthMetricSearchService.findLastHealthMetricById(data.getOauthId(), CommonCode.MEASUREMENT).getUnit();
-		double percent = ExercisePercent.findPercentByExercise(data.getType());
-		return (int)(percent * Integer.parseInt(weight) / 15 * data.unit);
+		double coefficient = ExerciseCoefficient.findCoefficientByType(data.getType());
+		return (int)(coefficient * Integer.parseInt(weight) / 15 * data.unit);
 	}
 }

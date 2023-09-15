@@ -22,8 +22,8 @@ public enum BmiAlert {
 	LEVEL_2_OBESITY(bmi -> (29.9 <= bmi && bmi < 34.9), Alert.LEVEL_2_OBESITY),
 	LEVEL_3_OBESITY(bmi -> (34.9 <= bmi), Alert.LEVEL_3_OBESITY);
 
-	private final Alert alert;
 	private final Function<Double, Boolean> alertFunction;
+	private final Alert alert;
 
 	BmiAlert(Function<Double, Boolean> alertFunction, Alert alert) {
 		this.alertFunction = alertFunction;
@@ -39,12 +39,10 @@ public enum BmiAlert {
 	 * @since 1.0.0
 	 */
 	public static Alert findAlertByBmi(Double bmi) {
-
 		return Arrays.stream(BmiAlert.values())
-			.filter(value -> value.getAlertFunction().apply(bmi))
+			.filter(b -> b.getAlertFunction().apply(bmi))
 			.findFirst()
 			.orElseThrow(NonAnalyticDataException::new)
 			.getAlert();
-
 	}
 }
