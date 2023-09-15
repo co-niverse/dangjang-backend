@@ -52,7 +52,7 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 				exerciseAnalysisData.getCreatedAt().toString());
 		} catch (GuideNotFoundException e) {
 			if (exerciseAnalysisData.getType().equals(CommonCode.STEP_COUNT)) {
-				ExerciseGuide newExerciseGuide = exerciseGuideMapper.toDocument(exerciseAnalysisData, walkGuideContent.guideTTS,
+				ExerciseGuide newExerciseGuide = exerciseGuideMapper.toDocument(exerciseAnalysisData, walkGuideContent.getGuideTTS(),
 					walkGuideContent.getGuideLastWeek());
 				return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(newExerciseGuide));
 			}

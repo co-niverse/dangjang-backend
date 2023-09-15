@@ -116,15 +116,14 @@ public class AnalysisDataFixture {
 	}
 
 	public static Stream<Arguments> 체중분석_입력_파라미터() {
-		UserFixture userFixture = new UserFixture();
-		User user = userFixture.유저_테오();
 
 		return Stream.of(
-			Arguments.of(체중_요청("40"), user, Alert.LOW_WEIGHT),
-			Arguments.of(체중_요청("90"), user, Alert.NORMAL_WEIGHT),
-			Arguments.of(체중_요청("100"), user, Alert.LEVEL_1_OBESITY),
-			Arguments.of(체중_요청("120"), user, Alert.LEVEL_2_OBESITY),
-			Arguments.of(체중_요청("180"), user, Alert.LEVEL_3_OBESITY)
+			Arguments.of(건강지표_엔티티(CommonCode.MEASUREMENT, "40"), Alert.LOW_WEIGHT),
+			Arguments.of(건강지표_엔티티(CommonCode.MEASUREMENT, "90"), Alert.NORMAL_WEIGHT),
+			Arguments.of(건강지표_엔티티(CommonCode.MEASUREMENT, "95"), Alert.OVERWEIGHT),
+			Arguments.of(건강지표_엔티티(CommonCode.MEASUREMENT, "100"), Alert.LEVEL_1_OBESITY),
+			Arguments.of(건강지표_엔티티(CommonCode.MEASUREMENT, "120"), Alert.LEVEL_2_OBESITY),
+			Arguments.of(건강지표_엔티티(CommonCode.MEASUREMENT, "180"), Alert.LEVEL_3_OBESITY)
 		);
 	}
 
@@ -146,16 +145,14 @@ public class AnalysisDataFixture {
 	}
 
 	private static Stream<Arguments> 운동분석_입력_파라미터() {
-		UserFixture userFixture = new UserFixture();
 
 		return Stream.of(
-			Arguments.of(운동_요청(CommonCode.STEP_COUNT, "10000"), userFixture.유저_테오(), 0, 10000, 0),
-			Arguments.of(운동_요청(CommonCode.RUN, "100"), userFixture.유저_테오(), 0, 0, calculateCalorie(CommonCode.RUN, 100, 70)),
-			Arguments.of(운동_요청(CommonCode.HEALTH, "80"), userFixture.유저_테오(), 0, 0, calculateCalorie(CommonCode.HEALTH, 80, 70)),
-			Arguments.of(운동_요청(CommonCode.BIKE, "10"), userFixture.유저_테오(), 0, 0, calculateCalorie(CommonCode.BIKE, 10, 70)),
-			Arguments.of(운동_요청(CommonCode.HIKING, "60"), userFixture.유저_테오(), 0, 0, calculateCalorie(CommonCode.HIKING, 60, 70)),
-			Arguments.of(운동_요청(CommonCode.WALK, "120"), userFixture.유저_테오(), 0, 0, calculateCalorie(CommonCode.WALK, 120, 70)),
-			Arguments.of(운동_요청(CommonCode.SWIM, "120"), userFixture.유저_테오(), 0, 0, calculateCalorie(CommonCode.SWIM, 120, 70))
+			Arguments.of(건강지표_엔티티(CommonCode.STEP_COUNT, "10000"), 0, 10000, 0),
+			Arguments.of(건강지표_엔티티(CommonCode.RUN, "100"), 0, 0, calculateCalorie(CommonCode.RUN, 100, 70)),
+			Arguments.of(건강지표_엔티티(CommonCode.BIKE, "10"), 0, 0, calculateCalorie(CommonCode.BIKE, 10, 70)),
+			Arguments.of(건강지표_엔티티(CommonCode.HIKING, "60"), 0, 0, calculateCalorie(CommonCode.HIKING, 60, 70)),
+			Arguments.of(건강지표_엔티티(CommonCode.WALK, "120"), 0, 0, calculateCalorie(CommonCode.WALK, 120, 70)),
+			Arguments.of(건강지표_엔티티(CommonCode.SWIM, "120"), 0, 0, calculateCalorie(CommonCode.SWIM, 120, 70))
 		);
 	}
 

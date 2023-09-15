@@ -100,9 +100,9 @@ public class GuideFixture {
 			"50");
 	}
 
-	public static ExerciseGuideResponse 운동_가이드_응답(String oauthId, String 조회_날짜) {
+	public static ExerciseGuideResponse 운동_가이드_응답(String 조회_날짜) {
 		List<ExerciseCalorie> exerciseCalories = List.of(new ExerciseCalorie(CommonCode.HEALTH, 100, 60), new ExerciseCalorie(CommonCode.RUN, 200, 120));
-		return new ExerciseGuideResponse(조회_날짜, 0, 0, "저번주 대비 가이드입니다.", "가이드 내용입니다.", 0, exerciseCalories);
+		return new ExerciseGuideResponse(조회_날짜, 5, 55, "저번주 대비 가이드입니다.", "가이드 내용입니다.", 0, exerciseCalories);
 	}
 
 	public static GuideResponse 당화혈색소_가이드_응답() { // TODO return 수정

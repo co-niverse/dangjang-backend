@@ -17,6 +17,12 @@ import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseGuideResponse;
 import com.coniverse.dangjang.domain.guide.exercise.repository.ExerciseGuideRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
 
+/**
+ * 운동 가이드 컨트롤러 테스트
+ *
+ * @author EVE
+ * @since 1.0.0
+ */
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ExerciseGuideSearchServiceTest {
@@ -40,8 +46,10 @@ class ExerciseGuideSearchServiceTest {
 	void 운동_가이드를_조회하여_Document를_반환한다() {
 		//given
 
-		//when&then
+		//when
 		ExerciseGuide exerciseGuide = exerciseGuideSearchService.findByOauthIdAndCreatedAt(테오_아이디, 조회_날짜);
+
+		// then
 		assertThat(exerciseGuide.getOauthId()).isEqualTo(테오_아이디);
 		assertThat(exerciseGuide.getCreatedAt()).isEqualTo(조회_날짜);
 		assertThat(exerciseGuide.getContent()).isEqualTo(저장한_운동_가이드.getContent());
@@ -56,11 +64,10 @@ class ExerciseGuideSearchServiceTest {
 	@Test
 	void 운동_가이드를_조회하여_Response를_반환한다() {
 		//given
-		ExerciseGuideResponse 운동_가이드_응답 = 운동_가이드_응답(테오_아이디, 조회_날짜);
 
-		//when&then
+		//when
 		ExerciseGuideResponse exerciseGuide = exerciseGuideSearchService.findGuide(테오_아이디, 조회_날짜);
-
+		//then
 		assertThat(exerciseGuide.createdAt()).isEqualTo(조회_날짜);
 		assertThat(exerciseGuide.content()).isEqualTo(저장한_운동_가이드.getContent());
 		assertThat(exerciseGuide.comparedToLastWeek()).isEqualTo(저장한_운동_가이드.getComparedToLastWeek());

@@ -14,6 +14,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
 import com.coniverse.dangjang.domain.user.entity.User;
 
+/**
+ * @author EVE
+ * @since 1.0.0
+ */
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ExerciseGuideRepositoryTest {
@@ -29,10 +33,12 @@ class ExerciseGuideRepositoryTest {
 	void 운동_가이드를_성공적으로_저장한다() {
 		//given
 		exerciseGuideRepository.deleteAll();
-		//when
 		ExerciseGuide 저장된_운동가이드 = exerciseGuideRepository.save(저장하는_운동_가이드);
+
+		//when
+		ExerciseGuide 조회한_운동가이드 = exerciseGuideRepository.findById(저장된_운동가이드.getId()).get();
 		//then
-		assertThat(exerciseGuideRepository.findById(저장된_운동가이드.getId()).get().getId()).isEqualTo(저장된_운동가이드.getId());
+		assertThat(조회한_운동가이드.getId()).isEqualTo(저장된_운동가이드.getId());
 	}
 
 	@Order(200)

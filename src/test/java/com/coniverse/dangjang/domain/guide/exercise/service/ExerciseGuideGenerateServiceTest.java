@@ -77,8 +77,8 @@ class ExerciseGuideGenerateServiceTest {
 		// then
 		Optional<ExerciseGuide> 등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
 		WalkGuideContent walkGuideContent = new WalkGuideContent(등록된_운동가이드.get().getNeedStepByTTS(), 등록된_운동가이드.get().getNeedStepByLastWeek());
-		assertThat(등록된_운동가이드.get().getContent()).isEqualTo(walkGuideContent.guideTTS);
-		assertThat(등록된_운동가이드.get().getComparedToLastWeek()).isEqualTo(walkGuideContent.guideLastWeek);
+		assertThat(등록된_운동가이드.get().getContent()).isEqualTo(walkGuideContent.getGuideTTS());
+		assertThat(등록된_운동가이드.get().getComparedToLastWeek()).isEqualTo(walkGuideContent.getGuideLastWeek());
 	}
 
 	@Order(250)
@@ -94,8 +94,8 @@ class ExerciseGuideGenerateServiceTest {
 		// then
 		Optional<ExerciseGuide> 등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(테오_아이디, 등록_일자);
 		WalkGuideContent walkGuideContent = new WalkGuideContent(등록된_운동가이드.get().getNeedStepByTTS(), 등록된_운동가이드.get().getNeedStepByLastWeek());
-		assertThat(등록된_운동가이드.get().getContent()).isEqualTo(walkGuideContent.guideTTS);
-		assertThat(등록된_운동가이드.get().getComparedToLastWeek()).isEqualTo(walkGuideContent.guideLastWeek);
+		assertThat(등록된_운동가이드.get().getContent()).isEqualTo(walkGuideContent.getGuideTTS());
+		assertThat(등록된_운동가이드.get().getComparedToLastWeek()).isEqualTo(walkGuideContent.getGuideLastWeek());
 	}
 
 	@Order(400)
