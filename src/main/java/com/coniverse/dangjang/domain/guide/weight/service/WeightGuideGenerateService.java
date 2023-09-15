@@ -53,7 +53,7 @@ public class WeightGuideGenerateService implements GuideGenerateService {
 		WeightAnalysisData data = (WeightAnalysisData)analysisData;
 		WeightGuide weightGuide = weightGuideSearchService.findByUserIdAndCreatedAt(data.getOauthId(), data.getCreatedAt().toString());
 		String content = createContent(data);
-		weightGuide.changeAboutWeight(data.getWeightDiff(), data.getAlert(), content, data.getBmi());
+		weightGuide.changeAboutWeight(data.getWeightDiff(), data.getAlert(), content, data.getBmi(), String.valueOf(data.getUnit()));
 		return weightMapper.toResponse(weightGuideRepository.save(weightGuide));
 	}
 
