@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.WeightAnalysisData;
 import com.coniverse.dangjang.domain.analysis.enums.Alert;
-import com.coniverse.dangjang.domain.analysis.enums.Bmi;
+import com.coniverse.dangjang.domain.analysis.enums.BmiAlert;
 import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
@@ -35,7 +35,7 @@ public class WeightAnalysisStrategy implements AnalysisStrategy {
 	public AnalysisData analyze(AnalysisData analysisData) {
 		WeightAnalysisData data = (WeightAnalysisData)analysisData;
 		data.setBmi(calculateBmi(data.getHeight(), data.getUnit()));
-		Alert alert = Bmi.calculateBmi(data.getBmi());
+		Alert alert = BmiAlert.findAlertByBmi(data.getBmi());
 		int weightDiff = this.calculateWeightDiff(data.getHeight(), data.getUnit(), data.getGender());
 		data.setAlert(alert);
 		data.setWeightDiff(weightDiff);
@@ -69,7 +69,7 @@ public class WeightAnalysisStrategy implements AnalysisStrategy {
 	 * @since 1.0.0
 	 */
 	private int calculateWeightDiff(int height, int weight, Gender gender) {
-		int standardWeight = (int)(Math.pow(height / 100.0, 2.0) * gender.getPercent());
+		int standardWeight = (int)(Math.pow(height / 100.0, 2.0) * gender.getStandardWeightRatio());
 		return weight - standardWeight;
 	}
 
