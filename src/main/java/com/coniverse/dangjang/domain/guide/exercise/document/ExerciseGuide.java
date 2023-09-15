@@ -55,11 +55,12 @@ public class ExerciseGuide {
 	 * @param content            만보 대비 걸음수에 대한 가이드
 	 * @since 1.0.0
 	 */
-	public void changeAboutWalk(int needStepByTTS, int needStepByLastWeek, String comparedToLastWeek, String content) {
+	public void changeAboutWalk(int needStepByTTS, int needStepByLastWeek, String comparedToLastWeek, String content, int stepsCount) {
 		this.needStepByTTS = needStepByTTS;
 		this.needStepByLastWeek = needStepByLastWeek;
 		this.comparedToLastWeek = comparedToLastWeek;
 		this.content = content;
+		this.stepsCount = stepsCount;
 	}
 
 	/**

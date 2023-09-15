@@ -65,7 +65,7 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 		// 걸음 수 추가
 		if (exerciseAnalysisData.getType().equals(CommonCode.STEP_COUNT)) {
 			existExerciseGuide.changeAboutWalk(exerciseAnalysisData.needStepByTTS, exerciseAnalysisData.needStepByLastWeek,
-				walkGuideContent.getGuideLastWeek(), walkGuideContent.getGuideTTS());
+				walkGuideContent.getGuideLastWeek(), walkGuideContent.getGuideTTS(), exerciseAnalysisData.getUnit());
 			return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(existExerciseGuide));
 		}
 		//운동 추가
@@ -96,7 +96,7 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 		if (analysisData.getType().equals(CommonCode.STEP_COUNT)) {
 			WalkGuideContent walkGuideContent = new WalkGuideContent(exerciseAnalysisData.getNeedStepByTTS(), exerciseAnalysisData.getNeedStepByLastWeek());
 			updateExerciseGuide.changeAboutWalk(exerciseAnalysisData.needStepByTTS, exerciseAnalysisData.needStepByLastWeek,
-				walkGuideContent.getGuideLastWeek(), walkGuideContent.getGuideTTS());
+				walkGuideContent.getGuideLastWeek(), walkGuideContent.getGuideTTS(), exerciseAnalysisData.getUnit());
 			return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(updateExerciseGuide));
 		}
 		//운동 수정

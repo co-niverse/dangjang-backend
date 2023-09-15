@@ -52,10 +52,11 @@ public class WeightGuide {
 	 * @param content    가이드 내용
 	 * @since 1.0.0
 	 */
-	public void changeAboutWeight(int weightDiff, Alert alert, String content, double bmi) {
+	public void changeAboutWeight(int weightDiff, Alert alert, String content, double bmi, String unit) {
 		this.weightDiff = weightDiff;
 		this.alert = alert;
 		this.content = content;
 		this.bmi = bmi;
+		this.unit = unit;
 	}
 }
