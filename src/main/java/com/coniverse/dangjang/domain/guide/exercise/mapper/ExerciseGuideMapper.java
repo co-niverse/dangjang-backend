@@ -52,6 +52,7 @@ public interface ExerciseGuideMapper {
 	 * @return ExerciseGuideResponse
 	 * @since 1.0.0
 	 */
+	@Mapping(target = "stepsCount", source = "stepCount")
 	ExerciseGuideResponse toResponse(ExerciseGuide exerciseGuide);
 
 }

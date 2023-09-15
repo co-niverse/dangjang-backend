@@ -72,7 +72,7 @@ class ExerciseGuideSearchServiceTest {
 		assertThat(exerciseGuide.content()).isEqualTo(저장한_운동_가이드.getContent());
 		assertThat(exerciseGuide.comparedToLastWeek()).isEqualTo(저장한_운동_가이드.getComparedToLastWeek());
 		assertThat(exerciseGuide.needStepByLastWeek()).isEqualTo(저장한_운동_가이드.getNeedStepByLastWeek());
-		assertThat(exerciseGuide.stepCount()).isEqualTo(저장한_운동_가이드.getStepCount());
+		assertThat(exerciseGuide.stepsCount()).isEqualTo(저장한_운동_가이드.getStepCount());
 		assertThat(exerciseGuide.exerciseCalories()).hasSize(저장한_운동_가이드.getExerciseCalories().size());
 		assertThat(exerciseGuide.needStepByTTS()).isEqualTo(저장한_운동_가이드.getNeedStepByTTS());
 

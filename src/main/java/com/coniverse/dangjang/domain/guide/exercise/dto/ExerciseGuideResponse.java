@@ -12,7 +12,7 @@ import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseCalorie;
  * @since 1.0.0
  */
 public record ExerciseGuideResponse(String createdAt, int needStepByTTS, int needStepByLastWeek, String comparedToLastWeek,
-									String content, int stepCount, List<ExerciseCalorie> exerciseCalories) implements GuideResponse {
+									String content, int stepsCount, List<ExerciseCalorie> exerciseCalories) implements GuideResponse {
 	@Override
 	public String type() { // TODO 수정
 		return null;
