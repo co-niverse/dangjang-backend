@@ -5,6 +5,8 @@ import static com.coniverse.dangjang.fixture.CommonCodeFixture.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.coniverse.dangjang.domain.analysis.enums.Alert;
 import com.coniverse.dangjang.domain.analysis.enums.ExerciseCoefficient;
@@ -20,6 +22,7 @@ import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseGuideResponse;
 import com.coniverse.dangjang.domain.guide.weight.document.WeightGuide;
 import com.coniverse.dangjang.domain.guide.weight.dto.WeightGuideResponse;
+import com.coniverse.dangjang.domain.user.entity.User;
 
 /**
  * 가이드 fixture
@@ -66,7 +69,7 @@ public class GuideFixture {
 			.build();
 	}
 
-	public static ExerciseGuide 운동_가이드(String oauthId, String 조회_날짜) {
+	public static ExerciseGuide 운동_가이드(String oauthId, LocalDate 조회_날짜) {
 		List<ExerciseCalorie> exerciseCalories = List.of(new ExerciseCalorie(CommonCode.HEALTH, 100, 60), new ExerciseCalorie(CommonCode.RUN, 200, 120));
 
 		return ExerciseGuide.builder()
@@ -114,6 +117,22 @@ public class GuideFixture {
 
 	public static GuideResponse 당화혈색소_가이드_응답() { // TODO return 수정
 		return null;
+	}
+
+	public static List<ExerciseGuide> 운동가이드_리스트(User user, LocalDate createdAt, int unit, int needCount) {
+		return Stream.iterate(0, i -> i + 1).limit(needCount)
+			.map(n -> ExerciseGuide.builder()
+				.oauthId(user.getOauthId())
+				.comparedToLastWeek("저번주 대비 가이드입니다.")
+				.content("가이드 내용입니다.").exerciseCalories(List.of(
+					운동_칼로리(CommonCode.HEALTH, unit + (n * 10), 70),
+					운동_칼로리(CommonCode.RUN, unit + (n * 10), 70)
+				)).needStepByLastWeek(2000)
+				.needStepByTTS(2000)
+				.stepCount(8000)
+				.createdAt(createdAt.plusDays(n))
+				.build()).collect(Collectors.toList());
+
 	}
 
 }

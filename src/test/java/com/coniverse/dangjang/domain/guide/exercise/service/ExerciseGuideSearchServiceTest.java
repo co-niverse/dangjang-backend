@@ -5,6 +5,8 @@ import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -33,13 +35,14 @@ class ExerciseGuideSearchServiceTest {
 	private User 테오 = 유저_테오();
 	private String 테오_아이디 = 테오.getOauthId();
 	private String 조회_날짜 = "2023-12-31";
+	private LocalDate 조회_날짜_Date = LocalDate.parse(조회_날짜);
 	private String 가이드가_존재하지_않는_날짜 = "3000-12-31";
 	private ExerciseGuide 저장한_운동_가이드;
 
 	@BeforeAll
 	void setup() {
 		exerciseGuideRepository.deleteAll();
-		저장한_운동_가이드 = exerciseGuideRepository.save(운동_가이드(테오_아이디, 조회_날짜));
+		저장한_운동_가이드 = exerciseGuideRepository.save(운동_가이드(테오_아이디, 조회_날짜_Date));
 	}
 
 	@Test

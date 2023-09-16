@@ -44,6 +44,7 @@ import com.coniverse.dangjang.domain.user.entity.User;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ExerciseGuideGenerateServiceTest {
 	private final String 등록_일자 = "2023-12-31";
+	private final LocalDate 등록_일자_Date = LocalDate.parse(등록_일자);
 	private final User user = 유저_이브();
 	private final String 체중 = "70";
 	@Autowired
@@ -73,7 +74,7 @@ class ExerciseGuideGenerateServiceTest {
 		exerciseGuideGenerateService.createGuide(data);
 
 		// then
-		ExerciseGuide 등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(user.getOauthId(), 등록_일자).orElseThrow();
+		ExerciseGuide 등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(user.getOauthId(), 등록_일자_Date).orElseThrow();
 		WalkGuideContent walkGuideContent = new WalkGuideContent(등록된_운동가이드.getNeedStepByTTS(), 등록된_운동가이드.getNeedStepByLastWeek());
 		assertThat(등록된_운동가이드.getContent()).isEqualTo(walkGuideContent.getGuideTTS());
 		assertThat(등록된_운동가이드.getComparedToLastWeek()).isEqualTo(walkGuideContent.getGuideLastWeek());
@@ -90,7 +91,7 @@ class ExerciseGuideGenerateServiceTest {
 		exerciseGuideGenerateService.updateGuide(data);
 
 		// then
-		ExerciseGuide 등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(user.getOauthId(), 등록_일자).orElseThrow();
+		ExerciseGuide 등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(user.getOauthId(), 등록_일자_Date).orElseThrow();
 		WalkGuideContent walkGuideContent = new WalkGuideContent(등록된_운동가이드.getNeedStepByTTS(), 등록된_운동가이드.getNeedStepByLastWeek());
 		assertThat(등록된_운동가이드.getContent()).isEqualTo(walkGuideContent.getGuideTTS());
 		assertThat(등록된_운동가이드.getComparedToLastWeek()).isEqualTo(walkGuideContent.getGuideLastWeek());
@@ -115,7 +116,7 @@ class ExerciseGuideGenerateServiceTest {
 	void 운동_가이드_성공적으로_등록한다(CommonCode type, String createdAt, String unit) {
 		// given
 		var data = exerciseAnalysisStrategy.analyze(운동_분석_데이터(user, type, createdAt, unit));
-		Optional<ExerciseGuide> 이전_등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(user.getOauthId(), createdAt);
+		Optional<ExerciseGuide> 이전_등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(user.getOauthId(), LocalDate.parse(createdAt));
 		List<ExerciseCalorie> exerciseCalories = new ArrayList<>();
 		int 등록되어야할_칼로리수 = 0;
 		if (이전_등록된_운동가이드.isPresent()) {
@@ -131,7 +132,7 @@ class ExerciseGuideGenerateServiceTest {
 		exerciseGuideGenerateService.createGuide(data);
 
 		// then
-		ExerciseGuide 등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(user.getOauthId(), createdAt).orElseThrow();
+		ExerciseGuide 등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(user.getOauthId(), LocalDate.parse(createdAt)).orElseThrow();
 
 		assertThat(등록된_운동가이드.getExerciseCalories()).hasSize(등록되어야할_칼로리수);
 		assertThat(등록된_운동가이드.getExerciseCalories()).isEqualTo(exerciseCalories);
@@ -156,14 +157,14 @@ class ExerciseGuideGenerateServiceTest {
 		// given
 		int weight = Integer.parseInt(healthMetricSearchService.findLastHealthMetricById(user.getOauthId(), CommonCode.MEASUREMENT).getUnit());
 		var data = exerciseAnalysisStrategy.analyze(운동_분석_데이터(user, type, createdAt, unit));
-		Optional<ExerciseGuide> 이전_등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(user.getOauthId(), 등록_일자);
+		Optional<ExerciseGuide> 이전_등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(user.getOauthId(), 등록_일자_Date);
 		int 등록되어있는_운동칼로리수 = 0;
 
 		//when
 		exerciseGuideGenerateService.updateGuide(data);
 
 		// then
-		Optional<ExerciseGuide> 등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(user.getOauthId(), 등록_일자);
+		Optional<ExerciseGuide> 등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(user.getOauthId(), 등록_일자_Date);
 		if (이전_등록된_운동가이드.isPresent()) {
 			등록되어있는_운동칼로리수 = 이전_등록된_운동가이드.get().getExerciseCalories().size();
 
