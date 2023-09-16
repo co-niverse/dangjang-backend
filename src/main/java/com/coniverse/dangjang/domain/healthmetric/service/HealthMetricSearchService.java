@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
+import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.healthmetric.exception.HealthMetricNotFoundException;
 import com.coniverse.dangjang.domain.healthmetric.repository.HealthMetricRepository;
@@ -16,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 /**
  * 건강 지표 조회 service
  *
- * @author TEO
+ * @author TEO, EVE
  * @since 1.0.0
  */
 @Service
@@ -62,5 +63,17 @@ public class HealthMetricSearchService {
 	 */
 	public List<HealthMetric> findWeeklyHealthMetricById(String oauthId, CommonCode type, LocalDate startDate, LocalDate endDate) {
 		return healthMetricRepository.findLastWeekByHealthMetricId(oauthId, type, startDate, endDate);
+	}
+
+	/**
+	 * 주간 건강 지표를 조회한다.
+	 *
+	 * @param oauthId 유저 PK
+	 * @param code    그룹 코드
+	 * @return HealthMetric 건강 지표
+	 * @since 1.0.0
+	 */
+	public List<HealthMetric> findWeeklyHealthMetricByGroupCode(String oauthId, GroupCode code, LocalDate startDate, LocalDate endDate) {
+		return healthMetricRepository.findLastWeekByGroupCodeAndCreatedAt(oauthId, code, startDate, endDate);
 	}
 }
