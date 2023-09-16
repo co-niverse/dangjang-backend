@@ -131,7 +131,7 @@ public class HealthMetricChartSearchService {
 		List<ExerciseGuide> exerciseGuides = exerciseGuideSearchService.findWeekByOauthIdAndCreatedAt(oauthId, startDate, endDate);
 		exerciseGuides.forEach(exerciseGuide -> {
 			int calorie = exerciseGuide.getExerciseCalories().stream().mapToInt(exerciseCalorie -> exerciseCalorie.calorie()).sum();
-			exerciseCalories.add(new HealthMetricChartData(exerciseGuide.getCreatedAt(), calorie));
+			exerciseCalories.add(new HealthMetricChartData(exerciseGuide.getCreatedAt().toLocalDate(), calorie));
 		});
 		return exerciseCalories;
 	}

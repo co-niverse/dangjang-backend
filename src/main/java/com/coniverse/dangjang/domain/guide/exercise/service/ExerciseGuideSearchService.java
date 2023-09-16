@@ -1,6 +1,7 @@
 package com.coniverse.dangjang.domain.guide.exercise.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -48,8 +49,7 @@ public class ExerciseGuideSearchService {
 	 * @since 1.0.0
 	 */
 	public ExerciseGuide findByOauthIdAndCreatedAt(String oauthId, String createdAt) {
-		LocalDate localDate = LocalDate.parse(createdAt);
-		localDate.atTime(9, 0, 0);
+		LocalDateTime localDate = LocalDate.parse(createdAt).atTime(9, 0, 0);
 		return exerciseGuideRepository.findByOauthIdAndCreatedAt(oauthId, localDate).orElseThrow(GuideNotFoundException::new);
 	}
 
@@ -64,7 +64,9 @@ public class ExerciseGuideSearchService {
 	 */
 
 	public List<ExerciseGuide> findWeekByOauthIdAndCreatedAt(String oauthId, LocalDate startDate, LocalDate endDate) {
-		return exerciseGuideRepository.findWeekByOauthIdAndCreatedAt(oauthId, startDate, endDate);
+		LocalDateTime startDateUTC = startDate.atTime(9, 0, 0);
+		LocalDateTime endDateUTC = endDate.atTime(9, 0, 0);
+		return exerciseGuideRepository.findWeekByOauthIdAndCreatedAt(oauthId, startDateUTC, endDateUTC);
 	}
 
 }
