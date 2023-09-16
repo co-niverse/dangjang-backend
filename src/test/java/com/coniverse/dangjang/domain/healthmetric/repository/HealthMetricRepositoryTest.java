@@ -6,15 +6,16 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.hibernate.exception.ConstraintViolationException;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
+import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
@@ -23,7 +24,7 @@ import com.coniverse.dangjang.support.annotation.JpaRepositoryTest;
 import jakarta.persistence.EntityManager;
 
 /**
- * @author TEO
+ * @author TEO, EVE
  * @since 1.0.0
  */
 @JpaRepositoryTest
@@ -40,12 +41,6 @@ class HealthMetricRepositoryTest {
 	@BeforeAll
 	void setUp() {
 		테오_아이디 = userRepository.save(유저_테오()).getOauthId();
-	}
-
-	@AfterAll
-	void tearDown() {
-		healthMetricRepository.deleteAll();
-		userRepository.deleteAll();
 	}
 
 	@Test
@@ -86,5 +81,17 @@ class HealthMetricRepositoryTest {
 		assertThatThrownBy(() -> em.flush())
 			.isInstanceOf(ConstraintViolationException.class)
 			.hasMessageContaining("unit");
+	}
+
+	@Test
+	void GroupCode로_일정한_기간_건강지표를_조회한다() {
+		//given
+		User 테오 = userRepository.findById(테오_아이디).orElseThrow();
+		healthMetricRepository.saveAll(건강지표_엔티티_리스트(테오, CommonCode.AFTER_BREAKFAST, LocalDate.of(2020, 01, 01), 200, 10));
+		//when
+		List<HealthMetric> healthMetrics = healthMetricRepository.findLastWeekByGroupCodeAndCreatedAt(테오_아이디, GroupCode.BLOOD_SUGAR, LocalDate.of(2020, 01, 01),
+			LocalDate.of(2020, 01, 07));
+		//then
+		assertThat(healthMetrics).hasSize(7);
 	}
 }

@@ -5,7 +5,10 @@ import static com.coniverse.dangjang.fixture.UserFixture.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectPostRequest;
@@ -119,4 +122,17 @@ public class HealthMetricFixture {
 			.unit(unit)
 			.build();
 	}
+
+	public static List<HealthMetric> 건강지표_엔티티_리스트(User user, CommonCode type, LocalDate createdAt, int unit, int needCount) {
+		return Stream.iterate(0, i -> i + 1).limit(needCount)
+			.map(n -> HealthMetric.builder()
+				.createdAt(createdAt.plusDays(n))
+				.type(type)
+				.user(user)
+				.unit(String.valueOf(unit + (n * 10)))
+				.build())
+			.collect(Collectors.toList());
+
+	}
+
 }
