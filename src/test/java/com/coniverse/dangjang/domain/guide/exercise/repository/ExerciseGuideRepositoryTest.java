@@ -5,6 +5,7 @@ import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.MethodOrderer;
@@ -28,10 +29,10 @@ class ExerciseGuideRepositoryTest {
 	private ExerciseGuideRepository exerciseGuideRepository;
 	private User 테오 = 유저_테오();
 	private String 테오_아이디 = 테오.getOauthId();
-	private LocalDate 조회_날짜 = LocalDate.of(2023, 12, 31);
+	private LocalDateTime 조회_날짜 = LocalDate.of(2023, 12, 31).atTime(9, 0, 0);
 	private LocalDate 시작_날짜 = LocalDate.of(2020, 01, 01);
 	private LocalDate 마지막_날짜 = LocalDate.of(2020, 01, 07);
-	private ExerciseGuide 저장하는_운동_가이드 = 운동_가이드(테오_아이디, 조회_날짜);
+	private ExerciseGuide 저장하는_운동_가이드 = 운동_가이드(테오_아이디, 조회_날짜.toLocalDate());
 
 	@Order(100)
 	@Test
@@ -67,7 +68,7 @@ class ExerciseGuideRepositoryTest {
 		exerciseGuideRepository.saveAll(운동가이드_리스트(테오, 시작_날짜, 200, 10));
 
 		//when
-		List<ExerciseGuide> exerciseGuides = exerciseGuideRepository.findWeekByOauthIdAndCreatedAt(테오_아이디, 시작_날짜, 마지막_날짜);
+		List<ExerciseGuide> exerciseGuides = exerciseGuideRepository.findWeekByOauthIdAndCreatedAt(테오_아이디, 시작_날짜.atTime(9, 0, 0), 마지막_날짜.atTime(9, 0, 0));
 		//then
 		assertThat(exerciseGuides).hasSize(7);
 	}

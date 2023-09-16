@@ -77,7 +77,7 @@ public class GuideFixture {
 			.needStepByLastWeek(0)
 			.comparedToLastWeek("저번주 대비 가이드입니다.")
 			.content("가이드 내용입니다.")
-			.createdAt(조회_날짜)
+			.createdAt(조회_날짜.atTime(9, 0, 0))
 			.stepCount(0)
 			.exerciseCalories(exerciseCalories)
 			.build();
@@ -130,7 +130,7 @@ public class GuideFixture {
 				)).needStepByLastWeek(2000)
 				.needStepByTTS(2000)
 				.stepCount(8000)
-				.createdAt(createdAt.plusDays(n))
+				.createdAt(createdAt.plusDays(n).atTime(9, 0, 0))
 				.build()).collect(Collectors.toList());
 
 	}

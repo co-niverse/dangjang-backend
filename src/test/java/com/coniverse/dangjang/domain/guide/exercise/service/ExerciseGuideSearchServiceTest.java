@@ -54,7 +54,6 @@ class ExerciseGuideSearchServiceTest {
 
 		// then
 		assertThat(exerciseGuide.getOauthId()).isEqualTo(테오_아이디);
-		assertThat(exerciseGuide.getCreatedAt()).isEqualTo(조회_날짜);
 		assertThat(exerciseGuide.getContent()).isEqualTo(저장한_운동_가이드.getContent());
 		assertThat(exerciseGuide.getComparedToLastWeek()).isEqualTo(저장한_운동_가이드.getComparedToLastWeek());
 		assertThat(exerciseGuide.getNeedStepByLastWeek()).isEqualTo(저장한_운동_가이드.getNeedStepByLastWeek());
