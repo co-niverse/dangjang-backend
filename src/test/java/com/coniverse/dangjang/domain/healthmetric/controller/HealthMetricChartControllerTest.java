@@ -29,9 +29,9 @@ class HealthMetricChartControllerTest extends ControllerTest {
 	public static final String URL = "/api/health-metric/chart";
 	@Autowired
 	private HealthMetricChartSearchService healthMetricChartSearchService;
-	public static LocalDate 시작_날짜 = LocalDate.parse("2021-01-01");
-	public static LocalDate 마지막_날짜 = LocalDate.parse("2021-01-07");
-	public static LocalDate 생성_날짜 = LocalDate.of(2021, 1, 1);
+	public static LocalDate 시작_날짜 = LocalDate.parse("2023-12-31");
+	public static LocalDate 마지막_날짜 = LocalDate.parse("2024-01-06");
+	public static LocalDate 생성_날짜 = LocalDate.of(2023, 12, 31);
 	public static List<BloodSugarMinMax> 혈당차트 = 혈당차트_생성(생성_날짜, 100, 200);
 	public static List<HealthMetricChartData> 체중차트 = 체중차트_생성(생성_날짜, 100);
 	public static List<HealthMetricChartData> 걸음수차트 = 걸음수차트_생성(생성_날짜, 10000);
@@ -52,10 +52,11 @@ class HealthMetricChartControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isOk(),
 			jsonPath("$.message").value("OK"),
-			jsonPath("$.data.bloodSugars").exists(),
-			jsonPath("$.data.weights").exists(),
-			jsonPath("$.data.stepCounts").exists(),
-			jsonPath("$.data.exerciseCalories").exists()
+			jsonPath("$.data.bloodSugars").isArray(),
+			jsonPath("$.data.bloodSugars[0].minUnit").isNumber(),
+			jsonPath("$.data.weights[0].unit").isNumber(),
+			jsonPath("$.data.stepCounts[0].unit").isNumber(),
+			jsonPath("$.data.exerciseCalories[0].unit").isNumber()
 		);
 	}
 

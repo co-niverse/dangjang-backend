@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.code.enums.GroupCode;
+import com.coniverse.dangjang.domain.guide.exercise.convert.LocalDateConverter;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
 import com.coniverse.dangjang.domain.guide.exercise.service.ExerciseGuideSearchService;
 import com.coniverse.dangjang.domain.healthmetric.dto.response.BloodSugarMinMax;
@@ -31,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class HealthMetricChartSearchService {
 	private final HealthMetricSearchService healthMetricSearchService;
 	private final ExerciseGuideSearchService exerciseGuideSearchService;
+	private LocalDateConverter localDateConverter = new LocalDateConverter();
 
 	/**
 	 * 건강지표 차트 데이터를 조회한다.
@@ -108,13 +110,13 @@ public class HealthMetricChartSearchService {
 	 * @since 1.0.0
 	 */
 	private List<HealthMetricChartData> findStepCounts(String oauthId, LocalDate startDate, LocalDate endDate) {
-		List<HealthMetricChartData> StepCounts = new ArrayList<>();
+		List<HealthMetricChartData> stepCounts = new ArrayList<>();
 
 		List<HealthMetric> healthMetrics = healthMetricSearchService.findWeeklyHealthMetricById(oauthId, CommonCode.STEP_COUNT, startDate, endDate);
 		healthMetrics.forEach(healthMetric ->
-			StepCounts.add(new HealthMetricChartData(healthMetric.getCreatedAt(), Integer.parseInt(healthMetric.getUnit())))
+			stepCounts.add(new HealthMetricChartData(healthMetric.getCreatedAt(), Integer.parseInt(healthMetric.getUnit())))
 		);
-		return StepCounts;
+		return stepCounts;
 	}
 
 	/**
@@ -131,7 +133,7 @@ public class HealthMetricChartSearchService {
 		List<ExerciseGuide> exerciseGuides = exerciseGuideSearchService.findWeekByOauthIdAndCreatedAt(oauthId, startDate, endDate);
 		exerciseGuides.forEach(exerciseGuide -> {
 			int calorie = exerciseGuide.getExerciseCalories().stream().mapToInt(exerciseCalorie -> exerciseCalorie.calorie()).sum();
-			exerciseCalories.add(new HealthMetricChartData(exerciseGuide.getCreatedAt().toLocalDate(), calorie));
+			exerciseCalories.add(new HealthMetricChartData(localDateConverter.convertDateKST(exerciseGuide.getCreatedAt()), calorie));
 		});
 		return exerciseCalories;
 	}

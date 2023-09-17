@@ -2,8 +2,6 @@ package com.coniverse.dangjang.domain.guide.exercise.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
@@ -33,8 +31,6 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 	private final ExerciseGuideSearchService exerciseGuideSearchService;
 	private final ExerciseGuideMapper exerciseGuideMapper;
 	private final ExerciseGuideRepository exerciseGuideRepository;
-	@Autowired
-	private MongoTemplate mongoTemplate;
 
 	/**
 	 * 운동 가이드를 생성한다.
@@ -53,12 +49,11 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 		ExerciseGuide existExerciseGuide;
 		try {
 			existExerciseGuide = exerciseGuideSearchService.findByOauthIdAndCreatedAt(exerciseAnalysisData.getOauthId(),
-				exerciseAnalysisData.getCreatedAt().toString());
+				exerciseAnalysisData.getCreatedAt());
 		} catch (GuideNotFoundException e) {
 			if (exerciseAnalysisData.getType().equals(CommonCode.STEP_COUNT)) {
 				ExerciseGuide newExerciseGuide = exerciseGuideMapper.toDocument(exerciseAnalysisData, walkGuideContent.getGuideTTS(),
 					walkGuideContent.getGuideLastWeek());
-				//mongoTemplate.insert(newExerciseGuide, GroupCode.EXERCISE_GUIDE.getCollectionName());
 				return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(newExerciseGuide));
 			}
 			//새로운 운동 가이드 생성
@@ -96,7 +91,7 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 	public GuideResponse updateGuide(AnalysisData analysisData) {
 		ExerciseAnalysisData exerciseAnalysisData = (ExerciseAnalysisData)analysisData;
 		ExerciseGuide updateExerciseGuide = exerciseGuideSearchService.findByOauthIdAndCreatedAt(exerciseAnalysisData.getOauthId(),
-			exerciseAnalysisData.getCreatedAt().toString());
+			exerciseAnalysisData.getCreatedAt());
 
 		if (analysisData.getType().equals(CommonCode.STEP_COUNT)) {
 			WalkGuideContent walkGuideContent = new WalkGuideContent(exerciseAnalysisData.getNeedStepByTTS(), exerciseAnalysisData.getNeedStepByLastWeek());

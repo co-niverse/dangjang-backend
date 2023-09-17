@@ -1,12 +1,12 @@
 package com.coniverse.dangjang.domain.guide.exercise.service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
+import com.coniverse.dangjang.domain.guide.exercise.convert.LocalDateConverter;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseGuideResponse;
 import com.coniverse.dangjang.domain.guide.exercise.mapper.ExerciseGuideMapper;
@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class ExerciseGuideSearchService {
 	private final ExerciseGuideRepository exerciseGuideRepository;
 	private final ExerciseGuideMapper exerciseGuideMapper;
+	private final LocalDateConverter localDateConverter = new LocalDateConverter();
 
 	/**
 	 * 운동 가이드를 전달한다.
@@ -36,7 +37,7 @@ public class ExerciseGuideSearchService {
 	 */
 	public ExerciseGuideResponse findGuide(String oauthId, String createdAt) {
 
-		return exerciseGuideMapper.toResponse(findByOauthIdAndCreatedAt(oauthId, createdAt));
+		return exerciseGuideMapper.toResponse(findByOauthIdAndCreatedAt(oauthId, LocalDate.parse(createdAt)));
 	}
 
 	/**
@@ -48,9 +49,9 @@ public class ExerciseGuideSearchService {
 	 * @Param createdAt 생성일
 	 * @since 1.0.0
 	 */
-	public ExerciseGuide findByOauthIdAndCreatedAt(String oauthId, String createdAt) {
-		LocalDateTime localDate = LocalDate.parse(createdAt).atTime(9, 0, 0);
-		return exerciseGuideRepository.findByOauthIdAndCreatedAt(oauthId, localDate).orElseThrow(GuideNotFoundException::new);
+	public ExerciseGuide findByOauthIdAndCreatedAt(String oauthId, LocalDate createdAt) {
+		return exerciseGuideRepository.findByOauthIdAndCreatedAt(oauthId, localDateConverter.convertDateToUTC(createdAt))
+			.orElseThrow(GuideNotFoundException::new);
 	}
 
 	/**
@@ -64,9 +65,8 @@ public class ExerciseGuideSearchService {
 	 */
 
 	public List<ExerciseGuide> findWeekByOauthIdAndCreatedAt(String oauthId, LocalDate startDate, LocalDate endDate) {
-		LocalDateTime startDateUTC = startDate.atTime(9, 0, 0);
-		LocalDateTime endDateUTC = endDate.atTime(9, 0, 0);
-		return exerciseGuideRepository.findWeekByOauthIdAndCreatedAt(oauthId, startDateUTC, endDateUTC);
+		return exerciseGuideRepository.findWeekByOauthIdAndCreatedAt(oauthId, localDateConverter.convertDateToUTC(startDate),
+			localDateConverter.convertDateToUTC(endDate));
 	}
 
 }

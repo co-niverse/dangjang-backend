@@ -8,10 +8,8 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -29,6 +27,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.coniverse.dangjang.domain.analysis.strategy.ExerciseAnalysisStrategy;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
+import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseCalorie;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
 import com.coniverse.dangjang.domain.guide.exercise.dto.WalkGuideContent;
@@ -45,13 +44,16 @@ import com.coniverse.dangjang.domain.user.entity.User;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ExerciseGuideGenerateServiceTest {
 	private final String 등록_일자 = "2023-12-31";
-	private final LocalDateTime 등록_일자_Date = LocalDate.parse(등록_일자).atTime(9, 0, 0);
+	private final LocalDate 등록_일자_Date = LocalDate.parse(등록_일자);
+	private final LocalDate 조회_일자 = 등록_일자_Date.plusDays(1);
 	private final User user = 유저_이브();
 	private final String 체중 = "70";
 	@Autowired
 	private ExerciseGuideGenerateService exerciseGuideGenerateService;
 	@Autowired
 	private ExerciseGuideRepository exerciseGuideRepository;
+	@Autowired
+	private ExerciseGuideSearchService exerciseGuideSearchService;
 	@Autowired
 	private ExerciseAnalysisStrategy exerciseAnalysisStrategy;
 	@MockBean
@@ -70,12 +72,11 @@ class ExerciseGuideGenerateServiceTest {
 		// given
 		var data = exerciseAnalysisStrategy.analyze(걸음수_분석_데이터(user, CommonCode.STEP_COUNT, unit));
 		exerciseGuideRepository.deleteAll();
-
 		// when
 		exerciseGuideGenerateService.createGuide(data);
 
 		// then
-		ExerciseGuide 등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(user.getOauthId(), 등록_일자_Date).orElseThrow();
+		ExerciseGuide 등록된_운동가이드 = exerciseGuideSearchService.findByOauthIdAndCreatedAt(user.getOauthId(), 등록_일자_Date);
 		WalkGuideContent walkGuideContent = new WalkGuideContent(등록된_운동가이드.getNeedStepByTTS(), 등록된_운동가이드.getNeedStepByLastWeek());
 		assertThat(등록된_운동가이드.getContent()).isEqualTo(walkGuideContent.getGuideTTS());
 		assertThat(등록된_운동가이드.getComparedToLastWeek()).isEqualTo(walkGuideContent.getGuideLastWeek());
@@ -87,12 +88,11 @@ class ExerciseGuideGenerateServiceTest {
 	void 걸음수_가이드를_성공적으로_수정한다(String unit) {
 		// given
 		var data = exerciseAnalysisStrategy.analyze(걸음수_분석_데이터(user, CommonCode.STEP_COUNT, unit));
-
 		// when
 		exerciseGuideGenerateService.updateGuide(data);
 
 		// then
-		ExerciseGuide 등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(user.getOauthId(), 등록_일자_Date).orElseThrow();
+		ExerciseGuide 등록된_운동가이드 = exerciseGuideSearchService.findByOauthIdAndCreatedAt(user.getOauthId(), 등록_일자_Date);
 		WalkGuideContent walkGuideContent = new WalkGuideContent(등록된_운동가이드.getNeedStepByTTS(), 등록된_운동가이드.getNeedStepByLastWeek());
 		assertThat(등록된_운동가이드.getContent()).isEqualTo(walkGuideContent.getGuideTTS());
 		assertThat(등록된_운동가이드.getComparedToLastWeek()).isEqualTo(walkGuideContent.getGuideLastWeek());
@@ -117,13 +117,19 @@ class ExerciseGuideGenerateServiceTest {
 	void 운동_가이드_성공적으로_등록한다(CommonCode type, String createdAt, String unit) {
 		// given
 		var data = exerciseAnalysisStrategy.analyze(운동_분석_데이터(user, type, createdAt, unit));
-		Optional<ExerciseGuide> 이전_등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(user.getOauthId(), LocalDate.parse(createdAt).atTime(9, 0, 0));
+		ExerciseGuide 이전_등록된_운동가이드;
 		List<ExerciseCalorie> exerciseCalories = new ArrayList<>();
 		int 등록되어야할_칼로리수 = 0;
-		if (이전_등록된_운동가이드.isPresent()) {
-			exerciseCalories = 이전_등록된_운동가이드.get().getExerciseCalories();
-			등록되어야할_칼로리수 = 이전_등록된_운동가이드.get().getExerciseCalories().size();
+
+		try {
+
+			이전_등록된_운동가이드 = exerciseGuideSearchService.findByOauthIdAndCreatedAt(user.getOauthId(), LocalDate.parse(createdAt));
+			exerciseCalories = 이전_등록된_운동가이드.getExerciseCalories();
+			등록되어야할_칼로리수 = 이전_등록된_운동가이드.getExerciseCalories().size();
+
+		} catch (GuideNotFoundException e) {
 		}
+
 		if (!type.equals(CommonCode.STEP_COUNT)) {
 			exerciseCalories.add(운동_칼로리(type, Integer.parseInt(unit), Integer.parseInt(체중)));
 			등록되어야할_칼로리수 += 1;
@@ -133,8 +139,7 @@ class ExerciseGuideGenerateServiceTest {
 		exerciseGuideGenerateService.createGuide(data);
 
 		// then
-		ExerciseGuide 등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(user.getOauthId(), LocalDate.parse(createdAt).atTime(9, 0, 0, 0))
-			.orElseThrow();
+		ExerciseGuide 등록된_운동가이드 = exerciseGuideSearchService.findByOauthIdAndCreatedAt(user.getOauthId(), LocalDate.parse(createdAt));
 
 		assertThat(등록된_운동가이드.getExerciseCalories()).hasSize(등록되어야할_칼로리수);
 		assertThat(등록된_운동가이드.getExerciseCalories()).isEqualTo(exerciseCalories);
@@ -159,22 +164,19 @@ class ExerciseGuideGenerateServiceTest {
 		// given
 		int weight = Integer.parseInt(healthMetricSearchService.findLastHealthMetricById(user.getOauthId(), CommonCode.MEASUREMENT).getUnit());
 		var data = exerciseAnalysisStrategy.analyze(운동_분석_데이터(user, type, createdAt, unit));
-		Optional<ExerciseGuide> 이전_등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(user.getOauthId(), LocalDate.parse(createdAt).atTime(9, 0, 0));
-		int 등록되어있는_운동칼로리수 = 0;
+		ExerciseGuide 이전_등록된_운동가이드 = exerciseGuideSearchService.findByOauthIdAndCreatedAt(user.getOauthId(), LocalDate.parse(createdAt));
+		int 등록되어있는_운동칼로리수 = 이전_등록된_운동가이드.getExerciseCalories().size();
 
 		//when
 		exerciseGuideGenerateService.updateGuide(data);
 
 		// then
-		Optional<ExerciseGuide> 등록된_운동가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(user.getOauthId(), LocalDate.parse(createdAt).atTime(9, 0, 0));
-		if (이전_등록된_운동가이드.isPresent()) {
-			등록되어있는_운동칼로리수 = 이전_등록된_운동가이드.get().getExerciseCalories().size();
+		ExerciseGuide 등록된_운동가이드 = exerciseGuideSearchService.findByOauthIdAndCreatedAt(user.getOauthId(), LocalDate.parse(createdAt));
 
-		}
-		assertThat(등록된_운동가이드.get().getExerciseCalories()).hasSize(등록되어있는_운동칼로리수);
-		for (int i = 0; i < 등록된_운동가이드.get().getExerciseCalories().size(); i++) {
-			if (등록된_운동가이드.get().getExerciseCalories().get(i).type().equals(type)) {
-				assertThat(등록된_운동가이드.get().getExerciseCalories().get(i)).isEqualTo(운동_칼로리(type, Integer.parseInt(unit), weight));
+		assertThat(등록된_운동가이드.getExerciseCalories()).hasSize(등록되어있는_운동칼로리수);
+		for (int i = 0; i < 등록된_운동가이드.getExerciseCalories().size(); i++) {
+			if (등록된_운동가이드.getExerciseCalories().get(i).type().equals(type)) {
+				assertThat(등록된_운동가이드.getExerciseCalories().get(i)).isEqualTo(운동_칼로리(type, Integer.parseInt(unit), weight));
 				break;
 			}
 		}

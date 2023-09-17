@@ -1,9 +1,6 @@
 package com.coniverse.dangjang.domain.guide.exercise.mapper;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 import org.mapstruct.Mapper;
@@ -11,6 +8,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.ExerciseAnalysisData;
+import com.coniverse.dangjang.domain.guide.exercise.convert.LocalDateConverter;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseCalorie;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseGuideResponse;
@@ -23,20 +21,34 @@ import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseGuideResponse;
  */
 @Mapper(componentModel = "spring")
 public interface ExerciseGuideMapper {
+	LocalDateConverter localDateConverter = new LocalDateConverter();
+
+	/**
+	 * LocalDate를 UTC 날짜와 동일하게 맞춘다
+	 * <p>
+	 * 현재 KST 날짜보다 하루를 더 추가해 , UTC로 변경되었을 때 동일한 날짜가 되도록 한다.
+	 *
+	 * @param createdAt 생성일
+	 * @return LocalDate UTC 날짜와 동일한 날짜
+	 * @since 1.0.0
+	 */
 	@Named("changeDateToUTC")
-	static LocalDateTime changeDateToUTC(LocalDate createdAt) {
-		ZonedDateTime zonedDateTime = ZonedDateTime.of(createdAt.atTime(9, 0, 0), ZoneId.systemDefault());
-		// LocalDateTime를 UTC 시간대로 변환
-		ZonedDateTime utcZonedDateTime = zonedDateTime.withZoneSameInstant(ZoneId.of("UTC"));
-		// UTC 시간대의 LocalDate로 변환
-		LocalDateTime utcLocalDate = utcZonedDateTime.toLocalDateTime();
-		utcLocalDate = utcLocalDate.plusHours(9);
-		return utcLocalDate;
+	static LocalDate changeDateToUTC(LocalDate createdAt) {
+		return localDateConverter.convertDateToUTC(createdAt);
 	}
 
+	/**
+	 * UCT 날짜를 LocalDate와 동일하게 맞춘다
+	 * <p>
+	 * MongoDB에서 date를 가져와 KST로 변경되었을 때 하루가 더 많음으로 , 다시 하루를 되돌려준다.
+	 *
+	 * @param createdAt 생성일
+	 * @return LocalDate UTC 날짜와 동일한 날짜
+	 * @since 1.0.0
+	 */
 	@Named("changeDateToLocalDate")
-	static LocalDate changeDateToLocalDate(LocalDateTime createdAt) {
-		return createdAt.toLocalDate();
+	static LocalDate changeDateToLocalDate(LocalDate createdAt) {
+		return localDateConverter.convertDateKST(createdAt);
 
 	}
 

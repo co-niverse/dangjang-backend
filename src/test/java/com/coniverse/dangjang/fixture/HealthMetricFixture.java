@@ -59,7 +59,7 @@ public class HealthMetricFixture {
 
 	public static HealthMetric 건강지표_엔티티(User user) {
 		return HealthMetric.builder()
-			.createdAt(LocalDate.parse(생성일자))
+			.createdAt(LocalDate.parse(생성일자).plusDays(1))
 			.type(등록_건강지표)
 			.user(user)
 			.unit(등록_건강지표_단위)

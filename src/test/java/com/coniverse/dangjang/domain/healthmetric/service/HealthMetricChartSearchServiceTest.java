@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -46,12 +47,18 @@ class HealthMetricChartSearchServiceTest {
 	@Autowired
 	private HealthMetricChartSearchService healthMetricChartSearchService;
 	private User 테오;
-	private LocalDate 생성_날짜 = LocalDate.of(2021, 1, 1);
-	private LocalDate 시작_날짜 = LocalDate.parse("2021-01-01");
-	private LocalDate 마지막_날짜 = LocalDate.parse("2021-01-07");
+	private LocalDate 생성_날짜 = LocalDate.of(2023, 12, 31);
+	private LocalDate 시작_날짜 = LocalDate.parse("2023-12-31");
+	private LocalDate 마지막_날짜 = LocalDate.parse("2024-01-06");
 
 	@PersistenceContext
 	private EntityManager em;
+
+	@BeforeAll
+	void setUp() {
+		exerciseGuideRepository.deleteAll();
+		healthMetricRepository.deleteAll();
+	}
 
 	@Order(100)
 	@Transactional
