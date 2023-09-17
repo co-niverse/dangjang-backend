@@ -9,7 +9,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.user.dto.request.SignUpRequest;
@@ -21,7 +20,6 @@ import com.coniverse.dangjang.fixture.SignUpFixture;
  * @since 1.0.0
  */
 @SpringBootTest
-@Transactional
 class UserSignupServiceTest {
 	@Autowired
 	private UserSignupService userSignupService;
