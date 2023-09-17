@@ -151,7 +151,8 @@ jacocoTestCoverageVerification {
                     '*.vo.*',
                     '*.document.*',
                     '*.filter.*',
-                    '*.handler.*'
+                    '*.handler.*',
+                    '*.convert.*'
             ]
         }
     }
