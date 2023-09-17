@@ -18,8 +18,7 @@ import com.coniverse.dangjang.domain.guide.exercise.service.ExerciseGuideSearchS
 import com.coniverse.dangjang.domain.guide.weight.controller.WeightGuideController;
 import com.coniverse.dangjang.domain.guide.weight.service.WeightGuideSearchService;
 import com.coniverse.dangjang.domain.healthmetric.controller.HealthConnectController;
-import com.coniverse.dangjang.domain.healthmetric.controller.HealthMetricChartController;
-import com.coniverse.dangjang.domain.healthmetric.controller.HealthMetricRegisterController;
+import com.coniverse.dangjang.domain.healthmetric.controller.HealthMetricController;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthConnectRegisterService;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricChartSearchService;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
@@ -41,7 +40,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @WebMvcTest(
 	controllers = {
 		IntroController.class,
-		HealthMetricRegisterController.class,
+		HealthMetricController.class,
 		LoginController.class,
 		SignupController.class,
 		UserController.class,
@@ -49,8 +48,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 		WeightGuideController.class,
 		ExerciseGuideController.class,
 		BloodSugarGuideController.class,
-		HealthConnectController.class,
-		HealthMetricChartController.class
+		HealthConnectController.class
 	},
 	includeFilters = @ComponentScan.Filter(classes = {EnableWebSecurity.class}))
 @ComponentScan(basePackages = "com.coniverse.dangjang.domain.auth.handler")
