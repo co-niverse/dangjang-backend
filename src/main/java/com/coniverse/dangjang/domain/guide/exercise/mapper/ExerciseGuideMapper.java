@@ -19,9 +19,8 @@ import com.coniverse.dangjang.global.util.LocalDateChangeUtil;
  * @author EVE
  * @since 1.0.0
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", imports = {LocalDateChangeUtil.class})
 public interface ExerciseGuideMapper {
-	LocalDateChangeUtil localDateChangeUtil = new LocalDateChangeUtil();
 
 	/**
 	 * LocalDate를 UTC 날짜와 동일하게 맞춘다
@@ -34,7 +33,7 @@ public interface ExerciseGuideMapper {
 	 */
 	@Named("changeDateToUTC")
 	static LocalDate changeDateToUTC(LocalDate createdAt) {
-		return localDateChangeUtil.convertDateToUTC(createdAt);
+		return LocalDateChangeUtil.convertDateToUTC(createdAt);
 	}
 
 	/**
@@ -48,7 +47,7 @@ public interface ExerciseGuideMapper {
 	 */
 	@Named("changeDateToLocalDate")
 	static LocalDate changeDateToLocalDate(LocalDate createdAt) {
-		return localDateChangeUtil.convertDateToKST(createdAt);
+		return LocalDateChangeUtil.convertDateToKST(createdAt);
 
 	}
 
