@@ -6,11 +6,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
-import com.coniverse.dangjang.domain.guide.exercise.convert.LocalDateConverter;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseGuideResponse;
 import com.coniverse.dangjang.domain.guide.exercise.mapper.ExerciseGuideMapper;
 import com.coniverse.dangjang.domain.guide.exercise.repository.ExerciseGuideRepository;
+import com.coniverse.dangjang.global.util.LocalDateChangeUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class ExerciseGuideSearchService {
 	private final ExerciseGuideRepository exerciseGuideRepository;
 	private final ExerciseGuideMapper exerciseGuideMapper;
-	private final LocalDateConverter localDateConverter = new LocalDateConverter();
+	private final LocalDateChangeUtil localDateChangeUtil;
 
 	/**
 	 * 운동 가이드를 전달한다.
@@ -50,7 +50,7 @@ public class ExerciseGuideSearchService {
 	 * @since 1.0.0
 	 */
 	public ExerciseGuide findByOauthIdAndCreatedAt(String oauthId, LocalDate createdAt) {
-		return exerciseGuideRepository.findByOauthIdAndCreatedAt(oauthId, localDateConverter.convertDateToUTC(createdAt))
+		return exerciseGuideRepository.findByOauthIdAndCreatedAt(oauthId, localDateChangeUtil.convertDateToUTC(createdAt))
 			.orElseThrow(GuideNotFoundException::new);
 	}
 
@@ -65,8 +65,8 @@ public class ExerciseGuideSearchService {
 	 */
 
 	public List<ExerciseGuide> findWeekByOauthIdAndCreatedAt(String oauthId, LocalDate startDate, LocalDate endDate) {
-		return exerciseGuideRepository.findWeekByOauthIdAndCreatedAt(oauthId, localDateConverter.convertDateToUTC(startDate),
-			localDateConverter.convertDateToUTC(endDate));
+		return exerciseGuideRepository.findWeekByOauthIdAndCreatedAt(oauthId, localDateChangeUtil.convertDateToUTC(startDate),
+			localDateChangeUtil.convertDateToUTC(endDate));
 	}
 
 }

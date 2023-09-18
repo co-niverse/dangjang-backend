@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.code.enums.GroupCode;
-import com.coniverse.dangjang.domain.guide.exercise.convert.LocalDateConverter;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
 import com.coniverse.dangjang.domain.guide.exercise.service.ExerciseGuideSearchService;
 import com.coniverse.dangjang.domain.healthmetric.dto.response.BloodSugarMinMax;
@@ -18,6 +17,7 @@ import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricChart
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricChartResponse;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.healthmetric.exception.HealthMetricNotFoundException;
+import com.coniverse.dangjang.global.util.LocalDateChangeUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class HealthMetricChartSearchService {
 	private final HealthMetricSearchService healthMetricSearchService;
 	private final ExerciseGuideSearchService exerciseGuideSearchService;
-	private LocalDateConverter localDateConverter = new LocalDateConverter();
+	private LocalDateChangeUtil localDateChangeUtil = new LocalDateChangeUtil();
 
 	/**
 	 * 건강지표 차트 데이터를 조회한다.
@@ -133,7 +133,7 @@ public class HealthMetricChartSearchService {
 		List<ExerciseGuide> exerciseGuides = exerciseGuideSearchService.findWeekByOauthIdAndCreatedAt(oauthId, startDate, endDate);
 		exerciseGuides.forEach(exerciseGuide -> {
 			int calorie = exerciseGuide.getExerciseCalories().stream().mapToInt(exerciseCalorie -> exerciseCalorie.calorie()).sum();
-			exerciseCalories.add(new HealthMetricChartData(localDateConverter.convertDateKST(exerciseGuide.getCreatedAt()), calorie));
+			exerciseCalories.add(new HealthMetricChartData(localDateChangeUtil.convertDateToKST(exerciseGuide.getCreatedAt()), calorie));
 		});
 		return exerciseCalories;
 	}

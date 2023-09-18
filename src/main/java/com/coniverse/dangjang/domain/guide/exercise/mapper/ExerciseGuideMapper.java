@@ -8,10 +8,10 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.ExerciseAnalysisData;
-import com.coniverse.dangjang.domain.guide.exercise.convert.LocalDateConverter;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseCalorie;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseGuideResponse;
+import com.coniverse.dangjang.global.util.LocalDateChangeUtil;
 
 /**
  * 운동 가이드 Mapper
@@ -21,7 +21,7 @@ import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseGuideResponse;
  */
 @Mapper(componentModel = "spring")
 public interface ExerciseGuideMapper {
-	LocalDateConverter localDateConverter = new LocalDateConverter();
+	LocalDateChangeUtil localDateChangeUtil = new LocalDateChangeUtil();
 
 	/**
 	 * LocalDate를 UTC 날짜와 동일하게 맞춘다
@@ -34,7 +34,7 @@ public interface ExerciseGuideMapper {
 	 */
 	@Named("changeDateToUTC")
 	static LocalDate changeDateToUTC(LocalDate createdAt) {
-		return localDateConverter.convertDateToUTC(createdAt);
+		return localDateChangeUtil.convertDateToUTC(createdAt);
 	}
 
 	/**
@@ -48,7 +48,7 @@ public interface ExerciseGuideMapper {
 	 */
 	@Named("changeDateToLocalDate")
 	static LocalDate changeDateToLocalDate(LocalDate createdAt) {
-		return localDateConverter.convertDateKST(createdAt);
+		return localDateChangeUtil.convertDateToKST(createdAt);
 
 	}
 
