@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.guide.common;
+package com.coniverse.dangjang.domain.guide.common.service;
 
 import static com.coniverse.dangjang.fixture.CommonCodeFixture.*;
 import static org.assertj.core.api.Assertions.*;
@@ -18,8 +18,6 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.guide.bloodsugar.service.BloodSugarGuideGenerateService;
-import com.coniverse.dangjang.domain.guide.common.service.GuideGenerateService;
-import com.coniverse.dangjang.domain.guide.common.service.GuideService;
 import com.coniverse.dangjang.domain.guide.exercise.service.ExerciseGuideGenerateService;
 import com.coniverse.dangjang.domain.guide.weight.service.WeightGuideGenerateService;
 import com.coniverse.dangjang.fixture.AnalysisDataFixture;
