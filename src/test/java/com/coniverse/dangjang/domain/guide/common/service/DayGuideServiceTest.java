@@ -101,7 +101,7 @@ class DayGuideServiceTest {
 		assertThat(하루_가이드_응답.weight().title()).isBlank();
 		assertThat(하루_가이드_응답.weight().bmi()).isZero();
 		assertThat(하루_가이드_응답.weight().unit()).isBlank();
-		assertThat(하루_가이드_응답.bloodSugars()).hasSize(0);
+		assertThat(하루_가이드_응답.bloodSugars()).isEmpty();
 		assertThat(하루_가이드_응답.exercise().calorie()).isZero();
 		assertThat(하루_가이드_응답.exercise().stepCount()).isZero();
 	}

@@ -99,7 +99,7 @@ class HealthMetricChartSearchServiceTest {
 			마지막_날짜);
 
 		// then
-		assertThat(healthMetricChartResponse.exerciseCalories()).hasSize(0);
+		assertThat(healthMetricChartResponse.exerciseCalories()).isEmpty();
 	}
 
 }
