@@ -49,7 +49,7 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 		ExerciseGuide existExerciseGuide;
 		try {
 			existExerciseGuide = exerciseGuideSearchService.findByOauthIdAndCreatedAt(exerciseAnalysisData.getOauthId(),
-				exerciseAnalysisData.getCreatedAt().toString());
+				exerciseAnalysisData.getCreatedAt());
 		} catch (GuideNotFoundException e) {
 			if (exerciseAnalysisData.getType().equals(CommonCode.STEP_COUNT)) {
 				ExerciseGuide newExerciseGuide = exerciseGuideMapper.toDocument(exerciseAnalysisData, walkGuideContent.getGuideTTS(),
@@ -91,7 +91,7 @@ public class ExerciseGuideGenerateService implements GuideGenerateService {
 	public GuideResponse updateGuide(AnalysisData analysisData) {
 		ExerciseAnalysisData exerciseAnalysisData = (ExerciseAnalysisData)analysisData;
 		ExerciseGuide updateExerciseGuide = exerciseGuideSearchService.findByOauthIdAndCreatedAt(exerciseAnalysisData.getOauthId(),
-			exerciseAnalysisData.getCreatedAt().toString());
+			exerciseAnalysisData.getCreatedAt());
 
 		if (analysisData.getType().equals(CommonCode.STEP_COUNT)) {
 			WalkGuideContent walkGuideContent = new WalkGuideContent(exerciseAnalysisData.getNeedStepByTTS(), exerciseAnalysisData.getNeedStepByLastWeek());
