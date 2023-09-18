@@ -1,6 +1,7 @@
 package com.coniverse.dangjang.domain.guide.common.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.TodayGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.service.BloodSugarGuideSearchService;
 import com.coniverse.dangjang.domain.guide.common.dto.DayGuideResponse;
+import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseCalorie;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseDayGuide;
@@ -46,12 +48,43 @@ public class DayGuideService {
 	public DayGuideResponse getDayGuide(String oauthId, String date) {
 		LocalDate localDate = LocalDate.parse(date);
 		String userNickname = userSearchService.findUserByOauthId(oauthId).getNickname();
-		List<TodayGuide> bloodSugarTodayGuide = bloodSugarGuideSearchService.findByUserIdAndCreatedAt(oauthId, localDate).getTodayGuides();
-		WeightGuide weightGuide = weightGuideSearchService.findByUserIdAndCreatedAt(oauthId, date);
-		WeightDayGuide weightDayGuide = new WeightDayGuide(weightGuide.getUnit(), weightGuide.getBmi(), weightGuide.getWeightDiff());
-		ExerciseGuide exerciseGuide = exerciseGuideSearchService.findByOauthIdAndCreatedAt(oauthId, localDate);
-		int sumCalorie = exerciseGuide.getExerciseCalories().stream().mapToInt(ExerciseCalorie::calorie).sum();
-		ExerciseDayGuide exerciseDayGuide = new ExerciseDayGuide(sumCalorie, exerciseGuide.getStepCount());
+		List<TodayGuide> bloodSugarTodayGuide = getBloodSugarTodayGuide(oauthId, localDate);
+		WeightDayGuide weightDayGuide = getWeightGuide(oauthId, date);
+		ExerciseDayGuide exerciseDayGuide = getExerciseGuide(oauthId, localDate);
 		return new DayGuideResponse(userNickname, localDate, bloodSugarTodayGuide, weightDayGuide, exerciseDayGuide, false);
+	}
+
+	/**
+	 * 혈당 하루 가이드를 조회한다.
+	 *
+	 * @param oauthId 유저아이디
+	 * @param date    조회 날짜
+	 * @since 1.0.0
+	 */
+	public List<TodayGuide> getBloodSugarTodayGuide(String oauthId, LocalDate date) {
+		try {
+			return bloodSugarGuideSearchService.findByUserIdAndCreatedAt(oauthId, date).getTodayGuides();
+		} catch (GuideNotFoundException e) {
+			return new ArrayList<>();
+		}
+	}
+
+	public WeightDayGuide getWeightGuide(String oauthId, String date) {
+		try {
+			WeightGuide weightGuide = weightGuideSearchService.findByUserIdAndCreatedAt(oauthId, date);
+			return new WeightDayGuide(weightGuide.getUnit(), weightGuide.getBmi(), weightGuide.getContent());
+		} catch (GuideNotFoundException e) {
+			return new WeightDayGuide("", 0, "");
+		}
+	}
+
+	public ExerciseDayGuide getExerciseGuide(String oauthId, LocalDate date) {
+		try {
+			ExerciseGuide exerciseGuide = exerciseGuideSearchService.findByOauthIdAndCreatedAt(oauthId, date);
+			int sumCalorie = exerciseGuide.getExerciseCalories().stream().mapToInt(ExerciseCalorie::calorie).sum();
+			return new ExerciseDayGuide(sumCalorie, exerciseGuide.getStepCount());
+		} catch (GuideNotFoundException e) {
+			return new ExerciseDayGuide(0, 0);
+		}
 	}
 }

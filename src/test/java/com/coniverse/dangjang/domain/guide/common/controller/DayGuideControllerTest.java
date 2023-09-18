@@ -51,8 +51,8 @@ class DayGuideControllerTest extends ControllerTest {
 			jsonPath("$.data.nickname").value(테오_닉네임),
 			jsonPath("$.data.date").value(조회_날짜),
 			jsonPath("$.data.bloodSugars").isNotEmpty(),
-			jsonPath("$.data.weight").isNotEmpty(),
-			jsonPath("$.data.exercise").isNotEmpty()
+			jsonPath("$.data.weight.unit").value(조회_응답.weight().unit()),
+			jsonPath("$.data.exercise.stepCount").value(조회_응답.exercise().stepCount())
 		);
 	}
 

@@ -7,8 +7,11 @@ import static org.assertj.core.api.Assertions.*;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -28,6 +31,7 @@ import com.coniverse.dangjang.support.annotation.WithDangjangUser;
  * @since 1.0.0
  */
 @WithDangjangUser
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
 class DayGuideServiceTest {
@@ -63,6 +67,7 @@ class DayGuideServiceTest {
 		체중_가이드 = weightGuideRepository.save(체중_가이드(테오_아이디, 생성_날짜));
 	}
 
+	@Order(100)
 	@Test
 	void 하루_가이드를_성공적으로_조회한다() {
 		// given
@@ -72,11 +77,32 @@ class DayGuideServiceTest {
 		// then
 		assertThat(하루_가이드_응답.date()).isEqualTo(조회_날짜_Date);
 		assertThat(하루_가이드_응답.nickname()).isEqualTo(테오.getNickname());
-		assertThat(하루_가이드_응답.weight().weightDiff()).isEqualTo(체중_가이드.getWeightDiff());
+		assertThat(하루_가이드_응답.weight().title()).isEqualTo(체중_가이드.getContent());
 		assertThat(하루_가이드_응답.weight().bmi()).isEqualTo(체중_가이드.getBmi());
 		assertThat(하루_가이드_응답.weight().unit()).isEqualTo(체중_가이드.getUnit());
 		assertThat(하루_가이드_응답.bloodSugars()).hasSize(혈당_가이드.getTodayGuides().size());
 		assertThat(하루_가이드_응답.exercise().calorie()).isEqualTo(운동_칼로리);
 		assertThat(하루_가이드_응답.exercise().stepCount()).isEqualTo(운동_가이드.getStepCount());
+	}
+
+	@Order(200)
+	@Test
+	void 저장된_가이드가_없을때_에러를_반환하지_않는다() {
+		// given
+		exerciseGuideRepository.deleteAll();
+		bloodSugarGuideRepository.deleteAll();
+		weightGuideRepository.deleteAll();
+
+		// when
+		DayGuideResponse 하루_가이드_응답 = dayGuideService.getDayGuide(테오_아이디, 생성_날짜);
+		// then
+		assertThat(하루_가이드_응답.date()).isEqualTo(조회_날짜_Date);
+		assertThat(하루_가이드_응답.nickname()).isEqualTo(테오.getNickname());
+		assertThat(하루_가이드_응답.weight().title()).isBlank();
+		assertThat(하루_가이드_응답.weight().bmi()).isZero();
+		assertThat(하루_가이드_응답.weight().unit()).isBlank();
+		assertThat(하루_가이드_응답.bloodSugars()).hasSize(0);
+		assertThat(하루_가이드_응답.exercise().calorie()).isZero();
+		assertThat(하루_가이드_응답.exercise().stepCount()).isZero();
 	}
 }

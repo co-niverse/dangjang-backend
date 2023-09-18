@@ -8,5 +8,5 @@ package com.coniverse.dangjang.domain.guide.weight.dto;
  * @author EVE
  * @since 1.0.0
  */
-public record WeightDayGuide(String unit, double bmi, int weightDiff) {
+public record WeightDayGuide(String unit, double bmi, String title) {
 }
