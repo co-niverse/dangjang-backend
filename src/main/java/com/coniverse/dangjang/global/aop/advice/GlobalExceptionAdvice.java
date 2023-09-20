@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.global.advice;
+package com.coniverse.dangjang.global.aop.advice;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
