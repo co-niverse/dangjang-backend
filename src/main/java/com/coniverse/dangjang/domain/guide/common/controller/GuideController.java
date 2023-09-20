@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
  * @author EVE
  * @since 1.0.0
  */
-@RequestMapping("/api/guide/day")
+@RequestMapping("/api/guide")
 @RestController
 @RequiredArgsConstructor
 @Validated
