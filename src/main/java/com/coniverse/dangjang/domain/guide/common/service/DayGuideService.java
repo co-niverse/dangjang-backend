@@ -59,9 +59,10 @@ public class DayGuideService {
 	 *
 	 * @param oauthId 유저아이디
 	 * @param date    조회 날짜
+	 * @return List<TodayGuide> 혈당 하루 가이드
 	 * @since 1.0.0
 	 */
-	public List<TodayGuide> getBloodSugarTodayGuide(String oauthId, LocalDate date) {
+	private List<TodayGuide> getBloodSugarTodayGuide(String oauthId, LocalDate date) {
 		try {
 			return bloodSugarGuideSearchService.findByUserIdAndCreatedAt(oauthId, date).getTodayGuides();
 		} catch (GuideNotFoundException e) {
@@ -69,7 +70,15 @@ public class DayGuideService {
 		}
 	}
 
-	public WeightDayGuide getWeightGuide(String oauthId, String date) {
+	/**
+	 * 체중 하루 가이드를 조회한다.
+	 *
+	 * @param oauthId 유저아이디
+	 * @param date    조회 날짜
+	 * @return WeightDayGuide 체중 하루 가이드
+	 * @since 1.0.0
+	 */
+	private WeightDayGuide getWeightGuide(String oauthId, String date) {
 		try {
 			WeightGuide weightGuide = weightGuideSearchService.findByUserIdAndCreatedAt(oauthId, date);
 			return new WeightDayGuide(weightGuide.getUnit(), weightGuide.getBmi(), weightGuide.getContent());
@@ -78,10 +87,21 @@ public class DayGuideService {
 		}
 	}
 
-	public ExerciseDayGuide getExerciseGuide(String oauthId, LocalDate date) {
+	/**
+	 * 운동 하루 가이드를 조회한다.
+	 *
+	 * @param oauthId 유저아이디
+	 * @param date    조회 날짜
+	 * @return ExerciseDayGuide 운동 하루 가이드
+	 * @since 1.0.0
+	 */
+	private ExerciseDayGuide getExerciseGuide(String oauthId, LocalDate date) {
 		try {
 			ExerciseGuide exerciseGuide = exerciseGuideSearchService.findByOauthIdAndCreatedAt(oauthId, date);
-			int sumCalorie = exerciseGuide.getExerciseCalories().stream().mapToInt(ExerciseCalorie::calorie).sum();
+			int sumCalorie = exerciseGuide.getExerciseCalories()
+				.stream()
+				.mapToInt(ExerciseCalorie::calorie)
+				.sum();
 			return new ExerciseDayGuide(sumCalorie, exerciseGuide.getStepCount());
 		} catch (GuideNotFoundException e) {
 			return new ExerciseDayGuide(0, 0);
