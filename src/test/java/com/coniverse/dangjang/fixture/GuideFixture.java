@@ -16,11 +16,14 @@ import com.coniverse.dangjang.domain.guide.bloodsugar.document.SubGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.TodayGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.dto.BloodSugarGuideResponse;
 import com.coniverse.dangjang.domain.guide.bloodsugar.dto.SubGuideResponse;
+import com.coniverse.dangjang.domain.guide.common.dto.DayGuideResponse;
 import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseCalorie;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
+import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseDayGuide;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseGuideResponse;
 import com.coniverse.dangjang.domain.guide.weight.document.WeightGuide;
+import com.coniverse.dangjang.domain.guide.weight.dto.WeightDayGuide;
 import com.coniverse.dangjang.domain.guide.weight.dto.WeightGuideResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
 
@@ -83,6 +86,20 @@ public class GuideFixture {
 			.build();
 	}
 
+	public static ExerciseGuide 걸음수_운동_가이드(String oauthId, LocalDate 조회_날짜) {
+		List<ExerciseCalorie> exerciseCalories = List.of(new ExerciseCalorie(CommonCode.HEALTH, 0, 60), new ExerciseCalorie(CommonCode.RUN, 0, 120));
+
+		return ExerciseGuide.builder()
+			.oauthId(oauthId)
+			.needStepByLastWeek(0)
+			.comparedToLastWeek("저번주 대비 가이드입니다.")
+			.content("가이드 내용입니다.")
+			.createdAt(조회_날짜)
+			.stepCount(10000)
+			.exerciseCalories(exerciseCalories)
+			.build();
+	}
+
 	public static BloodSugarGuideResponse 혈당_가이드_응답(String createdAt) {
 		List<TodayGuide> 오늘의_가이드 = 혈당_오늘의_가이드(createdAt);
 		List<SubGuideResponse> 서브_가이드 = new ArrayList<>();
@@ -133,6 +150,18 @@ public class GuideFixture {
 				.createdAt(createdAt.plusDays(n))
 				.build()).collect(Collectors.toList());
 
+	}
+
+	public static DayGuideResponse 하루_가이드_응답(String nickname, LocalDate date, List<TodayGuide> 혈당가이드, WeightDayGuide 체중가이드, ExerciseDayGuide 운동가이드) {
+		return new DayGuideResponse(nickname, date, 혈당가이드, 체중가이드, 운동가이드, false);
+	}
+
+	public static WeightDayGuide 체중_하루_가이드() {
+		return new WeightDayGuide("70", 18.89, "정상이에요! 표준 체중보다 1kg 많아요");
+	}
+
+	public static ExerciseDayGuide 운동_하루_가이드() {
+		return new ExerciseDayGuide(1400, 11000);
 	}
 
 }

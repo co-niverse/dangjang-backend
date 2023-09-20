@@ -66,7 +66,6 @@ public class HealthMetricChartSearchService {
 
 	private List<BloodSugarMinMax> findBloodSugarMinMaxes(String oauthId, LocalDate startDate, LocalDate endDate) {
 		List<BloodSugarMinMax> bloodSugarMinMaxes = new ArrayList<>();
-
 		List<HealthMetric> bloodSugarHealthMetric = healthMetricSearchService.findWeeklyHealthMetricByGroupCode(oauthId, GroupCode.BLOOD_SUGAR,
 			startDate, endDate);
 		Map<LocalDate, List<HealthMetric>> bloodSugarMapByDate = bloodSugarHealthMetric.stream().collect(Collectors.groupingBy(HealthMetric::getCreatedAt));
@@ -92,7 +91,6 @@ public class HealthMetricChartSearchService {
 	 */
 	private List<HealthMetricChartData> findWeights(String oauthId, LocalDate startDate, LocalDate endDate) {
 		List<HealthMetricChartData> weights = new ArrayList<>();
-
 		List<HealthMetric> healthMetrics = healthMetricSearchService.findWeeklyHealthMetricByGroupCode(oauthId, GroupCode.WEIGHT, startDate, endDate);
 		healthMetrics.forEach(healthMetric ->
 			weights.add(new HealthMetricChartData(healthMetric.getCreatedAt(), Integer.parseInt(healthMetric.getUnit())))
@@ -132,8 +130,13 @@ public class HealthMetricChartSearchService {
 		List<HealthMetricChartData> exerciseCalories = new ArrayList<>();
 		List<ExerciseGuide> exerciseGuides = exerciseGuideSearchService.findWeekByOauthIdAndCreatedAt(oauthId, startDate, endDate);
 		exerciseGuides.forEach(exerciseGuide -> {
-			int calorie = exerciseGuide.getExerciseCalories().stream().mapToInt(exerciseCalorie -> exerciseCalorie.calorie()).sum();
-			exerciseCalories.add(new HealthMetricChartData(localDateChangeUtil.convertDateToKST(exerciseGuide.getCreatedAt()), calorie));
+			int calorie = exerciseGuide.getExerciseCalories()
+				.stream()
+				.mapToInt(exerciseCalorie -> exerciseCalorie.calorie())
+				.sum();
+			if (calorie != 0) { //TODO 람다로 해결
+				exerciseCalories.add(new HealthMetricChartData(localDateChangeUtil.convertDateToKST(exerciseGuide.getCreatedAt()), calorie));
+			}
 		});
 		return exerciseCalories;
 	}

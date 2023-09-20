@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDate;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -54,7 +54,7 @@ class HealthMetricChartSearchServiceTest {
 	@PersistenceContext
 	private EntityManager em;
 
-	@BeforeAll
+	@BeforeEach
 	void setUp() {
 		exerciseGuideRepository.deleteAll();
 		healthMetricRepository.deleteAll();
@@ -74,7 +74,7 @@ class HealthMetricChartSearchServiceTest {
 		exerciseGuideRepository.saveAll(운동가이드_리스트(테오, 생성_날짜, 200, 10));
 
 		// when
-		HealthMetricChartResponse healthMetricChartResponse = healthMetricChartSearchService.findHealthMetricChart(테오.getId(), 시작_날짜,
+		HealthMetricChartResponse healthMetricChartResponse = healthMetricChartSearchService.findHealthMetricChart(테오.getOauthId(), 시작_날짜,
 			마지막_날짜);
 
 		// then
@@ -82,6 +82,24 @@ class HealthMetricChartSearchServiceTest {
 		assertThat(healthMetricChartResponse.weights()).hasSize(7);
 		assertThat(healthMetricChartResponse.stepCounts()).hasSize(7);
 		assertThat(healthMetricChartResponse.exerciseCalories()).hasSize(7);
+	}
+
+	@Order(200)
+	@Transactional
+	@Test
+	void 칼로리가_0일때_제외하고_전달한다() {
+		// given
+		테오 = userRepository.save(유저_테오());
+		em.flush();
+
+		exerciseGuideRepository.save(걸음수_운동_가이드(테오.getOauthId(), 생성_날짜.plusDays(1)));
+
+		// when
+		HealthMetricChartResponse healthMetricChartResponse = healthMetricChartSearchService.findHealthMetricChart(테오.getOauthId(), 시작_날짜,
+			마지막_날짜);
+
+		// then
+		assertThat(healthMetricChartResponse.exerciseCalories()).isEmpty();
 	}
 
 }
