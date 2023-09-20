@@ -2,6 +2,7 @@ package com.coniverse.dangjang.domain.user.entity;
 
 import java.time.LocalDate;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.domain.Persistable;
 
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
@@ -59,6 +60,8 @@ public class User extends BaseEntity implements Persistable<String> {
 	private boolean medicine;
 	private boolean injection;
 	private String profileImagePath;
+	@ColumnDefault("0")
+	private int point;
 
 	@Builder
 	private User(String oauthId, OauthProvider oauthProvider, String nickname, Gender gender, LocalDate birthday, ActivityAmount activityAmount, int height,

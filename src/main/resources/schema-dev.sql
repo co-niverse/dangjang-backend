@@ -25,6 +25,7 @@ CREATE TABLE `USERS`
     `DIABETES_YEAR`       int,
     MEDICINE              boolean,
     INJECTION             boolean,
+    point                 int         NOT NULL,
     PRIMARY KEY (`OAUTH_ID`),
     UNIQUE (`NICKNAME`)
 );
