@@ -4,21 +4,20 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.coniverse.dangjang.domain.auth.dto.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
-import com.coniverse.dangjang.domain.auth.service.AuthTokenGenerator;
+import com.coniverse.dangjang.domain.auth.mapper.AuthMapper;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
 import com.coniverse.dangjang.domain.infrastructure.auth.dto.OAuthInfoResponse;
+import com.coniverse.dangjang.domain.point.service.PointService;
 import com.coniverse.dangjang.domain.user.dto.request.SignUpRequest;
 import com.coniverse.dangjang.domain.user.dto.response.DuplicateNicknameResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
-import com.coniverse.dangjang.domain.user.entity.enums.Role;
-import com.coniverse.dangjang.domain.user.entity.enums.Status;
+import com.coniverse.dangjang.domain.user.mapper.UserMapper;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -34,7 +33,9 @@ import lombok.RequiredArgsConstructor;
 public class UserSignupService {
 	private final UserRepository userRepository;
 	private final OauthLoginService oauthLoginService;
-	private final AuthTokenGenerator authTokensGenerator;
+	private final PointService pointService;
+	private final UserMapper userMapper;
+	private final AuthMapper authMapper;
 
 	/**
 	 * 회원가입
@@ -44,7 +45,6 @@ public class UserSignupService {
 	 * @since 1.0.0
 	 */
 	public LoginResponse signUp(SignUpRequest signUpRequest) {
-
 		OAuthInfoResponse oAuthInfoResponse = getOauthInfo(OauthProvider.of(signUpRequest.provider()), signUpRequest.accessToken());
 		ActivityAmount activityAmount = ActivityAmount.of(signUpRequest.activityAmount());
 
@@ -52,25 +52,9 @@ public class UserSignupService {
 
 		int recommendedCalorie = calculateRecommendedCalorie(Gender.of(signUpRequest.gender()), signUpRequest.height(),
 			ActivityAmount.of(signUpRequest.activityAmount()));
-
-		User user = User.builder() // TODO mapper
-			.oauthId(oAuthInfoResponse.getOauthId())
-			.oauthProvider(oAuthInfoResponse.getOauthProvider())
-			.nickname(signUpRequest.nickname())
-			.birthday(signUpRequest.birthday())
-			.activityAmount(activityAmount)
-			.gender(gender)
-			.height(signUpRequest.height())
-			.status(Status.ACTIVE)
-			.role(Role.USER)
-			.recommendedCalorie(recommendedCalorie)
-			.diabetic(signUpRequest.diabetes())
-			.diabetesYear(signUpRequest.diabetesYear())
-			.medicine(signUpRequest.medicine())
-			.injection(signUpRequest.injection())
-			.build();
-
-		return signupAfterLogin(userRepository.save(user));
+		User savedUser = userRepository.save(userMapper.toEntity(oAuthInfoResponse, signUpRequest, activityAmount, gender, recommendedCalorie));
+		pointService.addSignupPoint(savedUser.getOauthId());
+		return authMapper.toLoginResponse(savedUser.getNickname(), false, false);
 	}
 
 	/**
@@ -118,19 +102,6 @@ public class UserSignupService {
 		} else {
 			return (int)(standardWeight * 35);
 		}
-	}
-
-	/**
-	 * 회원가입 후 로그인
-	 *
-	 * @param user 사용자 정보
-	 * @return LoginResponse 로그인 정보
-	 * @since 1.0.0
-	 */
-	//Todo merge 수정
-	public LoginResponse signupAfterLogin(User user) {
-		AuthToken authToken = authTokensGenerator.generate(user.getOauthId(), user.getRole());
-		return new LoginResponse(user.getNickname(), false, false);
 	}
 
 	/**

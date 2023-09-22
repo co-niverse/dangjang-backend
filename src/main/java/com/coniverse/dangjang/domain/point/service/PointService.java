@@ -25,6 +25,7 @@ import lombok.AllArgsConstructor;
  */
 @Service
 @AllArgsConstructor
+@Transactional
 public class PointService {
 	private final PointRepository pointRepository;
 	private final UserRepository userRepository;
@@ -40,7 +41,7 @@ public class PointService {
 	 * @param oauthId 유저 아이디
 	 * @since 1.0.0
 	 */
-	@Transactional
+
 	@Async
 	public void addAccessPoint(String oauthId) {
 		User user = userRepository.findByOauthId(oauthId)
@@ -48,6 +49,23 @@ public class PointService {
 		if (!user.getAccessedAt().equals(LocalDate.now())) {
 			defaultOauthLoginService.updateUserAccessedAt(user);
 			addPointEvent(PointType.ACCESS, user);
+		}
+	}
+
+	/**
+	 * 회원가입 포인트 적립
+	 * <p>
+	 * 회원가입 유저인지 자격을 확인하고, 포인트를 적립한다.
+	 *
+	 * @param oauthId 유저 아이디
+	 * @since 1.0.0
+	 */
+	@Async
+	public void addSignupPoint(String oauthId) {
+		User user = userRepository.findByOauthId(oauthId)
+			.orElseThrow(() -> new InvalidTokenException("존재하지 않는 사용자 입니다."));
+		if (user.getCreatedAt().toLocalDate().equals(LocalDate.now())) {
+			addPointEvent(PointType.REGISTER, user);
 		}
 	}
 
@@ -60,7 +78,7 @@ public class PointService {
 	 * @param user 유저
 	 * @since 1.0.0
 	 */
-	public void addPointEvent(PointType pointType, User user) {
+	private void addPointEvent(PointType pointType, User user) {
 		int balancePoint = user.getPoint() + pointType.getChangePoint();
 		Point savedPoint = pointRepository.save(pointMapper.toEntity(pointType, user, balancePoint));
 		userRepository.updatePointByOauthId(user.getOauthId(), savedPoint.getBalancePoint());
