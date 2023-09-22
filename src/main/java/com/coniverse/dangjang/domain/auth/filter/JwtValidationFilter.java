@@ -16,6 +16,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.coniverse.dangjang.domain.auth.service.JwtTokenProvider;
+import com.coniverse.dangjang.domain.point.service.PointService;
+import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.global.exception.InvalidTokenException;
 
 import io.jsonwebtoken.Claims;
@@ -39,6 +41,8 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class JwtValidationFilter extends OncePerRequestFilter {
+	private final PointService pointService;
+	private final UserRepository userRepository;
 	private final JwtTokenProvider jwtTokenProvider;
 	private static final String AUTHORIZATION = "Authorization";
 	private static final String BEARER = "Bearer";
@@ -100,9 +104,17 @@ public class JwtValidationFilter extends OncePerRequestFilter {
 			.toList();
 
 		User principal = new User(claims.getSubject(), oauthId, authorities);
-
+		checkAccessPoint(oauthId);
 		return new UsernamePasswordAuthenticationToken(principal, oauthId, authorities);
 	}
+
+	/**
+	 * 토큰 값을 분리
+	 *
+	 * @param authHeader
+	 * @return 토큰 값
+	 * @since 1.0.0
+	 */
 
 	private String getToken(final String authHeader) {
 		if (StringUtils.hasLength(authHeader) && authHeader.startsWith(BEARER)) {
@@ -111,5 +123,16 @@ public class JwtValidationFilter extends OncePerRequestFilter {
 			throw new InvalidTokenException("잘못된 Authorization Header 입니다.");
 		}
 
+	}
+
+	/**
+	 * 접속 포인트 적립
+	 *
+	 * @param oauthId
+	 * @since 1.0.0
+	 */
+
+	private void checkAccessPoint(String oauthId) {
+		pointService.addAccessPoint(oauthId);
 	}
 }

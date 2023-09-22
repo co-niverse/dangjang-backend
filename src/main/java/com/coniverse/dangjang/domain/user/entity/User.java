@@ -62,10 +62,13 @@ public class User extends BaseEntity implements Persistable<String> {
 	private String profileImagePath;
 	@ColumnDefault("0")
 	private int point;
+	@Column(name = "ACCESSED_AT", nullable = false)
+	private LocalDate accessedAt = LocalDate.now();
 
 	@Builder
 	private User(String oauthId, OauthProvider oauthProvider, String nickname, Gender gender, LocalDate birthday, ActivityAmount activityAmount, int height,
-		int recommendedCalorie, Role role, Status status, String profileImagePath, boolean diabetic, int diabetesYear, boolean medicine, boolean injection) {
+		int recommendedCalorie, Role role, Status status, String profileImagePath, boolean diabetic, int diabetesYear, boolean medicine, boolean injection,
+		LocalDate accessedAt) {
 		this.oauthId = oauthId;
 		this.oauthProvider = oauthProvider;
 		this.nickname = nickname;
@@ -81,6 +84,7 @@ public class User extends BaseEntity implements Persistable<String> {
 		this.diabetesYear = diabetesYear;
 		this.medicine = medicine;
 		this.injection = injection;
+		this.accessedAt = accessedAt;
 
 	}
 

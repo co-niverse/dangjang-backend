@@ -26,6 +26,7 @@ CREATE TABLE `USERS`
     MEDICINE              boolean,
     INJECTION             boolean,
     point                 int         NOT NULL,
+    `ACCESSED_AT`          datetime    NOT NULL,
     PRIMARY KEY (`OAUTH_ID`),
     UNIQUE (`NICKNAME`)
 );
@@ -84,4 +85,14 @@ CREATE TABLE `DISEASE`
     PRIMARY KEY (`OAUTH_ID`, `CODE`),
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`)
 -- FOREIGN KEY (`CODE`) REFERENCES CODE (`CODE`)
+);
+
+CREATE TABLE `POINT`(
+    `OAUTH_ID`   varchar(50) NOT NULL,
+    `CREATED_AT` dateTime    NOT NULL,
+    `TYPE`       varchar(20) NOT NULL,
+    `CHANGE_POINT` int NOT NULL,
+    `BALANCE_POINT` int NOT NULL,
+    PRIMARY KEY (`OAUTH_ID`, `CREATED_AT`, `TYPE`),
+    FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`)
 );
