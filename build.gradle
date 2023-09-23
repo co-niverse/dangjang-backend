@@ -79,7 +79,7 @@ sonarqube {
         property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
         property "sonar.java.binaries", "${buildDir}/classes"
         property "sonar.test.inclusions", "**/*Test.java"
-        property "sonar.exclusions", "**/*Application*, **/*Exception*, **/dto/**, **/entity/**, **/infrastructure/**, **/global/advice/**, **/global/config/**, **/global/support/**, **/mapper/**, **/vo/**, **/document/**, **/filter/**, **/handler/**"
+        property "sonar.exclusions", "**/*Application*, **/*Exception*, **/dto/**, **/entity/**, **/infrastructure/**, **/global/config/**, **/global/support/**, **/mapper/**, **/vo/**, **/document/**, **/filter/**, **/handler/**, **/aop/**"
     }
 }
 
@@ -105,14 +105,14 @@ jacocoTestReport {
                             '**/entity/**',
                             '**/document/**',
                             '**/infrastructure/**',
-                            '**/global/advice/**',
                             '**/global/config/**',
                             '**/global/support/**',
                             '**/mapper/**',
                             '**/vo/**',
                             '**/document/**',
                             '**/filter/**',
-                            '**/handler/**'
+                            '**/handler/**',
+                            '**/aop/**'
                     ])
                 })
         )
@@ -152,7 +152,6 @@ jacocoTestCoverageVerification {
                     '*.entity.*',
                     '*.document.*',
                     '*.infrastructure.*',
-                    '*.global.advice.*',
                     '*.global.config.*',
                     '*.global.support.*',
                     '*.mapper.*',
@@ -160,7 +159,6 @@ jacocoTestCoverageVerification {
                     '*.document.*',
                     '*.filter.*',
                     '*.handler.*',
-                    '*.log.*',
                     '*.aop.*'
             ]
         }
