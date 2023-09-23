@@ -70,6 +70,21 @@ public class PointService {
 	}
 
 	/**
+	 * 헬스커넥트 포인트 적립
+	 * <p>
+	 * 헬스커넥트 연동 유저인지 자격을 확인하고, 포인트를 적립한다.
+	 *
+	 * @param user 유저
+	 * @since 1.0.0
+	 */
+	@Async
+	public void addHealthConnectPoint(User user) {
+		if (user.isHealthConnect()) {
+			addPointEvent(PointType.HEALTH_CONNECT, user);
+		}
+	}
+
+	/**
 	 * 포인트 이벤트 추가
 	 * <p>
 	 * 포인트 적립 및 사용 이벤트가 발생했을 때,

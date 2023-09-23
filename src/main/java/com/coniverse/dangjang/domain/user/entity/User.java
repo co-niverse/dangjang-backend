@@ -60,6 +60,8 @@ public class User extends BaseEntity implements Persistable<String> {
 	private boolean medicine;
 	private boolean injection;
 	private String profileImagePath;
+	@ColumnDefault("false")
+	private boolean healthConnect;
 	@ColumnDefault("0")
 	private int point;
 	@Column(name = "ACCESSED_AT", nullable = false)
@@ -96,5 +98,9 @@ public class User extends BaseEntity implements Persistable<String> {
 	@Override
 	public boolean isNew() {
 		return getCreatedAt() == null;
+	}
+
+	public void setHealthConnect(boolean interlock) {
+		this.healthConnect = interlock;
 	}
 }

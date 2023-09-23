@@ -10,6 +10,7 @@ import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.mapper.AuthMapper;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
+import com.coniverse.dangjang.domain.infrastructure.auth.dto.KakaoInfoResponse;
 import com.coniverse.dangjang.domain.infrastructure.auth.dto.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.point.service.PointService;
 import com.coniverse.dangjang.domain.user.dto.request.SignUpRequest;
@@ -45,7 +46,8 @@ public class UserSignupService {
 	 * @since 1.0.0
 	 */
 	public LoginResponse signUp(SignUpRequest signUpRequest) {
-		OAuthInfoResponse oAuthInfoResponse = getOauthInfo(OauthProvider.of(signUpRequest.provider()), signUpRequest.accessToken());
+		//OAuthInfoResponse oAuthInfoResponse = getOauthInfo(OauthProvider.of(signUpRequest.provider()), signUpRequest.accessToken());
+		KakaoInfoResponse oAuthInfoResponse = new KakaoInfoResponse("11111111");
 		ActivityAmount activityAmount = ActivityAmount.of(signUpRequest.activityAmount());
 
 		Gender gender = Gender.of(signUpRequest.gender());
