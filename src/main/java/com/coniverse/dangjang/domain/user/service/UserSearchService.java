@@ -1,5 +1,7 @@
 package com.coniverse.dangjang.domain.user.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,5 +33,16 @@ public class UserSearchService {
 	 */
 	public User findUserByOauthId(String oauthId) {
 		return userRepository.findById(oauthId).orElseThrow(NonExistentUserException::new);
+	}
+
+	/**
+	 * 존재하는 닉네임인지 조회하여 확인한다.
+	 *
+	 * @param nickname 사용자 닉네임
+	 * @return User 사용자
+	 * @since 1.0.0
+	 */
+	public Optional<User> findNickname(String nickname) {
+		return userRepository.findByNickname(nickname);
 	}
 }
