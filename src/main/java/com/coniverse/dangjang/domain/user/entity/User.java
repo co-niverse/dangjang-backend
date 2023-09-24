@@ -23,6 +23,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
+ * 유저 Entity
+ *
  * @author EVE
  * @since 1.0.0
  */
@@ -87,7 +89,7 @@ public class User extends BaseEntity implements Persistable<String> {
 		this.medicine = medicine;
 		this.injection = injection;
 		this.accessedAt = accessedAt;
-
+		this.healthConnect = false;
 	}
 
 	@Override

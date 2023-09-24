@@ -1,6 +1,5 @@
 package com.coniverse.dangjang.domain.point.entity;
 
-import com.coniverse.dangjang.domain.point.enums.PointType;
 import com.coniverse.dangjang.domain.user.entity.User;
 
 import jakarta.persistence.Column;
@@ -36,27 +35,38 @@ public class Point {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "oauth_id")
 	private User user;
+	@MapsId("product")
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "product", referencedColumnName = "product")
+	private PointProduct pointProduct;
 
 	@Builder
-	public Point(User user, PointType type, int changePoint, int balancePoint) {
-		this.pointId = new PointId(user.getOauthId(), type);
+	public Point(User user, int changePoint, int balancePoint, PointProduct pointProduct) {
+		this.pointId = new PointId(user.getOauthId(), pointProduct.getProduct());
 		this.changePoint = changePoint;
 		this.balancePoint = balancePoint;
 		this.user = user;
+		this.pointProduct = pointProduct;
 	}
 
+	/**
+	 * 사용자 oauthId 조회
+	 *
+	 * @return String oauthId 사용자 아이디
+	 * @since 1.0.0
+	 */
 	public String getOauthId() {
 		return this.pointId.getOauthId();
 	}
 
-	public PointType getType() {
-		return this.pointId.getType();
+	/**
+	 * product 조회
+	 *
+	 * @return String Product 포인트 상품
+	 * @since 1.0.0
+	 */
+	public String getProduct() {
+		return this.pointId.getProduct();
 	}
 
-	public boolean isSame(int point) {
-		if (this.getBalancePoint() == point) {
-			return true;
-		}
-		return false;
-	}
 }

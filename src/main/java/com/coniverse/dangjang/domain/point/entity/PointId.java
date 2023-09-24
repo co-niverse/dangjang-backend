@@ -3,16 +3,11 @@ package com.coniverse.dangjang.domain.point.entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import com.coniverse.dangjang.domain.point.enums.PointType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EntityListeners;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,15 +25,14 @@ import lombok.NoArgsConstructor;
 public class PointId implements Serializable {
 	@Column(name = "oauth_id")
 	private String oauthId;
-	@CreatedDate
 	@Column(name = "created_at", updatable = false, nullable = false)
 	private LocalDateTime createdAt = LocalDateTime.now();
-	@Enumerated(EnumType.STRING)
-	private PointType type;
+	@Column(name = "product", nullable = false)
+	private String product;
 
-	protected PointId(String oauthId, PointType type) {
+	protected PointId(String oauthId, String product) {
 		this.oauthId = oauthId;
-		this.type = type;
+		this.product = product;
 	}
 
 }

@@ -77,6 +77,8 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.GET, "/api/guide/**").authenticated()
 				.requestMatchers(HttpMethod.POST, "/api/health-connect/**").authenticated()
 				.requestMatchers(HttpMethod.GET, "/api/health-metric/**").authenticated()
+				.requestMatchers(HttpMethod.POST, "/api/point/**").authenticated()
+				.requestMatchers(HttpMethod.GET, "/api/point/**").authenticated()
 				.anyRequest().permitAll()
 			)
 			.exceptionHandling(

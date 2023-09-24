@@ -1,20 +1,20 @@
 package com.coniverse.dangjang.domain.point.enums;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
- * 포인트 종류
+ * 포인트 상품 타입 Enum
  *
  * @author EVE
  * @since 1.0.0
  */
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public enum PointType {
-	ACCESS(+100),
-	REGISTER(+500),
-	HEALTH_CONNECT(+500),
-	PURCHASE(-5000);
-	private final int changePoint;
+	USE("사용"),
+	EARN("적립");
+
+	private final String description;
+
 }
