@@ -29,7 +29,7 @@ CREATE TABLE `USERS`
     INJECTION             boolean,
     point                 int         NOT NULL,
     `ACCESSED_AT`         datetime    NOT NULL,
-    `HEALTH_CONNECT`      boolean    NOT NULL,
+    `HEALTH_CONNECT`      varchar(50)    NOT NULL,
     PRIMARY KEY (`OAUTH_ID`),
     UNIQUE (`NICKNAME`)
 );
