@@ -10,7 +10,6 @@ import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.mapper.AuthMapper;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
-import com.coniverse.dangjang.domain.infrastructure.auth.dto.KakaoInfoResponse;
 import com.coniverse.dangjang.domain.infrastructure.auth.dto.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.point.service.PointService;
 import com.coniverse.dangjang.domain.user.dto.request.SignUpRequest;
@@ -21,6 +20,7 @@ import com.coniverse.dangjang.domain.user.entity.enums.Gender;
 import com.coniverse.dangjang.domain.user.mapper.UserMapper;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -33,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserSignupService {
 	private final UserRepository userRepository;
+	private final UserSearchService userSearchService;
 	private final OauthLoginService oauthLoginService;
 	private final PointService pointService;
 	private final UserMapper userMapper;
@@ -45,9 +46,9 @@ public class UserSignupService {
 	 * @return LoginResponse 로그인 응답
 	 * @since 1.0.0
 	 */
+	@Transactional
 	public LoginResponse signUp(SignUpRequest signUpRequest) {
-		//OAuthInfoResponse oAuthInfoResponse = getOauthInfo(OauthProvider.of(signUpRequest.provider()), signUpRequest.accessToken());
-		KakaoInfoResponse oAuthInfoResponse = new KakaoInfoResponse("11111111");
+		OAuthInfoResponse oAuthInfoResponse = getOauthInfo(OauthProvider.of(signUpRequest.provider()), signUpRequest.accessToken());
 		ActivityAmount activityAmount = ActivityAmount.of(signUpRequest.activityAmount());
 
 		Gender gender = Gender.of(signUpRequest.gender());
@@ -114,7 +115,7 @@ public class UserSignupService {
 	 * @since 1.0.0
 	 */
 	public DuplicateNicknameResponse checkDuplicatedNickname(String nickname) { // TODO 수정 필요 (중복됐으면 에러뱉게)
-		Optional<User> findNickname = userRepository.findByNickname(nickname);
+		Optional<User> findNickname = userSearchService.findNickname(nickname);
 		if (findNickname.isPresent()) {
 			return new DuplicateNicknameResponse(false);
 		} else {

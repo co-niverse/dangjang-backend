@@ -2,10 +2,10 @@ package com.coniverse.dangjang.domain.user.entity;
 
 import java.time.LocalDate;
 
-import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.domain.Persistable;
 
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
+import com.coniverse.dangjang.domain.healthmetric.enums.HealthConnect;
 import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
 import com.coniverse.dangjang.domain.user.entity.enums.Role;
@@ -62,17 +62,16 @@ public class User extends BaseEntity implements Persistable<String> {
 	private boolean medicine;
 	private boolean injection;
 	private String profileImagePath;
-	@ColumnDefault("false")
-	private boolean healthConnect;
-	@ColumnDefault("0")
-	private int point;
+	@Enumerated(EnumType.STRING)
+	private HealthConnect healthConnect = HealthConnect.NEVER_CONNECTED;
+	private int point = 0;
 	@Column(name = "ACCESSED_AT", nullable = false)
 	private LocalDate accessedAt = LocalDate.now();
 
 	@Builder
 	private User(String oauthId, OauthProvider oauthProvider, String nickname, Gender gender, LocalDate birthday, ActivityAmount activityAmount, int height,
 		int recommendedCalorie, Role role, Status status, String profileImagePath, boolean diabetic, int diabetesYear, boolean medicine, boolean injection,
-		LocalDate accessedAt) {
+		LocalDate accessedAt, HealthConnect healthConnect, int point) {
 		this.oauthId = oauthId;
 		this.oauthProvider = oauthProvider;
 		this.nickname = nickname;
@@ -89,7 +88,8 @@ public class User extends BaseEntity implements Persistable<String> {
 		this.medicine = medicine;
 		this.injection = injection;
 		this.accessedAt = accessedAt;
-		this.healthConnect = false;
+		this.healthConnect = healthConnect;
+		this.point = point;
 	}
 
 	@Override
@@ -102,7 +102,15 @@ public class User extends BaseEntity implements Persistable<String> {
 		return getCreatedAt() == null;
 	}
 
-	public void setHealthConnect(boolean interlock) {
+	public void setHealthConnect(HealthConnect interlock) {
 		this.healthConnect = interlock;
+	}
+
+	public void setPoint(int point) {
+		this.point = point;
+	}
+
+	public void updateAccessedAt(LocalDate accessedAt) {
+		this.accessedAt = accessedAt;
 	}
 }

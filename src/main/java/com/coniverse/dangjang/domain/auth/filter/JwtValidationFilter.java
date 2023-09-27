@@ -118,7 +118,7 @@ public class JwtValidationFilter extends OncePerRequestFilter {
 
 	private String getToken(final String authHeader) {
 		if (StringUtils.hasLength(authHeader) && authHeader.startsWith(BEARER)) {
-			return authHeader.substring(7);
+			return authHeader.substring(7); //TODO JWT Bearer 스페이스바 수정
 		} else {
 			throw new InvalidTokenException("잘못된 Authorization Header 입니다.");
 		}

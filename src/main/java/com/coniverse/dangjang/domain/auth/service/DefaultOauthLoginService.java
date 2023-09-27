@@ -1,5 +1,6 @@
 package com.coniverse.dangjang.domain.auth.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -89,5 +90,15 @@ public class DefaultOauthLoginService implements OauthLoginService {
 			throw new InvalidAuthenticationException();
 		}
 
+	}
+
+	/**
+	 * 유저 접속일자를 업데이트한다.
+	 *
+	 * @return LocalDate
+	 * @since 1.0.0
+	 */
+	public void updateUserAccessedAt(User user) {
+		userRepository.updateAccessedAtByOauthId(user.getOauthId(), LocalDate.now());
 	}
 }

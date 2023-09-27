@@ -36,7 +36,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 	 *
 	 * @since 1.0.0
 	 */
-	@Modifying
+	@Modifying(flushAutomatically = true, clearAutomatically = true)
 	@Query("update users u set u.accessedAt=?2 where u.oauthId=?1")
 	void updateAccessedAtByOauthId(String oauthId, LocalDate accessedAt);
 
@@ -46,7 +46,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 	 *
 	 * @since 1.0.0
 	 */
-	@Modifying
+	@Modifying(flushAutomatically = true, clearAutomatically = true)
 	@Query("update users u set u.point=?2 where u.oauthId=?1")
 	void updatePointByOauthId(String oauthId, int point);
 }

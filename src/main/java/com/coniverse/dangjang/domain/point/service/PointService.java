@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.coniverse.dangjang.domain.auth.service.DefaultOauthLoginService;
+import com.coniverse.dangjang.domain.healthmetric.enums.HealthConnect;
 import com.coniverse.dangjang.domain.point.dto.request.UsePointRequest;
 import com.coniverse.dangjang.domain.point.dto.response.ProductsResponse;
 import com.coniverse.dangjang.domain.point.dto.response.UsePointResponse;
@@ -39,6 +41,7 @@ public class PointService {
 	private final PointMapper pointMapper;
 	private final UserSearchService userSearchService;
 	private final PointSearchService pointSearchService;
+	private final DefaultOauthLoginService defaultOauthLoginService;
 
 	/**
 	 * 1일 1접속 포인트 적립
@@ -54,6 +57,7 @@ public class PointService {
 		User user = userSearchService.findUserByOauthId(oauthId);
 		if (!user.getAccessedAt().equals(LocalDate.now())) {
 			addPointEvent(EarnPoint.ACCESS.getTitle(), user);
+			defaultOauthLoginService.updateUserAccessedAt(user);
 		}
 	}
 
@@ -65,11 +69,10 @@ public class PointService {
 	 * @param oauthId 유저 아이디
 	 * @since 1.0.0
 	 */
-	@Async
+
 	public void addSignupPoint(String oauthId) {
 		User user = userSearchService.findUserByOauthId(oauthId);
 		if (user.getCreatedAt().toLocalDate().equals(LocalDate.now())) {
-			System.out.println(EarnPoint.REGISTER.getTitle());
 			addPointEvent(EarnPoint.REGISTER.getTitle(), user);
 		}
 	}
@@ -82,9 +85,8 @@ public class PointService {
 	 * @param user 유저
 	 * @since 1.0.0
 	 */
-	@Async
 	public void addHealthConnectPoint(User user) {
-		if (user.isHealthConnect()) {
+		if (user.getHealthConnect().equals(HealthConnect.NEVER_CONNECTED)) {
 			addPointEvent(EarnPoint.HEALTH_CONNECT.getTitle(), user);
 		}
 	}
@@ -124,9 +126,8 @@ public class PointService {
 		int changePoint = getChangePoint(product);
 		int balancePoint = getBalancePoint(changePoint, user.getPoint());
 		Point savedPoint = pointRepository.save(pointMapper.toEntity(product, user, changePoint, balancePoint));
-		userRepository.updatePointByOauthId(user.getOauthId(), savedPoint.getBalancePoint());
+		user.setPoint(savedPoint.getBalancePoint());
 		return savedPoint;
-
 	}
 
 	/**

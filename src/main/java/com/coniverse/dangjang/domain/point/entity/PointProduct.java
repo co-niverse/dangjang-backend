@@ -6,9 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 포인트 상품 Entity
@@ -17,12 +16,18 @@ import lombok.NoArgsConstructor;
  * @since 1.0.0
  */
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@RequiredArgsConstructor
 public class PointProduct {
 	@Id
 	private String product;
 	private int point;
 	@Enumerated(EnumType.STRING)
 	private PointType type;
+
+	public PointProduct(String product, int point, PointType type) {
+		this.product = product;
+		this.point = point;
+		this.type = type;
+	}
 }
