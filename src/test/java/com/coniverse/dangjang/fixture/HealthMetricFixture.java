@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectPostRequest;
+import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectRegisterRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;
@@ -43,6 +44,10 @@ public class HealthMetricFixture {
 				.mapToObj(i -> new HealthMetricPostRequest(type, LocalDate.of(2023, 1, 1).plusDays(i).toString(), "140"))
 				.toList())
 		);
+	}
+
+	public static HealthConnectRegisterRequest 헬스_커넥트_연동_요청(boolean interlock) {
+		return new HealthConnectRegisterRequest(interlock);
 	}
 
 	public static HealthMetricPatchRequest 타입_변경한_건강지표_수정_요청() {

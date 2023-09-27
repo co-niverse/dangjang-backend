@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectPostRequest;
+import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectRegisterRequest;
 import com.coniverse.dangjang.support.ControllerTest;
 import com.coniverse.dangjang.support.annotation.WithDangjangUser;
 
@@ -30,6 +31,23 @@ class HealthConnectControllerTest extends ControllerTest {
 
 		// when
 		ResultActions resultActions = post(mockMvc, URL, content);
+
+		// then
+		resultActions.andExpectAll(
+			status().isOk(),
+			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
+			jsonPath("$.data").doesNotExist()
+		);
+	}
+
+	@Test
+	void 헬스_커넥를_연동하면_성공_메시지를_반환한다() throws Exception {
+		// given
+		HealthConnectRegisterRequest request = 헬스_커넥트_연동_요청(true);
+		String content = objectMapper.writeValueAsString(request);
+		String subURL = "/interlock";
+		// when
+		ResultActions resultActions = post(mockMvc, URL + subURL, content);
 
 		// then
 		resultActions.andExpectAll(
