@@ -6,7 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.junit.jupiter.api.Disabled;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
+
+import com.coniverse.dangjang.config.TestConfig;
 
 /**
  * performance test annotation
@@ -18,5 +21,6 @@ import org.springframework.test.context.ActiveProfiles;
 @Target(ElementType.TYPE)
 @Disabled
 @ActiveProfiles("performance")
+@Import(TestConfig.class)
 public @interface PerformanceTest {
 }
