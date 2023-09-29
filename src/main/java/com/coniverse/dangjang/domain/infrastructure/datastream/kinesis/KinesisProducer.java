@@ -30,7 +30,7 @@ public class KinesisProducer implements LogProducer {
 	private String env;
 
 	@Override
-	public void sendMessage(ClientLogRequest<?> message) {
+	public void sendMessage(ClientLogRequest message) {
 		PutRecordRequest request = PutRecordRequest.builder()
 			.partitionKey("partition key")
 			.streamName(env + Topic.CLIENT_LOG.getName())

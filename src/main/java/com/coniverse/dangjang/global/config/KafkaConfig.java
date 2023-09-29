@@ -41,7 +41,7 @@ public class KafkaConfig {
 	 * @since 1.0.0
 	 */
 	@Bean
-	public ProducerFactory<Integer, ClientLogRequest<?>> producerFactoryClientLog() {
+	public ProducerFactory<Integer, ClientLogRequest> producerFactoryClientLog() {
 		Map<String, Object> configProps = new HashMap<>();
 		configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
 		configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, IntegerSerializer.class);
@@ -55,7 +55,7 @@ public class KafkaConfig {
 	 * @since 1.0.0
 	 */
 	@Bean
-	public KafkaTemplate<Integer, ClientLogRequest<?>> kafkaTemplateClientLog() {
+	public KafkaTemplate<Integer, ClientLogRequest> kafkaTemplateClientLog() {
 		return new KafkaTemplate<>(producerFactoryClientLog());
 	}
 

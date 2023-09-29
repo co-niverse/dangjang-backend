@@ -22,11 +22,11 @@ import lombok.RequiredArgsConstructor;
 @Profile({"local"})
 @Deprecated(since = "1.0.0")
 public class KafkaProducer implements LogProducer {
-	private final KafkaTemplate<Integer, ClientLogRequest<?>> kafkaClientLogTemplate;
+	private final KafkaTemplate<Integer, ClientLogRequest> kafkaClientLogTemplate;
 	private final KafkaTemplate<Integer, ServerLog> kafkaServerLogTemplate;
 
 	@Override
-	public void sendMessage(ClientLogRequest<?> message) {
+	public void sendMessage(ClientLogRequest message) {
 		kafkaClientLogTemplate.send("local" + Topic.CLIENT_LOG.getName(), message);
 	}
 
