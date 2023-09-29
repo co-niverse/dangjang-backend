@@ -18,8 +18,8 @@ import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import com.coniverse.dangjang.domain.infrastructure.datastream.enums.Topic;
-import com.coniverse.dangjang.domain.log.dto.request.ClientLogRequest;
-import com.coniverse.dangjang.global.aop.log.ServerLog;
+import com.coniverse.dangjang.domain.log.dto.app.AppLog;
+import com.coniverse.dangjang.domain.log.dto.server.ServerLog;
 
 /**
  * Kafka Configuration
@@ -41,7 +41,7 @@ public class KafkaConfig {
 	 * @since 1.0.0
 	 */
 	@Bean
-	public ProducerFactory<Integer, ClientLogRequest> producerFactoryClientLog() {
+	public ProducerFactory<Integer, AppLog> producerFactoryClientLog() {
 		Map<String, Object> configProps = new HashMap<>();
 		configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
 		configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, IntegerSerializer.class);
@@ -55,7 +55,7 @@ public class KafkaConfig {
 	 * @since 1.0.0
 	 */
 	@Bean
-	public KafkaTemplate<Integer, ClientLogRequest> kafkaTemplateClientLog() {
+	public KafkaTemplate<Integer, AppLog> kafkaTemplateClientLog() {
 		return new KafkaTemplate<>(producerFactoryClientLog());
 	}
 

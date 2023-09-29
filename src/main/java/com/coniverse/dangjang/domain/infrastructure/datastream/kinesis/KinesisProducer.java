@@ -5,8 +5,8 @@ import org.springframework.context.annotation.Profile;
 
 import com.coniverse.dangjang.domain.infrastructure.datastream.LogProducer;
 import com.coniverse.dangjang.domain.infrastructure.datastream.enums.Topic;
-import com.coniverse.dangjang.domain.log.dto.request.ClientLogRequest;
-import com.coniverse.dangjang.global.aop.log.ServerLog;
+import com.coniverse.dangjang.domain.log.dto.app.AppLog;
+import com.coniverse.dangjang.domain.log.dto.server.ServerLog;
 
 import lombok.RequiredArgsConstructor;
 import software.amazon.awssdk.core.SdkBytes;
@@ -30,7 +30,7 @@ public class KinesisProducer implements LogProducer {
 	private String env;
 
 	@Override
-	public void sendMessage(ClientLogRequest message) {
+	public void sendMessage(AppLog message) {
 		PutRecordRequest request = PutRecordRequest.builder()
 			.partitionKey("partition key")
 			.streamName(env + Topic.CLIENT_LOG.getName())

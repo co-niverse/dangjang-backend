@@ -5,8 +5,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 
 import com.coniverse.dangjang.domain.infrastructure.datastream.LogProducer;
 import com.coniverse.dangjang.domain.infrastructure.datastream.enums.Topic;
-import com.coniverse.dangjang.domain.log.dto.request.ClientLogRequest;
-import com.coniverse.dangjang.global.aop.log.ServerLog;
+import com.coniverse.dangjang.domain.log.dto.app.AppLog;
+import com.coniverse.dangjang.domain.log.dto.server.ServerLog;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,11 +22,11 @@ import lombok.RequiredArgsConstructor;
 @Profile({"local"})
 @Deprecated(since = "1.0.0")
 public class KafkaProducer implements LogProducer {
-	private final KafkaTemplate<Integer, ClientLogRequest> kafkaClientLogTemplate;
+	private final KafkaTemplate<Integer, AppLog> kafkaClientLogTemplate;
 	private final KafkaTemplate<Integer, ServerLog> kafkaServerLogTemplate;
 
 	@Override
-	public void sendMessage(ClientLogRequest message) {
+	public void sendMessage(AppLog message) {
 		kafkaClientLogTemplate.send("local" + Topic.CLIENT_LOG.getName(), message);
 	}
 
