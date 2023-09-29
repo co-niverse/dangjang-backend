@@ -129,7 +129,7 @@ class HealthMetricRegisterControllerTest extends ControllerTest {
 
 	@Order(400)
 	@ParameterizedTest
-	@ValueSource(strings = {"2023-02-29", "2023-04-31", "2023-06-31", "2023-09-31", "2023-11-31", "2023.01.01", "2023/01/01"})
+	@ValueSource(strings = {"2023-02-29", "2023-04-31", "2023-06-31", "2023-09-31", "2023-11-31", "2023.01.01", "2023/01/01", "2023-1-1"})
 	void 건강지표_등록_RequestBody의_날짜가_유효하지_않으면_예외가_발생한다(String createdAt) throws Exception {
 		// given
 		HealthMetricPostRequest request = new HealthMetricPostRequest("아침 식전", createdAt, "100");
