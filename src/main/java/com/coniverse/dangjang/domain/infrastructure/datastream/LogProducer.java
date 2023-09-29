@@ -10,6 +10,7 @@ import com.coniverse.dangjang.domain.log.dto.server.ServerLog;
  * @since 1.0.0
  * @deprecated fluentbit으로 대체
  */
+@Deprecated(since = "1.0.0")
 public interface LogProducer {
 	void sendMessage(AppLog message);
 

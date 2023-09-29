@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
+@Deprecated(since = "1.0.0")
 public enum Topic {
 	CLIENT_LOG("-client-log"),
 	SERVER_LOG("-server-log");
