@@ -27,10 +27,4 @@ public class AppLogController {
 		logService.sendLog(request, principal.getUsername());
 		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}
-
-	@PostMapping("/test")
-	public ResponseEntity<SuccessSingleResponse<?>> post1(@Valid @RequestBody LogRequest request) {
-		logService.sendLog(request, "11111111");
-		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
-	}
 }
