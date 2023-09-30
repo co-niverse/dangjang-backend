@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 
 /**
- * client log request
+ * client log request dto
  *
  * @author TEO
  * @since 1.0.0

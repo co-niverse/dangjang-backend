@@ -4,6 +4,12 @@ import com.coniverse.dangjang.global.support.enums.EnumCode;
 
 import lombok.AllArgsConstructor;
 
+/**
+ * event enum
+ *
+ * @author TEO
+ * @since 1.0.0
+ */
 @AllArgsConstructor
 public enum Event implements EnumCode {
 	HOME_BLOOD_SUGAR_CLICK("home_bloodsugar_click"),

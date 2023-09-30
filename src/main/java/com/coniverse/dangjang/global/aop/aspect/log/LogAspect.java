@@ -81,7 +81,7 @@ public class LogAspect {
 	}
 
 	/**
-	 * log ETL send
+	 * send server log to ETL
 	 *
 	 * @since 1.0.0
 	 */

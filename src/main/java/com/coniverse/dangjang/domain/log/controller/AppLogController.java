@@ -16,6 +16,12 @@ import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * app log controller
+ *
+ * @author TEO
+ * @since 1.0.0
+ */
 @RestController
 @RequestMapping("/api/log")
 @RequiredArgsConstructor

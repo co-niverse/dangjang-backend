@@ -15,6 +15,12 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * log service
+ *
+ * @author TEO
+ * @since 1.0.0
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -33,6 +39,11 @@ public class LogService {
 		this.url = "http://" + host + ":" + port + "/app.log";
 	}
 
+	/**
+	 * send app log to ETL
+	 *
+	 * @since 1.0.0
+	 */
 	public void sendLog(LogRequest request, String oauthId) {
 		User user = userSearchService.findUserByOauthId(oauthId);
 		AppLog appLog = logMapper.toAppLog(request, user);

@@ -5,7 +5,7 @@ import java.util.Map;
 import com.coniverse.dangjang.domain.log.enums.Event;
 
 /**
- * app log
+ * app log dto
  *
  * @author TEO
  * @since 1.0.0
