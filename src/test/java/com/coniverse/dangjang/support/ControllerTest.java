@@ -20,8 +20,6 @@ import com.coniverse.dangjang.domain.guide.exercise.service.ExerciseGuideSearchS
 import com.coniverse.dangjang.domain.guide.weight.controller.WeightGuideController;
 import com.coniverse.dangjang.domain.guide.weight.service.WeightGuideSearchService;
 import com.coniverse.dangjang.domain.healthmetric.controller.HealthConnectController;
-import com.coniverse.dangjang.domain.healthmetric.controller.HealthMetricRegisterController;
-import com.coniverse.dangjang.domain.healthmetric.controller.HealthConnectController;
 import com.coniverse.dangjang.domain.healthmetric.controller.HealthMetricController;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthConnectRegisterService;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricChartSearchService;
@@ -55,7 +53,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 		ExerciseGuideController.class,
 		BloodSugarGuideController.class,
 		HealthConnectController.class,
-		GuideController.class
+		GuideController.class,
 		AppLogController.class
 	},
 	includeFilters = @ComponentScan.Filter(classes = {EnableWebSecurity.class}))
