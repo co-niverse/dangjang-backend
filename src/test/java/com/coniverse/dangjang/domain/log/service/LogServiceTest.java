@@ -22,8 +22,6 @@ import com.coniverse.dangjang.domain.user.service.UserSearchService;
 class LogServiceTest {
 	@Autowired
 	private LogService logService;
-	// @MockBean
-	// private RestTemplate restTemplate;
 	@MockBean
 	private UserSearchService userSearchService;
 
