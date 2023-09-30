@@ -36,7 +36,6 @@ public class UserFixture {
 			.injection(false)
 			.healthConnect(HealthConnect.NEVER_CONNECTED)
 			.accessedAt(LocalDate.now())
-			.point(0)
 			.build();
 	}
 
@@ -59,7 +58,6 @@ public class UserFixture {
 			.injection(false)
 			.healthConnect(HealthConnect.NEVER_CONNECTED)
 			.accessedAt(LocalDate.now())
-			.point(0)
 			.build();
 	}
 
@@ -82,7 +80,6 @@ public class UserFixture {
 			.injection(false)
 			.healthConnect(HealthConnect.NEVER_CONNECTED)
 			.accessedAt(LocalDate.now())
-			.point(0)
 			.build();
 	}
 
@@ -105,7 +102,6 @@ public class UserFixture {
 			.injection(injection)
 			.healthConnect(HealthConnect.NEVER_CONNECTED)
 			.accessedAt(LocalDate.now())
-			.point(0)
 			.build();
 	}
 
@@ -128,7 +124,6 @@ public class UserFixture {
 			.injection(false)
 			.accessedAt(accessedAt)
 			.healthConnect(HealthConnect.NEVER_CONNECTED)
-			.point(0)
 			.build();
 	}
 
@@ -152,7 +147,6 @@ public class UserFixture {
 			.accessedAt(accessedAt)
 			.healthConnect(HealthConnect.NEVER_CONNECTED)
 			.accessedAt(LocalDate.now())
-			.point(0)
 			.build();
 	}
 }

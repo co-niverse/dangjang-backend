@@ -2,6 +2,8 @@ package com.coniverse.dangjang.domain.user.service;
 
 import org.springframework.stereotype.Service;
 
+import com.coniverse.dangjang.domain.point.entity.UserPoint;
+import com.coniverse.dangjang.domain.point.service.PointSearchService;
 import com.coniverse.dangjang.domain.user.dto.response.MypageResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
 
@@ -17,6 +19,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class MypageService {
 	private final UserSearchService userSearchService;
+	private final PointSearchService pointSearchService;
 
 	/**
 	 * Mypage에 필요한 정보를 조회한다.
@@ -27,6 +30,7 @@ public class MypageService {
 	 */
 	public MypageResponse getMypage(String oauthId) {
 		User user = userSearchService.findUserByOauthId(oauthId);
-		return new MypageResponse(user.getNickname(), user.getPoint());
+		UserPoint userPoint = pointSearchService.findUserPointByOauthId(oauthId);
+		return new MypageResponse(user.getNickname(), userPoint.getPoint());
 	}
 }

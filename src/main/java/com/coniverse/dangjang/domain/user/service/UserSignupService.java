@@ -74,10 +74,9 @@ public class UserSignupService {
 			KakaoLoginRequest kakaoLoginRequest = new KakaoLoginRequest(accessToken);
 			return oauthLoginService.request(kakaoLoginRequest);
 
-		} else {
-			NaverLoginRequest naverLoginRequest = new NaverLoginRequest(accessToken);
-			return oauthLoginService.request(naverLoginRequest);
 		}
+		NaverLoginRequest naverLoginRequest = new NaverLoginRequest(accessToken);
+		return oauthLoginService.request(naverLoginRequest);
 	}
 
 	/**

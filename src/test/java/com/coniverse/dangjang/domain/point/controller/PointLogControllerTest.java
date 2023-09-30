@@ -19,7 +19,7 @@ import com.coniverse.dangjang.support.ControllerTest;
 import com.coniverse.dangjang.support.annotation.WithDangjangUser;
 
 @WithDangjangUser
-public class PointControllerTest extends ControllerTest {
+public class PointLogControllerTest extends ControllerTest {
 	private static String URL = "/api/point";
 	@Autowired
 	private PointService pointService;

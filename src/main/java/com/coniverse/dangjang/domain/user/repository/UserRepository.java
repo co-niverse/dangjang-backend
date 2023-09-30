@@ -40,13 +40,4 @@ public interface UserRepository extends JpaRepository<User, String> {
 	@Query("update users u set u.accessedAt=?2 where u.oauthId=?1")
 	void updateAccessedAtByOauthId(String oauthId, LocalDate accessedAt);
 
-	/**
-	 * point 갱신
-	 * oauthId로 사용자 정보 조회
-	 *
-	 * @since 1.0.0
-	 */
-	@Modifying(flushAutomatically = true, clearAutomatically = true)
-	@Query("update users u set u.point=?2 where u.oauthId=?1")
-	void updatePointByOauthId(String oauthId, int point);
 }

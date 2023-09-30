@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Point {
+public class PointLog {
 	@EmbeddedId
 	@Getter(AccessLevel.PRIVATE)
 	private PointId pointId;
@@ -41,7 +41,7 @@ public class Point {
 	private PointProduct pointProduct;
 
 	@Builder
-	public Point(User user, int changePoint, int balancePoint, PointProduct pointProduct) {
+	public PointLog(User user, int changePoint, int balancePoint, PointProduct pointProduct) {
 		this.pointId = new PointId(user.getOauthId(), pointProduct.getProduct());
 		this.changePoint = changePoint;
 		this.balancePoint = balancePoint;

@@ -20,8 +20,11 @@ import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectPostR
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectRegisterRequest;
 import com.coniverse.dangjang.domain.healthmetric.enums.HealthConnect;
 import com.coniverse.dangjang.domain.healthmetric.repository.HealthMetricRepository;
+import com.coniverse.dangjang.domain.point.entity.UserPoint;
+import com.coniverse.dangjang.domain.point.repository.PointLogRepository;
 import com.coniverse.dangjang.domain.point.repository.PointProductRepository;
-import com.coniverse.dangjang.domain.point.repository.PointRepository;
+import com.coniverse.dangjang.domain.point.repository.UserPointRepository;
+import com.coniverse.dangjang.domain.point.service.PointSearchService;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
@@ -53,7 +56,11 @@ class HealthConnectRegisterServiceTest {
 	@Autowired
 	private EntityManager em;
 	@Autowired
-	private PointRepository pointRepository;
+	private PointLogRepository pointLogRepository;
+	@Autowired
+	private PointSearchService pointSearchService;
+	@Autowired
+	private UserPointRepository userPointRepository;
 
 	private String oauthId;
 	private User user;
@@ -61,14 +68,16 @@ class HealthConnectRegisterServiceTest {
 	@BeforeEach
 	void setUp() {
 		user = userRepository.save(유저_테오());
+		userPointRepository.save(유저_포인트_생성(user.getOauthId(), 0));
 		oauthId = user.getOauthId();
 	}
 
 	@AfterEach
 	void tearDown() {
 		healthMetricRepository.deleteAll();
-		pointRepository.deleteAll();
+		pointLogRepository.deleteAll();
 		pointProductRepository.deleteAll();
+		userPointRepository.deleteAll();
 		userRepository.deleteAll();
 
 	}
@@ -114,10 +123,10 @@ class HealthConnectRegisterServiceTest {
 		// when
 		healthConnectRegisterService.interlockHealthConnect(request, oauthId);
 
-		User 연동된_유저 = userSearchService.findUserByOauthId(oauthId);
+		UserPoint 유저_포인트 = pointSearchService.findUserPointByOauthId(oauthId);
 
 		// then
-		assertThat(연동된_유저.getPoint()).isEqualTo(500);
+		assertThat(유저_포인트.getPoint()).isEqualTo(500);
 	}
 
 	@Transactional
@@ -134,9 +143,9 @@ class HealthConnectRegisterServiceTest {
 		healthConnectRegisterService.interlockHealthConnect(request, oauthId);
 
 		User 연동된_유저 = userSearchService.findUserByOauthId(oauthId);
-
+		UserPoint 유저_포인트 = pointSearchService.findUserPointByOauthId(oauthId);
 		// then
-		assertThat(연동된_유저.getPoint()).isZero();
+		assertThat(유저_포인트.getPoint()).isZero();
 		assertThat(연동된_유저.getHealthConnect()).isEqualTo(HealthConnect.DISCONNECTED);
 	}
 
@@ -154,9 +163,10 @@ class HealthConnectRegisterServiceTest {
 		healthConnectRegisterService.interlockHealthConnect(request, oauthId);
 
 		User 연동된_유저 = userSearchService.findUserByOauthId(oauthId);
+		UserPoint 유저_포인트 = pointSearchService.findUserPointByOauthId(oauthId);
 
 		// then
-		assertThat(연동된_유저.getPoint()).isZero();
+		assertThat(유저_포인트.getPoint()).isZero();
 		assertThat(연동된_유저.getHealthConnect()).isEqualTo(HealthConnect.CONNECTING);
 	}
 }

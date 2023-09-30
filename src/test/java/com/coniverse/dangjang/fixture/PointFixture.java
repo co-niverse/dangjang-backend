@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.coniverse.dangjang.domain.point.entity.PointProduct;
+import com.coniverse.dangjang.domain.point.entity.UserPoint;
 import com.coniverse.dangjang.domain.point.enums.PointType;
 
 /**
@@ -14,6 +15,13 @@ import com.coniverse.dangjang.domain.point.enums.PointType;
  * @version 1.0.0
  */
 public class PointFixture {
+	public static final UserPoint 유저_포인트_생성(String oauthId, int point) {
+		return UserPoint.builder()
+			.oauthId(oauthId)
+			.point(point)
+			.build();
+	}
+
 	public static final List<PointProduct> 전체_포인트_상품_목록() {
 		return List.of(new PointProduct("접속", 100, PointType.EARN),
 			new PointProduct("등록", 500, PointType.EARN),

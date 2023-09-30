@@ -12,12 +12,14 @@ import com.coniverse.dangjang.domain.healthmetric.enums.HealthConnect;
 import com.coniverse.dangjang.domain.point.dto.request.UsePointRequest;
 import com.coniverse.dangjang.domain.point.dto.response.ProductsResponse;
 import com.coniverse.dangjang.domain.point.dto.response.UsePointResponse;
-import com.coniverse.dangjang.domain.point.entity.Point;
+import com.coniverse.dangjang.domain.point.entity.PointLog;
 import com.coniverse.dangjang.domain.point.entity.PointProduct;
+import com.coniverse.dangjang.domain.point.entity.UserPoint;
 import com.coniverse.dangjang.domain.point.enums.EarnPoint;
 import com.coniverse.dangjang.domain.point.enums.PointType;
 import com.coniverse.dangjang.domain.point.mapper.PointMapper;
-import com.coniverse.dangjang.domain.point.repository.PointRepository;
+import com.coniverse.dangjang.domain.point.repository.PointLogRepository;
+import com.coniverse.dangjang.domain.point.repository.UserPointRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
@@ -36,12 +38,13 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Transactional
 public class PointService {
-	private final PointRepository pointRepository;
+	private final PointLogRepository pointLogRepository;
 	private final UserRepository userRepository;
 	private final PointMapper pointMapper;
 	private final UserSearchService userSearchService;
 	private final PointSearchService pointSearchService;
 	private final DefaultOauthLoginService defaultOauthLoginService;
+	private final UserPointRepository userPointRepository;
 
 	/**
 	 * 1일 1접속 포인트 적립
@@ -73,6 +76,7 @@ public class PointService {
 	public void addSignupPoint(String oauthId) {
 		User user = userSearchService.findUserByOauthId(oauthId);
 		if (user.getCreatedAt().toLocalDate().equals(LocalDate.now())) {
+			userPointRepository.save(pointMapper.toEntity(user.getOauthId(), 0));
 			addPointEvent(EarnPoint.REGISTER.getTitle(), user);
 		}
 	}
@@ -103,13 +107,13 @@ public class PointService {
 
 	public UsePointResponse purchaseProduct(String oauthId, UsePointRequest request) {
 		User user = userSearchService.findUserByOauthId(oauthId);
-		Point savedPoint;
+		PointLog savedPointLog;
 		try {
-			savedPoint = addPointEvent(request.type(), user);
+			savedPointLog = addPointEvent(request.type(), user);
 		} catch (IllegalArgumentException e) {
 			throw new InvalidTokenException("%s의 포인트 상품이 존재하지 않습니다.".formatted(request.type()));
 		}
-		return new UsePointResponse(request.phone(), savedPoint.getProduct(), savedPoint.getChangePoint(), savedPoint.getBalancePoint());
+		return new UsePointResponse(request.phone(), savedPointLog.getProduct(), savedPointLog.getChangePoint(), savedPointLog.getBalancePoint());
 	}
 
 	/**
@@ -121,13 +125,14 @@ public class PointService {
 	 * @param user 유저
 	 * @since 1.0.0
 	 */
-	private Point addPointEvent(String pointProduct, User user) {
+	private PointLog addPointEvent(String pointProduct, User user) {
 		PointProduct product = pointSearchService.findPointProductById(pointProduct);
+		UserPoint userPoint = pointSearchService.findUserPointByOauthId(user.getId());
 		int changePoint = getChangePoint(product);
-		int balancePoint = getBalancePoint(changePoint, user.getPoint());
-		Point savedPoint = pointRepository.save(pointMapper.toEntity(product, user, changePoint, balancePoint));
-		user.setPoint(savedPoint.getBalancePoint());
-		return savedPoint;
+		int balancePoint = getBalancePoint(changePoint, userPoint.getPoint());
+		PointLog savedPointLog = pointLogRepository.save(pointMapper.toEntity(product, user, changePoint, balancePoint));
+		userPoint.setPoint(savedPointLog.getBalancePoint());
+		return savedPointLog;
 	}
 
 	/**
@@ -172,7 +177,7 @@ public class PointService {
 	 */
 
 	public ProductsResponse getProducts(String oauthId) {
-		int balancePoint = userSearchService.findUserByOauthId(oauthId).getPoint();
+		int balancePoint = pointSearchService.findUserPointByOauthId(oauthId).getPoint();
 		Map<String, Integer> products = pointSearchService.findAllByType(PointType.USE)
 			.stream()
 			.collect(Collectors.toMap(PointProduct::getProduct, PointProduct::getPoint));
