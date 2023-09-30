@@ -43,6 +43,11 @@ jwt:
   refresh:
     exp: 3600000
 
+fluentbit:
+  host: localhost
+  app-port: 1234
+  server-port: 1234
+
 cors:
   allowed-origins: "*"
 
