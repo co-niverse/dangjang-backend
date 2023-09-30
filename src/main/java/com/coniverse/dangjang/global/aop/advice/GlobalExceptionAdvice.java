@@ -106,7 +106,7 @@ public class GlobalExceptionAdvice {
 	 */
 	@ExceptionHandler(NoHandlerFoundException.class)
 	public ResponseEntity<ErrorResponse> handleNoHandlerFoundException(NoHandlerFoundException e) {
-		log.warn(e.getMessage());
+		log.error(e.getMessage());
 		int errorCode = e.getStatusCode().value();
 		ErrorResponse errorResponse = new ErrorResponse(errorCode, "올바르지 못한 URL 요청입니다.");
 		return ResponseEntity.status(errorCode).body(errorResponse);
