@@ -12,8 +12,8 @@ import lombok.Getter;
  */
 @Getter
 public class WalkGuideContent { //TODO if-else문 다른 방법으로 해결
-	private String guideTTS;
-	private String guideLastWeek;
+	private final String guideTTS;
+	private final String guideLastWeek;
 
 	public WalkGuideContent(int needStepByTTS, int needStepByLastWeek) {
 		this.guideTTS = createWalkGuideContent(needStepByTTS);

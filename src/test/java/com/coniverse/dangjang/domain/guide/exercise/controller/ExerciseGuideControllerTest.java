@@ -26,10 +26,10 @@ class ExerciseGuideControllerTest extends ControllerTest {
 	@Autowired
 	private ExerciseGuideSearchService exerciseGuideSearchService;
 
-	private String 조회_날짜 = "2023-12-31";
-	private String 유효하지_않는_날짜 = "2023-12-35";
+	private final String 조회_날짜 = "2023-12-31";
+	private final String 유효하지_않는_날짜 = "2023-12-35";
 
-	private ExerciseGuideResponse 운동_가이드_응답 = 운동_가이드_응답(조회_날짜);
+	private final ExerciseGuideResponse 운동_가이드_응답 = 운동_가이드_응답(조회_날짜);
 
 	@Test
 	void 운동가이드_조회를_성공한다() throws Exception {

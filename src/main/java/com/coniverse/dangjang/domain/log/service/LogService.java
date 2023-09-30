@@ -26,13 +26,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LogService {
 	private final RestTemplate restTemplate;
+	private final UserSearchService userSearchService;
+	private final LogMapper logMapper;
 	@Value("${fluentbit.host}")
 	private String host;
 	@Value("${fluentbit.app-port}")
 	private String port;
 	private String url;
-	private final UserSearchService userSearchService;
-	private final LogMapper logMapper;
 
 	@PostConstruct
 	private void setUrl() {
@@ -50,7 +50,7 @@ public class LogService {
 		try {
 			restTemplate.postForEntity(url, appLog, String.class);
 		} catch (ResourceAccessException e) {
-			log.error("fluentbit app.log port dead");
+			log.error("fluentbit app.log port is dead");
 		}
 	}
 }
