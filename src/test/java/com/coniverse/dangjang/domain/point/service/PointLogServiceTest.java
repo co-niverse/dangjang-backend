@@ -135,7 +135,7 @@ public class PointLogServiceTest {
 		//given
 		유저 = userRepository.save(포인트_유저(today));
 		userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 500));
-		UsePointRequest request = new UsePointRequest(유저.getOauthId(), "스타벅스_오천원_금액권");
+		UsePointRequest request = new UsePointRequest(유저.getOauthId(), "스타벅스 오천원 금액권");
 		//when&then
 		assertThatThrownBy(() -> pointService.purchaseProduct(유저.getOauthId(), request))
 			.isInstanceOf(InvalidTokenException.class);
@@ -144,7 +144,7 @@ public class PointLogServiceTest {
 	@Order(500)
 	@Transactional
 	@ParameterizedTest
-	@ValueSource(strings = {"스타벅스_오천원_금액권", "CU_오천원_금액권", "네이버페이_오천원_금액권"})
+	@ValueSource(strings = {"스타벅스 오천원 금액권", "CU 오천원 금액권", "네이버페이 오천원 금액권"})
 	public void 포인트_상품을_구매한다(String product) {
 		//given
 		유저 = userRepository.save(포인트_유저(today));

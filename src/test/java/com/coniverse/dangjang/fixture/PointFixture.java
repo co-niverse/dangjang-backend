@@ -26,10 +26,10 @@ public class PointFixture {
 		return List.of(new PointProduct("접속", 100, PointType.EARN),
 			new PointProduct("등록", 500, PointType.EARN),
 			new PointProduct("기기연동", 500, PointType.EARN),
-			new PointProduct("스타벅스_오천원_금액권", 5000, PointType.USE),
-			new PointProduct("CU_오천원_금액권", 5000, PointType.USE),
-			new PointProduct("배민_일만원_금액권", 10000, PointType.USE),
-			new PointProduct("네이버페이_오천원_금액권", 5000, PointType.USE));
+			new PointProduct("스타벅스 오천원 금액권", 5000, PointType.USE),
+			new PointProduct("CU 오천원 금액권", 5000, PointType.USE),
+			new PointProduct("배민 일만원 금액권", 10000, PointType.USE),
+			new PointProduct("네이버페이 오천원 금액권", 5000, PointType.USE));
 	}
 
 	public static final Map<String, Integer> 적립_포인트_상품_목록() {
