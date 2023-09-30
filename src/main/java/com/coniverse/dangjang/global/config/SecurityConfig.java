@@ -74,6 +74,7 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.GET, "/api/duplicateNickname/**").permitAll() // TODO 수정
 				.requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/api-docs/**").permitAll()
 				.requestMatchers(HttpMethod.POST, "/api/health-metric/**").authenticated()
+				.requestMatchers(HttpMethod.GET, "/api/health-metric/**").authenticated()
 				.requestMatchers(HttpMethod.GET, "/api/guide/**").authenticated()
 				.requestMatchers(HttpMethod.POST, "/api/health-connect/**").authenticated()
 				.requestMatchers(HttpMethod.POST, "/api/log/**").authenticated()

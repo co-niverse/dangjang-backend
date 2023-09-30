@@ -18,7 +18,7 @@ import com.coniverse.dangjang.support.ControllerTest;
  * @since 1.0.0
  */
 class UserControllerTest extends ControllerTest {
-	private final String URI = "/api";
+	private static final String URI = "/api";
 
 	@Test
 	void 닉네임을_받아와_확인을_성공한다() throws Exception {

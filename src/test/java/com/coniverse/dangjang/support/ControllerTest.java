@@ -13,13 +13,18 @@ import com.coniverse.dangjang.domain.auth.service.JwtTokenProvider;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
 import com.coniverse.dangjang.domain.guide.bloodsugar.controller.BloodSugarGuideController;
 import com.coniverse.dangjang.domain.guide.bloodsugar.service.BloodSugarGuideSearchService;
+import com.coniverse.dangjang.domain.guide.common.controller.GuideController;
+import com.coniverse.dangjang.domain.guide.common.service.DayGuideService;
 import com.coniverse.dangjang.domain.guide.exercise.controller.ExerciseGuideController;
 import com.coniverse.dangjang.domain.guide.exercise.service.ExerciseGuideSearchService;
 import com.coniverse.dangjang.domain.guide.weight.controller.WeightGuideController;
 import com.coniverse.dangjang.domain.guide.weight.service.WeightGuideSearchService;
 import com.coniverse.dangjang.domain.healthmetric.controller.HealthConnectController;
 import com.coniverse.dangjang.domain.healthmetric.controller.HealthMetricRegisterController;
+import com.coniverse.dangjang.domain.healthmetric.controller.HealthConnectController;
+import com.coniverse.dangjang.domain.healthmetric.controller.HealthMetricController;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthConnectRegisterService;
+import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricChartSearchService;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
 import com.coniverse.dangjang.domain.intro.controller.IntroController;
 import com.coniverse.dangjang.domain.intro.service.IntroService;
@@ -35,13 +40,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * <br/>
  * contollers에 테스트할 controller를 등록하고, controller에서 주입하는 bean들을 MockBean으로 등록한다.
  *
- * @author TEO
+ * @author TEO, EVE
  * @since 1.0.0
  */
 @WebMvcTest(
 	controllers = {
 		IntroController.class,
-		HealthMetricRegisterController.class,
+		HealthMetricController.class,
 		LoginController.class,
 		SignupController.class,
 		UserController.class,
@@ -50,6 +55,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 		ExerciseGuideController.class,
 		BloodSugarGuideController.class,
 		HealthConnectController.class,
+		GuideController.class
 		AppLogController.class
 	},
 	includeFilters = @ComponentScan.Filter(classes = {EnableWebSecurity.class}))
@@ -78,6 +84,10 @@ public class ControllerTest {
 	private ExerciseGuideSearchService exerciseGuideSearchService;
 	@MockBean
 	private HealthConnectRegisterService healthConnectRegisterService;
+	@MockBean
+	private HealthMetricChartSearchService healthMetricChartSearchService;
+	@MockBean
+	private DayGuideService dayGuideService;
 	@MockBean
 	private LogService logService;
 }

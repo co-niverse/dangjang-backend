@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
+import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetricId;
 
@@ -53,4 +54,17 @@ public interface HealthMetricRepository extends JpaRepository<HealthMetric, Heal
 	 */
 	@Query("SELECT h FROM HealthMetric h WHERE h.healthMetricId.oauthId = ?1 AND h.healthMetricId.type = ?2 and h.healthMetricId.createdAt between ?3 and ?4")
 	List<HealthMetric> findLastWeekByHealthMetricId(String oauthId, CommonCode commonCode, LocalDate startDate, LocalDate endDate);
+
+	/**
+	 * GroupCode와 oauthId로 지난주 건강지표조회
+	 *
+	 * @param oauthId   사용자 ID
+	 * @param groupCode 그룹코드
+	 * @param startDate 시작일
+	 * @param endDate   종료일
+	 * @return HealthMetric
+	 * @since 1.0.0
+	 */
+	@Query("SELECT h FROM HealthMetric h WHERE h.healthMetricId.oauthId = ?1 AND h.groupCode = ?2 and h.healthMetricId.createdAt between ?3 and ?4")
+	List<HealthMetric> findLastWeekByGroupCodeAndCreatedAt(String oauthId, GroupCode groupCode, LocalDate startDate, LocalDate endDate);
 }

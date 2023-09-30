@@ -5,6 +5,8 @@ import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -32,14 +34,15 @@ class ExerciseGuideSearchServiceTest {
 	private ExerciseGuideRepository exerciseGuideRepository;
 	private final User 테오 = 유저_테오();
 	private final String 테오_아이디 = 테오.getOauthId();
-	private final String 조회_날짜 = "2023-12-31";
+	private final LocalDate 저장_날짜_Date = LocalDate.parse("2023-12-31").plusDays(1);
+	private final LocalDate 조회_날짜_Date = LocalDate.parse("2023-12-31");
 	private final String 가이드가_존재하지_않는_날짜 = "3000-12-31";
 	private ExerciseGuide 저장한_운동_가이드;
 
 	@BeforeAll
 	void setup() {
 		exerciseGuideRepository.deleteAll();
-		저장한_운동_가이드 = exerciseGuideRepository.save(운동_가이드(테오_아이디, 조회_날짜));
+		저장한_운동_가이드 = exerciseGuideRepository.save(운동_가이드(테오_아이디, 저장_날짜_Date));
 	}
 
 	@Test
@@ -47,11 +50,10 @@ class ExerciseGuideSearchServiceTest {
 		//given
 
 		//when
-		ExerciseGuide exerciseGuide = exerciseGuideSearchService.findByOauthIdAndCreatedAt(테오_아이디, 조회_날짜);
+		ExerciseGuide exerciseGuide = exerciseGuideSearchService.findByOauthIdAndCreatedAt(테오_아이디, 조회_날짜_Date);
 
 		// then
 		assertThat(exerciseGuide.getOauthId()).isEqualTo(테오_아이디);
-		assertThat(exerciseGuide.getCreatedAt()).isEqualTo(조회_날짜);
 		assertThat(exerciseGuide.getContent()).isEqualTo(저장한_운동_가이드.getContent());
 		assertThat(exerciseGuide.getComparedToLastWeek()).isEqualTo(저장한_운동_가이드.getComparedToLastWeek());
 		assertThat(exerciseGuide.getNeedStepByLastWeek()).isEqualTo(저장한_운동_가이드.getNeedStepByLastWeek());
@@ -64,7 +66,7 @@ class ExerciseGuideSearchServiceTest {
 	@Test
 	void 운동_가이드를_조회하여_Response를_반환한다() {
 		//given
-
+		String 조회_날짜 = 조회_날짜_Date.toString();
 		//when
 		ExerciseGuideResponse exerciseGuide = exerciseGuideSearchService.findGuide(테오_아이디, 조회_날짜);
 		//then
@@ -72,7 +74,7 @@ class ExerciseGuideSearchServiceTest {
 		assertThat(exerciseGuide.content()).isEqualTo(저장한_운동_가이드.getContent());
 		assertThat(exerciseGuide.comparedToLastWeek()).isEqualTo(저장한_운동_가이드.getComparedToLastWeek());
 		assertThat(exerciseGuide.needStepByLastWeek()).isEqualTo(저장한_운동_가이드.getNeedStepByLastWeek());
-		assertThat(exerciseGuide.stepCount()).isEqualTo(저장한_운동_가이드.getStepCount());
+		assertThat(exerciseGuide.stepsCount()).isEqualTo(저장한_운동_가이드.getStepCount());
 		assertThat(exerciseGuide.exerciseCalories()).hasSize(저장한_운동_가이드.getExerciseCalories().size());
 		assertThat(exerciseGuide.needStepByTTS()).isEqualTo(저장한_운동_가이드.getNeedStepByTTS());
 
