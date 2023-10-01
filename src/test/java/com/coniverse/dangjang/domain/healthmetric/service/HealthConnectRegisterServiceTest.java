@@ -169,4 +169,5 @@ class HealthConnectRegisterServiceTest {
 		assertThat(유저_포인트.getPoint()).isZero();
 		assertThat(연동된_유저.getHealthConnect()).isEqualTo(HealthConnect.CONNECTING);
 	}
+
 }

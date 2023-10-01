@@ -90,7 +90,7 @@ public class PointService {
 	 * @since 1.0.0
 	 */
 	public void addHealthConnectPoint(User user) {
-		if (user.getHealthConnect().equals(HealthConnect.NEVER_CONNECTED)) {
+		if (user.getHealthConnect().equals(HealthConnect.CONNECTING)) {
 			addPointEvent(EarnPoint.HEALTH_CONNECT.getTitle(), user);
 		}
 	}

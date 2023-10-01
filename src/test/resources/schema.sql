@@ -111,6 +111,7 @@ CREATE TABLE `USER_POINT`
 (
     `OAUTH_ID` varchar(50) NOT NULL,
     `POINT`    int         NOT NULL,
+    `VERSION`    int         NOT NULL,
     PRIMARY KEY (`OAUTH_ID`),
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`)
 );
