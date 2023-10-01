@@ -23,8 +23,8 @@ CREATE TABLE `USERS`
     `PROFILE_IMAGE_PATH`  varchar(255),
     `DIABETIC`            boolean     NOT NULL,
     `DIABETES_YEAR`       int,
-    MEDICINE              boolean,
-    INJECTION             boolean,
+    `MEDICINE`            boolean,
+    `INJECTION`           boolean,
     PRIMARY KEY (`OAUTH_ID`),
     UNIQUE (`NICKNAME`)
 );
