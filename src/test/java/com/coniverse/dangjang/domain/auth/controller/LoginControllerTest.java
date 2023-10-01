@@ -109,5 +109,4 @@ class LoginControllerTest extends ControllerTest {
 			jsonPath("$.fieldErrors[0].rejectedValue").value(" ")
 		);
 	}
-	
 }

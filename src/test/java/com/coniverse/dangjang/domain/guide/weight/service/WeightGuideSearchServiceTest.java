@@ -30,8 +30,8 @@ class WeightGuideSearchServiceTest {
 	private WeightGuideSearchService weightGuideSearchService;
 	@Autowired
 	private WeightMapper weightMapper;
-	private String 테오_아이디 = 유저_테오().getOauthId();
-	private String 생성일자 = "2023-12-31";
+	private final String 테오_아이디 = 유저_테오().getOauthId();
+	private final String 생성일자 = "2023-12-31";
 	private WeightGuide 저장된_체중_가이드;
 
 	@BeforeAll

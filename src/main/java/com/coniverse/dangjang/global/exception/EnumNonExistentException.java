@@ -8,6 +8,6 @@ package com.coniverse.dangjang.global.exception;
  */
 public class EnumNonExistentException extends BusinessException {
 	public EnumNonExistentException() {
-		super(400, "존재하지 않는 타입입니다.");
+		super(400, "존재하지 않는 값입니다.");
 	}
 }

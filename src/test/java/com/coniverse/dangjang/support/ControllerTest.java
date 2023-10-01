@@ -26,6 +26,8 @@ import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricChartSearc
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
 import com.coniverse.dangjang.domain.intro.controller.IntroController;
 import com.coniverse.dangjang.domain.intro.service.IntroService;
+import com.coniverse.dangjang.domain.log.controller.AppLogController;
+import com.coniverse.dangjang.domain.log.service.LogService;
 import com.coniverse.dangjang.domain.user.controller.SignupController;
 import com.coniverse.dangjang.domain.user.controller.UserController;
 import com.coniverse.dangjang.domain.user.service.UserSignupService;
@@ -51,7 +53,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 		ExerciseGuideController.class,
 		BloodSugarGuideController.class,
 		HealthConnectController.class,
-		GuideController.class
+		GuideController.class,
+		AppLogController.class
 	},
 	includeFilters = @ComponentScan.Filter(classes = {EnableWebSecurity.class}))
 @ComponentScan(basePackages = "com.coniverse.dangjang.domain.auth.handler")
@@ -83,4 +86,6 @@ public class ControllerTest {
 	private HealthMetricChartSearchService healthMetricChartSearchService;
 	@MockBean
 	private DayGuideService dayGuideService;
+	@MockBean
+	private LogService logService;
 }

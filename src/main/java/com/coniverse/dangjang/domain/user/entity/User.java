@@ -88,6 +88,6 @@ public class User extends BaseEntity implements Persistable<String> {
 
 	@Override
 	public boolean isNew() {
-		return getCreatedAt() == null;
+		return this.getCreatedAt() == null;
 	}
 }

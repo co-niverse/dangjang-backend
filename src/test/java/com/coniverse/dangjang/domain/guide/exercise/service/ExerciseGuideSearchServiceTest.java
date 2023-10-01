@@ -28,16 +28,15 @@ import com.coniverse.dangjang.domain.user.entity.User;
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ExerciseGuideSearchServiceTest {
+	private final User 테오 = 유저_테오();
+	private final String 테오_아이디 = 테오.getOauthId();
+	private final LocalDate 저장_날짜_Date = LocalDate.parse("2023-12-31").plusDays(1);
+	private final LocalDate 조회_날짜_Date = LocalDate.parse("2023-12-31");
+	private final String 가이드가_존재하지_않는_날짜 = "3000-12-31";
 	@Autowired
 	private ExerciseGuideSearchService exerciseGuideSearchService;
 	@Autowired
 	private ExerciseGuideRepository exerciseGuideRepository;
-	private User 테오 = 유저_테오();
-	private String 테오_아이디 = 테오.getOauthId();
-
-	private LocalDate 저장_날짜_Date = LocalDate.parse("2023-12-31").plusDays(1);
-	private LocalDate 조회_날짜_Date = LocalDate.parse("2023-12-31");
-	private String 가이드가_존재하지_않는_날짜 = "3000-12-31";
 	private ExerciseGuide 저장한_운동_가이드;
 
 	@BeforeAll

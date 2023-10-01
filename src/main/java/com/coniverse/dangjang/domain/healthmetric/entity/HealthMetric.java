@@ -42,7 +42,7 @@ public class HealthMetric implements Persistable<HealthMetricId> {
 	private String unit;
 	@MapsId("oauthId")
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "oauth_id")
+	@JoinColumn(name = "oauth_id", insertable = false, updatable = false)
 	private User user;
 
 	@Builder

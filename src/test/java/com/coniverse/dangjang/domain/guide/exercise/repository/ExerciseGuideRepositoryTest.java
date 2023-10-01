@@ -26,12 +26,12 @@ import com.coniverse.dangjang.domain.user.entity.User;
 class ExerciseGuideRepositoryTest {
 	@Autowired
 	private ExerciseGuideRepository exerciseGuideRepository;
-	private User 테오 = 유저_테오();
-	private String 테오_아이디 = 테오.getOauthId();
-	private LocalDate 조회_날짜 = LocalDate.of(2023, 12, 31);
-	private LocalDate 시작_날짜 = LocalDate.of(2020, 01, 01);
-	private LocalDate 마지막_날짜 = LocalDate.of(2020, 01, 07);
-	private ExerciseGuide 저장하는_운동_가이드 = 운동_가이드(테오_아이디, 조회_날짜);
+	private final User 테오 = 유저_테오();
+	private final String 테오_아이디 = 테오.getOauthId();
+	private final LocalDate 조회_날짜 = LocalDate.of(2023, 12, 31);
+	private final LocalDate 시작_날짜 = LocalDate.of(2020, 01, 01);
+	private final LocalDate 마지막_날짜 = LocalDate.of(2020, 01, 07);
+	private final ExerciseGuide 저장하는_운동_가이드 = 운동_가이드(테오_아이디, 조회_날짜);
 
 	@Order(100)
 	@Test

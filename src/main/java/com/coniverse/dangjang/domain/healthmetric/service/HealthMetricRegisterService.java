@@ -3,6 +3,7 @@ package com.coniverse.dangjang.domain.healthmetric.service;
 import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.analysis.service.AnalysisService;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
@@ -18,7 +19,6 @@ import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
 import com.coniverse.dangjang.global.util.EnumFindUtil;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 /**

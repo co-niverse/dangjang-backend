@@ -3,6 +3,7 @@ package com.coniverse.dangjang.domain.user.service;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.auth.dto.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
@@ -31,6 +32,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserSignupService {
 	private final UserRepository userRepository;
 	private final OauthLoginService oauthLoginService;

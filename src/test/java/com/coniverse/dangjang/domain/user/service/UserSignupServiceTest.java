@@ -6,14 +6,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.user.dto.request.SignUpRequest;
 import com.coniverse.dangjang.domain.user.dto.response.DuplicateNicknameResponse;
+import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.fixture.SignUpFixture;
 
 /**
@@ -21,10 +22,16 @@ import com.coniverse.dangjang.fixture.SignUpFixture;
  * @since 1.0.0
  */
 @SpringBootTest
-@Transactional
 class UserSignupServiceTest {
 	@Autowired
 	private UserSignupService userSignupService;
+	@Autowired
+	private UserRepository userRepository;
+
+	@AfterEach
+	void tearDown() {
+		userRepository.deleteAll();
+	}
 
 	@Test
 	void 새로운_유저를_추가한다_카카오() {
