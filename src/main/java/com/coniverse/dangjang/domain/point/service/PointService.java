@@ -14,11 +14,13 @@ import com.coniverse.dangjang.domain.point.dto.response.ProductsResponse;
 import com.coniverse.dangjang.domain.point.dto.response.UsePointResponse;
 import com.coniverse.dangjang.domain.point.entity.PointLog;
 import com.coniverse.dangjang.domain.point.entity.PointProduct;
+import com.coniverse.dangjang.domain.point.entity.ProductPurchase;
 import com.coniverse.dangjang.domain.point.entity.UserPoint;
 import com.coniverse.dangjang.domain.point.enums.EarnPoint;
 import com.coniverse.dangjang.domain.point.enums.PointType;
 import com.coniverse.dangjang.domain.point.mapper.PointMapper;
 import com.coniverse.dangjang.domain.point.repository.PointLogRepository;
+import com.coniverse.dangjang.domain.point.repository.ProductPurchaseRepository;
 import com.coniverse.dangjang.domain.point.repository.UserPointRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
@@ -45,6 +47,7 @@ public class PointService {
 	private final PointSearchService pointSearchService;
 	private final DefaultOauthLoginService defaultOauthLoginService;
 	private final UserPointRepository userPointRepository;
+	private final ProductPurchaseRepository productPurchaseRepository;
 
 	/**
 	 * 1일 1접속 포인트 적립
@@ -107,13 +110,10 @@ public class PointService {
 
 	public UsePointResponse purchaseProduct(String oauthId, UsePointRequest request) {
 		User user = userSearchService.findUserByOauthId(oauthId);
-		PointLog savedPointLog;
-		try {
-			savedPointLog = addPointEvent(request.type(), user);
-		} catch (IllegalArgumentException e) {
-			throw new InvalidTokenException("%s의 포인트 상품이 존재하지 않습니다.".formatted(request.type()));
-		}
-		return new UsePointResponse(request.phone(), savedPointLog.getProduct(), savedPointLog.getChangePoint(), savedPointLog.getBalancePoint());
+		PointLog savedPointLog = addPointEvent(request.type(), user);
+		ProductPurchase purchase = productPurchaseRepository.save(pointMapper.toEntity(user, savedPointLog.getPointProduct(), request.phone()));
+		return new UsePointResponse(purchase.getPhone(), purchase.getPointProduct().getProduct(), savedPointLog.getChangePoint(),
+			savedPointLog.getBalancePoint());
 	}
 
 	/**
