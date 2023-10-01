@@ -70,4 +70,4 @@ jobs:
           script: |
             docker pull ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
             docker stop dev-server && docker rm dev-server
-            docker run -d --name dev-server -e TZ=Asia/Seoul -p 8080:8080 ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+            docker run -d --name dev-server -p 8080:8080 --network dev-network ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}

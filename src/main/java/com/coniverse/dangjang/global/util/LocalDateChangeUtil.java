@@ -20,7 +20,7 @@ public class LocalDateChangeUtil {
 	 * @return LocalDate UTC 날짜
 	 * @since 1.0.0
 	 */
-	public LocalDate convertDateToUTC(LocalDate createdAt) {
+	public static LocalDate convertDateToUTC(LocalDate createdAt) {
 		return createdAt.plusDays(1);
 	}
 
@@ -31,7 +31,7 @@ public class LocalDateChangeUtil {
 	 * @return LocalDate KST 날짜
 	 * @since 1.0.0
 	 */
-	public LocalDate convertDateToKST(LocalDate createdAt) {
+	public static LocalDate convertDateToKST(LocalDate createdAt) {
 		return createdAt.minusDays(1);
 	}
 

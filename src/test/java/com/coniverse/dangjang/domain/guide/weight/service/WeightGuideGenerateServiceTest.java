@@ -40,7 +40,7 @@ class WeightGuideGenerateServiceTest {
 	@Autowired
 	private WeightAnalysisStrategy weightAnalysisStrategy;
 	private String 테오_아이디;
-	private String 수정된_체중 = "60";
+	private final String 수정된_체중 = "60";
 
 	@BeforeAll
 	void setUp() {

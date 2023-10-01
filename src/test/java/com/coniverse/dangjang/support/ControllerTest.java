@@ -28,6 +28,8 @@ import com.coniverse.dangjang.domain.intro.controller.IntroController;
 import com.coniverse.dangjang.domain.intro.service.IntroService;
 import com.coniverse.dangjang.domain.point.controller.PointController;
 import com.coniverse.dangjang.domain.point.service.PointService;
+import com.coniverse.dangjang.domain.log.controller.AppLogController;
+import com.coniverse.dangjang.domain.log.service.LogService;
 import com.coniverse.dangjang.domain.user.controller.SignupController;
 import com.coniverse.dangjang.domain.user.controller.UserController;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
@@ -56,7 +58,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 		BloodSugarGuideController.class,
 		HealthConnectController.class,
 		GuideController.class,
-		PointController.class
+		PointController.class,
+		AppLogController.class
 	},
 	includeFilters = @ComponentScan.Filter(classes = {EnableWebSecurity.class}))
 @ComponentScan(basePackages = "com.coniverse.dangjang.domain.auth.handler")
@@ -94,4 +97,6 @@ public class ControllerTest {
 	private UserRepository userRepository;
 	@MockBean
 	private MypageService mypageService;
+	@MockBean
+	private LogService logService;
 }

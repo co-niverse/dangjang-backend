@@ -3,6 +3,7 @@ package com.coniverse.dangjang.domain.user.service;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
@@ -20,7 +21,6 @@ import com.coniverse.dangjang.domain.user.entity.enums.Gender;
 import com.coniverse.dangjang.domain.user.mapper.UserMapper;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -31,6 +31,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserSignupService {
 	private final UserRepository userRepository;
 	private final UserSearchService userSearchService;
