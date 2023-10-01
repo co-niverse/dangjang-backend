@@ -42,7 +42,10 @@ import com.coniverse.dangjang.global.exception.InvalidTokenException;
 import jakarta.persistence.EntityManager;
 
 /**
- * 포인트 테스트
+ * 포인트 Service 테스트
+ *
+ * @author EVE
+ * @since 1.0.0
  */
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

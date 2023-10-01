@@ -15,7 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * Point entity
+ * Point Log entity
  *
  * @author EVE
  * @since 1.0.0

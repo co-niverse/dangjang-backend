@@ -25,15 +25,33 @@ public class PointSearchService {
 	private final PointProductRepository pointProductRepository;
 	private final UserPointRepository userPointRepository;
 
+	/**
+	 * 포인트 상품 조회
+	 *
+	 * @param pointProduct 포인트 상품 이름
+	 * @since 1.0.0
+	 */
 	public PointProduct findPointProductById(String pointProduct) {
 		return pointProductRepository.findById(pointProduct)
-			.orElseThrow(() -> new InvalidTokenException(pointProduct + " 포인트 타입이 없습니다."));
+			.orElseThrow(() -> new InvalidTokenException(pointProduct + " 포인트 상품이 없습니다."));
 	}
 
+	/**
+	 * 포인트 상품 목록 조회
+	 *
+	 * @param type 포인트 상품 타입
+	 * @since 1.0.0
+	 */
 	public List<PointProduct> findAllByType(PointType type) {
 		return pointProductRepository.findAllByType(type);
 	}
 
+	/**
+	 * 사용자 포인트 조회
+	 *
+	 * @param oauthId 사용자 아이디
+	 * @since 1.0.0
+	 */
 	public UserPoint findUserPointByOauthId(String oauthId) {
 		return userPointRepository.findById(oauthId)
 			.orElseThrow(() -> new InvalidTokenException(oauthId + " 유저 포인트가 없습니다."));

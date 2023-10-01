@@ -18,6 +18,12 @@ import com.coniverse.dangjang.domain.point.service.PointService;
 import com.coniverse.dangjang.support.ControllerTest;
 import com.coniverse.dangjang.support.annotation.WithDangjangUser;
 
+/**
+ * 포인트 로그 Controller 테스트
+ *
+ * @author EVE
+ * @since 1.0.0
+ */
 @WithDangjangUser
 public class PointLogControllerTest extends ControllerTest {
 	private static String URL = "/api/point";

@@ -6,6 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.coniverse.dangjang.domain.point.entity.UserPoint;
 
+/**
+ * 유저 포인트 Respository
+ *
+ * @author EVE
+ * @since 1.0.0
+ */
 public interface UserPointRepository extends JpaRepository<UserPoint, String> {
 	/**
 	 * point 갱신
