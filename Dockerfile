@@ -4,4 +4,4 @@ USER root
 COPY ./build/libs/*SNAPSHOT.jar /app.jar
 ENV TZ=Asia/Seoul
 VOLUME var/log
-ENTRYPOINT ["java","-jar","-Dspring.profiles.active=dev","/app.jar"]
+ENTRYPOINT ["java","-jar","-Dspring.profiles.active=prod","/app.jar"]
