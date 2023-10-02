@@ -15,7 +15,7 @@ env:
   ENV: staging
 
 jobs:
-  deloy-prod:
+  deloy-staging:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -72,7 +72,7 @@ jobs:
         id: deploy
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          #          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          task-definition: ${{ env.TASK_DEFINITION_NAME }}-${{ env.ENV }}
           service: ${{ env.ECS_SERVICE_NAME }}-${{ env.ENV }}
           cluster: ${{ env.ECS_CLUSTER_NAME }}-${{ env.ENV }}
           wait-for-service-stability: true
