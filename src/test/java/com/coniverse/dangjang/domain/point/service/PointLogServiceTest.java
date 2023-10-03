@@ -3,12 +3,13 @@ package com.coniverse.dangjang.domain.point.service;
 import static com.coniverse.dangjang.fixture.HealthMetricFixture.*;
 import static com.coniverse.dangjang.fixture.PointFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
-import static java.lang.Thread.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDate;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.jupiter.api.AfterEach;
@@ -22,7 +23,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectRegisterRequest;
 import com.coniverse.dangjang.domain.healthmetric.enums.HealthConnect;
@@ -113,11 +113,10 @@ class PointLogServiceTest {
 		유저 = userRepository.save(포인트_유저(today.minusDays(1)));
 		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 500));
 		int accessPoint = 유저_포인트.getPoint() + EarnPoint.ACCESS.getChangePoint();
+		CountDownLatch latch = new CountDownLatch(1);
 		//when
 		pointService.addAccessPoint(유저.getOauthId());
-
-		//TODO 비동기 메서드의 테스트 하는 방법 수정
-		sleep(3000);
+		latch.await(1, TimeUnit.SECONDS);
 
 		//then
 		User 접속한_유저 = userRepository.findById(유저.getOauthId()).get();
@@ -127,7 +126,6 @@ class PointLogServiceTest {
 
 	@Order(300)
 	@Test
-	@Transactional
 	void Health_Connect_연동_포인트_적립을_받는다() {
 		//given
 		유저 = userRepository.save(포인트_유저(today));
@@ -137,7 +135,6 @@ class PointLogServiceTest {
 
 		//when
 		pointService.addHealthConnectPoint(유저);
-		em.flush();
 		//then
 		User 접속한_유저 = userRepository.findById(유저.getOauthId()).get();
 		UserPoint 접속한_유저_포인트 = pointSearchService.findUserPointByOauthId(접속한_유저.getOauthId());
@@ -182,7 +179,6 @@ class PointLogServiceTest {
 	}
 
 	@Order(550)
-	@Transactional
 	@Test
 	void 존재하지_않는_포인트_상품을_구매하면_예외를_던진다() {
 		//given
@@ -214,13 +210,13 @@ class PointLogServiceTest {
 	@Test
 	void 동시_상품구매_요청_한번만_수행한다() throws InterruptedException {
 		//given
-
 		유저 = userRepository.save(포인트_유저(today));
 		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 6000));
 		UsePointRequest request = new UsePointRequest(유저.getOauthId(), "스타벅스 오천원 금액권");
 		ExecutorService executorService = Executors.newFixedThreadPool(30);
 		AtomicInteger successCount = new AtomicInteger();
 		AtomicInteger failedCount = new AtomicInteger();
+		CountDownLatch latch = new CountDownLatch(30);
 
 		for (int i = 0; i < 100; i++) {
 			executorService.submit(() -> {
@@ -229,11 +225,12 @@ class PointLogServiceTest {
 					successCount.incrementAndGet();
 				} catch (Exception e) {
 					failedCount.incrementAndGet();
+				} finally {
+					latch.countDown();
 				}
 			});
 		}
-		sleep(5000);
-
+		latch.await();
 		//then
 		User 접속한_유저 = userRepository.findById(유저.getOauthId()).get();
 		System.out.println("point log start =====================");
@@ -253,24 +250,20 @@ class PointLogServiceTest {
 	@Test
 	void 동시_접속_포인트를_한번만_얻는다() throws InterruptedException {
 		//given
-
 		유저 = userRepository.save(포인트_유저(today.minusDays(1)));
 		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 0));
-		ExecutorService executorService = Executors.newFixedThreadPool(30);
 		AtomicInteger successCount = new AtomicInteger();
 		AtomicInteger failedCount = new AtomicInteger();
-
+		CountDownLatch latch = new CountDownLatch(30);
 		for (int i = 0; i < 100; i++) {
-			executorService.submit(() -> {
-				try {
-					pointService.addAccessPoint(유저.getOauthId());
-					successCount.incrementAndGet();
-				} catch (Exception e) {
-					failedCount.incrementAndGet();
-				}
-			});
+			try {
+				pointService.addAccessPoint(유저.getOauthId());
+				successCount.incrementAndGet();
+			} catch (Exception e) {
+				failedCount.incrementAndGet();
+			}
 		}
-		sleep(5000);
+		latch.await(1, TimeUnit.SECONDS);
 
 		//then
 		User 접속한_유저 = userRepository.findById(유저.getOauthId()).get();
@@ -295,7 +288,7 @@ class PointLogServiceTest {
 		ExecutorService executorService = Executors.newFixedThreadPool(30);
 		AtomicInteger successCount = new AtomicInteger();
 		AtomicInteger failedCount = new AtomicInteger();
-
+		CountDownLatch latch = new CountDownLatch(30);
 		for (int i = 0; i < 30; i++) {
 			executorService.submit(() -> {
 				try {
@@ -304,10 +297,12 @@ class PointLogServiceTest {
 				} catch (Exception e) {
 					System.out.println("error : " + e.getMessage());
 					failedCount.incrementAndGet();
+				} finally {
+					latch.countDown();
 				}
 			});
 		}
-		sleep(5000);
+		latch.await();
 
 		//then
 		User 연동된_유저 = userRepository.findById(유저.getOauthId()).get();
