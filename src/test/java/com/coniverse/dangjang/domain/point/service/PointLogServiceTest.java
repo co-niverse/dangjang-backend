@@ -51,7 +51,7 @@ import jakarta.persistence.EntityManager;
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class PointLogServiceTest {
+class PointLogServiceTest {
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -75,12 +75,12 @@ public class PointLogServiceTest {
 	private LocalDate today = LocalDate.now();
 
 	@BeforeAll
-	public void setUp() {
+	void setUp() {
 		pointProductRepository.saveAll(전체_포인트_상품_목록());
 	}
 
 	@AfterEach
-	public void tearDown() {
+	void tearDown() {
 		pointLogRepository.deleteAll();
 		productPurchaseRepository.deleteAll();
 		userPointRepository.deleteAll();
@@ -90,7 +90,7 @@ public class PointLogServiceTest {
 
 	@Order(100)
 	@Test
-	public void 회원가입_포인트_적립을_받는다() {
+	void 회원가입_포인트_적립을_받는다() {
 		//given
 		유저 = userRepository.save(포인트_유저(today));
 		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 0));
@@ -108,7 +108,7 @@ public class PointLogServiceTest {
 
 	@Order(200)
 	@Test
-	public void 하루에_한번_접속하면_포인트_적립을_받는다() throws InterruptedException {
+	void 하루에_한번_접속하면_포인트_적립을_받는다() throws InterruptedException {
 		//given
 		유저 = userRepository.save(포인트_유저(today.minusDays(1)));
 		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 500));
@@ -128,7 +128,7 @@ public class PointLogServiceTest {
 	@Order(300)
 	@Test
 	@Transactional
-	public void Health_Connect_연동_포인트_적립을_받는다() {
+	void Health_Connect_연동_포인트_적립을_받는다() {
 		//given
 		유저 = userRepository.save(포인트_유저(today));
 		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 500));
@@ -146,20 +146,21 @@ public class PointLogServiceTest {
 
 	@Order(400)
 	@Test
-	public void 구매중_포인트가_부족하면_에러를_발생한다() {
+	void 구매중_포인트가_부족하면_에러를_발생한다() {
 		//given
 		유저 = userRepository.save(포인트_유저(today));
 		userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 500));
 		UsePointRequest request = new UsePointRequest(유저.getOauthId(), "스타벅스 오천원 금액권");
 		//when&then
-		assertThatThrownBy(() -> pointService.purchaseProduct(유저.getOauthId(), request))
-			.isInstanceOf(InvalidTokenException.class);
+		assertThatThrownBy(() -> {
+			pointService.purchaseProduct(유저.getOauthId(), request);
+		}).isInstanceOf(InvalidTokenException.class);
 	}
 
 	@Order(500)
 	@ParameterizedTest
 	@ValueSource(strings = {"스타벅스 오천원 금액권", "CU 오천원 금액권", "네이버페이 오천원 금액권"})
-	public void 포인트_상품을_구매한다(String product) {
+	void 포인트_상품을_구매한다(String product) {
 		//given
 		유저 = userRepository.save(포인트_유저(today));
 		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 6000));
@@ -183,7 +184,7 @@ public class PointLogServiceTest {
 	@Order(550)
 	@Transactional
 	@Test
-	public void 존재하지_않는_포인트_상품을_구매하면_예외를_던진다() {
+	void 존재하지_않는_포인트_상품을_구매하면_예외를_던진다() {
 		//given
 		유저 = userRepository.save(포인트_유저(today));
 		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 6000));
@@ -197,7 +198,7 @@ public class PointLogServiceTest {
 
 	@Order(600)
 	@Test
-	public void 포인트_상품을_조회한다() {
+	void 포인트_상품을_조회한다() {
 		//given
 		유저 = userRepository.save(포인트_유저(today));
 		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 500));
@@ -211,7 +212,7 @@ public class PointLogServiceTest {
 
 	@Order(700)
 	@Test
-	public void 동시_상품구매_요청_한번만_수행한다() throws InterruptedException {
+	void 동시_상품구매_요청_한번만_수행한다() throws InterruptedException {
 		//given
 
 		유저 = userRepository.save(포인트_유저(today));
@@ -250,7 +251,7 @@ public class PointLogServiceTest {
 
 	@Order(800)
 	@Test
-	public void 동시_접속_포인트를_한번만_얻는다() throws InterruptedException {
+	void 동시_접속_포인트를_한번만_얻는다() throws InterruptedException {
 		//given
 
 		유저 = userRepository.save(포인트_유저(today.minusDays(1)));
@@ -285,7 +286,7 @@ public class PointLogServiceTest {
 
 	@Order(900)
 	@Test
-	public void 동시_헬스커넥트_연결요청_포인트를_한번만_얻는다() throws InterruptedException {
+	void 동시_헬스커넥트_연결요청_포인트를_한번만_얻는다() throws InterruptedException {
 		//given
 		유저 = userRepository.save(포인트_유저(today));
 		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 0));

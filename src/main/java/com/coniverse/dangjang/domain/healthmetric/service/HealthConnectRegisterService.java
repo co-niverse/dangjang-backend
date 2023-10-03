@@ -70,10 +70,8 @@ public class HealthConnectRegisterService {
 				user.setHealthConnect(HealthConnect.CONNECTING);
 				pointService.addHealthConnectPoint(user);
 			}
-		} else if (!request.healthConnectInterlock()) {
-			if (user.getHealthConnect().equals(HealthConnect.CONNECTING)) {
-				user.setHealthConnect(HealthConnect.DISCONNECTED);
-			}
+		} else if (!request.healthConnectInterlock() && user.getHealthConnect().equals(HealthConnect.CONNECTING)) {
+			user.setHealthConnect(HealthConnect.DISCONNECTED);
 		}
 
 	}

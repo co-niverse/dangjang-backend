@@ -25,14 +25,14 @@ import com.coniverse.dangjang.support.annotation.WithDangjangUser;
  * @since 1.0.0
  */
 @WithDangjangUser
-public class PointLogControllerTest extends ControllerTest {
+class PointLogControllerTest extends ControllerTest {
 	private static String URL = "/api/point";
 	@Autowired
 	private PointService pointService;
 	private Map<String, Integer> products = 적립_포인트_상품_목록();
 
 	@Test
-	public void 포인트_상품_목록_조회() throws Exception {
+	void 포인트_상품_목록_조회() throws Exception {
 		// given
 		ProductsResponse response = new ProductsResponse(1000, products);
 		when(pointService.getProducts(any())).thenReturn(response);
@@ -48,7 +48,7 @@ public class PointLogControllerTest extends ControllerTest {
 	}
 
 	@Test
-	public void 포인트_상품_구매한다() throws Exception {
+	void 포인트_상품_구매한다() throws Exception {
 		// given
 		UsePointRequest request = new UsePointRequest("010-xxxx-xxxx", "CU오천원금액권");
 		UsePointResponse response = new UsePointResponse("010-xxxx-xxxx", "CU오천원금액권", 5000, 1000);

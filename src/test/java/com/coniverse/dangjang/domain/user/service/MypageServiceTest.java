@@ -22,7 +22,7 @@ import com.coniverse.dangjang.domain.user.repository.UserRepository;
  * @version 1.0.0
  */
 @SpringBootTest
-public class MypageServiceTest {
+class MypageServiceTest {
 	@Autowired
 	private MypageService mypageService;
 	@Autowired
@@ -32,7 +32,7 @@ public class MypageServiceTest {
 	private User 유저;
 
 	@Test
-	public void getMypage() {
+	void getMypage() {
 		// given
 		유저 = userRepository.save(헬스커넥트_연동_유저(LocalDate.now()));
 		int 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 1000)).getPoint();
