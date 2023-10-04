@@ -125,6 +125,7 @@ public class PointService {
 	 * @param user 유저
 	 * @since 1.0.0
 	 */
+
 	private PointLog addPointEvent(String pointProduct, User user) {
 		PointProduct product = pointSearchService.findPointProductById(pointProduct);
 		UserPoint userPoint = pointSearchService.findUserPointByOauthId(user.getId());

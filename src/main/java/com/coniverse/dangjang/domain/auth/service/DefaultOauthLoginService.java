@@ -23,6 +23,9 @@ import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
 
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
+
 /**
  * oauth 로그인 서비스
  *
@@ -36,15 +39,18 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	private final UserSearchService userSearchService;
 	private final Map<OauthProvider, OAuthClient> clients;
 	private final UserRepository userRepository;
+	private final String authorization = "Authorization";
+	private final JwtTokenProvider jwtTokenProvider;
 
 	public DefaultOauthLoginService(AuthTokenGenerator authTokenGenerator, UserSearchService userSearchService, List<OAuthClient> clients,
-		UserRepository userRepository) {
+		UserRepository userRepository, JwtTokenProvider jwtTokenProvider) {
 		this.authTokenGenerator = authTokenGenerator;
 		this.userSearchService = userSearchService;
 		this.clients = clients.stream().collect(
 			Collectors.toUnmodifiableMap(OAuthClient::getOauthProvider, Function.identity())
 		);
 		this.userRepository = userRepository;
+		this.jwtTokenProvider = jwtTokenProvider;
 	}
 
 	/**
@@ -56,6 +62,24 @@ public class DefaultOauthLoginService implements OauthLoginService {
 		OAuthInfoResponse oAuthInfoResponse = request(params);
 		User user = userSearchService.findUserByOauthId(oAuthInfoResponse.getOauthId());
 		return new LoginResponse(user.getNickname(), false, false);
+	}
+
+	/**
+	 * refreshToken 인증 후 AuthToken 재발급
+	 *
+	 * @param request 재발급 요청
+	 * @return AuthToken 재발급된 AccessToken과 refreshToken을 전달한다
+	 * @since 1.0.0
+	 */
+
+	public AuthToken reissueToken(HttpServletRequest request) {
+		String token = jwtTokenProvider.getToken(request.getHeader(authorization));
+		if (jwtTokenProvider.validationToken(token)) {
+			Claims claim = jwtTokenProvider.parseClaims(token);
+			User user = userSearchService.findUserByOauthId(claim.getSubject());
+			return getAuthToken(user.getNickname());
+		}
+		throw new NonExistentUserException();
 	}
 
 	/**

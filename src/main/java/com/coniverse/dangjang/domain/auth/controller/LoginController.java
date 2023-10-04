@@ -14,6 +14,7 @@ import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -55,5 +56,20 @@ public class LoginController {
 		return ResponseEntity.ok()
 			.header("AccessToken", authToken.getAccessToken()).header("RefreshToken", authToken.getRefreshToken())
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
+	}
+
+	/**
+	 * refreshToken으로 AuthToken 재발급
+	 *
+	 * @param request 요청
+	 * @return AuthToken
+	 * @since 1.0.0
+	 */
+	@PostMapping("/reissue")
+	public ResponseEntity<SuccessSingleResponse<LoginResponse>> reissue(HttpServletRequest request) {
+		AuthToken newAuthToken = oauthLoginService.reissueToken(request);
+		return ResponseEntity.ok()
+			.header("AccessToken", newAuthToken.getAccessToken()).header("RefreshToken", newAuthToken.getRefreshToken())
+			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}
 }

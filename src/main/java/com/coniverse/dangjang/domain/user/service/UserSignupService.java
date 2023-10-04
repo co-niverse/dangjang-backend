@@ -47,7 +47,6 @@ public class UserSignupService {
 	 * @return LoginResponse 로그인 응답
 	 * @since 1.0.0
 	 */
-	@Transactional
 	public LoginResponse signUp(SignUpRequest signUpRequest) {
 		OAuthInfoResponse oAuthInfoResponse = getOauthInfo(OauthProvider.of(signUpRequest.provider()), signUpRequest.accessToken());
 		ActivityAmount activityAmount = ActivityAmount.of(signUpRequest.activityAmount());
@@ -70,11 +69,10 @@ public class UserSignupService {
 	 * @throws IllegalArgumentException 잘못된 provider 일때 발생하는 오류
 	 * @since 1.0.0
 	 */
-	public OAuthInfoResponse getOauthInfo(OauthProvider provider, String accessToken) {
+	private OAuthInfoResponse getOauthInfo(OauthProvider provider, String accessToken) {
 		if (provider.equals(OauthProvider.KAKAO)) {
 			KakaoLoginRequest kakaoLoginRequest = new KakaoLoginRequest(accessToken);
 			return oauthLoginService.request(kakaoLoginRequest);
-
 		}
 		NaverLoginRequest naverLoginRequest = new NaverLoginRequest(accessToken);
 		return oauthLoginService.request(naverLoginRequest);
@@ -90,7 +88,7 @@ public class UserSignupService {
 	 * @since 1.0.0
 	 */
 
-	public int calculateRecommendedCalorie(Gender gender, int height, ActivityAmount activityAmount) {
+	private int calculateRecommendedCalorie(Gender gender, int height, ActivityAmount activityAmount) {
 		double standardWeight;
 		if (gender.isTrue()) {
 			standardWeight = (Math.pow(height / 100.0, 2.0) * 21);
