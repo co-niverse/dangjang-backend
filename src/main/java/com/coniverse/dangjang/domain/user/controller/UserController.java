@@ -51,7 +51,7 @@ public class UserController { // TODO 전체 수정 (위치: signup, 이름: dup
 	 * @since 1.0.0
 	 */
 	@GetMapping("/mypage")
-	public ResponseEntity<SuccessSingleResponse<?>> getMyPage(@AuthenticationPrincipal User user) {
+	public ResponseEntity<SuccessSingleResponse<MypageResponse>> getMyPage(@AuthenticationPrincipal User user) {
 		MypageResponse response = mypageService.getMypage(user.getUsername());
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
