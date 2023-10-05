@@ -18,8 +18,8 @@ import com.coniverse.dangjang.domain.point.entity.UserPoint;
 import com.coniverse.dangjang.domain.point.enums.EarnPoint;
 import com.coniverse.dangjang.domain.point.enums.PointType;
 import com.coniverse.dangjang.domain.point.mapper.PointMapper;
-import com.coniverse.dangjang.domain.point.repository.PointLogRepository;
-import com.coniverse.dangjang.domain.point.repository.ProductPurchaseRepository;
+import com.coniverse.dangjang.domain.point.repository.PointHistoryRepository;
+import com.coniverse.dangjang.domain.point.repository.PurchaseHistoryRepository;
 import com.coniverse.dangjang.domain.point.repository.UserPointRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
@@ -39,13 +39,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Transactional
 public class PointService {
-	private final PointLogRepository pointLogRepository;
+	private final PointHistoryRepository pointHistoryRepository;
 	private final PointMapper pointMapper;
 	private final UserSearchService userSearchService;
 	private final PointSearchService pointSearchService;
 	private final DefaultOauthLoginService defaultOauthLoginService;
 	private final UserPointRepository userPointRepository;
-	private final ProductPurchaseRepository productPurchaseRepository;
+	private final PurchaseHistoryRepository purchaseHistoryRepository;
 
 	/**
 	 * 1일 1접속 포인트 적립
@@ -109,7 +109,7 @@ public class PointService {
 	public UsePointResponse purchaseProduct(String oauthId, UsePointRequest request) {
 		User user = userSearchService.findUserByOauthId(oauthId);
 		PointHistory savedPointHistory = addPointEvent(request.type(), user);
-		PurchaseHistory purchase = productPurchaseRepository.save(pointMapper.toEntity(user, savedPointHistory.getPointProduct(), request.phone()));
+		PurchaseHistory purchase = purchaseHistoryRepository.save(pointMapper.toEntity(user, savedPointHistory.getPointProduct(), request.phone()));
 		return new UsePointResponse(purchase.getPhone(), purchase.getPointProduct().getProductName(), savedPointHistory.getChangePoint(),
 			savedPointHistory.getBalancePoint());
 	}
@@ -129,7 +129,7 @@ public class PointService {
 		UserPoint userPoint = pointSearchService.findUserPointByOauthId(user.getId());
 		int changePoint = getChangePoint(product);
 		int balancePoint = getBalancePoint(changePoint, userPoint.getPoint());
-		PointHistory savedPointHistory = pointLogRepository.save(pointMapper.toEntity(product, user, changePoint, balancePoint));
+		PointHistory savedPointHistory = pointHistoryRepository.save(pointMapper.toEntity(product, user, changePoint, balancePoint));
 		userPoint.setPoint(savedPointHistory.getBalancePoint());
 		return savedPointHistory;
 	}

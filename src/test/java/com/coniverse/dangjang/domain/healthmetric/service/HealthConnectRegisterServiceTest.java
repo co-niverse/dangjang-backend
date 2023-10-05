@@ -21,7 +21,7 @@ import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectRegis
 import com.coniverse.dangjang.domain.healthmetric.enums.HealthConnect;
 import com.coniverse.dangjang.domain.healthmetric.repository.HealthMetricRepository;
 import com.coniverse.dangjang.domain.point.entity.UserPoint;
-import com.coniverse.dangjang.domain.point.repository.PointLogRepository;
+import com.coniverse.dangjang.domain.point.repository.PointHistoryRepository;
 import com.coniverse.dangjang.domain.point.repository.PointProductRepository;
 import com.coniverse.dangjang.domain.point.repository.UserPointRepository;
 import com.coniverse.dangjang.domain.point.service.PointSearchService;
@@ -56,7 +56,7 @@ class HealthConnectRegisterServiceTest {
 	@Autowired
 	private EntityManager em;
 	@Autowired
-	private PointLogRepository pointLogRepository;
+	private PointHistoryRepository pointHistoryRepository;
 	@Autowired
 	private PointSearchService pointSearchService;
 	@Autowired
@@ -75,7 +75,7 @@ class HealthConnectRegisterServiceTest {
 	@AfterEach
 	void tearDown() {
 		healthMetricRepository.deleteAll();
-		pointLogRepository.deleteAll();
+		pointHistoryRepository.deleteAll();
 		pointProductRepository.deleteAll();
 		userPointRepository.deleteAll();
 		userRepository.deleteAll();

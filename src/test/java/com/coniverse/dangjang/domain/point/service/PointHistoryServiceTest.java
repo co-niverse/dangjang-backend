@@ -32,9 +32,9 @@ import com.coniverse.dangjang.domain.point.dto.response.ProductListResponse;
 import com.coniverse.dangjang.domain.point.entity.UserPoint;
 import com.coniverse.dangjang.domain.point.enums.EarnPoint;
 import com.coniverse.dangjang.domain.point.enums.PointType;
-import com.coniverse.dangjang.domain.point.repository.PointLogRepository;
+import com.coniverse.dangjang.domain.point.repository.PointHistoryRepository;
 import com.coniverse.dangjang.domain.point.repository.PointProductRepository;
-import com.coniverse.dangjang.domain.point.repository.ProductPurchaseRepository;
+import com.coniverse.dangjang.domain.point.repository.PurchaseHistoryRepository;
 import com.coniverse.dangjang.domain.point.repository.UserPointRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
@@ -61,7 +61,7 @@ class PointHistoryServiceTest {
 	@Autowired
 	private PointProductRepository pointProductRepository;
 	@Autowired
-	private PointLogRepository pointLogRepository;
+	private PointHistoryRepository pointHistoryRepository;
 	@Autowired
 	private PointSearchService pointSearchService;
 	@Autowired
@@ -69,7 +69,7 @@ class PointHistoryServiceTest {
 	@Autowired
 	private HealthConnectRegisterService healthConnectRegisterService;
 	@Autowired
-	private ProductPurchaseRepository productPurchaseRepository;
+	private PurchaseHistoryRepository purchaseHistoryRepository;
 
 	private User 유저;
 	private LocalDate today = LocalDate.now();
@@ -81,8 +81,8 @@ class PointHistoryServiceTest {
 
 	@AfterEach
 	void tearDown() {
-		pointLogRepository.deleteAll();
-		productPurchaseRepository.deleteAll();
+		pointHistoryRepository.deleteAll();
+		purchaseHistoryRepository.deleteAll();
 		userPointRepository.deleteAll();
 		userRepository.deleteAll();
 
@@ -172,10 +172,10 @@ class PointHistoryServiceTest {
 		//then
 		User 접속한_유저 = userRepository.findById(유저.getOauthId()).get();
 		UserPoint 접속한_유저_포인트 = pointSearchService.findUserPointByOauthId(접속한_유저.getOauthId());
-		int 구매_내역_횟수 = productPurchaseRepository.findAll().size();
+		int 구매_내역_횟수 = purchaseHistoryRepository.findAll().size();
 		assertThat(접속한_유저_포인트.getPoint()).isEqualTo(accessPoint);
 		assertThat(구매_내역_횟수).isEqualTo(1);
-		productPurchaseRepository.deleteAll();
+		purchaseHistoryRepository.deleteAll();
 	}
 
 	@Order(550)
@@ -236,8 +236,8 @@ class PointHistoryServiceTest {
 		System.out.println("point log start =====================");
 		System.out.println("success count : " + successCount.get());
 		System.out.println("failed count : " + failedCount.get());
-		int 포인트_로그_내역_횟수 = pointLogRepository.findAll().size();
-		int 구매_내역_횟수 = productPurchaseRepository.findAll().size();
+		int 포인트_로그_내역_횟수 = pointHistoryRepository.findAll().size();
+		int 구매_내역_횟수 = purchaseHistoryRepository.findAll().size();
 		System.out.println("point log finish =====================");
 		UserPoint 접속한_유저_포인트 = pointSearchService.findUserPointByOauthId(접속한_유저.getOauthId());
 		assertThat(접속한_유저_포인트.getPoint()).isEqualTo(1000);
@@ -271,7 +271,7 @@ class PointHistoryServiceTest {
 		System.out.println("success count : " + successCount.get());
 		System.out.println("failed count : " + failedCount.get());
 		System.out.println("point log finish =====================");
-		int 포인트_로그_내역_횟수 = pointLogRepository.findAll().size();
+		int 포인트_로그_내역_횟수 = pointHistoryRepository.findAll().size();
 		UserPoint 접속한_유저_포인트 = pointSearchService.findUserPointByOauthId(접속한_유저.getOauthId());
 		assertThat(접속한_유저_포인트.getPoint()).isEqualTo(100);
 		assertThat(포인트_로그_내역_횟수).isOne();
@@ -310,7 +310,7 @@ class PointHistoryServiceTest {
 		System.out.println("success count : " + successCount.get());
 		System.out.println("failed count : " + failedCount.get());
 		System.out.println("point log finish =====================");
-		int 포인트_로그_내역_횟수 = pointLogRepository.findAll().size();
+		int 포인트_로그_내역_횟수 = pointHistoryRepository.findAll().size();
 		UserPoint 접속한_유저_포인트 = pointSearchService.findUserPointByOauthId(연동된_유저.getOauthId());
 		assertThat(접속한_유저_포인트.getPoint()).isEqualTo(500);
 		assertThat(포인트_로그_내역_횟수).isOne();

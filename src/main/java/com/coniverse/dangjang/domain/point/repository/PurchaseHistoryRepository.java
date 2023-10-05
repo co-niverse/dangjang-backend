@@ -11,6 +11,6 @@ import com.coniverse.dangjang.domain.point.entity.PurchaseHistory;
  * @author EVE
  * @since 1.0.0
  */
-public interface ProductPurchaseRepository extends JpaRepository<PurchaseHistory, PointId> {
+public interface PurchaseHistoryRepository extends JpaRepository<PurchaseHistory, PointId> {
 
 }
