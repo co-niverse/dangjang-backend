@@ -34,7 +34,7 @@ public class UserPoint {
 	private User user;
 
 	@Builder
-	public UserPoint(String oauthId, int point) {
+	private UserPoint(String oauthId, int point) {
 		this.oauthId = oauthId;
 		this.point = point;
 	}

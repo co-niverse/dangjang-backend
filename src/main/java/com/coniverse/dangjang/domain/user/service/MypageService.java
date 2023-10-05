@@ -7,7 +7,7 @@ import com.coniverse.dangjang.domain.point.service.PointSearchService;
 import com.coniverse.dangjang.domain.user.dto.response.MypageResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Mypage Service
@@ -16,7 +16,7 @@ import lombok.AllArgsConstructor;
  * @since 1.0.0
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MypageService {
 	private final UserSearchService userSearchService;
 	private final PointSearchService pointSearchService;

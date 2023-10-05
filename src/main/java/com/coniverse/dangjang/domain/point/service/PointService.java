@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 import com.coniverse.dangjang.domain.auth.service.DefaultOauthLoginService;
 import com.coniverse.dangjang.domain.healthmetric.enums.HealthConnect;
 import com.coniverse.dangjang.domain.point.dto.request.UsePointRequest;
-import com.coniverse.dangjang.domain.point.dto.response.ProductsResponse;
+import com.coniverse.dangjang.domain.point.dto.response.ProductListResponse;
 import com.coniverse.dangjang.domain.point.dto.response.UsePointResponse;
-import com.coniverse.dangjang.domain.point.entity.PointLog;
+import com.coniverse.dangjang.domain.point.entity.PointHistory;
 import com.coniverse.dangjang.domain.point.entity.PointProduct;
-import com.coniverse.dangjang.domain.point.entity.ProductPurchase;
+import com.coniverse.dangjang.domain.point.entity.PurchaseHistory;
 import com.coniverse.dangjang.domain.point.entity.UserPoint;
 import com.coniverse.dangjang.domain.point.enums.EarnPoint;
 import com.coniverse.dangjang.domain.point.enums.PointType;
@@ -22,12 +22,12 @@ import com.coniverse.dangjang.domain.point.repository.PointLogRepository;
 import com.coniverse.dangjang.domain.point.repository.ProductPurchaseRepository;
 import com.coniverse.dangjang.domain.point.repository.UserPointRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
-import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
+import com.coniverse.dangjang.global.exception.BusinessException;
 import com.coniverse.dangjang.global.exception.InvalidTokenException;
 
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 포인트 관련 서비스
@@ -36,11 +36,10 @@ import lombok.AllArgsConstructor;
  * @since 1.0.0
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional
 public class PointService {
 	private final PointLogRepository pointLogRepository;
-	private final UserRepository userRepository;
 	private final PointMapper pointMapper;
 	private final UserSearchService userSearchService;
 	private final PointSearchService pointSearchService;
@@ -109,10 +108,10 @@ public class PointService {
 
 	public UsePointResponse purchaseProduct(String oauthId, UsePointRequest request) {
 		User user = userSearchService.findUserByOauthId(oauthId);
-		PointLog savedPointLog = addPointEvent(request.type(), user);
-		ProductPurchase purchase = productPurchaseRepository.save(pointMapper.toEntity(user, savedPointLog.getPointProduct(), request.phone()));
-		return new UsePointResponse(purchase.getPhone(), purchase.getPointProduct().getProduct(), savedPointLog.getChangePoint(),
-			savedPointLog.getBalancePoint());
+		PointHistory savedPointHistory = addPointEvent(request.type(), user);
+		PurchaseHistory purchase = productPurchaseRepository.save(pointMapper.toEntity(user, savedPointHistory.getPointProduct(), request.phone()));
+		return new UsePointResponse(purchase.getPhone(), purchase.getPointProduct().getProductName(), savedPointHistory.getChangePoint(),
+			savedPointHistory.getBalancePoint());
 	}
 
 	/**
@@ -125,14 +124,14 @@ public class PointService {
 	 * @since 1.0.0
 	 */
 
-	private PointLog addPointEvent(String pointProduct, User user) {
+	private PointHistory addPointEvent(String pointProduct, User user) {
 		PointProduct product = pointSearchService.findPointProductById(pointProduct);
 		UserPoint userPoint = pointSearchService.findUserPointByOauthId(user.getId());
 		int changePoint = getChangePoint(product);
 		int balancePoint = getBalancePoint(changePoint, userPoint.getPoint());
-		PointLog savedPointLog = pointLogRepository.save(pointMapper.toEntity(product, user, changePoint, balancePoint));
-		userPoint.setPoint(savedPointLog.getBalancePoint());
-		return savedPointLog;
+		PointHistory savedPointHistory = pointLogRepository.save(pointMapper.toEntity(product, user, changePoint, balancePoint));
+		userPoint.setPoint(savedPointHistory.getBalancePoint());
+		return savedPointHistory;
 	}
 
 	/**
@@ -160,10 +159,10 @@ public class PointService {
 	 */
 	private int getBalancePoint(int changePoint, int balancePoint) {
 		balancePoint += changePoint;
-		if (balancePoint > 0) {
+		if (balancePoint >= 0) {
 			return balancePoint;
 		} else {
-			throw new InvalidTokenException("포인트가 부족합니다.");
+			throw new BusinessException(400, "포인트가 부족합니다.");
 		}
 	}
 
@@ -176,11 +175,11 @@ public class PointService {
 	 * @since 1.0.0
 	 */
 
-	public ProductsResponse getProducts(String oauthId) {
+	public ProductListResponse getProducts(String oauthId) {
 		int balancePoint = pointSearchService.findUserPointByOauthId(oauthId).getPoint();
 		List<PointProduct> productList = pointSearchService.findAllByType(PointType.USE);
 
-		return new ProductsResponse(balancePoint, productList);
+		return new ProductListResponse(balancePoint, productList);
 
 	}
 }

@@ -1,8 +1,6 @@
 package com.coniverse.dangjang.fixture;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import com.coniverse.dangjang.domain.point.entity.PointProduct;
 import com.coniverse.dangjang.domain.point.entity.UserPoint;
@@ -23,18 +21,17 @@ public class PointFixture {
 	}
 
 	public static final List<PointProduct> 전체_포인트_상품_목록() {
-		return List.of(new PointProduct("접속", 100, PointType.EARN),
-			new PointProduct("등록", 500, PointType.EARN),
-			new PointProduct("기기연동", 500, PointType.EARN),
-			new PointProduct("스타벅스 오천원 금액권", 5000, PointType.USE),
-			new PointProduct("CU 오천원 금액권", 5000, PointType.USE),
-			new PointProduct("배민 일만원 금액권", 10000, PointType.USE),
-			new PointProduct("네이버페이 오천원 금액권", 5000, PointType.USE));
+		return List.of(
+			PointProduct.builder().point(100).productName("접속").type(PointType.EARN).build(),
+			PointProduct.builder().point(500).productName("등록").type(PointType.EARN).build(),
+			PointProduct.builder().point(500).productName("기기연동").type(PointType.EARN).build(),
+			PointProduct.builder().point(5000).productName("스타벅스 오천원 금액권").type(PointType.USE).build(),
+			PointProduct.builder().point(5000).productName("CU 오천원 금액권").type(PointType.USE).build(),
+			PointProduct.builder().point(10000).productName("배민 일만원 금액권").type(PointType.USE).build(),
+			PointProduct.builder().point(5000).productName("네이버페이 오천원 금액권").type(PointType.USE).build());
 	}
 
-	public static final Map<String, Integer> 적립_포인트_상품_목록() {
-		return 전체_포인트_상품_목록().stream()
-			.filter(pointProduct -> pointProduct.getType().equals(PointType.USE))
-			.collect(Collectors.toMap(PointProduct::getProduct, PointProduct::getPoint));
+	public static final List<PointProduct> 적립_포인트_상품_목록() {
+		return 전체_포인트_상품_목록().stream().filter(pointProduct -> pointProduct.getType().equals(PointType.USE)).toList();
 	}
 }
