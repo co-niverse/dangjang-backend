@@ -3,12 +3,15 @@ package com.coniverse.dangjang.domain.point.entity;
 import com.coniverse.dangjang.domain.point.enums.PointType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 /**
  * 포인트 상품 Entity
@@ -18,18 +21,21 @@ import lombok.RequiredArgsConstructor;
  */
 @Entity
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PointProduct {
 	@Id
-	private String product;
+	@Column(name = "product_name", nullable = false)
+	private String productName;
 	private int point;
 	@Enumerated(EnumType.STRING)
 	@JsonIgnore
 	private PointType type;
 
-	public PointProduct(String product, int point, PointType type) {
-		this.product = product;
+	@Builder
+	private PointProduct(String productName, int point, PointType type) {
+		this.productName = productName;
 		this.point = point;
 		this.type = type;
 	}
+
 }

@@ -27,12 +27,12 @@ public class PointId implements Serializable {
 	private String oauthId;
 	@Column(name = "created_at", updatable = false, nullable = false)
 	private LocalDateTime createdAt = LocalDateTime.now();
-	@Column(name = "product", nullable = false)
-	private String product;
+	@Column(name = "product_name", nullable = false)
+	private String productName;
 
-	protected PointId(String oauthId, String product) {
+	protected PointId(String oauthId, String productName) {
 		this.oauthId = oauthId;
-		this.product = product;
+		this.productName = productName;
 	}
 
 }

@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class PointLog {
+public class PointHistory {
 	@EmbeddedId
 	@Getter(AccessLevel.PRIVATE)
 	private PointId pointId;
@@ -35,14 +35,14 @@ public class PointLog {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "oauth_id")
 	private User user;
-	@MapsId("product")
+	@MapsId("product_name")
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "product", referencedColumnName = "product")
+	@JoinColumn(name = "product_name", referencedColumnName = "product_name")
 	private PointProduct pointProduct;
 
 	@Builder
-	public PointLog(User user, int changePoint, int balancePoint, PointProduct pointProduct) {
-		this.pointId = new PointId(user.getOauthId(), pointProduct.getProduct());
+	private PointHistory(User user, int changePoint, int balancePoint, PointProduct pointProduct) {
+		this.pointId = new PointId(user.getOauthId(), pointProduct.getProductName());
 		this.changePoint = changePoint;
 		this.balancePoint = balancePoint;
 		this.user = user;
@@ -65,8 +65,8 @@ public class PointLog {
 	 * @return String Product 포인트 상품
 	 * @since 1.0.0
 	 */
-	public String getProduct() {
-		return this.pointId.getProduct();
+	public String getProductName() {
+		return this.pointId.getProductName();
 	}
 
 }

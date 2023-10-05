@@ -7,7 +7,7 @@ INSERT INTO users (oauth_id, oauth_provider, nickname, gender, birthday, activit
                    diabetic, diabetes_year, medicine, injection, created_at, updated_at, accessed_at, health_connect)
 VALUES ('22222222', 'NAVER', 'EVE', 'F', '2001-12-24', 'LOW', 160, 1500, 'ACTIVE', 'USER', 'user/image/eve', true, 3, true, true, now(), now(), now(),
         'NEVER_CONNECTED');
-INSERT INTO point_product (product, point, type)
+INSERT INTO point_product (product_name, point, type)
 VALUES ("접속", 100, 'EARN'),
        ("등록", 500, 'EARN'),
        ("기기연동", 500, 'EARN'),

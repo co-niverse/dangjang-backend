@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 @Entity
 @Getter
 @RequiredArgsConstructor
-public class ProductPurchase {
+public class PurchaseHistory {
 	@EmbeddedId
 	@Getter(AccessLevel.PRIVATE)
 	private PointId pointId;
@@ -39,14 +39,14 @@ public class ProductPurchase {
 	@JoinColumn(name = "oauth_id")
 	private User user;
 
-	@MapsId("product")
+	@MapsId("product_name")
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "product", referencedColumnName = "product")
+	@JoinColumn(name = "product_name", referencedColumnName = "product_name")
 	private PointProduct pointProduct;
 
 	@Builder
-	public ProductPurchase(User user, String phone, PointProduct pointProduct, boolean completed) {
-		this.pointId = new PointId(user.getOauthId(), pointProduct.getProduct());
+	public PurchaseHistory(User user, String phone, PointProduct pointProduct, boolean completed) {
+		this.pointId = new PointId(user.getOauthId(), pointProduct.getProductName());
 		this.phone = phone;
 		this.completed = completed;
 		this.user = user;

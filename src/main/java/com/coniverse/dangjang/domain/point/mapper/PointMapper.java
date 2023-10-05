@@ -3,9 +3,9 @@ package com.coniverse.dangjang.domain.point.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.coniverse.dangjang.domain.point.entity.PointLog;
+import com.coniverse.dangjang.domain.point.entity.PointHistory;
 import com.coniverse.dangjang.domain.point.entity.PointProduct;
-import com.coniverse.dangjang.domain.point.entity.ProductPurchase;
+import com.coniverse.dangjang.domain.point.entity.PurchaseHistory;
 import com.coniverse.dangjang.domain.point.entity.UserPoint;
 import com.coniverse.dangjang.domain.user.entity.User;
 
@@ -24,7 +24,7 @@ public interface PointMapper {
 	 */
 
 	@Mapping(target = "changePoint", source = "changePoint")
-	PointLog toEntity(PointProduct pointProduct, User user, int changePoint, int balancePoint);
+	PointHistory toEntity(PointProduct pointProduct, User user, int changePoint, int balancePoint);
 
 	/**
 	 * UserPoint Entity 변환
@@ -38,5 +38,5 @@ public interface PointMapper {
 	 *
 	 * @since 1.0.0
 	 */
-	ProductPurchase toEntity(User user, PointProduct pointProduct, String phone);
+	PurchaseHistory toEntity(User user, PointProduct pointProduct, String phone);
 }
