@@ -62,13 +62,13 @@ public class HealthConnectRegisterService {
 	 * @since 1.0.0
 	 */
 	public void interlockHealthConnect(HealthConnectRegisterRequest request, String oauthId) {
-		//TODO 클린코드 수정
 		User user = userSearchService.findUserByOauthId(oauthId);
 		if (request.healthConnectInterlock()) {
-
 			if (user.getHealthConnect().equals(HealthConnect.NEVER_CONNECTED)) {
 				user.setHealthConnect(HealthConnect.CONNECTING);
 				pointService.addHealthConnectPoint(user);
+			} else if (user.getHealthConnect().equals(HealthConnect.DISCONNECTED)) {
+				user.setHealthConnect(HealthConnect.CONNECTING);
 			}
 		} else if (!request.healthConnectInterlock() && user.getHealthConnect().equals(HealthConnect.CONNECTING)) {
 			user.setHealthConnect(HealthConnect.DISCONNECTED);
