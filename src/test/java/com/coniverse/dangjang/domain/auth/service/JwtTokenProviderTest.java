@@ -14,7 +14,7 @@ import com.coniverse.dangjang.global.exception.InvalidTokenException;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class JwtTokenProviderTest {
+class JwtTokenProviderTest {
 	private final String subject = "12345678";
 
 	@Autowired

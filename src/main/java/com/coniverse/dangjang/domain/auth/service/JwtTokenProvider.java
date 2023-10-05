@@ -28,7 +28,7 @@ import io.jsonwebtoken.security.SignatureException;
  */
 @Component
 public class JwtTokenProvider {
-	private final Key key;
+	private Key key;
 	private static final String BEARER = "Bearer";
 
 	public JwtTokenProvider(@Value("${jwt.secret-key}") String secretKey) {
@@ -108,7 +108,7 @@ public class JwtTokenProvider {
 	 */
 	public JWTStatus validationToken(String token) {
 		try {
-			Key key = getKey();
+			key = getKey();
 			Jwts.parserBuilder()
 				.setSigningKey(key)
 				.build()

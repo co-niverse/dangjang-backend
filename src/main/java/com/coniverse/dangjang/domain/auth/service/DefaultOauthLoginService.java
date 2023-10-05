@@ -40,7 +40,6 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	private final UserSearchService userSearchService;
 	private final Map<OauthProvider, OAuthClient> clients;
 	private final UserRepository userRepository;
-	private final String authorization = "Authorization";
 	private final JwtTokenProvider jwtTokenProvider;
 
 	public DefaultOauthLoginService(AuthTokenGenerator authTokenGenerator, UserSearchService userSearchService, List<OAuthClient> clients,
