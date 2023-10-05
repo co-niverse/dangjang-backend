@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coniverse.dangjang.domain.point.dto.request.UsePointRequest;
-import com.coniverse.dangjang.domain.point.dto.response.ProductsResponse;
+import com.coniverse.dangjang.domain.point.dto.response.ProductListResponse;
 import com.coniverse.dangjang.domain.point.dto.response.UsePointResponse;
 import com.coniverse.dangjang.domain.point.service.PointService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
@@ -48,14 +48,14 @@ public class PointController {
 	}
 
 	/**
-	 * 구매 가능 포인트 상품 내역 조회
+	 * 구매 가능 포인트 상품 목록 조회
 	 *
 	 * @return response 사용자 포인트 잔액, 구매 가능한 상품 내역
 	 * @since 1.0.0역
 	 */
 	@GetMapping
-	public ResponseEntity<SuccessSingleResponse> getProudcts(@AuthenticationPrincipal User user) {
-		ProductsResponse response = pointService.getProducts(user.getUsername());
+	public ResponseEntity<SuccessSingleResponse> getProductList(@AuthenticationPrincipal User user) {
+		ProductListResponse response = pointService.getProducts(user.getUsername());
 		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
 

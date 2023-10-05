@@ -28,7 +28,7 @@ import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectRegis
 import com.coniverse.dangjang.domain.healthmetric.enums.HealthConnect;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthConnectRegisterService;
 import com.coniverse.dangjang.domain.point.dto.request.UsePointRequest;
-import com.coniverse.dangjang.domain.point.dto.response.ProductsResponse;
+import com.coniverse.dangjang.domain.point.dto.response.ProductListResponse;
 import com.coniverse.dangjang.domain.point.entity.UserPoint;
 import com.coniverse.dangjang.domain.point.enums.EarnPoint;
 import com.coniverse.dangjang.domain.point.enums.PointType;
@@ -38,7 +38,7 @@ import com.coniverse.dangjang.domain.point.repository.ProductPurchaseRepository;
 import com.coniverse.dangjang.domain.point.repository.UserPointRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
-import com.coniverse.dangjang.global.exception.InvalidTokenException;
+import com.coniverse.dangjang.global.exception.BusinessException;
 
 import jakarta.persistence.EntityManager;
 
@@ -51,7 +51,7 @@ import jakarta.persistence.EntityManager;
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class PointLogServiceTest {
+class PointHistoryServiceTest {
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -151,7 +151,7 @@ class PointLogServiceTest {
 		//when&then
 		assertThatThrownBy(() -> {
 			pointService.purchaseProduct(유저.getOauthId(), request);
-		}).isInstanceOf(InvalidTokenException.class);
+		}).isInstanceOf(BusinessException.class);
 	}
 
 	@Order(500)
@@ -189,7 +189,7 @@ class PointLogServiceTest {
 
 		//when
 		assertThatThrownBy(() -> pointService.purchaseProduct(유저.getOauthId(), request))
-			.isInstanceOf(InvalidTokenException.class);
+			.isInstanceOf(BusinessException.class);
 	}
 
 	@Order(600)
@@ -200,10 +200,10 @@ class PointLogServiceTest {
 		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 500));
 		int productSize = pointSearchService.findAllByType(PointType.USE).size();
 		//when
-		ProductsResponse response = pointService.getProducts(유저.getOauthId());
+		ProductListResponse response = pointService.getProducts(유저.getOauthId());
 		//then
 		assertThat(response.balancedPoint()).isEqualTo(유저_포인트.getPoint());
-		assertThat(response.products()).hasSize(productSize);
+		assertThat(response.productList()).hasSize(productSize);
 	}
 
 	@Order(700)
