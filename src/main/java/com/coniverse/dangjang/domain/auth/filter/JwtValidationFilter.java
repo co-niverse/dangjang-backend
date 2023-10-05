@@ -15,9 +15,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.coniverse.dangjang.domain.auth.service.JwtTokenProvider;
 import com.coniverse.dangjang.domain.point.service.PointService;
+import com.coniverse.dangjang.global.support.enums.JWTStatus;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,12 +43,14 @@ public class JwtValidationFilter extends OncePerRequestFilter {
 		ServletException,
 		IOException {
 		String token = jwtTokenProvider.getToken(request.getHeader(AUTHORIZATION));
-
-		if (jwtTokenProvider.validationToken(token)) {
+		JWTStatus jwtStatus = jwtTokenProvider.validationToken(token);
+		if (jwtStatus.equals(JWTStatus.OK)) {
 			Authentication auth = getAuthentication(token);
 			SecurityContextHolder.getContext().setAuthentication(auth);
-		} else {
-			throw new JwtException("토큰이 만료되었습니다.");
+		} else if (jwtStatus.equals(JWTStatus.EXPIRED)) {
+			request.setAttribute("exception", jwtStatus.getMessage());
+		} else if (jwtStatus.equals(JWTStatus.INVALID)) {
+			request.setAttribute("exception", jwtStatus.getMessage());
 		}
 
 		filterChain.doFilter(request, response);

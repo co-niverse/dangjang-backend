@@ -67,9 +67,10 @@ public class LoginController {
 	 */
 	@PostMapping("/reissue")
 	public ResponseEntity<SuccessSingleResponse<LoginResponse>> reissue(HttpServletRequest request) {
-		AuthToken newAuthToken = oauthLoginService.reissueToken(request);
+		AuthToken newAuthToken = oauthLoginService.reissueToken(request.getHeader("Authorization"));
 		return ResponseEntity.ok()
-			.header("AccessToken", newAuthToken.getAccessToken()).header("RefreshToken", newAuthToken.getRefreshToken())
+			.header("AccessToken", newAuthToken.getAccessToken())
+			.header("RefreshToken", newAuthToken.getRefreshToken())
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import com.coniverse.dangjang.global.exception.InvalidTokenException;
+import com.coniverse.dangjang.global.support.enums.JWTStatus;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -71,7 +72,7 @@ public class JwtTokenProvider {
 				.parseClaimsJws(accessToken)
 				.getBody();
 		} catch (ExpiredJwtException e) {
-			return e.getClaims();
+			throw new InvalidTokenException("만료된 토큰입니다.");
 		}
 	}
 
@@ -105,16 +106,18 @@ public class JwtTokenProvider {
 	 * @return boolean 토큰 유효성 확인
 	 * @since 1.0.0
 	 */
-	public boolean validationToken(String token) {
+	public JWTStatus validationToken(String token) {
 		try {
 			Key key = getKey();
 			Jwts.parserBuilder()
 				.setSigningKey(key)
 				.build()
 				.parseClaimsJws(token);
-			return true;
-		} catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
-			return false;
+			return JWTStatus.OK;
+		} catch (ExpiredJwtException e) {
+			return JWTStatus.EXPIRED;
+		} catch (UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
+			return JWTStatus.INVALID;
 		}
 	}
 }

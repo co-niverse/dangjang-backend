@@ -22,9 +22,10 @@ import com.coniverse.dangjang.domain.user.exception.InvalidAuthenticationExcepti
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
+import com.coniverse.dangjang.global.exception.InvalidTokenException;
+import com.coniverse.dangjang.global.support.enums.JWTStatus;
 
 import io.jsonwebtoken.Claims;
-import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * oauth 로그인 서비스
@@ -67,19 +68,20 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	/**
 	 * refreshToken 인증 후 AuthToken 재발급
 	 *
-	 * @param request 재발급 요청
+	 * @param header
 	 * @return AuthToken 재발급된 AccessToken과 refreshToken을 전달한다
 	 * @since 1.0.0
 	 */
 
-	public AuthToken reissueToken(HttpServletRequest request) {
-		String token = jwtTokenProvider.getToken(request.getHeader(authorization));
-		if (jwtTokenProvider.validationToken(token)) {
+	public AuthToken reissueToken(String header) {
+		String token = jwtTokenProvider.getToken(header);
+		JWTStatus jwtStatus = jwtTokenProvider.validationToken(token);
+		if (jwtStatus.equals(JWTStatus.OK)) {
 			Claims claim = jwtTokenProvider.parseClaims(token);
 			User user = userSearchService.findUserByOauthId(claim.getSubject());
 			return getAuthToken(user.getNickname());
 		}
-		throw new NonExistentUserException();
+		throw new InvalidTokenException(jwtStatus.getMessage());
 	}
 
 	/**

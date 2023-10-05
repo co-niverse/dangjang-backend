@@ -109,4 +109,23 @@ class LoginControllerTest extends ControllerTest {
 			jsonPath("$.fieldErrors[0].rejectedValue").value(" ")
 		);
 	}
+
+	@Test
+	void refreshToken으로_auth토큰을_재발급_한다() throws Exception {
+		// given
+		String subUrl = URI + "/reissue";
+		String header = "Bearer " + "refreshToken";
+		AuthToken authToken = AuthToken.of("accessToken", "refreshToken", "", 1000L);
+		given(oauthLoginService.reissueToken(any())).willReturn(authToken);
+		// when
+		ResultActions resultActions = post(mockMvc, subUrl, header);
+
+		// then
+		resultActions.andExpectAll(
+			status().isOk(),
+			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
+			header().exists("AccessToken"),
+			header().exists("RefreshToken")
+		);
+	}
 }
