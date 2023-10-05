@@ -36,7 +36,7 @@ public class UserSearchService {
 	}
 
 	/**
-	 * 존재하는 닉네임인지 조회하여 확인한다.
+	 * 닉네임 조회
 	 *
 	 * @param nickname 사용자 닉네임
 	 * @return User 사용자
