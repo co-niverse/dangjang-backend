@@ -1,6 +1,7 @@
 package com.coniverse.dangjang.domain.point.entity;
 
 import com.coniverse.dangjang.domain.point.enums.PointType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -23,6 +24,7 @@ public class PointProduct {
 	private String product;
 	private int point;
 	@Enumerated(EnumType.STRING)
+	@JsonIgnore
 	private PointType type;
 
 	public PointProduct(String product, int point, PointType type) {

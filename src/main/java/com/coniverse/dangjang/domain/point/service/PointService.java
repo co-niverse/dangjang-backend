@@ -1,8 +1,7 @@
 package com.coniverse.dangjang.domain.point.service;
 
 import java.time.LocalDate;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.List;
 
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -179,11 +178,9 @@ public class PointService {
 
 	public ProductsResponse getProducts(String oauthId) {
 		int balancePoint = pointSearchService.findUserPointByOauthId(oauthId).getPoint();
-		Map<String, Integer> products = pointSearchService.findAllByType(PointType.USE)
-			.stream()
-			.collect(Collectors.toMap(PointProduct::getProduct, PointProduct::getPoint));
+		List<PointProduct> productList = pointSearchService.findAllByType(PointType.USE);
 
-		return new ProductsResponse(balancePoint, products);
+		return new ProductsResponse(balancePoint, productList);
 
 	}
 }
