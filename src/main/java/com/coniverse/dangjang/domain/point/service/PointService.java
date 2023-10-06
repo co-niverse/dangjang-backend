@@ -97,9 +97,7 @@ public class PointService {
 	}
 
 	/**
-	 * 헬스커넥트 포인트 적립
-	 * <p>
-	 * 헬스커넥트 연동 유저인지 자격을 확인하고, 포인트를 적립한다.
+	 * 포인트 상품 구매
 	 *
 	 * @param oauthId 유저 아이디
 	 * @param request 포인트 사용 요청 객체
