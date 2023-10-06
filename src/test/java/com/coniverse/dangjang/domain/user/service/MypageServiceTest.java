@@ -32,7 +32,7 @@ class MypageServiceTest {
 	private User 유저;
 
 	@Test
-	void getMypage() {
+	void 마이페이지_정보를_불러온다() {
 		// given
 		유저 = userRepository.save(헬스커넥트_연동_유저(LocalDate.now()));
 		int 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 1000)).getPoint();
