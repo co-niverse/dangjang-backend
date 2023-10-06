@@ -12,10 +12,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.coniverse.dangjang.global.exception.InvalidTokenException;
 
+/**
+ * JwtTokenProvider 예외 테스트
+ *
+ * @author EVE
+ * @since 1.0.0
+ */
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class JwtTokenProviderTest {
-	private final String subject = "12345678";
 
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
@@ -25,7 +30,7 @@ class JwtTokenProviderTest {
 		Key key = jwtTokenProvider.getKey();
 		String 만료된_토큰 = 기간이_만료된_accessToken_생성(key);
 		assertThatThrownBy(() -> jwtTokenProvider.parseClaims(만료된_토큰))
-			.isInstanceOf(RuntimeException.class)
+			.isInstanceOf(InvalidTokenException.class)
 			.hasMessageContaining("만료된 토큰입니다.");
 	}
 
