@@ -38,7 +38,6 @@ import com.coniverse.dangjang.domain.point.repository.PurchaseHistoryRepository;
 import com.coniverse.dangjang.domain.point.repository.UserPointRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
-import com.coniverse.dangjang.global.exception.BusinessException;
 
 import jakarta.persistence.EntityManager;
 
@@ -151,7 +150,7 @@ class PointHistoryServiceTest {
 		//when&then
 		assertThatThrownBy(() -> {
 			pointService.purchaseProduct(유저.getOauthId(), request);
-		}).isInstanceOf(BusinessException.class);
+		}).isInstanceOf(IllegalArgumentException.class);
 	}
 
 	@Order(500)
@@ -189,7 +188,7 @@ class PointHistoryServiceTest {
 
 		//when
 		assertThatThrownBy(() -> pointService.purchaseProduct(유저.getOauthId(), request))
-			.isInstanceOf(BusinessException.class);
+			.isInstanceOf(IllegalArgumentException.class);
 	}
 
 	@Order(600)

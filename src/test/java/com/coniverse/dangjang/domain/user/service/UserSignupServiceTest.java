@@ -20,7 +20,6 @@ import com.coniverse.dangjang.domain.point.service.PointSearchService;
 import com.coniverse.dangjang.domain.user.dto.request.SignUpRequest;
 import com.coniverse.dangjang.domain.user.dto.response.DuplicateNicknameResponse;
 import com.coniverse.dangjang.fixture.SignUpFixture;
-import com.coniverse.dangjang.global.exception.BusinessException;
 
 /**
  * @author EVE
@@ -99,7 +98,7 @@ class UserSignupServiceTest {
 		assertThatThrownBy(() -> userSignupService.signUp(signUpRequest))
 			.isInstanceOf(IllegalArgumentException.class);
 		assertThatThrownBy(() -> pointSearchService.findUserPointByOauthId(유저_아이디))
-			.isInstanceOf(BusinessException.class);
+			.isInstanceOf(IllegalArgumentException.class);
 	}
 
 	@Test
