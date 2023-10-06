@@ -9,7 +9,6 @@ import com.coniverse.dangjang.domain.point.entity.UserPoint;
 import com.coniverse.dangjang.domain.point.enums.PointType;
 import com.coniverse.dangjang.domain.point.repository.PointProductRepository;
 import com.coniverse.dangjang.domain.point.repository.UserPointRepository;
-import com.coniverse.dangjang.global.exception.BusinessException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,7 +32,7 @@ public class PointSearchService {
 	 */
 	public PointProduct findPointProductById(String pointProduct) {
 		return pointProductRepository.findById(pointProduct)
-			.orElseThrow(() -> new BusinessException(400, "포인트 상품이 없습니다."));
+			.orElseThrow(() -> new IllegalArgumentException("포인트 상품이 없습니다."));
 	}
 
 	/**
@@ -54,7 +53,7 @@ public class PointSearchService {
 	 */
 	public UserPoint findUserPointByOauthId(String oauthId) {
 		return userPointRepository.findById(oauthId)
-			.orElseThrow(() -> new BusinessException(400, "유저 포인트가 없습니다."));
+			.orElseThrow(() -> new IllegalArgumentException("유저의 포인트 테이블이 없습니다."));
 	}
 
 }

@@ -23,8 +23,6 @@ import com.coniverse.dangjang.domain.point.repository.PurchaseHistoryRepository;
 import com.coniverse.dangjang.domain.point.repository.UserPointRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
-import com.coniverse.dangjang.global.exception.BusinessException;
-import com.coniverse.dangjang.global.exception.InvalidTokenException;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -152,7 +150,7 @@ public class PointService {
 	 *
 	 * @param changePoint  포인트 변동량
 	 * @param balancePoint 기존 포인트
-	 * @throws InvalidTokenException 포인트 부족 에러
+	 * @throws IllegalArgumentException 포인트 부족시 발생
 	 * @since 1.0.0
 	 */
 	private int getBalancePoint(int changePoint, int balancePoint) {
@@ -160,7 +158,7 @@ public class PointService {
 		if (balancePoint >= 0) {
 			return balancePoint;
 		} else {
-			throw new BusinessException(400, "포인트가 부족합니다.");
+			throw new IllegalArgumentException("포인트가 부족합니다.");
 		}
 	}
 
