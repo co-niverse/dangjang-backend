@@ -47,9 +47,7 @@ public class JwtValidationFilter extends OncePerRequestFilter {
 		if (jwtStatus.equals(JWTStatus.OK)) {
 			Authentication auth = getAuthentication(token);
 			SecurityContextHolder.getContext().setAuthentication(auth);
-		} else if (jwtStatus.equals(JWTStatus.EXPIRED)) {
-			request.setAttribute("exception", jwtStatus.getMessage());
-		} else if (jwtStatus.equals(JWTStatus.INVALID)) {
+		} else {
 			request.setAttribute("exception", jwtStatus.getMessage());
 		}
 
