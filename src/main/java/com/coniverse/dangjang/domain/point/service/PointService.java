@@ -131,7 +131,7 @@ public class PointService {
 	}
 
 	/**
-	 * pointProduct 에 따른 포인트 변동량 조회
+	 * pointProduct 에 따른 포인트 변동량 계산
 	 *
 	 * @param product 포인트 상품
 	 * @since 1.0.0
@@ -163,9 +163,9 @@ public class PointService {
 	}
 
 	/**
-	 * 구매 가능 기프티콘 조회
+	 * 구매 가능 상품 조회
 	 * <p>
-	 * 유저의 현재 포인트와 구매 가능한 기
+	 * 유저의 현재 포인트와 구매 가능한 상품을 조회한다.
 	 *
 	 * @param oauthId 유저 아이디
 	 * @since 1.0.0
