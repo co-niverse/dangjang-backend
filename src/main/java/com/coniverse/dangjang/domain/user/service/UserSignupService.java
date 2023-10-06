@@ -11,6 +11,8 @@ import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.mapper.AuthMapper;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
+import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
+import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
 import com.coniverse.dangjang.domain.infrastructure.auth.dto.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.point.service.PointService;
 import com.coniverse.dangjang.domain.user.dto.request.SignUpRequest;
@@ -34,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class UserSignupService {
 	private final UserRepository userRepository;
+	private final HealthMetricRegisterService healthMetricRegisterService;
 	private final UserSearchService userSearchService;
 	private final OauthLoginService oauthLoginService;
 	private final PointService pointService;
@@ -50,12 +53,11 @@ public class UserSignupService {
 	public LoginResponse signUp(SignUpRequest signUpRequest) {
 		OAuthInfoResponse oAuthInfoResponse = getOauthInfo(OauthProvider.of(signUpRequest.provider()), signUpRequest.accessToken());
 		ActivityAmount activityAmount = ActivityAmount.of(signUpRequest.activityAmount());
-
 		Gender gender = Gender.of(signUpRequest.gender());
-
 		int recommendedCalorie = calculateRecommendedCalorie(Gender.of(signUpRequest.gender()), signUpRequest.height(),
 			ActivityAmount.of(signUpRequest.activityAmount()));
 		User savedUser = userRepository.save(userMapper.toEntity(oAuthInfoResponse, signUpRequest, activityAmount, gender, recommendedCalorie));
+		registerWeight(savedUser, signUpRequest.weight());
 		pointService.addSignupPoint(savedUser.getOauthId());
 		return authMapper.toLoginResponse(savedUser.getNickname(), false, false);
 	}
@@ -103,6 +105,23 @@ public class UserSignupService {
 		} else {
 			return (int)(standardWeight * 35);
 		}
+	}
+
+	/**
+	 * Weight HealthMetric 등록
+	 *
+	 * @param user   사용자
+	 * @param weight 체중
+	 * @since 1.0.0
+	 */
+
+	private void registerWeight(User user, int weight) {
+		HealthMetricPostRequest healthMetricPostRequest = HealthMetricPostRequest.builder()
+			.type("체중")
+			.createdAt(user.getCreatedAt().toLocalDate().toString())
+			.unit(String.valueOf(weight))
+			.build();
+		healthMetricRegisterService.register(healthMetricPostRequest, user.getOauthId());
 	}
 
 	/**
