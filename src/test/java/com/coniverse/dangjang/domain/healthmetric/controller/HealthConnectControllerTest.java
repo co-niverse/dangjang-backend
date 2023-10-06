@@ -47,7 +47,7 @@ class HealthConnectControllerTest extends ControllerTest {
 		String content = objectMapper.writeValueAsString(request);
 		String subURL = "/interlock";
 		// when
-		ResultActions resultActions = post(mockMvc, URL + subURL, content);
+		ResultActions resultActions = patch(mockMvc, URL + subURL, content);
 
 		// then
 		resultActions.andExpectAll(
