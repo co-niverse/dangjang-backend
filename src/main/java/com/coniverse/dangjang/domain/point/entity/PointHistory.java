@@ -15,7 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * Point Log entity
+ * 포인트 내역 Entity (포인트 적립, 구매)
  *
  * @author EVE
  * @since 1.0.0

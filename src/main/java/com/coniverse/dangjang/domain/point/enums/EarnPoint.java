@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 포인트 종류
+ * 포인트 적립 종류 Enum
  *
  * @author EVE
  * @since 1.0.0
@@ -12,9 +12,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum EarnPoint {
-	ACCESS(+100, "접속"),
-	REGISTER(+500, "등록"),
-	HEALTH_CONNECT(+500, "기기연동");
+	ACCESS(100, "접속"),
+	REGISTER(500, "등록"),
+	HEALTH_CONNECT(500, "기기연동");
 	private final int changePoint;
 	private final String title;
 }

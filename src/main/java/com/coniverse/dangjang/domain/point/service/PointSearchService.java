@@ -13,7 +13,7 @@ import com.coniverse.dangjang.domain.point.repository.UserPointRepository;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 포인트 관련 Search Serivce
+ * 포인트 관련 Search Service
  *
  * @author EVE
  * @since 1.0.0
@@ -27,16 +27,16 @@ public class PointSearchService {
 	/**
 	 * 포인트 상품 조회
 	 *
-	 * @param pointProduct 포인트 상품 이름
+	 * @param productName 포인트 상품 이름
 	 * @since 1.0.0
 	 */
-	public PointProduct findPointProductById(String pointProduct) {
-		return pointProductRepository.findById(pointProduct)
+	public PointProduct findPointProductById(String productName) {
+		return pointProductRepository.findById(productName)
 			.orElseThrow(() -> new IllegalArgumentException("포인트 상품이 없습니다."));
 	}
 
 	/**
-	 * 포인트 상품 목록 조회
+	 * type에 따른 포인트 상품 목록 조회
 	 *
 	 * @param type 포인트 상품 타입
 	 * @since 1.0.0

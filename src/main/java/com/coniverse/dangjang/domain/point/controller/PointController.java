@@ -37,11 +37,11 @@ public class PointController {
 	 * 포인트 사용
 	 *
 	 * @param request 포인트 사용하고자 하는 내역 정보
-	 * @return response 확인에 필요한 사용자 사용 완료 내역
+	 * @return response 사용자 사용 완료 내역
 	 * @since 1.0.0
 	 */
 	@PostMapping
-	public ResponseEntity<SuccessSingleResponse> usePoint(@Valid @RequestBody UsePointRequest request,
+	public ResponseEntity<SuccessSingleResponse<UsePointResponse>> usePoint(@Valid @RequestBody UsePointRequest request,
 		@AuthenticationPrincipal User user) {
 		UsePointResponse response = pointService.purchaseProduct(user.getUsername(), request);
 		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
@@ -51,10 +51,10 @@ public class PointController {
 	 * 구매 가능 포인트 상품 목록 조회
 	 *
 	 * @return response 사용자 포인트 잔액, 구매 가능한 상품 내역
-	 * @since 1.0.0역
+	 * @since 1.0.0
 	 */
 	@GetMapping
-	public ResponseEntity<SuccessSingleResponse> getProductList(@AuthenticationPrincipal User user) {
+	public ResponseEntity<SuccessSingleResponse<ProductListResponse>> getProductList(@AuthenticationPrincipal User user) {
 		ProductListResponse response = pointService.getProducts(user.getUsername());
 		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}

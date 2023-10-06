@@ -116,12 +116,13 @@ public class PointService {
 	 * 포인트 적립 및 사용 이벤트가 발생했을 때,
 	 * 포인트 이벤트를 추가한다.
 	 *
-	 * @param user 유저
+	 * @param user        유저
+	 * @param productName 포인트 상품
 	 * @since 1.0.0
 	 */
 
-	private PointHistory addPointEvent(String pointProduct, User user) {
-		PointProduct product = pointSearchService.findPointProductById(pointProduct);
+	private PointHistory addPointEvent(String productName, User user) {
+		PointProduct product = pointSearchService.findPointProductById(productName);
 		UserPoint userPoint = pointSearchService.findUserPointByOauthId(user.getId());
 		int changePoint = getChangePoint(product);
 		int balancePoint = getBalancePoint(changePoint, userPoint.getPoint());
@@ -131,7 +132,7 @@ public class PointService {
 	}
 
 	/**
-	 * pointProduct 에 따른 포인트 변동량 계산
+	 * 구매 포인트 상품에 따른 포인트 변동량 계산
 	 *
 	 * @param product 포인트 상품
 	 * @since 1.0.0
@@ -174,7 +175,6 @@ public class PointService {
 	public ProductListResponse getProducts(String oauthId) {
 		int balancePoint = pointSearchService.findUserPointByOauthId(oauthId).getPoint();
 		List<PointProduct> productList = pointSearchService.findAllByType(PointType.USE);
-
 		return new ProductListResponse(balancePoint, productList);
 
 	}

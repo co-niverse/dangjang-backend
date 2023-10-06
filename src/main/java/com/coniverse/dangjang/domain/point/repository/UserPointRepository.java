@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import com.coniverse.dangjang.domain.point.entity.UserPoint;
 
 /**
- * 유저 포인트 Respository
+ * 유저 포인트 Repository
  *
  * @author EVE
  * @since 1.0.0

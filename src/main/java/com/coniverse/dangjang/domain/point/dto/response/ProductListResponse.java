@@ -5,7 +5,7 @@ import java.util.List;
 import com.coniverse.dangjang.domain.point.entity.PointProduct;
 
 /**
- * 포인트 상품 내역 조회 Response
+ * 포인트 상품 목록 조회 Response
  *
  * @author EVE
  * @since 1.0.0
