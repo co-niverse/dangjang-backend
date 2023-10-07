@@ -10,7 +10,7 @@ import com.coniverse.dangjang.domain.point.enums.PointType;
  * 포인트 관련 Fixture
  *
  * @author EVE
- * @version 1.0.0
+ * @since 1.0.0
  */
 public class PointFixture {
 	public static final UserPoint 유저_포인트_생성(String oauthId, int point) {

@@ -19,7 +19,7 @@ import com.coniverse.dangjang.domain.user.repository.UserRepository;
  * 마이페이지 서비스 테스트
  *
  * @author EVE
- * @version 1.0.0
+ * @since 1.0.0
  */
 @SpringBootTest
 class MypageServiceTest {
