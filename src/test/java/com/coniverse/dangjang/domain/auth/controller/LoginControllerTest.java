@@ -36,7 +36,7 @@ class LoginControllerTest extends ControllerTest {
 		authToken.setAccessToken("accessToken");
 		authToken.setRefreshToken("refreshToken");
 		given(oauthLoginService.login(request)).willReturn(response);
-		given(oauthLoginService.getAuthToken(response.nickname())).willReturn(authToken);
+		given(oauthLoginService.getAuthToken(response.nickname())).willReturn(authToken.getAccessToken());
 
 		// when
 		ResultActions resultActions = post(mockMvc, URI + "/kakao", content);
@@ -45,8 +45,7 @@ class LoginControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isOk(),
 			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
-			header().exists("AccessToken"),
-			header().exists("RefreshToken")
+			header().exists("AccessToken")
 		);
 
 	}
@@ -78,7 +77,7 @@ class LoginControllerTest extends ControllerTest {
 		authToken.setAccessToken("accessToken");
 		authToken.setRefreshToken("refreshToken");
 		given(oauthLoginService.login(request)).willReturn(response);
-		given(oauthLoginService.getAuthToken(response.nickname())).willReturn(authToken);
+		given(oauthLoginService.getAuthToken(response.nickname())).willReturn(authToken.getAccessToken());
 
 		// when
 		ResultActions resultActions = post(mockMvc, URI + "/naver", content);
@@ -87,8 +86,7 @@ class LoginControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isOk(),
 			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
-			header().exists("AccessToken"),
-			header().exists("RefreshToken")
+			header().exists("AccessToken")
 		);
 	}
 
@@ -116,7 +114,7 @@ class LoginControllerTest extends ControllerTest {
 		String subUrl = URI + "/reissue";
 		String header = "Bearer " + "refreshToken";
 		AuthToken authToken = AuthToken.of("accessToken", "refreshToken", "", 1000L);
-		given(oauthLoginService.reissueToken(any())).willReturn(authToken);
+		given(oauthLoginService.reissueToken(any())).willReturn(authToken.getAccessToken());
 		// when
 		ResultActions resultActions = post(mockMvc, subUrl, header);
 
@@ -124,8 +122,7 @@ class LoginControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isOk(),
 			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
-			header().exists("AccessToken"),
-			header().exists("RefreshToken")
+			header().exists("AccessToken")
 		);
 	}
 }

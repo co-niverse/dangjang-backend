@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.coniverse.dangjang.domain.auth.dto.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
@@ -62,13 +61,11 @@ class OauthLoginServiceTest {
 		User 이브 = userRepository.save(유저_이브());
 
 		//when
-		AuthToken authToken = oauthLoginService.getAuthToken(이브.getNickname());
+		String accessToken = oauthLoginService.getAuthToken(이브.getNickname());
 
 		//then
 		assertAll(
-			() -> assertThat(authToken.getAccessToken()).isNotBlank(),
-			() -> assertThat(authToken.getRefreshToken()).isNotBlank()
-
+			() -> assertThat(accessToken).isNotBlank()
 		);
 
 	}
@@ -88,16 +85,15 @@ class OauthLoginServiceTest {
 	void refreshToken이_유효하면_auth토큰을_재발급한다() {
 		//given
 		User 이브 = userRepository.save(유저_이브());
-		AuthToken authToken = oauthLoginService.getAuthToken(이브.getNickname());
-		String header = "Bearer " + authToken.getRefreshToken();
+		String accessToken = oauthLoginService.getAuthToken(이브.getNickname());
+		String header = "Bearer " + accessToken;
 
 		//when
-		AuthToken newAuthToken = oauthLoginService.reissueToken(header);
+		String newAccessToken = oauthLoginService.reissueToken(header);
 
 		//then
 		assertAll(
-			() -> assertThat(newAuthToken.getAccessToken()).isNotBlank(),
-			() -> assertThat(newAuthToken.getRefreshToken()).isNotBlank()
+			() -> assertThat(newAccessToken).isNotBlank()
 		);
 	}
 
@@ -105,8 +101,8 @@ class OauthLoginServiceTest {
 	void refreshToken이_유효하지_않으면_예외를_던진다() {
 		//given
 		User 이브 = userRepository.save(유저_이브());
-		AuthToken authToken = oauthLoginService.getAuthToken(이브.getNickname());
-		String header = "Bearer " + authToken.getRefreshToken() + "test";
+		String accessToken = oauthLoginService.getAuthToken(이브.getNickname());
+		String header = "Bearer " + accessToken + "test";
 
 		//then
 		assertThatException().isThrownBy(() -> oauthLoginService.reissueToken(header)).isInstanceOf(InvalidTokenException.class);

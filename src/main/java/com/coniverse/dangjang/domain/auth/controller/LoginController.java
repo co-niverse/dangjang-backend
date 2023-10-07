@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.coniverse.dangjang.domain.auth.dto.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
@@ -41,10 +40,10 @@ public class LoginController {
 	@PostMapping("/kakao")
 	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginKakao(@Valid @RequestBody KakaoLoginRequest params, HttpServletRequest request) {
 		LoginResponse loginResponse = oauthLoginService.login(params);
-		AuthToken authToken = oauthLoginService.getAuthToken(loginResponse.nickname());
+		String accessToken = oauthLoginService.getAuthToken(loginResponse.nickname());
 		notificationService.saveFcmToken(request.getHeader("FcmToken"), loginResponse.nickname());
 		return ResponseEntity.ok()
-			.header("AccessToken", authToken.getAccessToken()).header("RefreshToken", authToken.getRefreshToken())
+			.header("AccessToken", accessToken)
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
 	}
 
@@ -56,9 +55,9 @@ public class LoginController {
 	@PostMapping("/naver")
 	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginNaver(@Valid @RequestBody NaverLoginRequest params) {
 		LoginResponse loginResponse = oauthLoginService.login(params);
-		AuthToken authToken = oauthLoginService.getAuthToken(loginResponse.nickname());
+		String accessToken = oauthLoginService.getAuthToken(loginResponse.nickname());
 		return ResponseEntity.ok()
-			.header("AccessToken", authToken.getAccessToken()).header("RefreshToken", authToken.getRefreshToken())
+			.header("AccessToken", accessToken)
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
 	}
 
@@ -71,10 +70,9 @@ public class LoginController {
 	 */
 	@PostMapping("/reissue")
 	public ResponseEntity<SuccessSingleResponse<LoginResponse>> reissue(HttpServletRequest request) {
-		AuthToken newAuthToken = oauthLoginService.reissueToken(request.getHeader("Authorization"));
+		String newAccessToken = oauthLoginService.reissueToken(request.getHeader("Authorization"));
 		return ResponseEntity.ok()
-			.header("AccessToken", newAuthToken.getAccessToken())
-			.header("RefreshToken", newAuthToken.getRefreshToken())
+			.header("AccessToken", newAccessToken)
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}
 

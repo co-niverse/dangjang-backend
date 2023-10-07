@@ -49,7 +49,7 @@ class SignupControllerTest extends ControllerTest {
 		authToken.setAccessToken("accessToken");
 		authToken.setRefreshToken("refreshToken");
 		given(userSignupService.signUp(any())).willReturn(loginResponse);
-		given(oauthLoginService.getAuthToken(loginResponse.nickname())).willReturn(authToken);
+		given(oauthLoginService.getAuthToken(loginResponse.nickname())).willReturn(authToken.getAccessToken());
 		String content = objectMapper.writeValueAsString(signUpRequest);
 
 		// when
@@ -59,8 +59,7 @@ class SignupControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isOk(),
 			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
-			header().exists("AccessToken"),
-			header().exists("RefreshToken")
+			header().exists("AccessToken")
 		);
 
 	}
