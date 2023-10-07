@@ -16,8 +16,10 @@ import com.coniverse.dangjang.domain.auth.dto.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.auth.dto.request.OauthLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
-import com.coniverse.dangjang.domain.auth.entity.blackToken;
-import com.coniverse.dangjang.domain.auth.repository.blackTokenRepository;
+import com.coniverse.dangjang.domain.auth.entity.BlackToken;
+import com.coniverse.dangjang.domain.auth.entity.RefreshToken;
+import com.coniverse.dangjang.domain.auth.repository.BlackTokenRepository;
+import com.coniverse.dangjang.domain.auth.repository.RefreshTokenRepository;
 import com.coniverse.dangjang.domain.infrastructure.auth.client.OAuthClient;
 import com.coniverse.dangjang.domain.infrastructure.auth.dto.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
@@ -37,6 +39,7 @@ import io.jsonwebtoken.Claims;
  * @author EVE, TEO
  * @since 1.0.0
  */
+//TODO : Service 분리 (토큰관련)
 @Service
 @Transactional
 public class DefaultOauthLoginService implements OauthLoginService {
@@ -45,10 +48,12 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	private final Map<OauthProvider, OAuthClient> clients;
 	private final UserRepository userRepository;
 	private final JwtTokenProvider jwtTokenProvider;
-	private final blackTokenRepository blackTokenRepository;
+	private final BlackTokenRepository blackTokenRepository;
+	private final RefreshTokenRepository refreshTokenRepository;
 
 	public DefaultOauthLoginService(AuthTokenGenerator authTokenGenerator, UserSearchService userSearchService, List<OAuthClient> clients,
-		UserRepository userRepository, JwtTokenProvider jwtTokenProvider, blackTokenRepository blackTokenRepository) {
+		UserRepository userRepository, JwtTokenProvider jwtTokenProvider, BlackTokenRepository blackTokenRepository,
+		RefreshTokenRepository refreshTokenRepository) {
 		this.authTokenGenerator = authTokenGenerator;
 		this.userSearchService = userSearchService;
 		this.clients = clients.stream().collect(
@@ -57,6 +62,7 @@ public class DefaultOauthLoginService implements OauthLoginService {
 		this.userRepository = userRepository;
 		this.jwtTokenProvider = jwtTokenProvider;
 		this.blackTokenRepository = blackTokenRepository;
+		this.refreshTokenRepository = refreshTokenRepository;
 	}
 
 	/**
@@ -74,14 +80,18 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	 * refreshToken 인증 후 AuthToken 재발급
 	 *
 	 * @param header
-	 * @return AuthToken 재발급된 AccessToken과 refreshToken을 전달한다
+	 * @return String 재발급된 AccessToken
+	 * @throws InvalidTokenException accessToken이 Redis에 없을 때 예외 발생
 	 * @since 1.0.0
 	 */
 
-	public AuthToken reissueToken(String header) {
+	public String reissueToken(String header) {
 		String token = jwtTokenProvider.getToken(header);
-		Claims claim = checkJwtTokenValidation(token);
-		User user = userSearchService.findUserByOauthId(claim.getSubject());
+		//TODO : 토큰 호출시 자동 제거 기능 추가 및 예외 수정
+		RefreshToken refreshToken = refreshTokenRepository.findById(token).orElseThrow(() -> new InvalidTokenException("유효하지 않은 토큰입니다."));
+		//TODO : 수정
+		String oauthId = jwtTokenProvider.parseClaims(refreshToken.getRefreshToken()).getSubject();
+		User user = userSearchService.findUserByOauthId(oauthId);
 		return getAuthToken(user.getNickname());
 	}
 
@@ -104,15 +114,29 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	}
 
 	/**
+	 * Auth 생성
+	 * <p>
+	 * AuthToken을 생성한 후, accessToken,refreshToken을 Redis에 저장한다.
+	 *
 	 * @param nickname
-	 * @return AuthToken 로그인을 성공한 사용자의 authToken을 전달
+	 * @return accessToken 로그인을 성공한 사용자의 accessToken을 전달
 	 * @since 1.0.0
 	 */
 
-	public AuthToken getAuthToken(String nickname) {
+	public String getAuthToken(String nickname) {
 		Optional<User> user = userRepository.findByNickname(nickname);
 		if (user.isPresent()) {
-			return authTokenGenerator.generate(user.get().getOauthId(), user.get().getRole());
+			AuthToken authToken = authTokenGenerator.generate(user.get().getOauthId(), user.get().getRole());
+			Claims claim = checkJwtTokenValidation(authToken.getRefreshToken());
+			//TODO : mapper 사용 및 함수 나누기
+			long expirationTime = calculateExpirationTime(claim.getExpiration().getTime());
+			RefreshToken refreshToken = RefreshToken.builder()
+				.accessToken(authToken.getAccessToken())
+				.refreshToken(authToken.getRefreshToken())
+				.rtkExpirationTime(expirationTime)
+				.build();
+			refreshTokenRepository.save(refreshToken);
+			return authToken.getAccessToken();
 		} else {
 			throw new NonExistentUserException();
 		}
@@ -149,13 +173,15 @@ public class DefaultOauthLoginService implements OauthLoginService {
 
 	/**
 	 * 로그아웃
+	 * <p>
+	 * 기존 redis에 있는 refreshToken을 제거하고, accessToken을 blackList에 추가
 	 *
 	 * @param accessToken
 	 * @since 1.0.0
 	 */
 
 	public void logout(String accessToken) {
-		//TODO: Refresh Token Redis에서 삭제
+		refreshTokenRepository.deleteById(accessToken);
 		jwtTokenBlack(jwtTokenProvider.getToken(accessToken));
 	}
 
@@ -169,7 +195,7 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	private void jwtTokenBlack(String token) {
 		Claims claim = checkJwtTokenValidation(token);
 		long blackTokenExpirationTime = calculateExpirationTime(claim.getExpiration().getTime());
-		blackToken blackToken = com.coniverse.dangjang.domain.auth.entity.blackToken.builder() //TODO: mapper 패턴으로 변경
+		BlackToken blackToken = BlackToken.builder() //TODO: mapper 패턴으로 변경
 			.token(token)
 			.expirationTime(blackTokenExpirationTime) //TODO: 유효 시간 계산
 			.build();
