@@ -2,6 +2,7 @@ package com.coniverse.dangjang.domain.auth.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
+import com.coniverse.dangjang.domain.notification.service.NotificationService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/auth")
 public class LoginController {
 	private final OauthLoginService oauthLoginService;
+	private final NotificationService notificationService;
 
 	/**
 	 * @param params 카카오 accessToken
@@ -36,9 +39,10 @@ public class LoginController {
 	 * @since 1.0.0
 	 */
 	@PostMapping("/kakao")
-	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginKakao(@Valid @RequestBody KakaoLoginRequest params) {
+	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginKakao(@Valid @RequestBody KakaoLoginRequest params, HttpServletRequest request) {
 		LoginResponse loginResponse = oauthLoginService.login(params);
 		AuthToken authToken = oauthLoginService.getAuthToken(loginResponse.nickname());
+		notificationService.saveFcmToken(request.getHeader("FcmToken"), loginResponse.nickname());
 		return ResponseEntity.ok()
 			.header("AccessToken", authToken.getAccessToken()).header("RefreshToken", authToken.getRefreshToken())
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
@@ -71,6 +75,19 @@ public class LoginController {
 		return ResponseEntity.ok()
 			.header("AccessToken", newAuthToken.getAccessToken())
 			.header("RefreshToken", newAuthToken.getRefreshToken())
+			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
+	}
+
+	/**
+	 * 로그아웃
+	 *
+	 * @param request 요청
+	 * @since 1.0.0
+	 */
+	@GetMapping("/logout")
+	public ResponseEntity<SuccessSingleResponse> logout(HttpServletRequest request) {
+		oauthLoginService.logout(request.getHeader("Authorization"));
+		return ResponseEntity.ok()
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}
 }

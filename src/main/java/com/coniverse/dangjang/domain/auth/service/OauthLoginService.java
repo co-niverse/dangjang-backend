@@ -17,4 +17,6 @@ public interface OauthLoginService {
 	OAuthInfoResponse request(OauthLoginRequest params);
 
 	AuthToken reissueToken(String header);
+
+	void logout(String accessToken);
 }
