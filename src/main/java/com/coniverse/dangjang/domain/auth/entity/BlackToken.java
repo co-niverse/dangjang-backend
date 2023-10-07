@@ -13,14 +13,14 @@ import lombok.Builder;
  * @since 1.0.0
  */
 @RedisHash(value = "blackToken")
-public class blackToken {
+public class BlackToken {
 	@Id
 	private String token;
 	@TimeToLive
 	private long expirationTime;
 
 	@Builder
-	public blackToken(String token, long expirationTime) {
+	public BlackToken(String token, long expirationTime) {
 		this.token = token;
 		this.expirationTime = expirationTime;
 	}
