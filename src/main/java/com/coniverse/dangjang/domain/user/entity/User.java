@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import org.springframework.data.domain.Persistable;
 
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
+import com.coniverse.dangjang.domain.healthmetric.enums.HealthConnect;
+import com.coniverse.dangjang.domain.point.entity.UserPoint;
 import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
 import com.coniverse.dangjang.domain.user.entity.enums.Role;
@@ -16,12 +18,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
+ * 유저 Entity
+ *
  * @author EVE
  * @since 1.0.0
  */
@@ -59,10 +65,19 @@ public class User extends BaseEntity implements Persistable<String> {
 	private boolean medicine;
 	private boolean injection;
 	private String profileImagePath;
+	@Enumerated(EnumType.STRING)
+	private HealthConnect healthConnect = HealthConnect.NEVER_CONNECTED;
+	@Column(name = "ACCESSED_AT", nullable = false)
+	private LocalDate accessedAt = LocalDate.now();
+
+	@OneToOne
+	@JoinColumn(name = "oauthId")
+	private UserPoint userPoint;
 
 	@Builder
 	private User(String oauthId, OauthProvider oauthProvider, String nickname, Gender gender, LocalDate birthday, ActivityAmount activityAmount, int height,
-		int recommendedCalorie, Role role, Status status, String profileImagePath, boolean diabetic, int diabetesYear, boolean medicine, boolean injection) {
+		int recommendedCalorie, Role role, Status status, String profileImagePath, boolean diabetic, int diabetesYear, boolean medicine, boolean injection,
+		LocalDate accessedAt, HealthConnect healthConnect) {
 		this.oauthId = oauthId;
 		this.oauthProvider = oauthProvider;
 		this.nickname = nickname;
@@ -78,7 +93,8 @@ public class User extends BaseEntity implements Persistable<String> {
 		this.diabetesYear = diabetesYear;
 		this.medicine = medicine;
 		this.injection = injection;
-
+		this.accessedAt = accessedAt;
+		this.healthConnect = healthConnect;
 	}
 
 	@Override
@@ -89,5 +105,13 @@ public class User extends BaseEntity implements Persistable<String> {
 	@Override
 	public boolean isNew() {
 		return this.getCreatedAt() == null;
+	}
+
+	public void setHealthConnect(HealthConnect interlock) {
+		this.healthConnect = interlock;
+	}
+
+	public void updateAccessedAt(LocalDate accessedAt) {
+		this.accessedAt = accessedAt;
 	}
 }

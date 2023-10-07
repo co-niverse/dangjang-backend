@@ -3,6 +3,7 @@ package com.coniverse.dangjang.fixture;
 import java.time.LocalDate;
 
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
+import com.coniverse.dangjang.domain.healthmetric.enums.HealthConnect;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
@@ -33,6 +34,8 @@ public class UserFixture {
 			.diabetesYear(0)
 			.medicine(false)
 			.injection(false)
+			.healthConnect(HealthConnect.NEVER_CONNECTED)
+			.accessedAt(LocalDate.now())
 			.build();
 	}
 
@@ -53,6 +56,8 @@ public class UserFixture {
 			.diabetesYear(1)
 			.medicine(false)
 			.injection(false)
+			.healthConnect(HealthConnect.NEVER_CONNECTED)
+			.accessedAt(LocalDate.now())
 			.build();
 	}
 
@@ -73,6 +78,8 @@ public class UserFixture {
 			.diabetesYear(0)
 			.medicine(false)
 			.injection(false)
+			.healthConnect(HealthConnect.NEVER_CONNECTED)
+			.accessedAt(LocalDate.now())
 			.build();
 	}
 
@@ -93,6 +100,53 @@ public class UserFixture {
 			.diabetesYear(0)
 			.medicine(medicine)
 			.injection(injection)
+			.healthConnect(HealthConnect.NEVER_CONNECTED)
+			.accessedAt(LocalDate.now())
+			.build();
+	}
+
+	public static User 포인트_유저(LocalDate accessedAt) {
+		return User.builder()
+			.oauthId("11111111")
+			.oauthProvider(OauthProvider.KAKAO)
+			.nickname("TEO")
+			.gender(Gender.M)
+			.birthday(LocalDate.of(1997, 5, 23))
+			.activityAmount(ActivityAmount.MEDIUM)
+			.height(199)
+			.recommendedCalorie(2000)
+			.role(Role.USER)
+			.status(Status.ACTIVE)
+			.profileImagePath("/images/profile/.png")
+			.diabetic(false)
+			.diabetesYear(0)
+			.medicine(false)
+			.injection(false)
+			.accessedAt(accessedAt)
+			.healthConnect(HealthConnect.NEVER_CONNECTED)
+			.build();
+	}
+
+	public static User 헬스커넥트_연동_유저(LocalDate accessedAt) {
+		return User.builder()
+			.oauthId("11111111")
+			.oauthProvider(OauthProvider.KAKAO)
+			.nickname("TEO")
+			.gender(Gender.M)
+			.birthday(LocalDate.of(1997, 5, 23))
+			.activityAmount(ActivityAmount.MEDIUM)
+			.height(199)
+			.recommendedCalorie(2000)
+			.role(Role.USER)
+			.status(Status.ACTIVE)
+			.profileImagePath("/images/profile/.png")
+			.diabetic(false)
+			.diabetesYear(0)
+			.medicine(false)
+			.injection(false)
+			.accessedAt(accessedAt)
+			.healthConnect(HealthConnect.NEVER_CONNECTED)
+			.accessedAt(LocalDate.now())
 			.build();
 	}
 }

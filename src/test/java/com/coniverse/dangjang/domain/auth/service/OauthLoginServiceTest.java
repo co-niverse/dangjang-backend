@@ -16,6 +16,7 @@ import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
+import com.coniverse.dangjang.global.exception.InvalidTokenException;
 
 /**
  * @author EVE, TEO
@@ -81,5 +82,33 @@ class OauthLoginServiceTest {
 		assertThatThrownBy(() -> oauthLoginService.getAuthToken(nickname))
 			.isInstanceOf(NonExistentUserException.class);
 
+	}
+
+	@Test
+	void refreshToken이_유효하면_auth토큰을_재발급한다() {
+		//given
+		User 이브 = userRepository.save(유저_이브());
+		AuthToken authToken = oauthLoginService.getAuthToken(이브.getNickname());
+		String header = "Bearer " + authToken.getRefreshToken();
+
+		//when
+		AuthToken newAuthToken = oauthLoginService.reissueToken(header);
+
+		//then
+		assertAll(
+			() -> assertThat(newAuthToken.getAccessToken()).isNotBlank(),
+			() -> assertThat(newAuthToken.getRefreshToken()).isNotBlank()
+		);
+	}
+
+	@Test
+	void refreshToken이_유효하지_않으면_예외를_던진다() {
+		//given
+		User 이브 = userRepository.save(유저_이브());
+		AuthToken authToken = oauthLoginService.getAuthToken(이브.getNickname());
+		String header = "Bearer " + authToken.getRefreshToken() + "test";
+
+		//then
+		assertThatException().isThrownBy(() -> oauthLoginService.reissueToken(header)).isInstanceOf(InvalidTokenException.class);
 	}
 }

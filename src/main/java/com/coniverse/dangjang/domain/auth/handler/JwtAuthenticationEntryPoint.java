@@ -33,7 +33,12 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 		log.error("요청 URL : {}", request.getRequestURI());
 
 		int status = HttpStatus.UNAUTHORIZED.value();
-		String errorResponse = objectMapper.writeValueAsString(new ErrorResponse(status, "로그인이 필요합니다."));
+		String errorResponse;
+		try {
+			errorResponse = objectMapper.writeValueAsString(new ErrorResponse(status, request.getAttribute("exception").toString()));
+		} catch (NullPointerException e) {
+			errorResponse = objectMapper.writeValueAsString(new ErrorResponse(status, "로그인이 필요합니다."));
+		}
 		AuthErrorUtil.sendErrorResponse(response, status, errorResponse);
 	}
 }

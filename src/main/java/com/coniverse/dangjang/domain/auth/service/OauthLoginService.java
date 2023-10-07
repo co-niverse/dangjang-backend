@@ -15,4 +15,6 @@ public interface OauthLoginService {
 	AuthToken getAuthToken(String nickname);
 
 	OAuthInfoResponse request(OauthLoginRequest params);
+
+	AuthToken reissueToken(String header);
 }

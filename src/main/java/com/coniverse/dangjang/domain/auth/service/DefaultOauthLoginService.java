@@ -1,5 +1,6 @@
 package com.coniverse.dangjang.domain.auth.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,6 +22,10 @@ import com.coniverse.dangjang.domain.user.exception.InvalidAuthenticationExcepti
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
+import com.coniverse.dangjang.global.exception.InvalidTokenException;
+import com.coniverse.dangjang.global.support.enums.JWTStatus;
+
+import io.jsonwebtoken.Claims;
 
 /**
  * oauth 로그인 서비스
@@ -35,15 +40,17 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	private final UserSearchService userSearchService;
 	private final Map<OauthProvider, OAuthClient> clients;
 	private final UserRepository userRepository;
+	private final JwtTokenProvider jwtTokenProvider;
 
 	public DefaultOauthLoginService(AuthTokenGenerator authTokenGenerator, UserSearchService userSearchService, List<OAuthClient> clients,
-		UserRepository userRepository) {
+		UserRepository userRepository, JwtTokenProvider jwtTokenProvider) {
 		this.authTokenGenerator = authTokenGenerator;
 		this.userSearchService = userSearchService;
 		this.clients = clients.stream().collect(
 			Collectors.toUnmodifiableMap(OAuthClient::getOauthProvider, Function.identity())
 		);
 		this.userRepository = userRepository;
+		this.jwtTokenProvider = jwtTokenProvider;
 	}
 
 	/**
@@ -55,6 +62,25 @@ public class DefaultOauthLoginService implements OauthLoginService {
 		OAuthInfoResponse oAuthInfoResponse = request(params);
 		User user = userSearchService.findUserByOauthId(oAuthInfoResponse.getOauthId());
 		return new LoginResponse(user.getNickname(), false, false);
+	}
+
+	/**
+	 * refreshToken 인증 후 AuthToken 재발급
+	 *
+	 * @param header
+	 * @return AuthToken 재발급된 AccessToken과 refreshToken을 전달한다
+	 * @since 1.0.0
+	 */
+
+	public AuthToken reissueToken(String header) {
+		String token = jwtTokenProvider.getToken(header);
+		JWTStatus jwtStatus = jwtTokenProvider.validationToken(token);
+		if (jwtStatus.equals(JWTStatus.OK)) {
+			Claims claim = jwtTokenProvider.parseClaims(token);
+			User user = userSearchService.findUserByOauthId(claim.getSubject());
+			return getAuthToken(user.getNickname());
+		}
+		throw new InvalidTokenException(jwtStatus.getMessage());
 	}
 
 	/**
@@ -89,5 +115,15 @@ public class DefaultOauthLoginService implements OauthLoginService {
 			throw new InvalidAuthenticationException();
 		}
 
+	}
+
+	/**
+	 * 유저 접속일자를 업데이트한다.
+	 *
+	 * @return LocalDate
+	 * @since 1.0.0
+	 */
+	public void updateUserAccessedAt(User user) {
+		userRepository.updateAccessedAtByOauthId(user.getOauthId(), LocalDate.now());
 	}
 }
