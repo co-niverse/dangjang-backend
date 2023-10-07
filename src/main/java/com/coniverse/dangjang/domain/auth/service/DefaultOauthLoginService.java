@@ -87,8 +87,11 @@ public class DefaultOauthLoginService implements OauthLoginService {
 
 	public String reissueToken(String header) {
 		String token = jwtTokenProvider.getToken(header);
+		if (jwtTokenProvider.validationToken(token).equals(JWTStatus.INVALID)) {
+			throw new InvalidTokenException(JWTStatus.INVALID.getMessage());
+		}
 		//TODO : 토큰 호출시 자동 제거 기능 추가 및 예외 수정
-		RefreshToken refreshToken = refreshTokenRepository.findById(token).orElseThrow(() -> new InvalidTokenException("유효하지 않은 토큰입니다."));
+		RefreshToken refreshToken = refreshTokenRepository.findById(token).orElseThrow(() -> new InvalidTokenException(JWTStatus.EXPIRED.getMessage()));
 		//TODO : 수정
 		String oauthId = jwtTokenProvider.parseClaims(refreshToken.getRefreshToken()).getSubject();
 		User user = userSearchService.findUserByOauthId(oauthId);
