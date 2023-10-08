@@ -16,6 +16,10 @@ import com.coniverse.dangjang.domain.user.entity.enums.Status;
 import com.coniverse.dangjang.domain.user.exception.WithdrawalUserException;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
+/**
+ * @author TEO
+ * @since 1.1.0
+ */
 @SpringBootTest
 @Transactional
 class UserWithdrawalServiceTest {
