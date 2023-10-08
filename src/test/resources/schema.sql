@@ -27,10 +27,11 @@ CREATE TABLE `USERS`
     `PROFILE_IMAGE_PATH`  varchar(255),
     `DIABETIC`            boolean     NOT NULL,
     `DIABETES_YEAR`       int,
-    MEDICINE              boolean,
-    INJECTION             boolean,
-    `ACCESSED_AT`         datetime    NOT NULL,
-    `HEALTH_CONNECT`      varchar(50)    NOT NULL,
+    `MEDICINE`            boolean,
+    `INJECTION`           boolean,
+    `ACCESSED_AT`         date        NOT NULL,
+    `HEALTH_CONNECT`      varchar(50) NOT NULL,
+    `INACTIVATED_AT`      date,
     PRIMARY KEY (`OAUTH_ID`),
     UNIQUE (`NICKNAME`)
 );
@@ -90,19 +91,21 @@ CREATE TABLE `DISEASE`
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`)
 -- FOREIGN KEY (`CODE`) REFERENCES CODE (`CODE`)
 );
-CREATE TABLE `POINT_PRODUCT` (
-     `PRODUCT_NAME` VARCHAR(255),
-     `POINT` INT,
-     `TYPE` ENUM('USE', 'EARN'),
-     PRIMARY KEY (`PRODUCT_NAME`)
+
+CREATE TABLE `POINT_PRODUCT`
+(
+    `PRODUCT_NAME` VARCHAR(255),
+    `POINT`        INT,
+    `TYPE`         ENUM ('USE', 'EARN'),
+    PRIMARY KEY (`PRODUCT_NAME`)
 );
 CREATE TABLE `POINT_HISTORY`
 (
-    `OAUTH_ID`      varchar(50) NOT NULL,
-    `CREATED_AT`    dateTime    NOT NULL,
-    `PRODUCT_NAME`       varchar(255) NOT NULL,
-    `CHANGE_POINT`  int         NOT NULL,
-    `BALANCE_POINT` int         NOT NULL,
+    `OAUTH_ID`      varchar(50)  NOT NULL,
+    `CREATED_AT`    dateTime     NOT NULL,
+    `PRODUCT_NAME`  varchar(255) NOT NULL,
+    `CHANGE_POINT`  int          NOT NULL,
+    `BALANCE_POINT` int          NOT NULL,
     PRIMARY KEY (`OAUTH_ID`, `CREATED_AT`, `PRODUCT_NAME`),
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`),
     FOREIGN KEY (`PRODUCT_NAME`) REFERENCES POINT_PRODUCT (`PRODUCT_NAME`)
@@ -112,19 +115,19 @@ CREATE TABLE `USER_POINT`
 (
     `OAUTH_ID` varchar(50) NOT NULL,
     `POINT`    int         NOT NULL,
-    `VERSION`    int         NOT NULL,
+    `VERSION`  int         NOT NULL,
     PRIMARY KEY (`OAUTH_ID`),
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`)
 );
+
 CREATE TABLE `PURCHASE_HISTORY`
 (
-    `OAUTH_ID` varchar(50) NOT NULL,
-    `PRODUCT_NAME`  varchar(255) NOT NULL,
-    `CREATED_AT` dateTime    NOT NULL,
-    `PHONE` varchar(20) NOT NULL,
-    `COMPLETED` boolean NOT NULL,
+    `OAUTH_ID`     varchar(50)  NOT NULL,
+    `PRODUCT_NAME` varchar(255) NOT NULL,
+    `CREATED_AT`   dateTime     NOT NULL,
+    `PHONE`        varchar(20)  NOT NULL,
+    `COMPLETED`    boolean      NOT NULL,
     PRIMARY KEY (`OAUTH_ID`, `PRODUCT_NAME`, `CREATED_AT`),
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`),
     FOREIGN KEY (`PRODUCT_NAME`) REFERENCES POINT_PRODUCT (`PRODUCT_NAME`)
 );
-
