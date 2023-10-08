@@ -10,17 +10,17 @@ import com.coniverse.dangjang.domain.point.enums.PointType;
  * 포인트 관련 Fixture
  *
  * @author EVE
- * @version 1.0.0
+ * @since 1.0.0
  */
 public class PointFixture {
-	public static final UserPoint 유저_포인트_생성(String oauthId, int point) {
+	public static UserPoint 유저_포인트_생성(String oauthId, int point) {
 		return UserPoint.builder()
 			.oauthId(oauthId)
 			.point(point)
 			.build();
 	}
 
-	public static final List<PointProduct> 전체_포인트_상품_목록() {
+	public static List<PointProduct> 전체_포인트_상품_목록() {
 		return List.of(
 			PointProduct.builder().point(100).productName("접속").type(PointType.EARN).build(),
 			PointProduct.builder().point(500).productName("등록").type(PointType.EARN).build(),
@@ -31,7 +31,9 @@ public class PointFixture {
 			PointProduct.builder().point(5000).productName("네이버페이 오천원 금액권").type(PointType.USE).build());
 	}
 
-	public static final List<PointProduct> 적립_포인트_상품_목록() {
-		return 전체_포인트_상품_목록().stream().filter(pointProduct -> pointProduct.getType().equals(PointType.USE)).toList();
+	public static List<PointProduct> 포인트_상품_목록() {
+		return 전체_포인트_상품_목록().stream()
+			.filter(pointProduct -> pointProduct.getType().equals(PointType.USE))
+			.toList();
 	}
 }
