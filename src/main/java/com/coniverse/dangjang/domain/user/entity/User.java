@@ -71,7 +71,7 @@ public class User extends BaseEntity implements Persistable<String> {
 
 	@Builder
 	private User(String oauthId, OauthProvider oauthProvider, String nickname, Gender gender, LocalDate birthday, ActivityAmount activityAmount, int height,
-		int recommendedCalorie, Role role, Status status, String profileImagePath, boolean diabetic, int diabetesYear, boolean medicine, boolean injection) {
+		int recommendedCalorie, String profileImagePath, boolean diabetic, int diabetesYear, boolean medicine, boolean injection) {
 		this.oauthId = oauthId;
 		this.oauthProvider = oauthProvider;
 		this.nickname = nickname;
@@ -80,8 +80,6 @@ public class User extends BaseEntity implements Persistable<String> {
 		this.activityAmount = activityAmount;
 		this.height = height;
 		this.recommendedCalorie = recommendedCalorie;
-		this.status = status;
-		this.role = role;
 		this.profileImagePath = profileImagePath;
 		this.diabetic = diabetic;
 		this.diabetesYear = diabetesYear;

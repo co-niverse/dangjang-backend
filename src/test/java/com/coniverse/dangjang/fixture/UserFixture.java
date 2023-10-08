@@ -7,8 +7,6 @@ import com.coniverse.dangjang.domain.healthmetric.enums.HealthConnect;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
-import com.coniverse.dangjang.domain.user.entity.enums.Role;
-import com.coniverse.dangjang.domain.user.entity.enums.Status;
 
 /**
  * user fixture
@@ -27,8 +25,6 @@ public class UserFixture {
 			.activityAmount(ActivityAmount.MEDIUM)
 			.height(199)
 			.recommendedCalorie(2000)
-			.role(Role.USER)
-			.status(Status.ACTIVE)
 			.profileImagePath("/images/profile/.png")
 			.diabetic(false)
 			.diabetesYear(0)
@@ -47,8 +43,6 @@ public class UserFixture {
 			.activityAmount(ActivityAmount.LOW)
 			.height(180)
 			.recommendedCalorie(1500)
-			.role(Role.USER)
-			.status(Status.ACTIVE)
 			.profileImagePath("/images/profile/.png")
 			.diabetic(true)
 			.diabetesYear(1)
@@ -67,8 +61,6 @@ public class UserFixture {
 			.activityAmount(ActivityAmount.LOW)
 			.height(180)
 			.recommendedCalorie(1500)
-			.role(Role.USER)
-			.status(Status.ACTIVE)
 			.profileImagePath("/images/profile/.png")
 			.diabetic(false)
 			.diabetesYear(0)
@@ -87,8 +79,6 @@ public class UserFixture {
 			.activityAmount(ActivityAmount.LOW)
 			.height(180)
 			.recommendedCalorie(1500)
-			.role(Role.USER)
-			.status(Status.ACTIVE)
 			.profileImagePath("/images/profile/.png")
 			.diabetic(true)
 			.diabetesYear(0)
