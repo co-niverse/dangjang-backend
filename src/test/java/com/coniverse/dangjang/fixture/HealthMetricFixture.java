@@ -38,7 +38,7 @@ public class HealthMetricFixture {
 		return new HealthMetricPostRequest(등록_건강지표_상세명, 생성일자, 등록_건강지표_단위);
 	}
 
-	public static HealthConnectPostRequest 헬스_커넥트_등록_요청(String type, int count) {
+	public static HealthConnectPostRequest 헬스_커넥트_데이터_등록_요청(String type, int count) {
 		return new HealthConnectPostRequest(new HashSet<>(
 			IntStream.range(0, count)
 				.mapToObj(i -> new HealthMetricPostRequest(type, LocalDate.of(2023, 1, 1).plusDays(i).toString(), "140"))
