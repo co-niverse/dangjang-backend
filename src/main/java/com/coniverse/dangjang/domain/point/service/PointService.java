@@ -7,7 +7,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.auth.service.DefaultOauthLoginService;
-import com.coniverse.dangjang.domain.healthmetric.enums.HealthConnect;
 import com.coniverse.dangjang.domain.point.dto.request.UsePointRequest;
 import com.coniverse.dangjang.domain.point.dto.response.ProductListResponse;
 import com.coniverse.dangjang.domain.point.dto.response.UsePointResponse;
@@ -88,9 +87,7 @@ public class PointService {
 	 * @since 1.0.0
 	 */
 	public void addHealthConnectPoint(User user) {
-		if (user.getHealthConnect().equals(HealthConnect.CONNECTING)) {
-			addPointEvent(EarnPoint.HEALTH_CONNECT.getTitle(), user);
-		}
+		addPointEvent(EarnPoint.HEALTH_CONNECT.getTitle(), user);
 	}
 
 	/**

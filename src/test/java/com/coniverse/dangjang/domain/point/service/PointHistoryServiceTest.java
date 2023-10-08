@@ -39,8 +39,6 @@ import com.coniverse.dangjang.domain.point.repository.UserPointRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
-import jakarta.persistence.EntityManager;
-
 /**
  * 포인트 Service 테스트
  *
@@ -63,8 +61,6 @@ class PointHistoryServiceTest {
 	private PointHistoryRepository pointHistoryRepository;
 	@Autowired
 	private PointSearchService pointSearchService;
-	@Autowired
-	private EntityManager em;
 	@Autowired
 	private HealthConnectService healthConnectService;
 	@Autowired
