@@ -69,6 +69,7 @@ public class User extends BaseEntity implements Persistable<String> {
 	private HealthConnect healthConnect = HealthConnect.NEVER_CONNECTED;
 	@Column(name = "ACCESSED_AT", nullable = false)
 	private LocalDate accessedAt = LocalDate.now();
+	private LocalDate inactivatedAt;
 
 	@OneToOne
 	@JoinColumn(name = "oauthId")
@@ -77,7 +78,7 @@ public class User extends BaseEntity implements Persistable<String> {
 	@Builder
 	private User(String oauthId, OauthProvider oauthProvider, String nickname, Gender gender, LocalDate birthday, ActivityAmount activityAmount, int height,
 		int recommendedCalorie, Role role, Status status, String profileImagePath, boolean diabetic, int diabetesYear, boolean medicine, boolean injection,
-		LocalDate accessedAt, HealthConnect healthConnect) {
+		LocalDate accessedAt, HealthConnect healthConnect, LocalDate inactivatedAt) {
 		this.oauthId = oauthId;
 		this.oauthProvider = oauthProvider;
 		this.nickname = nickname;
@@ -95,6 +96,7 @@ public class User extends BaseEntity implements Persistable<String> {
 		this.injection = injection;
 		this.accessedAt = accessedAt;
 		this.healthConnect = healthConnect;
+		this.inactivatedAt = inactivatedAt;
 	}
 
 	@Override
@@ -113,5 +115,24 @@ public class User extends BaseEntity implements Persistable<String> {
 
 	public void updateAccessedAt(LocalDate accessedAt) {
 		this.accessedAt = accessedAt;
+	}
+
+	/**
+	 * 활성화된 사용자인지 확인한다.
+	 *
+	 * @since 1.1.0
+	 */
+	public boolean isActive() {
+		return this.status.equals(Status.ACTIVE);
+	}
+
+	/**
+	 * 사용자를 비활성화한다.
+	 *
+	 * @since 1.1.0
+	 */
+	public void inactivate() {
+		this.status = Status.INACTIVE;
+		this.inactivatedAt = LocalDate.now();
 	}
 }
