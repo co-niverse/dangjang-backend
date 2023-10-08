@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.user.entity.User;
-import com.coniverse.dangjang.domain.user.exception.WithdrawalUserException;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -30,21 +29,9 @@ public class UserWithdrawalService {
 	 */
 	public void withdraw(String oauthId) {
 		User user = userSearchService.findUserByOauthId(oauthId);
-		verifyActiveUser(user);
 		user.inactivate();
 		userRepository.save(user);
 	}
 
-	/**
-	 * 사용자가 활성화된 사용자인지 확인한다.
-	 *
-	 * @param user 활성화 여부를 확인할 사용자
-	 * @throws WithdrawalUserException 사용자가 비활성화된 사용자일 경우
-	 * @since 1.1.0
-	 */
-	public void verifyActiveUser(User user) {
-		if (!user.isActive()) {
-			throw new WithdrawalUserException();
-		}
-	}
+	// TODO 30일 뒤 삭제 시 사용자 연관관계 전부 제거
 }

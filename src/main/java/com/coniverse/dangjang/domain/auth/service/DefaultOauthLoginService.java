@@ -22,7 +22,6 @@ import com.coniverse.dangjang.domain.user.exception.InvalidAuthenticationExcepti
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
-import com.coniverse.dangjang.domain.user.service.UserWithdrawalService;
 import com.coniverse.dangjang.global.exception.InvalidTokenException;
 import com.coniverse.dangjang.global.support.enums.JWTStatus;
 
@@ -40,12 +39,11 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	private final AuthTokenGenerator authTokenGenerator;
 	private final UserSearchService userSearchService;
 	private final Map<OauthProvider, OAuthClient> clients;
-	private final UserRepository userRepository;
+	private final UserRepository userRepository; // TODO 의존성 제거
 	private final JwtTokenProvider jwtTokenProvider;
-	private final UserWithdrawalService userWithdrawalService;
 
 	public DefaultOauthLoginService(AuthTokenGenerator authTokenGenerator, UserSearchService userSearchService, List<OAuthClient> clients,
-		UserRepository userRepository, JwtTokenProvider jwtTokenProvider, UserWithdrawalService userWithdrawalService) {
+		UserRepository userRepository, JwtTokenProvider jwtTokenProvider) {
 		this.authTokenGenerator = authTokenGenerator;
 		this.userSearchService = userSearchService;
 		this.clients = clients.stream().collect(
@@ -53,7 +51,6 @@ public class DefaultOauthLoginService implements OauthLoginService {
 		);
 		this.userRepository = userRepository;
 		this.jwtTokenProvider = jwtTokenProvider;
-		this.userWithdrawalService = userWithdrawalService;
 	}
 
 	/**
@@ -65,7 +62,7 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	public LoginResponse login(OauthLoginRequest params) {
 		OAuthInfoResponse oAuthInfoResponse = request(params);
 		User user = userSearchService.findUserByOauthId(oAuthInfoResponse.getOauthId());
-		userWithdrawalService.verifyActiveUser(user);
+		user.verifyActiveUser();
 		return new LoginResponse(user.getNickname(), false, false);
 	}
 

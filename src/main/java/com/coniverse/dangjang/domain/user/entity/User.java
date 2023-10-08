@@ -6,11 +6,11 @@ import org.springframework.data.domain.Persistable;
 
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.healthmetric.enums.HealthConnect;
-import com.coniverse.dangjang.domain.point.entity.UserPoint;
 import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
 import com.coniverse.dangjang.domain.user.entity.enums.Role;
 import com.coniverse.dangjang.domain.user.entity.enums.Status;
+import com.coniverse.dangjang.domain.user.exception.WithdrawalUserException;
 import com.coniverse.dangjang.global.support.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -18,8 +18,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -71,10 +69,6 @@ public class User extends BaseEntity implements Persistable<String> {
 	private LocalDate accessedAt = LocalDate.now();
 	private LocalDate inactivatedAt;
 
-	@OneToOne
-	@JoinColumn(name = "oauthId")
-	private UserPoint userPoint;
-
 	@Builder
 	private User(String oauthId, OauthProvider oauthProvider, String nickname, Gender gender, LocalDate birthday, ActivityAmount activityAmount, int height,
 		int recommendedCalorie, Role role, Status status, String profileImagePath, boolean diabetic, int diabetesYear, boolean medicine, boolean injection) {
@@ -116,10 +110,13 @@ public class User extends BaseEntity implements Persistable<String> {
 	/**
 	 * 활성화된 사용자인지 확인한다.
 	 *
+	 * @throws WithdrawalUserException 사용자가 비활성화된 사용자일 경우
 	 * @since 1.1.0
 	 */
-	public boolean isActive() {
-		return this.status.equals(Status.ACTIVE);
+	public void verifyActiveUser() {
+		if (!this.status.equals(Status.ACTIVE)) {
+			throw new WithdrawalUserException();
+		}
 	}
 
 	/**
@@ -128,6 +125,7 @@ public class User extends BaseEntity implements Persistable<String> {
 	 * @since 1.1.0
 	 */
 	public void inactivate() {
+		verifyActiveUser();
 		this.status = Status.INACTIVE;
 		this.inactivatedAt = LocalDate.now();
 	}

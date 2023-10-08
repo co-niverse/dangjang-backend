@@ -5,10 +5,10 @@ import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.auth.dto.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
@@ -24,12 +24,16 @@ import com.coniverse.dangjang.global.exception.InvalidTokenException;
  * @since 1.0.0
  */
 @SpringBootTest
-@Transactional
 class OauthLoginServiceTest {
 	@Autowired
 	private OauthLoginService oauthLoginService;
 	@Autowired
 	private UserRepository userRepository;
+
+	@AfterEach
+	void tearDown() {
+		userRepository.deleteAll();
+	}
 
 	@Test
 	void 가입된_유저가_아니면_로그인을_실패한다() {

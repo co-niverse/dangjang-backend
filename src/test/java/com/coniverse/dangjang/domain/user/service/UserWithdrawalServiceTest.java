@@ -6,10 +6,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.entity.enums.Status;
@@ -21,12 +21,16 @@ import com.coniverse.dangjang.domain.user.repository.UserRepository;
  * @since 1.1.0
  */
 @SpringBootTest
-@Transactional
 class UserWithdrawalServiceTest {
 	@Autowired
 	private UserWithdrawalService userWithdrawalService;
 	@Autowired
 	private UserRepository userRepository;
+
+	@AfterEach
+	void tearDown() {
+		userRepository.deleteAll();
+	}
 
 	@Test
 	void active_유저는_회원_탈퇴에_성공한다() {
@@ -40,7 +44,6 @@ class UserWithdrawalServiceTest {
 		// then
 		User deletedUser = userRepository.findById(oauthId).orElseThrow();
 		assertAll(
-			() -> assertFalse(deletedUser.isActive()),
 			() -> assertThat(deletedUser.getStatus()).isEqualTo(Status.INACTIVE),
 			() -> assertThat(deletedUser.getInactivatedAt()).isEqualTo(LocalDate.now())
 		);
@@ -54,25 +57,6 @@ class UserWithdrawalServiceTest {
 
 		// when & then
 		assertThatThrownBy(() -> userWithdrawalService.withdraw(oauthId))
-			.isInstanceOf(WithdrawalUserException.class);
-	}
-
-	@Test
-	void active_유저는_활성화된_사용자_검증을_통과한다() {
-		// given
-		User user = 유저_테오();
-
-		// when & then
-		assertDoesNotThrow(() -> userWithdrawalService.verifyActiveUser(user));
-	}
-
-	@Test
-	void inactive_유저는_활성화된_사용자_검증을_통과하지_못한다() {
-		// given
-		User user = 비활성화된_유저();
-
-		// when & then
-		assertThatThrownBy(() -> userWithdrawalService.verifyActiveUser(user))
 			.isInstanceOf(WithdrawalUserException.class);
 	}
 }
