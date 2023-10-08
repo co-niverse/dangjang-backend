@@ -97,8 +97,24 @@ public class User extends BaseEntity implements Persistable<String> {
 		return this.getCreatedAt() == null;
 	}
 
-	public void setHealthConnect(HealthConnect interlock) {
-		this.healthConnect = interlock;
+	public boolean isNeverConnectedHealthConnect() {
+		return this.healthConnect.equals(HealthConnect.NEVER_CONNECTED);
+	}
+
+	public boolean isDisconnectedHealthConnect() {
+		return this.healthConnect.equals(HealthConnect.DISCONNECTED);
+	}
+
+	public boolean isConnectingHealthConnect() {
+		return this.healthConnect.equals(HealthConnect.CONNECTING);
+	}
+
+	public void disconnectToHealthConnect() {
+		this.healthConnect = HealthConnect.DISCONNECTED;
+	}
+
+	public void connectToHealthConnect() {
+		this.healthConnect = HealthConnect.CONNECTING;
 	}
 
 	public void updateAccessedAt(LocalDate accessedAt) {

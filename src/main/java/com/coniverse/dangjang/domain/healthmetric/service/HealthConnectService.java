@@ -10,7 +10,6 @@ import com.coniverse.dangjang.domain.guide.common.service.GuideService;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectRegisterRequest;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
-import com.coniverse.dangjang.domain.healthmetric.enums.HealthConnect;
 import com.coniverse.dangjang.domain.healthmetric.mapper.HealthMetricMapper;
 import com.coniverse.dangjang.domain.healthmetric.repository.HealthConnectRepository;
 import com.coniverse.dangjang.domain.point.service.PointService;
@@ -20,7 +19,7 @@ import com.coniverse.dangjang.domain.user.service.UserSearchService;
 import lombok.RequiredArgsConstructor;
 
 /**
- * health connect 건강지표 등록 service
+ * health connect service
  *
  * @author TEO
  * @since 1.0.0
@@ -64,15 +63,12 @@ public class HealthConnectService {
 	public void interlockHealthConnect(HealthConnectRegisterRequest request, String oauthId) {
 		User user = userSearchService.findUserByOauthId(oauthId);
 		if (request.healthConnectInterlock()) {
-			if (user.getHealthConnect().equals(HealthConnect.NEVER_CONNECTED)) {
-				user.setHealthConnect(HealthConnect.CONNECTING);
+			if (user.isNeverConnectedHealthConnect()) {
 				pointService.addHealthConnectPoint(user);
-			} else if (user.getHealthConnect().equals(HealthConnect.DISCONNECTED)) {
-				user.setHealthConnect(HealthConnect.CONNECTING);
 			}
-		} else if (!request.healthConnectInterlock() && user.getHealthConnect().equals(HealthConnect.CONNECTING)) {
-			user.setHealthConnect(HealthConnect.DISCONNECTED);
+			user.connectToHealthConnect();
+		} else if (user.isConnectingHealthConnect()) {
+			user.disconnectToHealthConnect();
 		}
-
 	}
 }

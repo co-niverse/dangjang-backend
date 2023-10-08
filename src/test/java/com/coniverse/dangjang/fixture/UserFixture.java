@@ -3,7 +3,6 @@ package com.coniverse.dangjang.fixture;
 import java.time.LocalDate;
 
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
-import com.coniverse.dangjang.domain.healthmetric.enums.HealthConnect;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
@@ -95,7 +94,7 @@ public class UserFixture {
 
 	public static User 헬스커넥트_연동_유저() {
 		User user = 유저_이브();
-		user.setHealthConnect(HealthConnect.CONNECTING);
+		user.connectToHealthConnect();
 		return user;
 	}
 
