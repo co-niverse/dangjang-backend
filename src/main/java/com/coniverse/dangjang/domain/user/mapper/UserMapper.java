@@ -18,5 +18,6 @@ public interface UserMapper {
 	@Mapping(target = "oauthProvider", source = "oAuthInfoResponse.oauthProvider")
 	@Mapping(target = "gender", source = "gender")
 	@Mapping(target = "activityAmount", source = "activityAmount")
+	@Mapping(target = "diabetic", source = "signUpRequest.diabetes")
 	User toEntity(OAuthInfoResponse oAuthInfoResponse, SignUpRequest signUpRequest, ActivityAmount activityAmount, Gender gender, int recommendedCalorie);
 }
