@@ -15,6 +15,7 @@ import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
+import com.coniverse.dangjang.domain.user.exception.WithdrawalUserException;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.global.exception.InvalidTokenException;
 
@@ -110,5 +111,18 @@ class OauthLoginServiceTest {
 
 		//then
 		assertThatException().isThrownBy(() -> oauthLoginService.reissueToken(header)).isInstanceOf(InvalidTokenException.class);
+	}
+
+	@Test
+	void inactive_유저는_로그인에_실패한다() {
+		//given
+		User 이브 = 유저_이브();
+		이브.inactivate();
+		userRepository.save(이브);
+		KakaoLoginRequest request = 카카오_로그인_요청();
+
+		//when & then
+		assertThatThrownBy(() -> oauthLoginService.login(request))
+			.isInstanceOf(WithdrawalUserException.class);
 	}
 }
