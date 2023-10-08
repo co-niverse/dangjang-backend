@@ -17,6 +17,7 @@ import com.coniverse.dangjang.domain.guide.exercise.service.ExerciseGuideSearchS
 import com.coniverse.dangjang.domain.guide.weight.document.WeightGuide;
 import com.coniverse.dangjang.domain.guide.weight.dto.WeightDayGuide;
 import com.coniverse.dangjang.domain.guide.weight.service.WeightGuideSearchService;
+import com.coniverse.dangjang.domain.notification.service.NotificationService;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class DayGuideService {
 	private final BloodSugarGuideSearchService bloodSugarGuideSearchService;
 	private final WeightGuideSearchService weightGuideSearchService;
 	private final ExerciseGuideSearchService exerciseGuideSearchService;
+	private final NotificationService notificationService;
 
 	/**
 	 * 하루 가이드를 조회한다.
@@ -42,7 +44,7 @@ public class DayGuideService {
 	 *
 	 * @param oauthId 유저아이디
 	 * @param date    조회 날짜
-	 * @author EVE
+	 * @return DayGuideResponse
 	 * @since 1.0.0
 	 */
 	public DayGuideResponse getDayGuide(String oauthId, String date) {
@@ -51,7 +53,8 @@ public class DayGuideService {
 		List<TodayGuide> bloodSugarTodayGuide = getBloodSugarTodayGuide(oauthId, localDate);
 		WeightDayGuide weightDayGuide = getWeightGuide(oauthId, date);
 		ExerciseDayGuide exerciseDayGuide = getExerciseGuide(oauthId, localDate);
-		return new DayGuideResponse(userNickname, localDate, bloodSugarTodayGuide, weightDayGuide, exerciseDayGuide, false);
+		Boolean existsNotification = notificationService.isExistsNotReadNotification(oauthId);
+		return new DayGuideResponse(userNickname, localDate, bloodSugarTodayGuide, weightDayGuide, exerciseDayGuide, existsNotification);
 	}
 
 	/**
