@@ -30,7 +30,7 @@ public class UserWithdrawalService {
 	public void withdraw(String oauthId) {
 		User user = userSearchService.findUserByOauthId(oauthId);
 		user.inactivate();
-		// userRepository.save(user);
+		userRepository.save(user);
 	}
 
 	// TODO Spring Batch, 30일 뒤 삭제 시 사용자 연관관계 전부 제거
