@@ -6,6 +6,7 @@ import org.springframework.data.domain.Persistable;
 
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.healthmetric.enums.HealthConnect;
+import com.coniverse.dangjang.domain.point.entity.UserPoint;
 import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
 import com.coniverse.dangjang.domain.user.entity.enums.Role;
@@ -18,6 +19,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -68,6 +71,10 @@ public class User extends BaseEntity implements Persistable<String> {
 	@Column(nullable = false)
 	private LocalDate accessedAt = LocalDate.now();
 	private LocalDate inactivatedAt;
+
+	@OneToOne
+	@JoinColumn(name = "oauthId")
+	private UserPoint userPoint;
 
 	@Builder
 	private User(String oauthId, OauthProvider oauthProvider, String nickname, Gender gender, LocalDate birthday, ActivityAmount activityAmount, int height,
