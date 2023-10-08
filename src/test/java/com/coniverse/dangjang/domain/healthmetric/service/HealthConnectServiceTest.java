@@ -38,9 +38,9 @@ import jakarta.transaction.Transactional;
  */
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class HealthConnectRegisterServiceTest {
+class HealthConnectServiceTest {
 	@Autowired
-	private HealthConnectRegisterService healthConnectRegisterService;
+	private HealthConnectService healthConnectService;
 	@Autowired
 	private HealthMetricRepository healthMetricRepository;
 	@Autowired
@@ -90,7 +90,7 @@ class HealthConnectRegisterServiceTest {
 		HealthConnectPostRequest request = 헬스_커넥트_등록_요청(type, count);
 
 		// when
-		healthConnectRegisterService.registerHealthConnect(request, oauthId);
+		healthConnectService.registerHealthConnectData(request, oauthId);
 
 		// then
 		assertThat(healthMetricRepository.findAll()).hasSize(count);
@@ -102,12 +102,12 @@ class HealthConnectRegisterServiceTest {
 		String type = CommonCode.BEFORE_BREAKFAST.getTitle();
 		int prevCount = 30;
 		HealthConnectPostRequest prevRequest = 헬스_커넥트_등록_요청(type, prevCount);
-		healthConnectRegisterService.registerHealthConnect(prevRequest, oauthId);
+		healthConnectService.registerHealthConnectData(prevRequest, oauthId);
 
 		// when
 		int count = 50;
 		HealthConnectPostRequest request = 헬스_커넥트_등록_요청(type, count);
-		healthConnectRegisterService.registerHealthConnect(request, oauthId);
+		healthConnectService.registerHealthConnectData(request, oauthId);
 
 		// then
 		assertThat(healthMetricRepository.findAll()).hasSize(count);
@@ -121,7 +121,7 @@ class HealthConnectRegisterServiceTest {
 		HealthConnectRegisterRequest request = 헬스_커넥트_연동_요청(true);
 
 		// when
-		healthConnectRegisterService.interlockHealthConnect(request, oauthId);
+		healthConnectService.interlockHealthConnect(request, oauthId);
 
 		UserPoint 유저_포인트 = pointSearchService.findUserPointByOauthId(oauthId);
 
@@ -140,7 +140,7 @@ class HealthConnectRegisterServiceTest {
 		HealthConnectRegisterRequest request = 헬스_커넥트_연동_요청(false);
 
 		// when
-		healthConnectRegisterService.interlockHealthConnect(request, oauthId);
+		healthConnectService.interlockHealthConnect(request, oauthId);
 
 		User 연동된_유저 = userSearchService.findUserByOauthId(oauthId);
 		UserPoint 유저_포인트 = pointSearchService.findUserPointByOauthId(oauthId);
@@ -160,7 +160,7 @@ class HealthConnectRegisterServiceTest {
 		HealthConnectRegisterRequest request = 헬스_커넥트_연동_요청(true);
 
 		// when
-		healthConnectRegisterService.interlockHealthConnect(request, oauthId);
+		healthConnectService.interlockHealthConnect(request, oauthId);
 
 		User 연동된_유저 = userSearchService.findUserByOauthId(oauthId);
 		UserPoint 유저_포인트 = pointSearchService.findUserPointByOauthId(oauthId);

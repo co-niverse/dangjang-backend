@@ -21,7 +21,7 @@ import com.coniverse.dangjang.domain.guide.weight.controller.WeightGuideControll
 import com.coniverse.dangjang.domain.guide.weight.service.WeightGuideSearchService;
 import com.coniverse.dangjang.domain.healthmetric.controller.HealthConnectController;
 import com.coniverse.dangjang.domain.healthmetric.controller.HealthMetricController;
-import com.coniverse.dangjang.domain.healthmetric.service.HealthConnectRegisterService;
+import com.coniverse.dangjang.domain.healthmetric.service.HealthConnectService;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricChartSearchService;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
 import com.coniverse.dangjang.domain.intro.controller.IntroController;
@@ -87,7 +87,7 @@ public class ControllerTest {
 	@MockBean
 	private ExerciseGuideSearchService exerciseGuideSearchService;
 	@MockBean
-	private HealthConnectRegisterService healthConnectRegisterService;
+	private HealthConnectService healthConnectService;
 	@MockBean
 	private HealthMetricChartSearchService healthMetricChartSearchService;
 	@MockBean

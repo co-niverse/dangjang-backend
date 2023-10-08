@@ -26,7 +26,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectRegisterRequest;
-import com.coniverse.dangjang.domain.healthmetric.service.HealthConnectRegisterService;
+import com.coniverse.dangjang.domain.healthmetric.service.HealthConnectService;
 import com.coniverse.dangjang.domain.point.dto.request.UsePointRequest;
 import com.coniverse.dangjang.domain.point.dto.response.ProductListResponse;
 import com.coniverse.dangjang.domain.point.entity.UserPoint;
@@ -66,7 +66,7 @@ class PointHistoryServiceTest {
 	@Autowired
 	private EntityManager em;
 	@Autowired
-	private HealthConnectRegisterService healthConnectRegisterService;
+	private HealthConnectService healthConnectService;
 	@Autowired
 	private PurchaseHistoryRepository purchaseHistoryRepository;
 
@@ -288,7 +288,7 @@ class PointHistoryServiceTest {
 		for (int i = 0; i < 30; i++) {
 			executorService.submit(() -> {
 				try {
-					healthConnectRegisterService.interlockHealthConnect(request, 유저.getOauthId());
+					healthConnectService.interlockHealthConnect(request, 유저.getOauthId());
 					successCount.incrementAndGet();
 				} catch (Exception e) {
 					System.out.println("error : " + e.getMessage());

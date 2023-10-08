@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class HealthConnectRegisterService {
+public class HealthConnectService {
 	private final UserSearchService userSearchService;
 	private final HealthMetricMapper healthMetricMapper;
 	private final GuideService guideService;
@@ -43,7 +43,7 @@ public class HealthConnectRegisterService {
 	 * @param oauthId 건강 지표 등록 유저 PK
 	 * @since 1.0.0
 	 */
-	public void registerHealthConnect(HealthConnectPostRequest request, String oauthId) { // TODO async
+	public void registerHealthConnectData(HealthConnectPostRequest request, String oauthId) { // TODO async
 		final User user = userSearchService.findUserByOauthId(oauthId);
 
 		List<HealthMetric> healthMetrics = request.data()
