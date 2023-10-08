@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 public enum Event implements EnumCode {
 	HOME_BLOOD_SUGAR_CLICK("home_bloodsugar_click"),
 	HOME_WEIGHT_CLICK("home_weight_click"),
+	HOME_EXERCISE_CLICK("home_exercise_click"),
 	HOME_CALORIE_CLICK("home_calorie_click"),
 	HOME_CALENDAR_CLICK("home_calendar_click"),
 	BLOOD_SUGAR_STAY_TIME("bloodsugar_stay_time"),
