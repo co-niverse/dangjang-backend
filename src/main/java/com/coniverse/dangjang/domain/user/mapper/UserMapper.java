@@ -14,12 +14,9 @@ import com.coniverse.dangjang.domain.user.entity.enums.Status;
 
 @Mapper(componentModel = "spring", imports = {Role.class, Status.class, HealthConnect.class})
 public interface UserMapper {
-	@Mapping(target = "oauthId", expression = "java(oAuthInfoResponse.getOauthId())")
-	@Mapping(target = "oauthProvider", expression = "java(oAuthInfoResponse.getOauthProvider())")
-	@Mapping(target = "role", expression = "java(Role.USER)")
-	@Mapping(target = "status", expression = "java(Status.ACTIVE)")
-	@Mapping(target = "accessedAt", expression = "java(java.time.LocalDate.now())")
-	@Mapping(target = "gender", expression = "java(gender)")
-	@Mapping(target = "healthConnect", expression = "java(HealthConnect.NEVER_CONNECTED)")
+	@Mapping(target = "oauthId", source = "oAuthInfoResponse.oauthId")
+	@Mapping(target = "oauthProvider", source = "oAuthInfoResponse.oauthProvider")
+	@Mapping(target = "gender", source = "gender")
+	@Mapping(target = "activityAmount", source = "activityAmount")
 	User toEntity(OAuthInfoResponse oAuthInfoResponse, SignUpRequest signUpRequest, ActivityAmount activityAmount, Gender gender, int recommendedCalorie);
 }
