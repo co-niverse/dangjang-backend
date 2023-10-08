@@ -97,22 +97,50 @@ public class User extends BaseEntity implements Persistable<String> {
 		return this.getCreatedAt() == null;
 	}
 
+	/**
+	 * 헬스커넥트를 한 번도 연동하지 않은 사용자인지 확인한다.
+	 *
+	 * @return boolean 헬스커넥트를 한 번도 연동하지 않은 사용자인지 여부
+	 * @since 1.1.0
+	 */
 	public boolean isNeverConnectedHealthConnect() {
 		return this.healthConnect.equals(HealthConnect.NEVER_CONNECTED);
 	}
 
+	/**
+	 * 헬스커넥트 연동을 해지한 사용자인지 확인한다.
+	 *
+	 * @return boolean 헬스커넥트 연동을 해지한 사용자인지 여부
+	 * @since 1.1.0
+	 */
 	public boolean isDisconnectedHealthConnect() {
 		return this.healthConnect.equals(HealthConnect.DISCONNECTED);
 	}
 
+	/**
+	 * 헬스커넥트를 연동 중인 사용자인지 확인한다.
+	 *
+	 * @return boolean 헬스커넥트를 연동 중인 사용자인지 여부
+	 * @since 1.1.0
+	 */
 	public boolean isConnectingHealthConnect() {
 		return this.healthConnect.equals(HealthConnect.CONNECTING);
 	}
 
+	/**
+	 * 헬스커넥트 연동을 해지한다.
+	 *
+	 * @since 1.1.0
+	 */
 	public void disconnectToHealthConnect() {
 		this.healthConnect = HealthConnect.DISCONNECTED;
 	}
 
+	/**
+	 * 헬스커넥트를 연동한다.
+	 *
+	 * @since 1.1.0
+	 */
 	public void connectToHealthConnect() {
 		this.healthConnect = HealthConnect.CONNECTING;
 	}
