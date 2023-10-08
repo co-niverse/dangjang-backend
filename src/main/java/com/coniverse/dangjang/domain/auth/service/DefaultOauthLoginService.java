@@ -22,6 +22,7 @@ import com.coniverse.dangjang.domain.auth.repository.BlackTokenRepository;
 import com.coniverse.dangjang.domain.auth.repository.RefreshTokenRepository;
 import com.coniverse.dangjang.domain.infrastructure.auth.client.OAuthClient;
 import com.coniverse.dangjang.domain.infrastructure.auth.dto.OAuthInfoResponse;
+import com.coniverse.dangjang.domain.notification.service.NotificationService;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.exception.InvalidAuthenticationException;
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
@@ -50,10 +51,11 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	private final JwtTokenProvider jwtTokenProvider;
 	private final BlackTokenRepository blackTokenRepository;
 	private final RefreshTokenRepository refreshTokenRepository;
+	private final NotificationService notificationService;
 
 	public DefaultOauthLoginService(AuthTokenGenerator authTokenGenerator, UserSearchService userSearchService, List<OAuthClient> clients,
 		UserRepository userRepository, JwtTokenProvider jwtTokenProvider, BlackTokenRepository blackTokenRepository,
-		RefreshTokenRepository refreshTokenRepository) {
+		RefreshTokenRepository refreshTokenRepository, NotificationService notificationService) {
 		this.authTokenGenerator = authTokenGenerator;
 		this.userSearchService = userSearchService;
 		this.clients = clients.stream().collect(
@@ -63,16 +65,19 @@ public class DefaultOauthLoginService implements OauthLoginService {
 		this.jwtTokenProvider = jwtTokenProvider;
 		this.blackTokenRepository = blackTokenRepository;
 		this.refreshTokenRepository = refreshTokenRepository;
+		this.notificationService = notificationService;
 	}
 
 	/**
-	 * @param params 카카오,네이버 accessToken
+	 * @param params   카카오,네이버 accessToken
+	 * @param fcmToken notifiaction 디바이스 토큰
 	 * @return Content 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, authID)를 전달한다.
 	 * @since 1.0.0
 	 */
-	public LoginResponse login(OauthLoginRequest params) {
+	public LoginResponse login(OauthLoginRequest params, String fcmToken) {
 		OAuthInfoResponse oAuthInfoResponse = request(params);
 		User user = userSearchService.findUserByOauthId(oAuthInfoResponse.getOauthId());
+		notificationService.saveFcmToken(fcmToken, user.getOauthId());
 		return new LoginResponse(user.getNickname(), false, false);
 	}
 
@@ -183,9 +188,10 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	 * @since 1.0.0
 	 */
 
-	public void logout(String accessToken) {
+	public void logout(String accessToken, String fcmToken) {
 		refreshTokenRepository.deleteById(accessToken);
-		jwtTokenBlack(jwtTokenProvider.getToken(accessToken));
+		String oauthId = jwtTokenBlack(jwtTokenProvider.getToken(accessToken));
+		notificationService.deleteFcmToken(oauthId, fcmToken);
 	}
 
 	/**
@@ -195,7 +201,7 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	 * @since 1.0.0
 	 */
 
-	private void jwtTokenBlack(String token) {
+	private String jwtTokenBlack(String token) {
 		Claims claim = checkJwtTokenValidation(token);
 		long blackTokenExpirationTime = calculateExpirationTime(claim.getExpiration().getTime());
 		BlackToken blackToken = BlackToken.builder() //TODO: mapper 패턴으로 변경
@@ -203,6 +209,7 @@ public class DefaultOauthLoginService implements OauthLoginService {
 			.expirationTime(blackTokenExpirationTime) //TODO: 유효 시간 계산
 			.build();
 		blackTokenRepository.save(blackToken);
+		return claim.getSubject();
 	}
 
 	/**

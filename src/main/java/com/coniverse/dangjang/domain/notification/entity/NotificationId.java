@@ -2,6 +2,7 @@ package com.coniverse.dangjang.domain.notification.entity;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +15,9 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 public class NotificationId implements Serializable {
+	@Column(name = "oauth_id", nullable = false)
 	private String oauthId;
+	@Column(name = "fcm_token", nullable = false)
 	private String fcmToken;
 
 	protected NotificationId(String oauthId, String fcmToken) {

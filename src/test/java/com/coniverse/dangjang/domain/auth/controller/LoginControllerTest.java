@@ -26,6 +26,7 @@ class LoginControllerTest extends ControllerTest {
 	private final LoginResponse response = 로그인_응답();
 	@Autowired
 	private OauthLoginService oauthLoginService;
+	private final String fcmToken = "fcmToken";
 
 	@Test
 	void 카카오_로그인에_성공한다() throws Exception {
@@ -35,7 +36,7 @@ class LoginControllerTest extends ControllerTest {
 		AuthToken authToken = new AuthToken();
 		authToken.setAccessToken("accessToken");
 		authToken.setRefreshToken("refreshToken");
-		given(oauthLoginService.login(request)).willReturn(response);
+		given(oauthLoginService.login(request, fcmToken)).willReturn(response);
 		given(oauthLoginService.getAuthToken(response.nickname())).willReturn(authToken.getAccessToken());
 
 		// when
@@ -76,7 +77,7 @@ class LoginControllerTest extends ControllerTest {
 		AuthToken authToken = new AuthToken();
 		authToken.setAccessToken("accessToken");
 		authToken.setRefreshToken("refreshToken");
-		given(oauthLoginService.login(request)).willReturn(response);
+		given(oauthLoginService.login(request, fcmToken)).willReturn(response);
 		given(oauthLoginService.getAuthToken(response.nickname())).willReturn(authToken.getAccessToken());
 
 		// when

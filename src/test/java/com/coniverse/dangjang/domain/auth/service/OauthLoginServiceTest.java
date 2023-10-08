@@ -28,6 +28,7 @@ class OauthLoginServiceTest {
 	private OauthLoginService oauthLoginService;
 	@Autowired
 	private UserRepository userRepository;
+	private final String fcmToken = "fcmToken";
 
 	@Test
 	void 가입된_유저가_아니면_로그인을_실패한다() {
@@ -35,7 +36,7 @@ class OauthLoginServiceTest {
 		KakaoLoginRequest request = 카카오_로그인_요청();
 
 		// when & then
-		assertThatThrownBy(() -> oauthLoginService.login(request))
+		assertThatThrownBy(() -> oauthLoginService.login(request, fcmToken))
 			.isInstanceOf(NonExistentUserException.class);
 	}
 
@@ -46,7 +47,7 @@ class OauthLoginServiceTest {
 		KakaoLoginRequest request = 카카오_로그인_요청();
 
 		//when
-		LoginResponse response = oauthLoginService.login(request);
+		LoginResponse response = oauthLoginService.login(request, fcmToken);
 
 		//then
 		assertAll(

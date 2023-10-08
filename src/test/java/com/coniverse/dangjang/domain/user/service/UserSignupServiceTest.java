@@ -37,6 +37,7 @@ class UserSignupServiceTest {
 	private PointSearchService pointSearchService;
 	@Autowired
 	private UserSearchService userSearchService;
+	private final String fcmToken = "fcmToken";
 
 	@BeforeAll
 	void setUp() {
@@ -54,7 +55,7 @@ class UserSignupServiceTest {
 			diseases);
 
 		//when
-		LoginResponse loginResponse = userSignupService.signUp(signUpRequest);
+		LoginResponse loginResponse = userSignupService.signUp(signUpRequest, fcmToken);
 		String 유저_아이디 = userSearchService.findNickname(signUpRequest.nickname()).get().getOauthId();
 		int 유저_포인트 = pointSearchService.findUserPointByOauthId(유저_아이디).getPoint();
 		//that
@@ -74,7 +75,7 @@ class UserSignupServiceTest {
 			diseases);
 
 		//when
-		LoginResponse loginResponse = userSignupService.signUp(signUpRequest);
+		LoginResponse loginResponse = userSignupService.signUp(signUpRequest, fcmToken);
 		String 유저_아이디 = userSearchService.findNickname(signUpRequest.nickname()).get().getOauthId();
 		int 유저_포인트 = pointSearchService.findUserPointByOauthId(유저_아이디).getPoint();
 
@@ -95,7 +96,7 @@ class UserSignupServiceTest {
 			false, 0, false, false,
 			diseases);
 		//when&that
-		assertThatThrownBy(() -> userSignupService.signUp(signUpRequest))
+		assertThatThrownBy(() -> userSignupService.signUp(signUpRequest, fcmToken))
 			.isInstanceOf(IllegalArgumentException.class);
 		assertThatThrownBy(() -> pointSearchService.findUserPointByOauthId(유저_아이디))
 			.isInstanceOf(IllegalArgumentException.class);
@@ -110,7 +111,7 @@ class UserSignupServiceTest {
 			false, 0, false, false,
 			diseases);
 
-		userSignupService.signUp(signUpRequest);
+		userSignupService.signUp(signUpRequest, fcmToken);
 		//when
 		DuplicateNicknameResponse isDuplicated = userSignupService.checkDuplicatedNickname(signUpRequest.nickname());
 		//then
