@@ -39,10 +39,10 @@ public class User extends BaseEntity implements Persistable<String> {
 	private String oauthId;
 	@Enumerated(EnumType.STRING)
 	private OauthProvider oauthProvider;
-	@Column(nullable = false, unique = true, length = 8)
+	@Column(nullable = false, unique = true)
 	private String nickname;
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, length = 5)
+	@Column(nullable = false)
 	private Gender gender;
 	@Column(nullable = false)
 	private LocalDate birthday;
@@ -55,10 +55,10 @@ public class User extends BaseEntity implements Persistable<String> {
 	private int recommendedCalorie;
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private Status status;
+	private Status status = Status.ACTIVE;
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private Role role;
+	private Role role = Role.USER;
 	@Column(nullable = false)
 	private boolean diabetic;
 	private int diabetesYear;
@@ -67,7 +67,7 @@ public class User extends BaseEntity implements Persistable<String> {
 	private String profileImagePath;
 	@Enumerated(EnumType.STRING)
 	private HealthConnect healthConnect = HealthConnect.NEVER_CONNECTED;
-	@Column(name = "ACCESSED_AT", nullable = false)
+	@Column(nullable = false)
 	private LocalDate accessedAt = LocalDate.now();
 	private LocalDate inactivatedAt;
 
@@ -77,8 +77,7 @@ public class User extends BaseEntity implements Persistable<String> {
 
 	@Builder
 	private User(String oauthId, OauthProvider oauthProvider, String nickname, Gender gender, LocalDate birthday, ActivityAmount activityAmount, int height,
-		int recommendedCalorie, Role role, Status status, String profileImagePath, boolean diabetic, int diabetesYear, boolean medicine, boolean injection,
-		LocalDate accessedAt, HealthConnect healthConnect, LocalDate inactivatedAt) {
+		int recommendedCalorie, Role role, Status status, String profileImagePath, boolean diabetic, int diabetesYear, boolean medicine, boolean injection) {
 		this.oauthId = oauthId;
 		this.oauthProvider = oauthProvider;
 		this.nickname = nickname;
@@ -94,9 +93,6 @@ public class User extends BaseEntity implements Persistable<String> {
 		this.diabetesYear = diabetesYear;
 		this.medicine = medicine;
 		this.injection = injection;
-		this.accessedAt = accessedAt;
-		this.healthConnect = healthConnect;
-		this.inactivatedAt = inactivatedAt;
 	}
 
 	@Override
