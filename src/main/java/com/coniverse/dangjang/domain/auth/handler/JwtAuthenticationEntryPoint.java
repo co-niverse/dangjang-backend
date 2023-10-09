@@ -8,6 +8,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import com.coniverse.dangjang.global.dto.ErrorResponse;
+import com.coniverse.dangjang.global.dto.JwtExpiredResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,12 +34,18 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 		log.error("요청 URL : {}", request.getRequestURI());
 
 		int status = HttpStatus.UNAUTHORIZED.value();
-		String errorResponse;
+		String customResponse;
 		try {
-			errorResponse = objectMapper.writeValueAsString(new ErrorResponse(status, request.getAttribute("exception").toString()));
-		} catch (NullPointerException e) {
-			errorResponse = objectMapper.writeValueAsString(new ErrorResponse(status, "로그인이 필요합니다."));
+			customResponse = objectMapper.writeValueAsString(new JwtExpiredResponse());
+			response.addHeader("accessToken", request.getAttribute("accessToken").toString());
+			status = HttpStatus.OK.value();
+		} catch (NullPointerException accessTokenNullError) {
+			try {
+				customResponse = objectMapper.writeValueAsString(new ErrorResponse(status, request.getAttribute("exception").toString()));
+			} catch (NullPointerException exceptionNullError) {
+				customResponse = objectMapper.writeValueAsString(new ErrorResponse(status, "로그인이 필요합니다."));
+			}
 		}
-		AuthErrorUtil.sendErrorResponse(response, status, errorResponse);
+		AuthErrorUtil.sendErrorResponse(response, status, customResponse);
 	}
 }
