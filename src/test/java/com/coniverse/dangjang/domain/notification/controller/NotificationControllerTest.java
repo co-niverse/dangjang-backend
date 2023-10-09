@@ -25,7 +25,7 @@ import com.coniverse.dangjang.support.annotation.WithDangjangUser;
  * @since 1.0.0
  */
 @WithDangjangUser
-public class NotificationControllerTest extends ControllerTest {
+class NotificationControllerTest extends ControllerTest {
 	@Autowired
 	private NotificationService notificationService;
 	private static final String URL = "/api/notification";

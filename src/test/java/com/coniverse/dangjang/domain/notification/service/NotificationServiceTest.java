@@ -34,7 +34,7 @@ import com.coniverse.dangjang.global.exception.InvalidFcmTokenException;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
-public class NotificationServiceTest {
+class NotificationServiceTest {
 	@Autowired
 	private NotificationRepository notificationRepository;
 	@Autowired
