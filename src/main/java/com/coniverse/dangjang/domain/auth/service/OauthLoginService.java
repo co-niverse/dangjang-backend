@@ -18,4 +18,7 @@ public interface OauthLoginService {
 	String reissueToken(String header);
 
 	void logout(String accessToken, String fcmToken);
+
+	void validBlackToken(String accessToken);
+
 }

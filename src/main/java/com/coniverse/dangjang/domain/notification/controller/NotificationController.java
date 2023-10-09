@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,7 +40,7 @@ public class NotificationController {
 	 * @since 1.0.0
 	 */
 	@GetMapping
-	public ResponseEntity<SuccessSingleResponse<List<NotificationResponse>>> getNotificationList(@AuthenticationPrincipal User user) {
+	public ResponseEntity<SuccessSingleResponse<List<NotificationResponse>>> get(@AuthenticationPrincipal User user) {
 		List<NotificationResponse> response = notificationService.getNotificationList(user.getUsername());
 		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
@@ -55,8 +55,8 @@ public class NotificationController {
 	 * @since 1.0.0
 	 */
 
-	@PostMapping
-	public ResponseEntity<SuccessSingleResponse<?>> getNotificationList(@Valid @RequestBody CheckNotificationIdRequest notificationIdList) {
+	@PatchMapping
+	public ResponseEntity<SuccessSingleResponse<?>> patch(@Valid @RequestBody CheckNotificationIdRequest notificationIdList) {
 		notificationService.updateNotificationIsRead(notificationIdList);
 		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}

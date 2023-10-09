@@ -1,5 +1,7 @@
 package com.coniverse.dangjang.domain.notification.dto.response;
 
+import java.time.LocalDate;
+
 /**
  * notification response dto
  *
@@ -11,6 +13,6 @@ package com.coniverse.dangjang.domain.notification.dto.response;
  * @author EVE
  * @since 1.0.0
  */
-public record NotificationResponse(long notificationId, String title, String content, String type, String createdAt) {
+public record NotificationResponse(long notificationId, String title, String content, String type, LocalDate createdAt) {
 
 }

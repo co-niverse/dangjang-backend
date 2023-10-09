@@ -97,7 +97,6 @@ public class DefaultOauthLoginService implements OauthLoginService {
 		}
 		//TODO : 토큰 호출시 자동 제거 기능 추가 및 예외 수정
 		RefreshToken refreshToken = refreshTokenRepository.findById(token).orElseThrow(() -> new InvalidTokenException(JWTStatus.EXPIRED.getMessage()));
-		//TODO : 수정
 		String oauthId = jwtTokenProvider.parseClaims(refreshToken.getRefreshToken()).getSubject();
 		User user = userSearchService.findUserByOauthId(oauthId);
 		return getAuthToken(user.getNickname());
@@ -184,13 +183,14 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	 * <p>
 	 * 기존 redis에 있는 refreshToken을 제거하고, accessToken을 blackList에 추가
 	 *
-	 * @param accessToken
+	 * @param tokenHeader
 	 * @since 1.0.0
 	 */
 
-	public void logout(String accessToken, String fcmToken) {
+	public void logout(String tokenHeader, String fcmToken) {
+		String accessToken = jwtTokenProvider.getToken(tokenHeader);
 		refreshTokenRepository.deleteById(accessToken);
-		jwtTokenBlack(jwtTokenProvider.getToken(accessToken));
+		jwtTokenBlack(accessToken);
 		notificationService.deleteFcmToken(fcmToken);
 	}
 
