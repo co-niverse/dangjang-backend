@@ -85,6 +85,7 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.POST, "/api/log/**").authenticated()
 				.requestMatchers(HttpMethod.GET, "/api/notification/**").authenticated()
 				.requestMatchers(HttpMethod.POST, "/api/notification/**").authenticated()
+				.requestMatchers(HttpMethod.PATCH, "/api/notification/**").authenticated()
 				.anyRequest().permitAll()
 			)
 			.exceptionHandling(
