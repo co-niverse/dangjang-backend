@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import com.coniverse.dangjang.domain.user.entity.User;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -28,23 +27,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 public class UserFcmToken {
 	@Id
-	@Column(name = "fcm_token", nullable = false)
 	private String fcmToken;
 
 	private LocalDate createdAt;
-	@Column(name = "oauth_id", nullable = false)
 	private String oauthId;
 
 	@MapsId("oauthId")
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "oauth_id", referencedColumnName = "oauthId", insertable = false, updatable = false)
+	@JoinColumn(name = "oauthId", referencedColumnName = "oauthId", insertable = false, updatable = false)
 	private User user;
 
 	@Builder
-	private UserFcmToken(User user, String fcmToken, LocalDate createdAt) {
+	private UserFcmToken(User user, String fcmToken, LocalDate createdAt, String oauthId) {
 		this.fcmToken = fcmToken;
 		this.createdAt = createdAt;
 		this.user = user;
-		this.oauthId = user.getOauthId();
+		this.oauthId = oauthId;
 	}
 }
