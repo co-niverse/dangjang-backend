@@ -2,7 +2,6 @@ package com.coniverse.dangjang.domain.point.entity;
 
 import com.coniverse.dangjang.domain.user.entity.User;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
@@ -19,17 +18,14 @@ import lombok.NoArgsConstructor;
  * @since 1.0.0
  */
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserPoint {
 	@Id
-	@Column(name = "oauth_id", nullable = false)
 	private String oauthId;
-	@Column(nullable = false)
-	private int point = 0;
+	private int point;
 	@Version
-	private int version;
-
+	private Long version;
 	@OneToOne(mappedBy = "userPoint")
 	private User user;
 

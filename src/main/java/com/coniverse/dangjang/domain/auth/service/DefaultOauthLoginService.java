@@ -39,7 +39,7 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	private final AuthTokenGenerator authTokenGenerator;
 	private final UserSearchService userSearchService;
 	private final Map<OauthProvider, OAuthClient> clients;
-	private final UserRepository userRepository;
+	private final UserRepository userRepository; // TODO 의존성 제거
 	private final JwtTokenProvider jwtTokenProvider;
 
 	public DefaultOauthLoginService(AuthTokenGenerator authTokenGenerator, UserSearchService userSearchService, List<OAuthClient> clients,
@@ -58,9 +58,11 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	 * @return Content 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, authID)를 전달한다.
 	 * @since 1.0.0
 	 */
+	@Override
 	public LoginResponse login(OauthLoginRequest params) {
 		OAuthInfoResponse oAuthInfoResponse = request(params);
 		User user = userSearchService.findUserByOauthId(oAuthInfoResponse.getOauthId());
+		user.verifyActiveUser();
 		return new LoginResponse(user.getNickname(), false, false);
 	}
 
@@ -71,7 +73,7 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	 * @return AuthToken 재발급된 AccessToken과 refreshToken을 전달한다
 	 * @since 1.0.0
 	 */
-
+	@Override
 	public AuthToken reissueToken(String header) {
 		String token = jwtTokenProvider.getToken(header);
 		JWTStatus jwtStatus = jwtTokenProvider.validationToken(token);
@@ -84,11 +86,11 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	}
 
 	/**
-	 * @param nickname
+	 * @param nickname 사용자 닉네임
 	 * @return AuthToken 로그인을 성공한 사용자의 authToken을 전달
 	 * @since 1.0.0
 	 */
-
+	@Override
 	public AuthToken getAuthToken(String nickname) {
 		Optional<User> user = userRepository.findByNickname(nickname);
 		if (user.isPresent()) {
@@ -120,10 +122,10 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	/**
 	 * 유저 접속일자를 업데이트한다.
 	 *
-	 * @return LocalDate
 	 * @since 1.0.0
 	 */
 	public void updateUserAccessedAt(User user) {
-		userRepository.updateAccessedAtByOauthId(user.getOauthId(), LocalDate.now());
+		user.updateAccessedAt(LocalDate.now());
+		userRepository.save(user);
 	}
 }

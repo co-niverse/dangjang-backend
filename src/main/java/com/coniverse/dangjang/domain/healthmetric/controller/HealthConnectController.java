@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectRegisterRequest;
-import com.coniverse.dangjang.domain.healthmetric.service.HealthConnectRegisterService;
+import com.coniverse.dangjang.domain.healthmetric.service.HealthConnectService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
 import jakarta.validation.Valid;
@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/health-connect")
 @RequiredArgsConstructor
 public class HealthConnectController {
-	private final HealthConnectRegisterService healthConnectRegisterService;
+	private final HealthConnectService healthConnectService;
 
 	/**
 	 * health connect로 받은 건강 지표 데이터를 등록한다.
@@ -41,7 +41,7 @@ public class HealthConnectController {
 	public ResponseEntity<SuccessSingleResponse<?>> postHealthConnect(@Valid @RequestBody HealthConnectPostRequest requests,
 		@AuthenticationPrincipal User principal) {
 		String oauthId = principal.getUsername();
-		healthConnectRegisterService.registerHealthConnect(requests, oauthId);
+		healthConnectService.registerHealthConnectData(requests, oauthId);
 		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}
 
@@ -57,7 +57,7 @@ public class HealthConnectController {
 	public ResponseEntity<SuccessSingleResponse<?>> interlockHealthConnect(@Valid @RequestBody HealthConnectRegisterRequest requests,
 		@AuthenticationPrincipal User principal) {
 		String oauthId = principal.getUsername();
-		healthConnectRegisterService.interlockHealthConnect(requests, oauthId);
+		healthConnectService.interlockHealthConnect(requests, oauthId);
 		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}
 }

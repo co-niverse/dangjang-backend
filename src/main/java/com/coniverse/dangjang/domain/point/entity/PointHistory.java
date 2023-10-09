@@ -1,5 +1,7 @@
 package com.coniverse.dangjang.domain.point.entity;
 
+import org.springframework.data.domain.Persistable;
+
 import com.coniverse.dangjang.domain.user.entity.User;
 
 import jakarta.persistence.Column;
@@ -23,26 +25,26 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class PointHistory {
+public class PointHistory implements Persistable<PointId> {
 	@EmbeddedId
 	@Getter(AccessLevel.PRIVATE)
 	private PointId pointId;
-	@Column(name = "change_point", nullable = false)
+	@Column(nullable = false)
 	private int changePoint;
-	@Column(name = "balance_point", nullable = false)
+	@Column(nullable = false)
 	private int balancePoint;
 	@MapsId("oauthId")
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "oauth_id")
+	@JoinColumn(name = "oauth_id", insertable = false, updatable = false)
 	private User user;
-	@MapsId("product_name")
+	@MapsId("productName")
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "product_name", referencedColumnName = "product_name")
+	@JoinColumn(name = "product_name", insertable = false, updatable = false)
 	private PointProduct pointProduct;
 
 	@Builder
 	private PointHistory(User user, int changePoint, int balancePoint, PointProduct pointProduct) {
-		this.pointId = new PointId(user.getOauthId(), pointProduct.getProductName());
+		this.pointId = new PointId();
 		this.changePoint = changePoint;
 		this.balancePoint = balancePoint;
 		this.user = user;
@@ -69,4 +71,13 @@ public class PointHistory {
 		return this.pointId.getProductName();
 	}
 
+	@Override
+	public PointId getId() {
+		return this.pointId;
+	}
+
+	@Override
+	public boolean isNew() {
+		return this.getOauthId() == null;
+	}
 }

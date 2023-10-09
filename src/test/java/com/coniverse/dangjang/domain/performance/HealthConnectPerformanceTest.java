@@ -61,7 +61,7 @@ class HealthConnectPerformanceTest {
 	@Test
 	void n번_조회해서_중복을_제거한_후_saveAll_bulk_insert() {
 		// given
-		HealthConnectPostRequest request = 헬스_커넥트_등록_요청(type, count);
+		HealthConnectPostRequest request = 헬스_커넥트_데이터_등록_요청(type, count);
 		final User user = userSearchService.findUserByOauthId(oauthId);
 
 		// when
@@ -89,7 +89,7 @@ class HealthConnectPerformanceTest {
 	@Test
 	void jdbc_template를_사용해서_insert_ignore_query와_batchUpdate() {
 		// given
-		HealthConnectPostRequest request = 헬스_커넥트_등록_요청(type, count);
+		HealthConnectPostRequest request = 헬스_커넥트_데이터_등록_요청(type, count);
 		final User user = userSearchService.findUserByOauthId(oauthId);
 
 		// when
@@ -111,7 +111,7 @@ class HealthConnectPerformanceTest {
 	@Test
 	void db에_중복_데이터를_추가하고_n번_조회해서_중복을_제거한_후_saveAll_bulk_insert() {
 		// 중복 데이터 저장
-		HealthConnectPostRequest prevRequest = 헬스_커넥트_등록_요청(type, duplicatedCount);
+		HealthConnectPostRequest prevRequest = 헬스_커넥트_데이터_등록_요청(type, duplicatedCount);
 		final User prevUser = userSearchService.findUserByOauthId(oauthId);
 
 		List<HealthMetric> prevHealthMetrics = prevRequest.data()
@@ -123,7 +123,7 @@ class HealthConnectPerformanceTest {
 		em.clear();
 
 		// given
-		HealthConnectPostRequest request = 헬스_커넥트_등록_요청(type, count);
+		HealthConnectPostRequest request = 헬스_커넥트_데이터_등록_요청(type, count);
 		final User user = userSearchService.findUserByOauthId(oauthId);
 
 		// when
@@ -152,7 +152,7 @@ class HealthConnectPerformanceTest {
 	@Test
 	void db에_중복_데이터를_추가하고_jdbc_template를_사용해서_insert_ignore_query와_batchUpdate() {
 		// 중복 데이터 저장
-		HealthConnectPostRequest prevRequest = 헬스_커넥트_등록_요청(type, duplicatedCount);
+		HealthConnectPostRequest prevRequest = 헬스_커넥트_데이터_등록_요청(type, duplicatedCount);
 		final User prevUser = userSearchService.findUserByOauthId(oauthId);
 
 		List<HealthMetric> prevHealthMetrics = prevRequest.data()
@@ -163,7 +163,7 @@ class HealthConnectPerformanceTest {
 		em.clear();
 
 		// given
-		HealthConnectPostRequest request = 헬스_커넥트_등록_요청(type, count);
+		HealthConnectPostRequest request = 헬스_커넥트_데이터_등록_요청(type, count);
 		final User user = userSearchService.findUserByOauthId(oauthId);
 
 		// when
