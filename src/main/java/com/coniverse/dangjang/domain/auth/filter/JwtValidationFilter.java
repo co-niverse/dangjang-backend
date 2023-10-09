@@ -13,8 +13,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.coniverse.dangjang.domain.auth.service.DefaultOauthLoginService;
 import com.coniverse.dangjang.domain.auth.service.JwtTokenProvider;
+import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
 import com.coniverse.dangjang.domain.point.service.PointService;
 import com.coniverse.dangjang.global.exception.BlackTokenException;
 import com.coniverse.dangjang.global.support.enums.JWTStatus;
@@ -37,7 +37,7 @@ import lombok.RequiredArgsConstructor;
 public class JwtValidationFilter extends OncePerRequestFilter {
 	private final PointService pointService;
 	private final JwtTokenProvider jwtTokenProvider;
-	private final DefaultOauthLoginService defaultOauthLoginService;
+	private final OauthLoginService oauthLoginService;
 	private static final String AUTHORIZATION = "Authorization";
 	private static final String BEARER = "Bearer";
 
@@ -49,7 +49,7 @@ public class JwtValidationFilter extends OncePerRequestFilter {
 		JWTStatus jwtStatus = jwtTokenProvider.validationToken(token);
 		if (jwtStatus.equals(JWTStatus.OK)) {
 			try {
-				defaultOauthLoginService.validBlackToken(token);
+				oauthLoginService.validBlackToken(token);
 				Authentication auth = getAuthentication(token);
 				SecurityContextHolder.getContext().setAuthentication(auth);
 			} catch (BlackTokenException e) {
@@ -79,7 +79,6 @@ public class JwtValidationFilter extends OncePerRequestFilter {
 		Claims claims = jwtTokenProvider.parseClaims(token);
 
 		String oauthId = claims.getSubject();
-
 		final Collection<? extends GrantedAuthority> authorities = Stream.of(
 				claims.get("role").toString())
 			.map(SimpleGrantedAuthority::new)
