@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.repository.BlackTokenRepository;
+import com.coniverse.dangjang.domain.auth.repository.RefreshTokenRepository;
 import com.coniverse.dangjang.domain.notification.repository.UserFcmTokenRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
@@ -46,6 +47,8 @@ class OauthLoginServiceTest {
 	private EntityManager entityManager;
 	@Autowired
 	private UserFcmTokenRepository userFcmTokenRepository;
+	@Autowired
+	private RefreshTokenRepository refreshTokenRepository;
 
 	@AfterEach
 	void tearDown() {
@@ -70,8 +73,10 @@ class OauthLoginServiceTest {
 		User 이브 = userRepository.save(유저_이브());
 		entityManager.flush();
 		KakaoLoginRequest request = 카카오_로그인_요청();
+		int tokenCount = 0;
 		//when
 		LoginResponse response = oauthLoginService.login(request, fcmToken);
+
 		//then
 		assertAll(
 			() -> assertThat(response.nickname()).isEqualTo(이브.getNickname()),
@@ -90,7 +95,8 @@ class OauthLoginServiceTest {
 
 		//then
 		assertAll(
-			() -> assertThat(accessToken).isNotBlank()
+			() -> assertThat(accessToken).isNotBlank(),
+			() -> assertThat(refreshTokenRepository.findById(accessToken).isPresent()).isTrue()
 		);
 
 	}
@@ -170,7 +176,7 @@ class OauthLoginServiceTest {
 		KakaoLoginRequest request = 카카오_로그인_요청();
 
 		//when & then
-		assertThatThrownBy(() -> oauthLoginService.login(request,fcmToken))
+		assertThatThrownBy(() -> oauthLoginService.login(request, fcmToken))
 			.isInstanceOf(WithdrawalUserException.class);
 	}
 }
