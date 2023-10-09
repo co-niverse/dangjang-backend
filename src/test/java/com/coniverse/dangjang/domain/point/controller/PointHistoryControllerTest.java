@@ -30,7 +30,7 @@ class PointHistoryControllerTest extends ControllerTest {
 	private static String URL = "/api/point";
 	@Autowired
 	private PointService pointService;
-	private List<PointProduct> products = 적립_포인트_상품_목록();
+	private List<PointProduct> products = 포인트_상품_목록();
 
 	@Test
 	void 포인트_상품_목록_조회() throws Exception {

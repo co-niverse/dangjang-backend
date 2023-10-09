@@ -6,6 +6,7 @@ import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,7 @@ import com.coniverse.dangjang.domain.auth.repository.BlackTokenRepository;
 import com.coniverse.dangjang.domain.notification.repository.UserFcmTokenRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
+import com.coniverse.dangjang.domain.user.exception.WithdrawalUserException;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.global.exception.InvalidTokenException;
 
@@ -44,6 +46,11 @@ class OauthLoginServiceTest {
 	private EntityManager entityManager;
 	@Autowired
 	private UserFcmTokenRepository userFcmTokenRepository;
+
+	@AfterEach
+	void tearDown() {
+		userRepository.deleteAll();
+	}
 
 	@Order(100)
 	@Test
@@ -152,5 +159,18 @@ class OauthLoginServiceTest {
 		String header = "Bearer " + accessToken + "test";
 		//when & then
 		assertThatThrownBy(() -> oauthLoginService.logout(header, fcmToken)).isInstanceOf(InvalidTokenException.class);
+	}
+
+	@Test
+	void inactive_유저는_로그인에_실패한다() {
+		//given
+		User 이브 = 유저_이브();
+		이브.inactivate();
+		userRepository.save(이브);
+		KakaoLoginRequest request = 카카오_로그인_요청();
+
+		//when & then
+		assertThatThrownBy(() -> oauthLoginService.login(request,fcmToken))
+			.isInstanceOf(WithdrawalUserException.class);
 	}
 }

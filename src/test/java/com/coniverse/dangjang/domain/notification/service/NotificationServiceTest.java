@@ -50,7 +50,7 @@ class NotificationServiceTest {
 	@BeforeAll
 	void setUp() {
 		notificationRepository.saveAll(사용자_알림_엔티티_목록(유저_테오()));
-		user = userRepository.findByOauthId(유저_테오().getOauthId()).get();
+		user = userRepository.findById(유저_테오().getOauthId()).get();
 		유저_아이디 = user.getOauthId();
 	}
 

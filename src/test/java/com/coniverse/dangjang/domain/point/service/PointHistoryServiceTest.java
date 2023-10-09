@@ -23,10 +23,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectRegisterRequest;
-import com.coniverse.dangjang.domain.healthmetric.enums.HealthConnect;
-import com.coniverse.dangjang.domain.healthmetric.service.HealthConnectRegisterService;
+import com.coniverse.dangjang.domain.healthmetric.service.HealthConnectService;
 import com.coniverse.dangjang.domain.point.dto.request.UsePointRequest;
 import com.coniverse.dangjang.domain.point.dto.response.ProductListResponse;
 import com.coniverse.dangjang.domain.point.entity.UserPoint;
@@ -39,8 +39,6 @@ import com.coniverse.dangjang.domain.point.repository.UserPointRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.global.exception.InvalidPointException;
-
-import jakarta.persistence.EntityManager;
 
 /**
  * 포인트 Service 테스트
@@ -65,9 +63,7 @@ class PointHistoryServiceTest {
 	@Autowired
 	private PointSearchService pointSearchService;
 	@Autowired
-	private EntityManager em;
-	@Autowired
-	private HealthConnectRegisterService healthConnectRegisterService;
+	private HealthConnectService healthConnectService;
 	@Autowired
 	private PurchaseHistoryRepository purchaseHistoryRepository;
 
@@ -93,17 +89,14 @@ class PointHistoryServiceTest {
 	void 회원가입_포인트_적립을_받는다() {
 		//given
 		유저 = userRepository.save(포인트_유저(today));
-		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 0));
-		int accessPoint = 유저_포인트.getPoint() + EarnPoint.REGISTER.getChangePoint();
+		int accessPoint = EarnPoint.REGISTER.getChangePoint();
 
 		//when
 		pointService.addSignupPoint(유저.getOauthId());
 
 		//then
-		User 접속한_유저 = userRepository.findById(유저.getOauthId()).get();
-		UserPoint 접속한_유저_포인트 = pointSearchService.findUserPointByOauthId(접속한_유저.getOauthId());
+		UserPoint 접속한_유저_포인트 = pointSearchService.findUserPointByOauthId(유저.getOauthId());
 		assertThat(접속한_유저_포인트.getPoint()).isEqualTo(accessPoint);
-
 	}
 
 	@Order(200)
@@ -126,11 +119,11 @@ class PointHistoryServiceTest {
 
 	@Order(300)
 	@Test
+	@Transactional
 	void Health_Connect_연동_포인트_적립을_받는다() {
 		//given
-		유저 = userRepository.save(포인트_유저(today));
+		유저 = userRepository.save(헬스커넥트_연동_유저());
 		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 500));
-		유저.setHealthConnect(HealthConnect.CONNECTING);
 		int accessPoint = 유저_포인트.getPoint() + EarnPoint.HEALTH_CONNECT.getChangePoint();
 
 		//when
@@ -292,7 +285,7 @@ class PointHistoryServiceTest {
 		for (int i = 0; i < 30; i++) {
 			executorService.submit(() -> {
 				try {
-					healthConnectRegisterService.interlockHealthConnect(request, 유저.getOauthId());
+					healthConnectService.interlockHealthConnect(request, 유저.getOauthId());
 					successCount.incrementAndGet();
 				} catch (Exception e) {
 					System.out.println("error : " + e.getMessage());

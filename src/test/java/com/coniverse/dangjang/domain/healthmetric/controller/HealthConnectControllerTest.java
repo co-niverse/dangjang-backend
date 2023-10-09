@@ -26,7 +26,7 @@ class HealthConnectControllerTest extends ControllerTest {
 	void 헬스_커넥트_데이터를_등록하면_성공_메시지를_반환한다() throws Exception {
 		// given
 		String type = CommonCode.ETC.getTitle();
-		HealthConnectPostRequest request = 헬스_커넥트_등록_요청(type, 50);
+		HealthConnectPostRequest request = 헬스_커넥트_데이터_등록_요청(type, 50);
 		String content = objectMapper.writeValueAsString(request);
 
 		// when

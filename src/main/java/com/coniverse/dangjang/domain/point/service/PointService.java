@@ -7,7 +7,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.auth.service.DefaultOauthLoginService;
-import com.coniverse.dangjang.domain.healthmetric.enums.HealthConnect;
 import com.coniverse.dangjang.domain.point.dto.request.UsePointRequest;
 import com.coniverse.dangjang.domain.point.dto.response.ProductListResponse;
 import com.coniverse.dangjang.domain.point.dto.response.UsePointResponse;
@@ -72,7 +71,6 @@ public class PointService {
 	 * @param oauthId 유저 아이디
 	 * @since 1.0.0
 	 */
-
 	public void addSignupPoint(String oauthId) {
 		User user = userSearchService.findUserByOauthId(oauthId);
 		if (user.getCreatedAt().toLocalDate().equals(LocalDate.now())) {
@@ -90,9 +88,7 @@ public class PointService {
 	 * @since 1.0.0
 	 */
 	public void addHealthConnectPoint(User user) {
-		if (user.getHealthConnect().equals(HealthConnect.CONNECTING)) {
-			addPointEvent(EarnPoint.HEALTH_CONNECT.getTitle(), user);
-		}
+		addPointEvent(EarnPoint.HEALTH_CONNECT.getTitle(), user);
 	}
 
 	/**
@@ -102,7 +98,6 @@ public class PointService {
 	 * @param request 포인트 사용 요청 객체
 	 * @since 1.0.0
 	 */
-
 	public UsePointResponse purchaseProduct(String oauthId, UsePointRequest request) {
 		User user = userSearchService.findUserByOauthId(oauthId);
 		PointHistory savedPointHistory = addPointEvent(request.type(), user);
@@ -121,10 +116,9 @@ public class PointService {
 	 * @param productName 포인트 상품
 	 * @since 1.0.0
 	 */
-
 	private PointHistory addPointEvent(String productName, User user) {
 		PointProduct product = pointSearchService.findPointProductById(productName);
-		UserPoint userPoint = pointSearchService.findUserPointByOauthId(user.getId());
+		UserPoint userPoint = pointSearchService.findUserPointByOauthId(user.getOauthId());
 		int changePoint = getChangePoint(product);
 		int balancePoint = getBalancePoint(changePoint, userPoint.getPoint());
 		PointHistory savedPointHistory = pointHistoryRepository.save(pointMapper.toEntity(product, user, changePoint, balancePoint));
@@ -172,11 +166,9 @@ public class PointService {
 	 * @param oauthId 유저 아이디
 	 * @since 1.0.0
 	 */
-
 	public ProductListResponse getProducts(String oauthId) {
 		int balancePoint = pointSearchService.findUserPointByOauthId(oauthId).getPoint();
 		List<PointProduct> productList = pointSearchService.findAllByType(PointType.USE);
 		return new ProductListResponse(balancePoint, productList);
-
 	}
 }

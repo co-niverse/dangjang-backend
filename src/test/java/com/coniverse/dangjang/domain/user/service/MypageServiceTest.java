@@ -4,8 +4,6 @@ import static com.coniverse.dangjang.fixture.PointFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
 
-import java.time.LocalDate;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,7 +32,7 @@ class MypageServiceTest {
 	@Test
 	void 마이페이지_정보를_불러온다() {
 		// given
-		유저 = userRepository.save(헬스커넥트_연동_유저(LocalDate.now()));
+		유저 = userRepository.save(헬스커넥트_연동_유저());
 		int 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 1000)).getPoint();
 		// when
 		MypageResponse response = mypageService.getMypage(유저.getOauthId());
