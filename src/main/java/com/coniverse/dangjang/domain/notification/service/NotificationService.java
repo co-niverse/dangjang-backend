@@ -14,6 +14,7 @@ import com.coniverse.dangjang.domain.notification.repository.NotificationReposit
 import com.coniverse.dangjang.domain.notification.repository.UserFcmTokenRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
+import com.coniverse.dangjang.global.exception.InvalidFcmTokenException;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -75,7 +76,7 @@ public class NotificationService {
 	 * @param oauthId  사용자 아이디
 	 * @since 1.0.0
 	 */
-	public void saveFcmToken(String oauthId, String fcmToken) {
+	public void saveFcmToken(String fcmToken, String oauthId) {
 		User user = userSearchService.findUserByOauthId(oauthId);
 		//TODO : Mapper 사용
 		UserFcmToken notification = UserFcmToken.builder()
@@ -90,9 +91,13 @@ public class NotificationService {
 	 * fcmToken 제거
 	 *
 	 * @param fcmToken fcmToken
+	 * @throws InvalidFcmTokenException fcmToken이 존재하지 않을 경우 발생하는 예외
 	 * @since 1.0.0
 	 */
 	public void deleteFcmToken(String fcmToken) {
+		userFcmTokenRepository.findById(fcmToken).orElseThrow(
+			() -> new InvalidFcmTokenException()
+		);
 		userFcmTokenRepository.deleteByFcmToken(fcmToken);
 	}
 }
