@@ -3,6 +3,8 @@ package com.coniverse.dangjang.domain.notification.mapper;
 import java.time.LocalDate;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 import com.coniverse.dangjang.domain.notification.dto.response.NotificationResponse;
 import com.coniverse.dangjang.domain.notification.entity.Notification;
@@ -35,5 +37,9 @@ public interface NotificationMapper {
 	 * @return UserFcmToken 사용자 fcmToken Entity
 	 * @since 1.0.0
 	 */
+	@Mappings({
+		@Mapping(target = "oauthId", source = "user.oauthId"),
+		@Mapping(target = "createdAt", source = "createdAt")
+	})
 	UserFcmToken toEntity(User user, String fcmToken, LocalDate createdAt);
 }

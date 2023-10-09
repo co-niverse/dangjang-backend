@@ -83,7 +83,7 @@ class NotificationServiceTest {
 
 	@Order(200)
 	@Test
-	void 알림_확인_여부를_ture로_변경한다() {
+	void 알림_확인_여부를_true로_변경한다() {
 		//given
 		CheckNotificationIdRequest request = 사용자_알림_확인요청_목록();
 		//when

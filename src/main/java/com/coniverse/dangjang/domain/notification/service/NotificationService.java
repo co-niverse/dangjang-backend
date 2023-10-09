@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.notification.dto.request.CheckNotificationIdRequest;
 import com.coniverse.dangjang.domain.notification.dto.response.NotificationResponse;
-import com.coniverse.dangjang.domain.notification.entity.UserFcmToken;
 import com.coniverse.dangjang.domain.notification.mapper.NotificationMapper;
 import com.coniverse.dangjang.domain.notification.repository.NotificationRepository;
 import com.coniverse.dangjang.domain.notification.repository.UserFcmTokenRepository;
@@ -42,7 +41,8 @@ public class NotificationService {
 	 * @since 1.0.0
 	 */
 	public List<NotificationResponse> getNotificationList(String oauthId) {
-		return notificationRepository.findAllByOauthIdAndRead(oauthId).stream().map(notificationMapper::toResponse).collect(Collectors.toList());
+		return notificationRepository.findAllByOauthIdAndRead(oauthId).stream()
+			.map(notificationMapper::toResponse).collect(Collectors.toList());
 	}
 
 	/**
@@ -78,13 +78,7 @@ public class NotificationService {
 	 */
 	public void saveFcmToken(String fcmToken, String oauthId) {
 		User user = userSearchService.findUserByOauthId(oauthId);
-		//TODO : Mapper 사용
-		UserFcmToken notification = UserFcmToken.builder()
-			.user(user)
-			.fcmToken(fcmToken)
-			.createdAt(LocalDate.now())
-			.build();
-		userFcmTokenRepository.save(notification);
+		userFcmTokenRepository.save(notificationMapper.toEntity(user, fcmToken, LocalDate.now()));
 	}
 
 	/**

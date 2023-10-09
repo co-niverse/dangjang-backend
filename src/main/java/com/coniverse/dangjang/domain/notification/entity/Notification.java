@@ -41,10 +41,8 @@ public class Notification {
 	@Column(name = "created_at", nullable = false)
 	private LocalDate createdAt;
 
-	@Column(name = "oauth_id", nullable = false)
 	private String oauthId;
 
-	@Column(name = "type", nullable = false)
 	private String type;
 
 	@MapsId("type")
@@ -52,10 +50,9 @@ public class Notification {
 	@JoinColumn(name = "type", referencedColumnName = "type", insertable = false, updatable = false)
 	private NotificationType notificationType;
 
-	//TODO : 다대다 매핑 ,테이블 분리
 	@MapsId("oauthId")
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "oauth_id", referencedColumnName = "oauthId", insertable = false, updatable = false)
+	@JoinColumn(name = "oauthId", referencedColumnName = "oauthId", insertable = false, updatable = false)
 	private User user;
 
 	@Builder
