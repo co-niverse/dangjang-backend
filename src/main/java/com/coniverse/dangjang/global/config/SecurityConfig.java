@@ -70,8 +70,10 @@ public class SecurityConfig {
 			.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers(HttpMethod.GET, "/api/intro/**").permitAll()
 				.requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/auth/**").authenticated()
 				.requestMatchers(HttpMethod.POST, "/api/signup/**").permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/user/**").permitAll() // TODO 수정
+				.requestMatchers(HttpMethod.GET, "/api/user/duplicateNickname").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/user/mypage/**").authenticated()
 				.requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/api-docs/**").permitAll()
 				.requestMatchers(HttpMethod.POST, "/api/health-metric/**").authenticated()
 				.requestMatchers(HttpMethod.GET, "/api/health-metric/**").authenticated()
