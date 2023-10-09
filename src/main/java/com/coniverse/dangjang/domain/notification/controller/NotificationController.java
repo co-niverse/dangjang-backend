@@ -1,7 +1,5 @@
 package com.coniverse.dangjang.domain.notification.controller;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coniverse.dangjang.domain.notification.dto.request.CheckNotificationIdRequest;
-import com.coniverse.dangjang.domain.notification.dto.response.NotificationResponse;
+import com.coniverse.dangjang.domain.notification.dto.response.NotificationListResponse;
 import com.coniverse.dangjang.domain.notification.service.NotificationService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
@@ -40,8 +38,8 @@ public class NotificationController {
 	 * @since 1.0.0
 	 */
 	@GetMapping
-	public ResponseEntity<SuccessSingleResponse<List<NotificationResponse>>> get(@AuthenticationPrincipal User user) {
-		List<NotificationResponse> response = notificationService.getNotificationList(user.getUsername());
+	public ResponseEntity<SuccessSingleResponse<NotificationListResponse>> get(@AuthenticationPrincipal User user) {
+		NotificationListResponse response = new NotificationListResponse(notificationService.getNotificationList(user.getUsername()));
 		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
 

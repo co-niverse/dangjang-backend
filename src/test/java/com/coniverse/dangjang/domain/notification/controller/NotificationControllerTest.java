@@ -40,11 +40,11 @@ class NotificationControllerTest extends ControllerTest {
 		//then
 		resultActions.andExpectAll(
 			status().isOk(),
-			jsonPath("$.data[0].notificationId").value(response.get(0).notificationId()),
-			jsonPath("$.data[0].title").value(response.get(0).title()),
-			jsonPath("$.data[0].content").value(response.get(0).content()),
-			jsonPath("$.data[0].type").value(response.get(0).type()),
-			jsonPath("$.data[0].createdAt").value(response.get(0).createdAt().toString())
+			jsonPath("$.data.notificationResponseList[0].notificationId").value(response.get(0).notificationId()),
+			jsonPath("$.data.notificationResponseList[0].title").value(response.get(0).title()),
+			jsonPath("$.data.notificationResponseList[0].content").value(response.get(0).content()),
+			jsonPath("$.data.notificationResponseList[0].type").value(response.get(0).type()),
+			jsonPath("$.data.notificationResponseList[0].createdAt").value(response.get(0).createdAt().toString())
 		);
 
 	}
