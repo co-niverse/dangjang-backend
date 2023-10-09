@@ -62,7 +62,7 @@ public class UserSignupService {
 		User savedUser = userRepository.save(userMapper.toEntity(oAuthInfoResponse, signUpRequest, activityAmount, gender, recommendedCalorie));
 		registerWeight(savedUser, signUpRequest.weight());
 		pointService.addSignupPoint(savedUser.getOauthId());
-		notificationService.saveFcmToken(savedUser.getOauthId(), fcmToken);
+		notificationService.saveFcmToken(fcmToken, savedUser.getOauthId());
 		return authMapper.toLoginResponse(savedUser.getNickname(), false, false);
 	}
 

@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import com.coniverse.dangjang.domain.auth.dto.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
@@ -16,6 +18,7 @@ import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
 import com.coniverse.dangjang.support.ControllerTest;
+import com.coniverse.dangjang.support.annotation.WithDangjangUser;
 
 /**
  * @author EVE, TEO
@@ -26,7 +29,6 @@ class LoginControllerTest extends ControllerTest {
 	private final LoginResponse response = 로그인_응답();
 	@Autowired
 	private OauthLoginService oauthLoginService;
-	private final String fcmToken = "fcmToken";
 
 	@Test
 	void 카카오_로그인에_성공한다() throws Exception {
@@ -36,8 +38,8 @@ class LoginControllerTest extends ControllerTest {
 		AuthToken authToken = new AuthToken();
 		authToken.setAccessToken("accessToken");
 		authToken.setRefreshToken("refreshToken");
-		given(oauthLoginService.login(request, fcmToken)).willReturn(response);
-		given(oauthLoginService.getAuthToken(response.nickname())).willReturn(authToken.getAccessToken());
+		given(oauthLoginService.login(any(), any())).willReturn(response);
+		given(oauthLoginService.getAuthToken(any())).willReturn(authToken.getAccessToken());
 
 		// when
 		ResultActions resultActions = post(mockMvc, URI + "/kakao", content);
@@ -77,8 +79,8 @@ class LoginControllerTest extends ControllerTest {
 		AuthToken authToken = new AuthToken();
 		authToken.setAccessToken("accessToken");
 		authToken.setRefreshToken("refreshToken");
-		given(oauthLoginService.login(request, fcmToken)).willReturn(response);
-		given(oauthLoginService.getAuthToken(response.nickname())).willReturn(authToken.getAccessToken());
+		given(oauthLoginService.login(any(), any())).willReturn(response);
+		given(oauthLoginService.getAuthToken(any())).willReturn(authToken.getAccessToken());
 
 		// when
 		ResultActions resultActions = post(mockMvc, URI + "/naver", content);
@@ -109,21 +111,20 @@ class LoginControllerTest extends ControllerTest {
 		);
 	}
 
+	@WithDangjangUser
 	@Test
-	void refreshToken으로_auth토큰을_재발급_한다() throws Exception {
-		// given
-		String subUrl = URI + "/reissue";
-		String header = "Bearer " + "refreshToken";
-		AuthToken authToken = AuthToken.of("accessToken", "refreshToken", "", 1000L);
-		given(oauthLoginService.reissueToken(any())).willReturn(authToken.getAccessToken());
+	void 로그아웃을_성공한다() throws Exception {
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		String subURL = "/logout";
+
 		// when
-		ResultActions resultActions = post(mockMvc, subUrl, header);
+		ResultActions resultActions = get(mockMvc, URI + subURL, params);
 
 		// then
 		resultActions.andExpectAll(
 			status().isOk(),
-			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
-			header().exists("AccessToken")
+			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase())
 		);
 	}
+
 }

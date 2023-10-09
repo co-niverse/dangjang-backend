@@ -1,21 +1,29 @@
 package com.coniverse.dangjang.domain.auth.service;
 
 import static com.coniverse.dangjang.fixture.LoginFixture.*;
+import static com.coniverse.dangjang.fixture.NotificationFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
+import com.coniverse.dangjang.domain.auth.repository.BlackTokenRepository;
+import com.coniverse.dangjang.domain.notification.repository.UserFcmTokenRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.global.exception.InvalidTokenException;
+
+import jakarta.persistence.EntityManager;
 
 /**
  * @author EVE, TEO
@@ -23,13 +31,21 @@ import com.coniverse.dangjang.global.exception.InvalidTokenException;
  */
 @SpringBootTest
 @Transactional
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class OauthLoginServiceTest {
 	@Autowired
 	private OauthLoginService oauthLoginService;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private BlackTokenRepository blackTokenRepository;
 	private final String fcmToken = "fcmToken";
+	@Autowired
+	private EntityManager entityManager;
+	@Autowired
+	private UserFcmTokenRepository userFcmTokenRepository;
 
+	@Order(100)
 	@Test
 	void 가입된_유저가_아니면_로그인을_실패한다() {
 		//given
@@ -40,15 +56,15 @@ class OauthLoginServiceTest {
 			.isInstanceOf(NonExistentUserException.class);
 	}
 
+	@Order(200)
 	@Test
 	void 가입된_유저면_로그인을_성공한다() {
 		//given
 		User 이브 = userRepository.save(유저_이브());
+		entityManager.flush();
 		KakaoLoginRequest request = 카카오_로그인_요청();
-
 		//when
 		LoginResponse response = oauthLoginService.login(request, fcmToken);
-
 		//then
 		assertAll(
 			() -> assertThat(response.nickname()).isEqualTo(이브.getNickname()),
@@ -57,6 +73,7 @@ class OauthLoginServiceTest {
 		);
 	}
 
+	@Order(300)
 	@Test
 	void 존재하는_사용자라면_auth토큰을_발급해준다() {
 		User 이브 = userRepository.save(유저_이브());
@@ -71,6 +88,7 @@ class OauthLoginServiceTest {
 
 	}
 
+	@Order(400)
 	@Test
 	void 존재하지_않는_사용자라면_auth토큰_발급시_오류발생한다() {
 		//given
@@ -82,6 +100,7 @@ class OauthLoginServiceTest {
 
 	}
 
+	@Order(500)
 	@Test
 	void refreshToken이_유효하면_auth토큰을_재발급한다() {
 		//given
@@ -98,6 +117,7 @@ class OauthLoginServiceTest {
 		);
 	}
 
+	@Order(600)
 	@Test
 	void refreshToken이_유효하지_않으면_예외를_던진다() {
 		//given
@@ -107,5 +127,30 @@ class OauthLoginServiceTest {
 
 		//then
 		assertThatException().isThrownBy(() -> oauthLoginService.reissueToken(header)).isInstanceOf(InvalidTokenException.class);
+	}
+
+	@Order(700)
+	@Test
+	void 로그아웃을_성공한다() {
+		//given
+		User 이브 = userRepository.save(유저_이브());
+		userFcmTokenRepository.save(사용자_fcmToken_엔티티(fcmToken, 이브));
+		String accessToken = oauthLoginService.getAuthToken(이브.getNickname());
+		String header = "Bearer " + accessToken;
+		//when
+		oauthLoginService.logout(header, fcmToken);
+		//then
+		assertThat(blackTokenRepository.findById(accessToken).isPresent()).isTrue();
+	}
+
+	@Order(800)
+	@Test
+	void 로그아웃을_실패한다() {
+		//given
+		User 이브 = userRepository.save(유저_이브());
+		String accessToken = oauthLoginService.getAuthToken(이브.getNickname());
+		String header = "Bearer " + accessToken + "test";
+		//when & then
+		assertThatThrownBy(() -> oauthLoginService.logout(header, fcmToken)).isInstanceOf(InvalidTokenException.class);
 	}
 }

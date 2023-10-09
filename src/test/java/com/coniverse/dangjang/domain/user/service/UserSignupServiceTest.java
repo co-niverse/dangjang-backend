@@ -20,6 +20,7 @@ import com.coniverse.dangjang.domain.point.service.PointSearchService;
 import com.coniverse.dangjang.domain.user.dto.request.SignUpRequest;
 import com.coniverse.dangjang.domain.user.dto.response.DuplicateNicknameResponse;
 import com.coniverse.dangjang.fixture.SignUpFixture;
+import com.coniverse.dangjang.global.exception.InvalidPointException;
 
 /**
  * @author EVE
@@ -99,7 +100,7 @@ class UserSignupServiceTest {
 		assertThatThrownBy(() -> userSignupService.signUp(signUpRequest, fcmToken))
 			.isInstanceOf(IllegalArgumentException.class);
 		assertThatThrownBy(() -> pointSearchService.findUserPointByOauthId(유저_아이디))
-			.isInstanceOf(IllegalArgumentException.class);
+			.isInstanceOf(InvalidPointException.class);
 	}
 
 	@Test
