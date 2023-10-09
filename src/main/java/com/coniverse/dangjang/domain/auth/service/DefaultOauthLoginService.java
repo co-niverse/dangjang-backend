@@ -18,6 +18,7 @@ import com.coniverse.dangjang.domain.auth.dto.request.OauthLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.entity.BlackToken;
 import com.coniverse.dangjang.domain.auth.entity.RefreshToken;
+import com.coniverse.dangjang.domain.auth.mapper.AuthMapper;
 import com.coniverse.dangjang.domain.auth.repository.BlackTokenRepository;
 import com.coniverse.dangjang.domain.auth.repository.RefreshTokenRepository;
 import com.coniverse.dangjang.domain.infrastructure.auth.client.OAuthClient;
@@ -52,10 +53,11 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	private final BlackTokenRepository blackTokenRepository;
 	private final RefreshTokenRepository refreshTokenRepository;
 	private final NotificationService notificationService;
+	private final AuthMapper authMapper;
 
 	public DefaultOauthLoginService(AuthTokenGenerator authTokenGenerator, UserSearchService userSearchService, List<OAuthClient> clients,
 		UserRepository userRepository, JwtTokenProvider jwtTokenProvider, BlackTokenRepository blackTokenRepository,
-		RefreshTokenRepository refreshTokenRepository, NotificationService notificationService) {
+		RefreshTokenRepository refreshTokenRepository, NotificationService notificationService, AuthMapper authMapper) {
 		this.authTokenGenerator = authTokenGenerator;
 		this.userSearchService = userSearchService;
 		this.clients = clients.stream().collect(
@@ -66,6 +68,7 @@ public class DefaultOauthLoginService implements OauthLoginService {
 		this.blackTokenRepository = blackTokenRepository;
 		this.refreshTokenRepository = refreshTokenRepository;
 		this.notificationService = notificationService;
+		this.authMapper = authMapper;
 	}
 
 	/**
@@ -123,30 +126,25 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	}
 
 	/**
-	 * @param nickname 사용자 닉네임
-	 * @return AuthToken 로그인을 성공한 사용자의 authToken을 전달
 	 * Auth 생성
 	 * <p>
 	 * AuthToken을 생성한 후, accessToken,refreshToken을 Redis에 저장한다.
 	 *
-	 * @param nickname
-	 * @return accessToken 로그인을 성공한 사용자의 accessToken을 전달
+	 * @param nickname 사용자 닉네임
+	 * @return AuthToken 로그인을 성공한 사용자의 authToken을 전달
 	 * @since 1.0.0
 	 */
 	@Override
+	//TODO : 함수 나누기
 	public String getAuthToken(String nickname) {
 		Optional<User> user = userRepository.findByNickname(nickname);
 		if (user.isPresent()) {
 			AuthToken authToken = authTokenGenerator.generate(user.get().getOauthId(), user.get().getRole());
 			Claims claim = checkJwtTokenValidation(authToken.getRefreshToken());
-			//TODO : mapper 사용 및 함수 나누기
 			long expirationTime = calculateExpirationTime(claim.getExpiration().getTime());
-			RefreshToken refreshToken = RefreshToken.builder()
-				.accessToken(authToken.getAccessToken())
-				.refreshToken(authToken.getRefreshToken())
-				.rtkExpirationTime(expirationTime)
-				.build();
-			refreshTokenRepository.save(refreshToken);
+			refreshTokenRepository.save(
+				authMapper.toRefreshToken(authToken.getAccessToken(), authToken.getRefreshToken(), expirationTime)
+			);
 			return authToken.getAccessToken();
 		} else {
 			throw new NonExistentUserException();
