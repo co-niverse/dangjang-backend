@@ -153,9 +153,8 @@ public class PointService {
 		balancePoint += changePoint;
 		if (balancePoint >= 0) {
 			return balancePoint;
-		} else {
-			throw new InvalidPointException("포인트가 부족합니다.");
 		}
+		throw new InvalidPointException("포인트가 부족합니다.");
 	}
 
 	/**
