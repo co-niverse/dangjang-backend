@@ -186,7 +186,7 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	 * 기존 redis에 있는 refreshToken을 제거하고, accessToken을 blackList에 추가
 	 *
 	 * @param tokenHeader
-	 * @since 1.0.0
+	 * @since 1.1.0
 	 */
 
 	public void logout(String tokenHeader, String fcmToken) {
@@ -200,7 +200,7 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	 * jwtToken을 Black 처리한다
 	 *
 	 * @param token blackList에 추가될 jwtToken
-	 * @since 1.0.0
+	 * @since 1.1.0
 	 */
 
 	private void makeBlackJwtToken(String token) {
@@ -218,7 +218,7 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	 *
 	 * @param expiration jwtToken 만료 시간
 	 * @return long 만료 시간까지의 Second
-	 * @since 1.0.0
+	 * @since 1.1.0
 	 */
 
 	private long calculateExpirationTime(long expiration) {
@@ -231,7 +231,7 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	 *
 	 * @param token 확인할 토큰
 	 * @throws BlackTokenException Black된 토큰일 경우
-	 * @since 1.0.0
+	 * @since 1.1.0
 	 */
 	public void validBlackToken(String token) {
 		if (blackTokenRepository.findById(token).isPresent()) {
