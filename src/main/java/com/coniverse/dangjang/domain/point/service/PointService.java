@@ -16,13 +16,13 @@ import com.coniverse.dangjang.domain.point.entity.PurchaseHistory;
 import com.coniverse.dangjang.domain.point.entity.UserPoint;
 import com.coniverse.dangjang.domain.point.enums.EarnPoint;
 import com.coniverse.dangjang.domain.point.enums.PointType;
+import com.coniverse.dangjang.domain.point.exception.InvalidPointException;
 import com.coniverse.dangjang.domain.point.mapper.PointMapper;
 import com.coniverse.dangjang.domain.point.repository.PointHistoryRepository;
 import com.coniverse.dangjang.domain.point.repository.PurchaseHistoryRepository;
 import com.coniverse.dangjang.domain.point.repository.UserPointRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
-import com.coniverse.dangjang.global.exception.InvalidPointException;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

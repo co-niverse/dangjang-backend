@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import com.coniverse.dangjang.domain.point.entity.PointProduct;
 import com.coniverse.dangjang.domain.point.entity.UserPoint;
 import com.coniverse.dangjang.domain.point.enums.PointType;
+import com.coniverse.dangjang.domain.point.exception.InvalidPointException;
 import com.coniverse.dangjang.domain.point.repository.PointProductRepository;
 import com.coniverse.dangjang.domain.point.repository.UserPointRepository;
-import com.coniverse.dangjang.global.exception.InvalidPointException;
 
 import lombok.RequiredArgsConstructor;
 

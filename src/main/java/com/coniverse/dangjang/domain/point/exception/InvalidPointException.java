@@ -1,4 +1,6 @@
-package com.coniverse.dangjang.global.exception;
+package com.coniverse.dangjang.domain.point.exception;
+
+import com.coniverse.dangjang.global.exception.BusinessException;
 
 /**
  * InvalidPointException
