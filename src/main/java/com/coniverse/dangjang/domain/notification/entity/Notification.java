@@ -57,4 +57,13 @@ public class Notification {
 		this.user = user;
 
 	}
+
+	/**
+	 * notification 확인으로 변경합니다
+	 *
+	 * @since 1.1.0
+	 */
+	public void setRead() {
+		this.isRead = true;
+	}
 }

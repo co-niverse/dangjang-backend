@@ -2,12 +2,14 @@ package com.coniverse.dangjang.domain.notification.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.notification.dto.request.CheckNotificationIdRequest;
 import com.coniverse.dangjang.domain.notification.dto.response.NotificationResponse;
+import com.coniverse.dangjang.domain.notification.entity.Notification;
 import com.coniverse.dangjang.domain.notification.mapper.NotificationMapper;
 import com.coniverse.dangjang.domain.notification.repository.NotificationRepository;
 import com.coniverse.dangjang.domain.notification.repository.UserFcmTokenRepository;
@@ -52,9 +54,13 @@ public class NotificationService {
 	 * @since 1.0.0
 	 */
 	public void updateNotificationIsRead(CheckNotificationIdRequest notificationIdList) {
-		//Todo : update 구문 수정 필요
+		//Todo : update 로직 수정 필요
 		notificationIdList.notificationIdList().forEach(notificationId -> {
-			notificationRepository.updateReadById(notificationId);
+			Optional<Notification> notification = notificationRepository.findById(notificationId);
+			if (notification.isPresent() && !notification.get().isRead()) {
+				notification.get().setRead();
+				notificationRepository.save(notification.get());
+			}
 		});
 	}
 
