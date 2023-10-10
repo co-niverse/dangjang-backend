@@ -14,7 +14,7 @@ import redis.embedded.RedisServer;
  * @author EVE
  * @since 1.0.0
  */
-@Profile("local")
+@Profile("test")
 @Configuration
 public class EmbeddedRedisConfig {
 
