@@ -10,7 +10,7 @@ import lombok.Builder;
  * blackToken
  *
  * @author EVE
- * @since 1.0.0
+ * @since 1.1.0
  */
 @RedisHash(value = "blackToken")
 public class BlackToken {

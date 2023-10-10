@@ -15,7 +15,7 @@ import com.coniverse.dangjang.domain.user.entity.User;
  * Notification 관련 Mapper
  *
  * @author EVE
- * @since 1.0.0
+ * @since 1.1.0
  */
 @Mapper(componentModel = "spring")
 public interface NotificationMapper {
@@ -24,7 +24,7 @@ public interface NotificationMapper {
 	 *
 	 * @param notification notification Entity
 	 * @return NotificationResponse
-	 * @since 1.0.0
+	 * @since 1.1.0
 	 */
 	@Mappings({
 		@Mapping(target = "type", source = "notification.notificationType.type"),
@@ -38,7 +38,7 @@ public interface NotificationMapper {
 	 * @param fcmToken  사용자 fcmToken
 	 * @param createdAt fcmToken 저장 날짜
 	 * @return UserFcmToken 사용자 fcmToken Entity
-	 * @since 1.0.0
+	 * @since 1.1.0
 	 */
 	@Mappings({
 		@Mapping(target = "user", source = "user"),

@@ -5,7 +5,7 @@ import com.coniverse.dangjang.global.exception.BusinessException;
 /**
  * FcmToken이 유효하지 않을 때 발생하는 예외
  *
- * @since 1.0.0
+ * @since 1.1.0
  */
 public class InvalidFcmTokenException extends BusinessException {
 	public InvalidFcmTokenException() {

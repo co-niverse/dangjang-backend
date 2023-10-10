@@ -29,7 +29,7 @@ import com.coniverse.dangjang.domain.user.repository.UserRepository;
  * NotificationService Test
  *
  * @author EVE
- * @since 1.0.0
+ * @since 1.1.0
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

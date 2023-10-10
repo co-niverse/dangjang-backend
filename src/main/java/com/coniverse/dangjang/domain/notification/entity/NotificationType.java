@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
  * 알림 종류
  *
  * @author EVE
- * @since 1.0.0
+ * @since 1.1.0
  */
 @Entity
 @Getter

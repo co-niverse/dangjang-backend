@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
  * Notification Entity
  *
  * @author EVE
- * @since 1.0.0
+ * @since 1.1.0
  */
 @Entity
 @Getter

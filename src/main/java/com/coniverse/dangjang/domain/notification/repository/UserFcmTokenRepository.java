@@ -8,8 +8,8 @@ import com.coniverse.dangjang.domain.notification.entity.UserFcmToken;
  * notification Repository
  *
  * @author EVE
- * @since 1.0.0
+ * @since 1.1.0
  */
 public interface UserFcmTokenRepository extends JpaRepository<UserFcmToken, String> {
-	
+
 }

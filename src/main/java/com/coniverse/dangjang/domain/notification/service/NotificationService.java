@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
  * Notification 관련 Service
  *
  * @author EVE
- * @since 1.0.0
+ * @since 1.1.0
  */
 @Service
 @RequiredArgsConstructor
@@ -40,7 +40,7 @@ public class NotificationService {
 	 *
 	 * @param oauthId 사용자 oauthId
 	 * @return List<NotificationResponse> 알림 목록
-	 * @since 1.0.0
+	 * @since 1.1.0
 	 */
 	public List<NotificationResponse> getNotificationList(String oauthId) {
 		return notificationRepository.findAllByOauthIdAndRead(oauthId).stream()
@@ -51,7 +51,7 @@ public class NotificationService {
 	 * 알림 확인 여부(isRead)를 true로 변경한다
 	 *
 	 * @param notificationIdList 알림Id 목록
-	 * @since 1.0.0
+	 * @since 1.1.0
 	 */
 	public void updateNotificationIsRead(CheckNotificationIdRequest notificationIdList) {
 		//Todo : update 로직 수정 필요
@@ -69,7 +69,7 @@ public class NotificationService {
 	 *
 	 * @param oauthId 사용자 oauthId
 	 * @return Boolean 읽지 않은 알림이 있으면 true, 없으면 false 반환
-	 * @since 1.0.0
+	 * @since 1.1.0
 	 */
 	public Boolean isExistsNotReadNotification(String oauthId) {
 		return notificationRepository.isExistsNotReadNotification(oauthId);
@@ -80,7 +80,7 @@ public class NotificationService {
 	 *
 	 * @param fcmToken fcmToken
 	 * @param oauthId  사용자 아이디
-	 * @since 1.0.0
+	 * @since 1.1.0
 	 */
 	public void saveFcmToken(String fcmToken, String oauthId) {
 		User user = userSearchService.findUserByOauthId(oauthId);
@@ -92,7 +92,7 @@ public class NotificationService {
 	 *
 	 * @param fcmToken fcmToken
 	 * @throws InvalidFcmTokenException fcmToken이 존재하지 않을 경우 발생하는 예외
-	 * @since 1.0.0
+	 * @since 1.1.0
 	 */
 	public void deleteFcmToken(String fcmToken) {
 		userFcmTokenRepository.findById(fcmToken).orElseThrow(

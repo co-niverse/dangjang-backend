@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
  * 사용자 모바일 기기의 fcmToken을 저장한다
  *
  * @author EVE
- * @since 1.0.0
+ * @since 1.1.0
  */
 @Getter
 @Entity

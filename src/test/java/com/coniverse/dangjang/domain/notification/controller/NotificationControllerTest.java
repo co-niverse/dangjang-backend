@@ -22,7 +22,7 @@ import com.coniverse.dangjang.support.annotation.WithDangjangUser;
  * NotificationControllerTest
  *
  * @author EVE
- * @since 1.0.0
+ * @since 1.1.0
  */
 @WithDangjangUser
 class NotificationControllerTest extends ControllerTest {

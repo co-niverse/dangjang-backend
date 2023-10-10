@@ -78,7 +78,7 @@ public class LoginController {
 	 * 로그아웃
 	 *
 	 * @param request 요청
-	 * @since 1.0.0
+	 * @since 1.1.0
 	 */
 	@PostMapping("/logout")
 	public ResponseEntity<SuccessSingleResponse> logout(HttpServletRequest request) {
