@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.coniverse.dangjang.domain.notification.dto.request.CheckNotificationIdRequest;
 import com.coniverse.dangjang.domain.notification.dto.response.NotificationResponse;
+import com.coniverse.dangjang.domain.notification.entity.Notification;
 import com.coniverse.dangjang.domain.notification.entity.UserFcmToken;
 import com.coniverse.dangjang.domain.notification.exception.InvalidFcmTokenException;
 import com.coniverse.dangjang.domain.notification.repository.NotificationRepository;
@@ -96,6 +97,10 @@ class NotificationServiceTest {
 	void 알림_확인_여부를_true로_변경한다() {
 		//given
 		CheckNotificationIdRequest request = 사용자_알림_확인요청_목록();
+		Notification 읽은_알림 = notificationRepository.findAll().get(0);
+		읽은_알림.setRead();
+		notificationRepository.save(읽은_알림);
+
 		//when
 		notificationService.updateNotificationIsRead(request);
 		//then
