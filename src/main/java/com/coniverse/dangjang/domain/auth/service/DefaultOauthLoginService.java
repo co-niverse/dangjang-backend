@@ -192,7 +192,7 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	public void logout(String tokenHeader, String fcmToken) {
 		String accessToken = jwtTokenProvider.getToken(tokenHeader);
 		refreshTokenRepository.deleteById(accessToken);
-		jwtTokenBlack(accessToken);
+		makeBlackJwtToken(accessToken);
 		notificationService.deleteFcmToken(fcmToken);
 	}
 
@@ -203,7 +203,7 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	 * @since 1.0.0
 	 */
 
-	private void jwtTokenBlack(String token) {
+	private void makeBlackJwtToken(String token) {
 		Claims claim = checkJwtTokenValidation(token);
 		long blackTokenExpirationTime = calculateExpirationTime(claim.getExpiration().getTime());
 		BlackToken blackToken = BlackToken.builder() //TODO: mapper 패턴으로 변경
