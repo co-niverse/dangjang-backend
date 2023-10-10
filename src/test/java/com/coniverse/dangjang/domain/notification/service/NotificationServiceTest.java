@@ -21,9 +21,12 @@ import com.coniverse.dangjang.domain.notification.dto.response.NotificationRespo
 import com.coniverse.dangjang.domain.notification.entity.UserFcmToken;
 import com.coniverse.dangjang.domain.notification.exception.InvalidFcmTokenException;
 import com.coniverse.dangjang.domain.notification.repository.NotificationRepository;
+import com.coniverse.dangjang.domain.notification.repository.NotificationTypeRepository;
 import com.coniverse.dangjang.domain.notification.repository.UserFcmTokenRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
+
+import jakarta.transaction.Transactional;
 
 /**
  * NotificationService Test
@@ -43,15 +46,20 @@ class NotificationServiceTest {
 	private UserRepository userRepository;
 	@Autowired
 	private UserFcmTokenRepository userFcmTokenRepository;
+	@Autowired
+	private NotificationTypeRepository notificationTypeRepository;
+
 	private User user;
 	private String 유저_아이디;
 	private String fcmToken = "token";
 
+	@Transactional
 	@BeforeAll
 	void setUp() {
-		notificationRepository.saveAll(사용자_알림_엔티티_목록(유저_테오()));
-		user = userRepository.findById(유저_테오().getOauthId()).get();
+		notificationTypeRepository.saveAll(알림_종류_엔티티_목록());
+		user = userRepository.save(유저_테오());
 		유저_아이디 = user.getOauthId();
+		notificationRepository.saveAll(사용자_알림_엔티티_목록(user));
 	}
 
 	@AfterAll
@@ -59,6 +67,7 @@ class NotificationServiceTest {
 		notificationRepository.deleteAll();
 		userFcmTokenRepository.deleteAll();
 		userRepository.deleteAll();
+		notificationTypeRepository.deleteAll();
 	}
 
 	@Order(100)
@@ -66,6 +75,7 @@ class NotificationServiceTest {
 	void 유저의_알림_목록을_조회한다() {
 		//given
 		List<NotificationResponse> 기대_결과 = 사용자_알림_목록();
+
 		//when
 		List<NotificationResponse> 조회_결과 = notificationService.getNotificationList(유저_아이디);
 		//then
@@ -102,6 +112,7 @@ class NotificationServiceTest {
 		assertThat(notificationService.isExistsNotReadNotification(유저_아이디)).isTrue();
 	}
 
+	@Transactional
 	@Order(400)
 	@Test
 	void fcmToken을_저장한다() {
@@ -116,6 +127,8 @@ class NotificationServiceTest {
 	@Order(500)
 	@Test
 	void fcmToken을_제거한다() {
+		//given
+		notificationService.saveFcmToken(fcmToken, 유저_아이디);
 		//when
 		notificationService.deleteFcmToken(fcmToken);
 		//then

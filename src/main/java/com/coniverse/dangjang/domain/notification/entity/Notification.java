@@ -41,11 +41,11 @@ public class Notification {
 	private LocalDate createdAt;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "type", referencedColumnName = "type", insertable = false, updatable = false)
+	@JoinColumn(name = "type", referencedColumnName = "type", updatable = false)
 	private NotificationType notificationType;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "oauthId", referencedColumnName = "oauthId", insertable = false, updatable = false)
+	@JoinColumn(name = "oauthId", referencedColumnName = "oauthId", updatable = false)
 	private User user;
 
 	@Builder

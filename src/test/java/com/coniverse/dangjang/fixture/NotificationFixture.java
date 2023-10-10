@@ -29,6 +29,11 @@ public class NotificationFixture {
 	public static NotificationType 알림_타입_접속 = NotificationType.builder().type("접속").build();
 	public static NotificationType 알림_타입_기록 = NotificationType.builder().type("기록").build();
 
+	public static List<NotificationType> 알림_종류_엔티티_목록() {
+		return List.of(NotificationType.builder().type("접속").build(), NotificationType.builder().type("기록").build());
+
+	}
+
 	public static List<Notification> 사용자_알림_엔티티_목록(User 유저) {
 		return List.of(
 			Notification.builder().notificationType(알림_타입_접속).title("title1").content("content1").createdAt(알림_생성날짜).user(유저).build(),
