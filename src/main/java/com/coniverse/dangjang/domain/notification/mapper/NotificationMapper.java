@@ -26,6 +26,9 @@ public interface NotificationMapper {
 	 * @return NotificationResponse
 	 * @since 1.0.0
 	 */
+	@Mappings({
+		@Mapping(target = "type", source = "notification.notificationType.type"),
+	})
 	NotificationResponse toResponse(Notification notification);
 
 	/**
@@ -38,7 +41,7 @@ public interface NotificationMapper {
 	 * @since 1.0.0
 	 */
 	@Mappings({
-		@Mapping(target = "oauthId", source = "user.oauthId"),
+		@Mapping(target = "user", source = "user"),
 		@Mapping(target = "createdAt", source = "createdAt")
 	})
 	UserFcmToken toEntity(User user, String fcmToken, LocalDate createdAt);

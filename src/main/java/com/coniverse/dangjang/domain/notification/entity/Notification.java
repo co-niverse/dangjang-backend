@@ -14,7 +14,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,16 +40,10 @@ public class Notification {
 	@Column(name = "created_at", nullable = false)
 	private LocalDate createdAt;
 
-	private String oauthId;
-
-	private String type;
-
-	@MapsId("type")
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "type", referencedColumnName = "type", insertable = false, updatable = false)
 	private NotificationType notificationType;
 
-	@MapsId("oauthId")
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "oauthId", referencedColumnName = "oauthId", insertable = false, updatable = false)
 	private User user;
@@ -62,7 +55,6 @@ public class Notification {
 		this.createdAt = createdAt;
 		this.notificationType = notificationType;
 		this.user = user;
-		this.oauthId = user.getOauthId();
-		this.type = notificationType.getType();
+
 	}
 }

@@ -23,7 +23,7 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 	 * @return List<Notification> 알림 목록
 	 * @since 1.0.0
 	 */
-	@Query("SELECT n FROM Notification n WHERE n.oauthId = ?1 AND n.isRead = false")
+	@Query("SELECT n FROM Notification n WHERE n.user.oauthId = ?1 AND n.isRead = false")
 	List<Notification> findAllByOauthIdAndRead(String oauthId);
 
 	/**
@@ -44,6 +44,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 	 * @return Boolean 읽지 않은 알림이 있으면 true, 없으면 false 반환
 	 * @since 1.0.0
 	 */
-	@Query("SELECT CASE WHEN COUNT(n) > 0 THEN true ELSE false END FROM Notification n WHERE n.oauthId=?1 AND n.isRead = false")
+	@Query("SELECT CASE WHEN COUNT(n) > 0 THEN true ELSE false END FROM Notification n WHERE n.user.oauthId=?1 AND n.isRead = false")
 	Boolean isExistsNotReadNotification(String oauthId);
 }

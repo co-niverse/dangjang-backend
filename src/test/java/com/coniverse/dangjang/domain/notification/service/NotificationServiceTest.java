@@ -109,7 +109,7 @@ class NotificationServiceTest {
 		notificationService.saveFcmToken(fcmToken, 유저_아이디);
 		//then
 		UserFcmToken 조회_결과 = userFcmTokenRepository.findById(fcmToken).get();
-		assertThat(조회_결과.getOauthId()).isEqualTo(유저_아이디);
+		assertThat(조회_결과.getUser().getId()).isEqualTo(유저_아이디);
 		assertThat(조회_결과.getFcmToken()).isEqualTo(fcmToken);
 	}
 

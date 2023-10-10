@@ -9,7 +9,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,18 +29,15 @@ public class UserFcmToken {
 	private String fcmToken;
 
 	private LocalDate createdAt;
-	private String oauthId;
 
-	@MapsId("oauthId")
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "oauthId", referencedColumnName = "oauthId", insertable = false, updatable = false)
+	@JoinColumn(name = "oauthId", referencedColumnName = "oauthId", updatable = false)
 	private User user;
 
 	@Builder
-	private UserFcmToken(User user, String fcmToken, LocalDate createdAt, String oauthId) {
+	private UserFcmToken(User user, String fcmToken, LocalDate createdAt) {
 		this.fcmToken = fcmToken;
 		this.createdAt = createdAt;
 		this.user = user;
-		this.oauthId = oauthId;
 	}
 }
