@@ -98,6 +98,6 @@ public class NotificationService {
 		userFcmTokenRepository.findById(fcmToken).orElseThrow(
 			() -> new InvalidFcmTokenException()
 		);
-		userFcmTokenRepository.deleteByFcmToken(fcmToken);
+		userFcmTokenRepository.deleteById(fcmToken);
 	}
 }
