@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import com.coniverse.dangjang.domain.auth.dto.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
@@ -114,7 +112,6 @@ class LoginControllerTest extends ControllerTest {
 	@WithDangjangUser
 	@Test
 	void 로그아웃을_성공한다() throws Exception {
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		String subURL = "/logout";
 
 		// when
