@@ -3,7 +3,9 @@ package com.coniverse.dangjang.domain.auth.service;
 import static com.coniverse.dangjang.fixture.LoginFixture.*;
 import static com.coniverse.dangjang.fixture.NotificationFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.AfterEach;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
+import com.coniverse.dangjang.domain.auth.entity.BlackToken;
 import com.coniverse.dangjang.domain.auth.repository.BlackTokenRepository;
 import com.coniverse.dangjang.domain.auth.repository.RefreshTokenRepository;
 import com.coniverse.dangjang.domain.notification.repository.UserFcmTokenRepository;
@@ -24,6 +27,7 @@ import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
 import com.coniverse.dangjang.domain.user.exception.WithdrawalUserException;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
+import com.coniverse.dangjang.global.exception.BlackTokenException;
 import com.coniverse.dangjang.global.exception.InvalidTokenException;
 
 import jakarta.persistence.EntityManager;
@@ -178,5 +182,22 @@ class OauthLoginServiceTest {
 		//when & then
 		assertThatThrownBy(() -> oauthLoginService.login(request, fcmToken))
 			.isInstanceOf(WithdrawalUserException.class);
+	}
+
+	@Test
+	void 블랙토큰이면_예외를_던진다() {
+		//given
+		BlackToken 블랙토큰 = BlackToken.builder().token("accessToken").expirationTime(100000).build();
+		blackTokenRepository.save(블랙토큰);
+		//when&then
+		assertThatThrownBy(() -> oauthLoginService.validBlackToken("accessToken"))
+			.isInstanceOf(BlackTokenException.class);
+	}
+
+	@Test
+	void 블랙토큰이_아니면_예외를_던지지_않는다() {
+
+		//when&then
+		assertThatThrownBy(() -> oauthLoginService.validBlackToken("accessToken"));
 	}
 }
