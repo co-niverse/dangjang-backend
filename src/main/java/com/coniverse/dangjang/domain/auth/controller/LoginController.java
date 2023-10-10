@@ -2,7 +2,6 @@ package com.coniverse.dangjang.domain.auth.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -81,7 +80,7 @@ public class LoginController {
 	 * @param request 요청
 	 * @since 1.0.0
 	 */
-	@GetMapping("/logout")
+	@PostMapping("/logout")
 	public ResponseEntity<SuccessSingleResponse> logout(HttpServletRequest request) {
 		oauthLoginService.logout(request.getHeader("Authorization"), request.getHeader("FcmToken"));
 		return ResponseEntity.ok()

@@ -118,7 +118,7 @@ class LoginControllerTest extends ControllerTest {
 		String subURL = "/logout";
 
 		// when
-		ResultActions resultActions = get(mockMvc, URI + subURL, params);
+		ResultActions resultActions = post(mockMvc, URI + subURL);
 
 		// then
 		resultActions.andExpectAll(
