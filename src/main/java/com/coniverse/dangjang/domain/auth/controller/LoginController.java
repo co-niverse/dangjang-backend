@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.coniverse.dangjang.domain.auth.dto.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
@@ -31,30 +30,32 @@ public class LoginController {
 	private final OauthLoginService oauthLoginService;
 
 	/**
-	 * @param params 카카오 accessToken
+	 * @param params  카카오 accessToken
+	 * @param request request에서 fcmToken header가 필요
 	 * @return ResponseEntity 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, auth id)를 전달한다.
 	 * @since 1.0.0
 	 */
 	@PostMapping("/kakao")
-	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginKakao(@Valid @RequestBody KakaoLoginRequest params) {
-		LoginResponse loginResponse = oauthLoginService.login(params);
-		AuthToken authToken = oauthLoginService.getAuthToken(loginResponse.nickname());
+	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginKakao(@Valid @RequestBody KakaoLoginRequest params, HttpServletRequest request) {
+		LoginResponse loginResponse = oauthLoginService.login(params, request.getHeader("FcmToken"));
+		String accessToken = oauthLoginService.getAuthToken(loginResponse.nickname());
 		return ResponseEntity.ok()
-			.header("AccessToken", authToken.getAccessToken()).header("RefreshToken", authToken.getRefreshToken())
+			.header("AccessToken", accessToken)
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
 	}
 
 	/**
-	 * @param params 네이버 accessToken
+	 * @param params  네이버 accessToken
+	 * @param request request에서 fcmToken header가 필요
 	 * @return ResponseEntity 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, auth id)를 전달한다.
 	 * @since 1.0.0
 	 */
 	@PostMapping("/naver")
-	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginNaver(@Valid @RequestBody NaverLoginRequest params) {
-		LoginResponse loginResponse = oauthLoginService.login(params);
-		AuthToken authToken = oauthLoginService.getAuthToken(loginResponse.nickname());
+	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginNaver(@Valid @RequestBody NaverLoginRequest params, HttpServletRequest request) {
+		LoginResponse loginResponse = oauthLoginService.login(params, request.getHeader("FcmToken"));
+		String accessToken = oauthLoginService.getAuthToken(loginResponse.nickname());
 		return ResponseEntity.ok()
-			.header("AccessToken", authToken.getAccessToken()).header("RefreshToken", authToken.getRefreshToken())
+			.header("AccessToken", accessToken)
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
 	}
 
@@ -66,11 +67,23 @@ public class LoginController {
 	 * @since 1.0.0
 	 */
 	@PostMapping("/reissue")
-	public ResponseEntity<SuccessSingleResponse<LoginResponse>> reissue(HttpServletRequest request) {
-		AuthToken newAuthToken = oauthLoginService.reissueToken(request.getHeader("Authorization"));
+	public ResponseEntity<SuccessSingleResponse<?>> reissue(HttpServletRequest request) {
+		String newAccessToken = oauthLoginService.reissueToken(request.getHeader("Authorization"));
 		return ResponseEntity.ok()
-			.header("AccessToken", newAuthToken.getAccessToken())
-			.header("RefreshToken", newAuthToken.getRefreshToken())
+			.header("AccessToken", newAccessToken)
+			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
+	}
+
+	/**
+	 * 로그아웃
+	 *
+	 * @param request 요청
+	 * @since 1.1.0
+	 */
+	@PostMapping("/logout")
+	public ResponseEntity<SuccessSingleResponse> logout(HttpServletRequest request) {
+		oauthLoginService.logout(request.getHeader("Authorization"), request.getHeader("FcmToken"));
+		return ResponseEntity.ok()
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}
 }
