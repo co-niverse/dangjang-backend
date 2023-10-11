@@ -14,7 +14,7 @@ import org.testcontainers.utility.DockerImageName;
 @Configuration
 public class RedisTestContainers {
 
-	private static final String REDIS_DOCKER_IMAGE = "redis:5.0.3-alpine";
+	private static final String REDIS_DOCKER_IMAGE = "redis:7.2.1-alpine";
 
 	static {
 		// 새 컨테이너 생성
