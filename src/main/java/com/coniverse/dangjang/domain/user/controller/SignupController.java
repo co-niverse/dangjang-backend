@@ -27,8 +27,8 @@ import lombok.RequiredArgsConstructor;
 public class SignupController {
 	private final UserSignupService userSignupService;
 	private final OauthLoginService oauthLoginService;
-	private final String headerKeyFcmToken = "FcmToken";
-	private final String headerKeyAccessToken = "AccessToken";
+	private static String headerKeyFcmToken = "FcmToken";
+	private static String headerKeyAccessToken = "AccessToken";
 
 	/**
 	 * @param params  회원가입에 필요한 정보를 담아온다.
