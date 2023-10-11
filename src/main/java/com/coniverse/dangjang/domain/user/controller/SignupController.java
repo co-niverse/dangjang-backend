@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class SignupController {
 	private final UserSignupService userSignupService;
 	private final OauthLoginService oauthLoginService;
+	private final String headerKeyFcmToken = "FcmToken";
 
 	/**
 	 * @param params  회원가입에 필요한 정보를 담아온다.
@@ -36,7 +37,7 @@ public class SignupController {
 	 */
 	@PostMapping
 	public ResponseEntity<SuccessSingleResponse<LoginResponse>> signUp(@Valid @RequestBody SignUpRequest params, HttpServletRequest request) {
-		LoginResponse loginResponse = userSignupService.signUp(params, request.getHeader("FcmToken"));
+		LoginResponse loginResponse = userSignupService.signUp(params, request.getHeader(headerKeyFcmToken));
 		String accessToken = oauthLoginService.getAuthToken(loginResponse.nickname());
 
 		return ResponseEntity.ok()
