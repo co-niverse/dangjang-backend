@@ -66,7 +66,7 @@ public class LoginController {
 	/**
 	 * refreshToken으로 AuthToken 재발급
 	 *
-	 * @param request 요청
+	 * @param request 재발급 요청 , header에 accessToken이 필요
 	 * @return AuthToken
 	 * @since 1.0.0
 	 */
