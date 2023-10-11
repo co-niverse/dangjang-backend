@@ -8,7 +8,7 @@ import org.testcontainers.utility.DockerImageName;
  * Redis Config
  *
  * @author EVE
- * @since 1.0.1
+ * @since 1.1.0
  */
 
 @Configuration
