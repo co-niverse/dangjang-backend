@@ -30,6 +30,7 @@ public class LoginController {
 	private final OauthLoginService oauthLoginService;
 	private final String headerKeyFcmToken = "FcmToken";
 	private final String headerKeyAccessToken = "AccessToken";
+	private final String headerKeyAuthorization = "Authorization";
 
 	/**
 	 * @param params  카카오 accessToken
@@ -70,7 +71,7 @@ public class LoginController {
 	 */
 	@PostMapping("/reissue")
 	public ResponseEntity<SuccessSingleResponse<?>> reissue(HttpServletRequest request) {
-		String newAccessToken = oauthLoginService.reissueToken(request.getHeader(headerKeyFcmToken));
+		String newAccessToken = oauthLoginService.reissueToken(request.getHeader(headerKeyAuthorization));
 		return ResponseEntity.ok()
 			.header(headerKeyAccessToken, newAccessToken)
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
