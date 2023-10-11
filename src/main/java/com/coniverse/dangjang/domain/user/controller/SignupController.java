@@ -40,9 +40,8 @@ public class SignupController {
 	public ResponseEntity<SuccessSingleResponse<LoginResponse>> signUp(@Valid @RequestBody SignUpRequest params, HttpServletRequest request) {
 		LoginResponse loginResponse = userSignupService.signUp(params, request.getHeader(headerKeyFcmToken));
 		String accessToken = oauthLoginService.getAuthToken(loginResponse.nickname());
-
 		return ResponseEntity.ok()
-			.header(headerKeyAccessToken, accessToken)
+			.header(headerKeyAccessToken.toString(), accessToken)
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
 	}
 }
