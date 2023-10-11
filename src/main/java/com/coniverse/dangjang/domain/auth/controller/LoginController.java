@@ -59,7 +59,7 @@ public class LoginController {
 		LoginResponse loginResponse = oauthLoginService.login(params, request.getHeader(headerKeyFcmToken));
 		String accessToken = oauthLoginService.getAuthToken(loginResponse.nickname());
 		return ResponseEntity.ok()
-			.header(headerKeyAccessToken.toString(), accessToken)
+			.header(headerKeyAccessToken, accessToken)
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
 	}
 
@@ -74,7 +74,7 @@ public class LoginController {
 	public ResponseEntity<SuccessSingleResponse<?>> reissue(HttpServletRequest request) {
 		String newAccessToken = oauthLoginService.reissueToken(request.getHeader(headerKeyAuthorization));
 		return ResponseEntity.ok()
-			.header(headerKeyAccessToken.toString(), newAccessToken)
+			.header(headerKeyAccessToken, newAccessToken)
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}
 

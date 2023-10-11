@@ -41,7 +41,7 @@ public class SignupController {
 		LoginResponse loginResponse = userSignupService.signUp(params, request.getHeader(headerKeyFcmToken));
 		String accessToken = oauthLoginService.getAuthToken(loginResponse.nickname());
 		return ResponseEntity.ok()
-			.header(headerKeyAccessToken.toString(), accessToken)
+			.header(headerKeyAccessToken, accessToken)
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
 	}
 }
