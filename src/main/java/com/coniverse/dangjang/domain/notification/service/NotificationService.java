@@ -95,9 +95,8 @@ public class NotificationService {
 	 * @since 1.1.0
 	 */
 	public void deleteFcmToken(String fcmToken) {
-		userFcmTokenRepository.findById(fcmToken).orElseThrow(
-			() -> new InvalidFcmTokenException()
-		);
+		userFcmTokenRepository.findById(fcmToken).orElseThrow(InvalidFcmTokenException::new);
 		userFcmTokenRepository.deleteById(fcmToken);
+
 	}
 }
