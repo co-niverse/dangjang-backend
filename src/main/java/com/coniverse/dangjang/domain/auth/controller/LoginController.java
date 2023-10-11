@@ -28,6 +28,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/auth")
 public class LoginController {
 	private final OauthLoginService oauthLoginService;
+	private final String headerKeyFcmToken = "FcmToken";
+	private final String headerKeyAccessToken = "AccessToken";
 
 	/**
 	 * @param params  카카오 accessToken
@@ -37,10 +39,10 @@ public class LoginController {
 	 */
 	@PostMapping("/kakao")
 	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginKakao(@Valid @RequestBody KakaoLoginRequest params, HttpServletRequest request) {
-		LoginResponse loginResponse = oauthLoginService.login(params, request.getHeader("FcmToken"));
+		LoginResponse loginResponse = oauthLoginService.login(params, request.getHeader(headerKeyFcmToken));
 		String accessToken = oauthLoginService.getAuthToken(loginResponse.nickname());
 		return ResponseEntity.ok()
-			.header("AccessToken", accessToken)
+			.header(headerKeyAccessToken, accessToken)
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
 	}
 
@@ -52,10 +54,10 @@ public class LoginController {
 	 */
 	@PostMapping("/naver")
 	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginNaver(@Valid @RequestBody NaverLoginRequest params, HttpServletRequest request) {
-		LoginResponse loginResponse = oauthLoginService.login(params, request.getHeader("FcmToken"));
+		LoginResponse loginResponse = oauthLoginService.login(params, request.getHeader(headerKeyFcmToken));
 		String accessToken = oauthLoginService.getAuthToken(loginResponse.nickname());
 		return ResponseEntity.ok()
-			.header("AccessToken", accessToken)
+			.header(headerKeyAccessToken, accessToken)
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), loginResponse));
 	}
 
@@ -68,9 +70,9 @@ public class LoginController {
 	 */
 	@PostMapping("/reissue")
 	public ResponseEntity<SuccessSingleResponse<?>> reissue(HttpServletRequest request) {
-		String newAccessToken = oauthLoginService.reissueToken(request.getHeader("Authorization"));
+		String newAccessToken = oauthLoginService.reissueToken(request.getHeader(headerKeyFcmToken));
 		return ResponseEntity.ok()
-			.header("AccessToken", newAccessToken)
+			.header(headerKeyAccessToken, newAccessToken)
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}
 
@@ -82,7 +84,7 @@ public class LoginController {
 	 */
 	@PostMapping("/logout")
 	public ResponseEntity<SuccessSingleResponse> logout(HttpServletRequest request) {
-		oauthLoginService.logout(request.getHeader("Authorization"), request.getHeader("FcmToken"));
+		oauthLoginService.logout(request.getHeader("Authorization"), request.getHeader(headerKeyFcmToken));
 		return ResponseEntity.ok()
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}
