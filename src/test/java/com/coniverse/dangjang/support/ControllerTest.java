@@ -28,6 +28,10 @@ import com.coniverse.dangjang.domain.intro.controller.IntroController;
 import com.coniverse.dangjang.domain.intro.service.IntroService;
 import com.coniverse.dangjang.domain.log.controller.AppLogController;
 import com.coniverse.dangjang.domain.log.service.LogService;
+import com.coniverse.dangjang.domain.log.controller.AppLogController;
+import com.coniverse.dangjang.domain.log.service.LogService;
+import com.coniverse.dangjang.domain.notification.controller.NotificationController;
+import com.coniverse.dangjang.domain.notification.service.NotificationService;
 import com.coniverse.dangjang.domain.point.controller.PointController;
 import com.coniverse.dangjang.domain.point.service.PointService;
 import com.coniverse.dangjang.domain.user.controller.SignupController;
@@ -60,7 +64,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 		HealthConnectController.class,
 		GuideController.class,
 		PointController.class,
-		AppLogController.class
+		AppLogController.class,
+		NotificationController.class
 	},
 	includeFilters = @ComponentScan.Filter(classes = {EnableWebSecurity.class}))
 @ComponentScan(basePackages = "com.coniverse.dangjang.domain.auth.handler")
@@ -102,4 +107,7 @@ public class ControllerTest {
 	private LogService logService;
 	@MockBean
 	private UserWithdrawalService userWithdrawalService;
+	@MockBean
+	private NotificationService notificationService;
+
 }

@@ -16,6 +16,7 @@ import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
 import com.coniverse.dangjang.support.ControllerTest;
+import com.coniverse.dangjang.support.annotation.WithDangjangUser;
 
 /**
  * @author EVE, TEO
@@ -35,8 +36,8 @@ class LoginControllerTest extends ControllerTest {
 		AuthToken authToken = new AuthToken();
 		authToken.setAccessToken("accessToken");
 		authToken.setRefreshToken("refreshToken");
-		given(oauthLoginService.login(request)).willReturn(response);
-		given(oauthLoginService.getAuthToken(response.nickname())).willReturn(authToken);
+		given(oauthLoginService.login(any(), any())).willReturn(response);
+		given(oauthLoginService.getAuthToken(any())).willReturn(authToken.getAccessToken());
 
 		// when
 		ResultActions resultActions = post(mockMvc, URI + "/kakao", content);
@@ -45,8 +46,7 @@ class LoginControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isOk(),
 			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
-			header().exists("AccessToken"),
-			header().exists("RefreshToken")
+			header().exists("AccessToken")
 		);
 
 	}
@@ -77,8 +77,8 @@ class LoginControllerTest extends ControllerTest {
 		AuthToken authToken = new AuthToken();
 		authToken.setAccessToken("accessToken");
 		authToken.setRefreshToken("refreshToken");
-		given(oauthLoginService.login(request)).willReturn(response);
-		given(oauthLoginService.getAuthToken(response.nickname())).willReturn(authToken);
+		given(oauthLoginService.login(any(), any())).willReturn(response);
+		given(oauthLoginService.getAuthToken(any())).willReturn(authToken.getAccessToken());
 
 		// when
 		ResultActions resultActions = post(mockMvc, URI + "/naver", content);
@@ -87,8 +87,7 @@ class LoginControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isOk(),
 			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
-			header().exists("AccessToken"),
-			header().exists("RefreshToken")
+			header().exists("AccessToken")
 		);
 	}
 
@@ -110,22 +109,19 @@ class LoginControllerTest extends ControllerTest {
 		);
 	}
 
+	@WithDangjangUser
 	@Test
-	void refreshToken으로_auth토큰을_재발급_한다() throws Exception {
-		// given
-		String subUrl = URI + "/reissue";
-		String header = "Bearer " + "refreshToken";
-		AuthToken authToken = AuthToken.of("accessToken", "refreshToken", "", 1000L);
-		given(oauthLoginService.reissueToken(any())).willReturn(authToken);
+	void 로그아웃을_성공한다() throws Exception {
+		String subURL = "/logout";
+
 		// when
-		ResultActions resultActions = post(mockMvc, subUrl, header);
+		ResultActions resultActions = post(mockMvc, URI + subURL);
 
 		// then
 		resultActions.andExpectAll(
 			status().isOk(),
-			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
-			header().exists("AccessToken"),
-			header().exists("RefreshToken")
+			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase())
 		);
 	}
+
 }

@@ -45,4 +45,15 @@ public class UserSearchService {
 	public Optional<User> findNickname(String nickname) {
 		return userRepository.findByNickname(nickname);
 	}
+
+	/**
+	 * User와 UserPoint를 left 조인하여 조회
+	 *
+	 * @param oauthId 사용자 PK
+	 * @return User 사용자
+	 * @since 1.0.0
+	 */
+	public User findJoinUserPoint(String oauthId) {
+		return userRepository.findJoinUserPoint(oauthId).orElseThrow(NonExistentUserException::new);
+	}
 }

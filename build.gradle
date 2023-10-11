@@ -68,6 +68,10 @@ dependencies {
 
     // actuator
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    //testContainer
+    testImplementation "org.testcontainers:testcontainers:1.19.1"
+
 }
 
 tasks.named('test') {

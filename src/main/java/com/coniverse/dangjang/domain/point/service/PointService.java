@@ -16,6 +16,7 @@ import com.coniverse.dangjang.domain.point.entity.PurchaseHistory;
 import com.coniverse.dangjang.domain.point.entity.UserPoint;
 import com.coniverse.dangjang.domain.point.enums.EarnPoint;
 import com.coniverse.dangjang.domain.point.enums.PointType;
+import com.coniverse.dangjang.domain.point.exception.InvalidPointException;
 import com.coniverse.dangjang.domain.point.mapper.PointMapper;
 import com.coniverse.dangjang.domain.point.repository.PointHistoryRepository;
 import com.coniverse.dangjang.domain.point.repository.PurchaseHistoryRepository;
@@ -145,7 +146,7 @@ public class PointService {
 	 *
 	 * @param changePoint  포인트 변동량
 	 * @param balancePoint 기존 포인트
-	 * @throws IllegalArgumentException 포인트 부족시 발생
+	 * @throws InvalidPointException 포인트 부족시 발생
 	 * @since 1.0.0
 	 */
 	private int getBalancePoint(int changePoint, int balancePoint) {
@@ -153,7 +154,7 @@ public class PointService {
 		if (balancePoint >= 0) {
 			return balancePoint;
 		}
-		throw new IllegalArgumentException("포인트가 부족합니다.");
+		throw new InvalidPointException("포인트가 부족합니다.");
 	}
 
 	/**

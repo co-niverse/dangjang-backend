@@ -14,7 +14,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.coniverse.dangjang.domain.auth.service.JwtTokenProvider;
+import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
 import com.coniverse.dangjang.domain.point.service.PointService;
+import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
+import com.coniverse.dangjang.global.exception.BlackTokenException;
+import com.coniverse.dangjang.global.exception.InvalidTokenException;
 import com.coniverse.dangjang.global.support.enums.JWTStatus;
 
 import io.jsonwebtoken.Claims;
@@ -35,6 +39,7 @@ import lombok.RequiredArgsConstructor;
 public class JwtValidationFilter extends OncePerRequestFilter {
 	private final PointService pointService;
 	private final JwtTokenProvider jwtTokenProvider;
+	private final OauthLoginService oauthLoginService;
 	private static final String AUTHORIZATION = "Authorization";
 	private static final String BEARER = "Bearer";
 
@@ -42,11 +47,24 @@ public class JwtValidationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain filterChain) throws
 		ServletException,
 		IOException {
-		String token = jwtTokenProvider.getToken(request.getHeader(AUTHORIZATION));
+		String header = request.getHeader(AUTHORIZATION);
+		String token = jwtTokenProvider.getToken(header);
 		JWTStatus jwtStatus = jwtTokenProvider.validationToken(token);
 		if (jwtStatus.equals(JWTStatus.OK)) {
-			Authentication auth = getAuthentication(token);
-			SecurityContextHolder.getContext().setAuthentication(auth);
+			try {
+				oauthLoginService.validBlackToken(token);
+				Authentication auth = getAuthentication(token);
+				SecurityContextHolder.getContext().setAuthentication(auth);
+			} catch (BlackTokenException e) {
+				request.setAttribute("exception", e.getMessage());
+			}
+		} else if (jwtStatus.equals(JWTStatus.EXPIRED)) {
+			try {
+				request.setAttribute("exception", jwtStatus.getMessage());
+				request.setAttribute("accessToken", oauthLoginService.reissueToken(header));
+			} catch (NonExistentUserException | InvalidTokenException notExistsError) {
+				request.setAttribute("exception", notExistsError.getMessage());
+			}
 		} else {
 			request.setAttribute("exception", jwtStatus.getMessage());
 		}
@@ -71,7 +89,6 @@ public class JwtValidationFilter extends OncePerRequestFilter {
 		Claims claims = jwtTokenProvider.parseClaims(token);
 
 		String oauthId = claims.getSubject();
-
 		final Collection<? extends GrantedAuthority> authorities = Stream.of(
 				claims.get("role").toString())
 			.map(SimpleGrantedAuthority::new)
