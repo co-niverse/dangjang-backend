@@ -72,6 +72,7 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
 				.requestMatchers(HttpMethod.POST, "/api/signup/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/user/**").permitAll() // TODO 수정
+				.requestMatchers(HttpMethod.DELETE, "/api/user/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/api-docs/**").permitAll()
 				.requestMatchers(HttpMethod.POST, "/api/health-metric/**").authenticated()
 				.requestMatchers(HttpMethod.GET, "/api/health-metric/**").authenticated()
