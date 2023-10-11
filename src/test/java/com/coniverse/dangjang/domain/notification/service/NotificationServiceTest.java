@@ -137,7 +137,7 @@ class NotificationServiceTest {
 		//when
 		notificationService.deleteFcmToken(fcmToken);
 		//then
-		assertThat(userFcmTokenRepository.findById(fcmToken).isEmpty()).isTrue();
+		assertThat(userFcmTokenRepository.findById(fcmToken)).isEmpty();
 	}
 
 	@Order(600)

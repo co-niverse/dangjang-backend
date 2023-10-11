@@ -100,7 +100,7 @@ class OauthLoginServiceTest {
 		//then
 		assertAll(
 			() -> assertThat(accessToken).isNotBlank(),
-			() -> assertThat(refreshTokenRepository.findById(accessToken).isPresent()).isTrue()
+			() -> assertThat(refreshTokenRepository.findById(accessToken)).isPresent()
 		);
 
 	}
@@ -157,7 +157,7 @@ class OauthLoginServiceTest {
 		//when
 		oauthLoginService.logout(header, fcmToken);
 		//then
-		assertThat(blackTokenRepository.findById(accessToken).isPresent()).isTrue();
+		assertThat(blackTokenRepository.findById(accessToken)).isPresent();
 	}
 
 	@Order(800)
