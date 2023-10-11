@@ -198,6 +198,7 @@ class OauthLoginServiceTest {
 	void 블랙토큰이_아니면_예외를_던지지_않는다() {
 
 		//when&then
-		assertThatThrownBy(() -> oauthLoginService.validBlackToken("accessToken"));
+		assertDoesNotThrow(() -> oauthLoginService.validBlackToken("accessToken"));
+
 	}
 }
