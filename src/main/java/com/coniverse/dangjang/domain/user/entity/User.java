@@ -11,6 +11,7 @@ import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
 import com.coniverse.dangjang.domain.user.entity.enums.Role;
 import com.coniverse.dangjang.domain.user.entity.enums.Status;
+import com.coniverse.dangjang.domain.user.exception.WithdrawalUserException;
 import com.coniverse.dangjang.global.support.BaseEntity;
 
 import jakarta.persistence.Column;
@@ -39,10 +40,10 @@ public class User extends BaseEntity implements Persistable<String> {
 	private String oauthId;
 	@Enumerated(EnumType.STRING)
 	private OauthProvider oauthProvider;
-	@Column(nullable = false, unique = true, length = 8)
+	@Column(nullable = false, unique = true)
 	private String nickname;
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, length = 5)
+	@Column(nullable = false)
 	private Gender gender;
 	@Column(nullable = false)
 	private LocalDate birthday;
@@ -55,10 +56,10 @@ public class User extends BaseEntity implements Persistable<String> {
 	private int recommendedCalorie;
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private Status status;
+	private Status status = Status.ACTIVE;
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private Role role;
+	private Role role = Role.USER;
 	@Column(nullable = false)
 	private boolean diabetic;
 	private int diabetesYear;
@@ -67,8 +68,9 @@ public class User extends BaseEntity implements Persistable<String> {
 	private String profileImagePath;
 	@Enumerated(EnumType.STRING)
 	private HealthConnect healthConnect = HealthConnect.NEVER_CONNECTED;
-	@Column(name = "ACCESSED_AT", nullable = false)
+	@Column(nullable = false)
 	private LocalDate accessedAt = LocalDate.now();
+	private LocalDate inactivatedAt;
 
 	@OneToOne
 	@JoinColumn(name = "oauthId")
@@ -76,8 +78,7 @@ public class User extends BaseEntity implements Persistable<String> {
 
 	@Builder
 	private User(String oauthId, OauthProvider oauthProvider, String nickname, Gender gender, LocalDate birthday, ActivityAmount activityAmount, int height,
-		int recommendedCalorie, Role role, Status status, String profileImagePath, boolean diabetic, int diabetesYear, boolean medicine, boolean injection,
-		LocalDate accessedAt, HealthConnect healthConnect) {
+		int recommendedCalorie, String profileImagePath, boolean diabetic, int diabetesYear, boolean medicine, boolean injection) {
 		this.oauthId = oauthId;
 		this.oauthProvider = oauthProvider;
 		this.nickname = nickname;
@@ -86,15 +87,11 @@ public class User extends BaseEntity implements Persistable<String> {
 		this.activityAmount = activityAmount;
 		this.height = height;
 		this.recommendedCalorie = recommendedCalorie;
-		this.status = status;
-		this.role = role;
 		this.profileImagePath = profileImagePath;
 		this.diabetic = diabetic;
 		this.diabetesYear = diabetesYear;
 		this.medicine = medicine;
 		this.injection = injection;
-		this.accessedAt = accessedAt;
-		this.healthConnect = healthConnect;
 	}
 
 	@Override
@@ -107,11 +104,78 @@ public class User extends BaseEntity implements Persistable<String> {
 		return this.getCreatedAt() == null;
 	}
 
-	public void setHealthConnect(HealthConnect interlock) {
-		this.healthConnect = interlock;
+	/**
+	 * 헬스커넥트를 한 번도 연동하지 않은 사용자인지 확인한다.
+	 *
+	 * @return boolean 헬스커넥트를 한 번도 연동하지 않은 사용자인지 여부
+	 * @since 1.1.0
+	 */
+	public boolean isNeverConnectedHealthConnect() {
+		return this.healthConnect.equals(HealthConnect.NEVER_CONNECTED);
+	}
+
+	/**
+	 * 헬스커넥트 연동을 해지한 사용자인지 확인한다.
+	 *
+	 * @return boolean 헬스커넥트 연동을 해지한 사용자인지 여부
+	 * @since 1.1.0
+	 */
+	public boolean isDisconnectedHealthConnect() {
+		return this.healthConnect.equals(HealthConnect.DISCONNECTED);
+	}
+
+	/**
+	 * 헬스커넥트를 연동 중인 사용자인지 확인한다.
+	 *
+	 * @return boolean 헬스커넥트를 연동 중인 사용자인지 여부
+	 * @since 1.1.0
+	 */
+	public boolean isConnectingHealthConnect() {
+		return this.healthConnect.equals(HealthConnect.CONNECTING);
+	}
+
+	/**
+	 * 헬스커넥트 연동을 해지한다.
+	 *
+	 * @since 1.1.0
+	 */
+	public void disconnectToHealthConnect() {
+		this.healthConnect = HealthConnect.DISCONNECTED;
+	}
+
+	/**
+	 * 헬스커넥트를 연동한다.
+	 *
+	 * @since 1.1.0
+	 */
+	public void connectToHealthConnect() {
+		this.healthConnect = HealthConnect.CONNECTING;
 	}
 
 	public void updateAccessedAt(LocalDate accessedAt) {
 		this.accessedAt = accessedAt;
+	}
+
+	/**
+	 * 활성화된 사용자인지 확인한다.
+	 *
+	 * @throws WithdrawalUserException 사용자가 비활성화된 사용자일 경우
+	 * @since 1.1.0
+	 */
+	public void verifyActiveUser() {
+		if (!this.status.equals(Status.ACTIVE)) {
+			throw new WithdrawalUserException();
+		}
+	}
+
+	/**
+	 * 사용자를 비활성화한다.
+	 *
+	 * @since 1.1.0
+	 */
+	public void inactivate() {
+		verifyActiveUser();
+		this.status = Status.INACTIVE;
+		this.inactivatedAt = LocalDate.now();
 	}
 }

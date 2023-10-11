@@ -70,4 +70,18 @@ class UserControllerTest extends ControllerTest {
 		);
 	}
 
+	@WithDangjangUser
+	@Test
+	void 회원탈퇴를_성공한다() throws Exception {
+		// given
+		String subUrl = "/withdrawal";
+
+		// when
+		ResultActions resultActions = delete(mockMvc, URI + subUrl);
+
+		// then
+		resultActions.andExpectAll(
+			status().isNoContent()
+		);
+	}
 }

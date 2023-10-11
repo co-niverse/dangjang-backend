@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,7 @@ import com.coniverse.dangjang.domain.user.dto.response.DuplicateNicknameResponse
 import com.coniverse.dangjang.domain.user.dto.response.MypageResponse;
 import com.coniverse.dangjang.domain.user.service.MypageService;
 import com.coniverse.dangjang.domain.user.service.UserSignupService;
+import com.coniverse.dangjang.domain.user.service.UserWithdrawalService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
 import jakarta.validation.constraints.NotBlank;
@@ -31,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController { // TODO 전체 수정 (위치: signup, 이름: duplicated-nickname, 바디없어도됨)
 	private final UserSignupService userSignupService;
 	private final MypageService mypageService;
+	private final UserWithdrawalService userWithdrawalService;
 
 	/**
 	 * @param nickname 확인이 필요한 닉네임을 담아온다.
@@ -54,5 +57,11 @@ public class UserController { // TODO 전체 수정 (위치: signup, 이름: dup
 	public ResponseEntity<SuccessSingleResponse<MypageResponse>> getMyPage(@AuthenticationPrincipal User user) {
 		MypageResponse response = mypageService.getMypage(user.getUsername());
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
+	}
+
+	@DeleteMapping("/withdrawal")
+	public ResponseEntity<?> withdraw(@AuthenticationPrincipal User user) {
+		userWithdrawalService.withdraw(user.getUsername());
+		return ResponseEntity.noContent().build();
 	}
 }
