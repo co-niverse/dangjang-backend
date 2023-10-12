@@ -10,7 +10,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.coniverse.dangjang.domain.log.dto.server.ServerLog;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,16 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LogAspect {
 	private final RestTemplate restTemplate;
-	@Value("${fluentbit.host}")
-	private String host;
-	@Value("${fluentbit.server-port}")
-	private String port;
+	@Value("${fluentbit.server-log-url}")
 	private String url;
-
-	@PostConstruct
-	private void setUrl() {
-		this.url = "http://" + host + ":" + port + "/server.log";
-	}
 
 	/**
 	 * presentation layer logging
@@ -88,10 +79,7 @@ public class LogAspect {
 		Object result = joinPoint.proceed();
 		long end = System.currentTimeMillis();
 
-		String className = joinPoint.getSignature().getDeclaringType().getSimpleName();
-		String methodName = joinPoint.getSignature().getName();
-
-		ServerLog serverLog = new ServerLog(group, className, methodName, end - start);
+		ServerLog serverLog = new ServerLog(group, joinPoint.getSignature(), end - start);
 		try {
 			restTemplate.postForEntity(url, serverLog, String.class);
 		} catch (ResourceAccessException e) {
