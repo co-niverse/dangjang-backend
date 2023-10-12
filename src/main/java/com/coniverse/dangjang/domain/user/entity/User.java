@@ -18,8 +18,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -72,8 +72,7 @@ public class User extends BaseEntity implements Persistable<String> {
 	private LocalDate accessedAt = LocalDate.now();
 	private LocalDate inactivatedAt;
 
-	@OneToOne
-	@JoinColumn(name = "oauthId")
+	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
 	private UserPoint userPoint;
 
 	@Builder

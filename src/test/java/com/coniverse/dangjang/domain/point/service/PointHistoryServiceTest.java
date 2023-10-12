@@ -32,6 +32,7 @@ import com.coniverse.dangjang.domain.point.dto.response.ProductListResponse;
 import com.coniverse.dangjang.domain.point.entity.UserPoint;
 import com.coniverse.dangjang.domain.point.enums.EarnPoint;
 import com.coniverse.dangjang.domain.point.enums.PointType;
+import com.coniverse.dangjang.domain.point.exception.InvalidPointException;
 import com.coniverse.dangjang.domain.point.repository.PointHistoryRepository;
 import com.coniverse.dangjang.domain.point.repository.PointProductRepository;
 import com.coniverse.dangjang.domain.point.repository.PurchaseHistoryRepository;
@@ -143,7 +144,7 @@ class PointHistoryServiceTest {
 		//when&then
 		assertThatThrownBy(() -> {
 			pointService.purchaseProduct(유저.getOauthId(), request);
-		}).isInstanceOf(IllegalArgumentException.class);
+		}).isInstanceOf(InvalidPointException.class);
 	}
 
 	@Order(500)
@@ -181,7 +182,7 @@ class PointHistoryServiceTest {
 
 		//when
 		assertThatThrownBy(() -> pointService.purchaseProduct(유저.getOauthId(), request))
-			.isInstanceOf(IllegalArgumentException.class);
+			.isInstanceOf(InvalidPointException.class);
 	}
 
 	@Order(600)

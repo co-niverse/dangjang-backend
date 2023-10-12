@@ -14,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
+import com.coniverse.dangjang.domain.notification.repository.UserFcmTokenRepository;
 import com.coniverse.dangjang.domain.point.service.PointService;
 import com.coniverse.dangjang.domain.user.dto.request.SignUpRequest;
 import com.coniverse.dangjang.domain.user.dto.response.DuplicateNicknameResponse;
@@ -36,9 +37,13 @@ class UserSignupServiceTest {
 	private PointService pointService;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private UserFcmTokenRepository userFcmTokenRepository;
+	private final String fcmToken = "fcmToken";
 
 	@AfterEach
 	void tearDown() {
+		userFcmTokenRepository.deleteAll();
 		userRepository.deleteAll();
 	}
 
@@ -52,7 +57,7 @@ class UserSignupServiceTest {
 			diseases);
 
 		// when
-		LoginResponse loginResponse = userSignupService.signUp(signUpRequest);
+		LoginResponse loginResponse = userSignupService.signUp(signUpRequest, fcmToken);
 
 		// that
 		assertThat(loginResponse.nickname()).isEqualTo(signUpRequest.nickname());
@@ -70,7 +75,7 @@ class UserSignupServiceTest {
 			diseases);
 
 		// when
-		LoginResponse loginResponse = userSignupService.signUp(signUpRequest);
+		LoginResponse loginResponse = userSignupService.signUp(signUpRequest, fcmToken);
 
 		// that
 		assertThat(loginResponse.nickname()).isEqualTo(signUpRequest.nickname());
@@ -87,8 +92,8 @@ class UserSignupServiceTest {
 			false, 0, false, false,
 			diseases);
 
-		// when & then
-		assertThatThrownBy(() -> userSignupService.signUp(signUpRequest))
+		//when&that
+		assertThatThrownBy(() -> userSignupService.signUp(signUpRequest, fcmToken))
 			.isInstanceOf(IllegalArgumentException.class);
 	}
 
@@ -100,10 +105,8 @@ class UserSignupServiceTest {
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "naver", true, LocalDate.parse("2021-06-21"), 150, 50, "MEDIUM",
 			false, 0, false, false,
 			diseases);
-
-		userSignupService.signUp(signUpRequest);
-
-		// when
+		userSignupService.signUp(signUpRequest, fcmToken);
+		//when
 		DuplicateNicknameResponse isDuplicated = userSignupService.checkDuplicatedNickname(signUpRequest.nickname());
 
 		// then

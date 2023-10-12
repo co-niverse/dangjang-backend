@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.coniverse.dangjang.domain.point.entity.PointProduct;
 import com.coniverse.dangjang.domain.point.entity.UserPoint;
 import com.coniverse.dangjang.domain.point.enums.PointType;
+import com.coniverse.dangjang.domain.point.exception.InvalidPointException;
 import com.coniverse.dangjang.domain.point.repository.PointProductRepository;
 import com.coniverse.dangjang.domain.point.repository.UserPointRepository;
 
@@ -32,7 +33,7 @@ public class PointSearchService {
 	 */
 	public PointProduct findPointProductById(String productName) {
 		return pointProductRepository.findById(productName)
-			.orElseThrow(() -> new IllegalArgumentException("포인트 상품이 없습니다."));
+			.orElseThrow(() -> new InvalidPointException("포인트 상품이 없습니다."));
 	}
 
 	/**
@@ -53,7 +54,7 @@ public class PointSearchService {
 	 */
 	public UserPoint findUserPointByOauthId(String oauthId) {
 		return userPointRepository.findById(oauthId)
-			.orElseThrow(() -> new IllegalArgumentException("유저의 포인트 테이블이 없습니다."));
+			.orElseThrow(() -> new InvalidPointException("유저의 포인트 테이블이 없습니다."));
 	}
 
 }
