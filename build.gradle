@@ -72,6 +72,9 @@ dependencies {
     //testContainer
     testImplementation "org.testcontainers:testcontainers:1.19.1"
 
+    // spring batch
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
+
 }
 
 tasks.named('test') {
