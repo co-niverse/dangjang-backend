@@ -47,9 +47,9 @@ jwt:
     exp: 3600000
 
 fluentbit:
-  host: localhost
-  app-port: 1234
-  server-port: 1234
+  app-log-url: http://localhost:8888/app.log
+  server-log-url: http://localhost:8888/server.log
+  notification-url: http://localhost:8888/notification
 
 cors:
   allowed-origins: "*"
