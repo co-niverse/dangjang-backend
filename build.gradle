@@ -65,6 +65,13 @@ dependencies {
 
     // slack
     implementation 'com.github.maricn:logback-slack-appender:1.6.1'
+
+    // actuator
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    //testContainer
+    testImplementation "org.testcontainers:testcontainers:1.19.1"
+
 }
 
 tasks.named('test') {

@@ -26,4 +26,15 @@ public class JwtTokenFixture {
 			.compact();
 
 	}
+
+	public static String 기간이_만료된_accessToken_생성(Key key) {
+		return Jwts.builder()
+			.setSubject("oauthId")
+			.claim("role", "ROLE_" + "USER")
+			.setExpiration(new Date(now - 1000 * 60 * 60 * 24 * 7))
+			.signWith(key, SignatureAlgorithm.HS512)
+			.compact();
+
+	}
+
 }

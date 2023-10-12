@@ -10,8 +10,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
+import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
+import com.coniverse.dangjang.domain.notification.repository.UserFcmTokenRepository;
+import com.coniverse.dangjang.domain.point.service.PointService;
 import com.coniverse.dangjang.domain.user.dto.request.SignUpRequest;
 import com.coniverse.dangjang.domain.user.dto.response.DuplicateNicknameResponse;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
@@ -26,26 +30,36 @@ class UserSignupServiceTest {
 	@Autowired
 	private UserSignupService userSignupService;
 	@Autowired
+	private UserSearchService userSearchService;
+	@MockBean
+	private HealthMetricRegisterService healthMetricRegisterService;
+	@MockBean
+	private PointService pointService;
+	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private UserFcmTokenRepository userFcmTokenRepository;
+	private final String fcmToken = "fcmToken";
 
 	@AfterEach
 	void tearDown() {
+		userFcmTokenRepository.deleteAll();
 		userRepository.deleteAll();
 	}
 
 	@Test
 	void 새로운_유저를_추가한다_카카오() {
-		//given
+		// given
 		List<String> diseases = new ArrayList<>();
 		diseases.add("저혈당");
-		//given 회원가입
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "kakao", false, LocalDate.parse("2021-06-21"), 150, 50, "LOW",
 			false, 0, false, false,
 			diseases);
 
-		//when
-		LoginResponse loginResponse = userSignupService.signUp(signUpRequest);
-		//that
+		// when
+		LoginResponse loginResponse = userSignupService.signUp(signUpRequest, fcmToken);
+
+		// that
 		assertThat(loginResponse.nickname()).isEqualTo(signUpRequest.nickname());
 		assertThat(loginResponse.dangjangClub()).isFalse();
 		assertThat(loginResponse.healthConnect()).isFalse();
@@ -53,16 +67,17 @@ class UserSignupServiceTest {
 
 	@Test
 	void 새로운_유저를_추가한다_네이버() {
-		//given
+		// given
 		List<String> diseases = new ArrayList<>();
 		diseases.add("저혈당");
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "naver", true, LocalDate.parse("2021-06-21"), 150, 50, "MEDIUM",
 			false, 0, false, false,
 			diseases);
 
-		//when
-		LoginResponse loginResponse = userSignupService.signUp(signUpRequest);
-		//that
+		// when
+		LoginResponse loginResponse = userSignupService.signUp(signUpRequest, fcmToken);
+
+		// that
 		assertThat(loginResponse.nickname()).isEqualTo(signUpRequest.nickname());
 		assertThat(loginResponse.dangjangClub()).isFalse();
 		assertThat(loginResponse.healthConnect()).isFalse();
@@ -70,40 +85,43 @@ class UserSignupServiceTest {
 
 	@Test
 	void 올바르지_않는_Provider로_유저를_추가해_회원가입에_실패한다() {
-		//given
+		// given
 		List<String> diseases = new ArrayList<>();
 		diseases.add("저혈당");
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "nope", true, LocalDate.parse("2021-06-21"), 150, 50, "MEDIUM",
 			false, 0, false, false,
 			diseases);
+
 		//when&that
-		assertThatThrownBy(() -> userSignupService.signUp(signUpRequest))
+		assertThatThrownBy(() -> userSignupService.signUp(signUpRequest, fcmToken))
 			.isInstanceOf(IllegalArgumentException.class);
 	}
 
 	@Test
 	void 중복된_닉네임을_확인한다() {
-		//given
+		// given
 		List<String> diseases = new ArrayList<>();
 		diseases.add("저혈당");
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "naver", true, LocalDate.parse("2021-06-21"), 150, 50, "MEDIUM",
 			false, 0, false, false,
 			diseases);
-
-		userSignupService.signUp(signUpRequest);
+		userSignupService.signUp(signUpRequest, fcmToken);
 		//when
 		DuplicateNicknameResponse isDuplicated = userSignupService.checkDuplicatedNickname(signUpRequest.nickname());
-		//then
+
+		// then
 		assertThat(isDuplicated.duplicate()).isFalse();
 	}
 
 	@Test
 	void 중복되지_않은_닉네임을_확인한다() {
-		//given
+		// given
 		String nickname = "nickname";
-		//when
+
+		// when
 		DuplicateNicknameResponse isDuplicated = userSignupService.checkDuplicatedNickname(nickname);
-		//then
+
+		// then
 		assertThat(isDuplicated.duplicate()).isTrue();
 	}
 }
