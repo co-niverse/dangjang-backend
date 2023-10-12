@@ -83,7 +83,7 @@ public class LogAspect {
 		try {
 			restTemplate.postForEntity(url, serverLog, String.class);
 		} catch (ResourceAccessException e) {
-			log.error("fluentbit server.log port is dead");
+			log.error("fluentbit is dead");
 		}
 		return result;
 	}

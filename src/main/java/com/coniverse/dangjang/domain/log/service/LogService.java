@@ -41,7 +41,7 @@ public class LogService {
 		try {
 			restTemplate.postForEntity(url, appLog, String.class);
 		} catch (ResourceAccessException e) {
-			log.error("fluentbit app.log port is dead");
+			log.error("fluentbit is dead");
 		}
 	}
 }
