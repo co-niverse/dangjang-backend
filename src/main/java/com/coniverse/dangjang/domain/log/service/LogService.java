@@ -11,7 +11,6 @@ import com.coniverse.dangjang.domain.log.mapper.LogMapper;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,16 +27,8 @@ public class LogService {
 	private final RestTemplate restTemplate;
 	private final UserSearchService userSearchService;
 	private final LogMapper logMapper;
-	@Value("${fluentbit.host}")
-	private String host;
-	@Value("${fluentbit.app-port}")
-	private String port;
+	@Value("${fluentbit.app-log-url}")
 	private String url;
-
-	@PostConstruct
-	private void setUrl() {
-		this.url = "http://" + host + ":" + port + "/app.log";
-	}
 
 	/**
 	 * send app log to ETL
@@ -50,7 +41,7 @@ public class LogService {
 		try {
 			restTemplate.postForEntity(url, appLog, String.class);
 		} catch (ResourceAccessException e) {
-			log.error("fluentbit app.log port is dead");
+			log.error("fluentbit is dead");
 		}
 	}
 }
