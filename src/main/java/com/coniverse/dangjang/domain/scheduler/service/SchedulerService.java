@@ -36,9 +36,7 @@ public class SchedulerService {
 	@Scheduled(cron = "0 0 18 * * *", zone = "Asia/Seoul")
 	public void makeNotification() {
 		List<FcmMessage> fcmMessage = notificationService.makeAccessFcmMessage();
-		fcmMessage.forEach(message -> {
-			notificationFluentbitService.sendMessageToFluentbit(message);
-		});
+		fcmMessage.forEach(message -> notificationFluentbitService.sendMessageToFluentbit(message));
 
 	}
 }

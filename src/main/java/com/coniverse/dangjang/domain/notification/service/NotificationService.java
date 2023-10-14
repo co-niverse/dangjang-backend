@@ -125,18 +125,13 @@ public class NotificationService {
 		NotificationType notificationType = notificationSearchService.findNotificationType("접속");
 
 		List<Notification> notifications = new ArrayList<>();
-		userFcmTokens.forEach(userFcmToken -> {
-			notifications.add(
-				notificationMapper.toEntity(userFcmToken.getUser(), title, content, date, notificationType)
-			);
-		});
+		userFcmTokens.forEach(userFcmToken -> notifications.add(notificationMapper.toEntity(userFcmToken.getUser(), title, content, date, notificationType))
+		);
 
 		notificationRepository.saveAll(notifications);
 
 		List<FcmMessage> fcmMessages = new ArrayList<>();
-		fcmTokens.stream().forEach(token -> {
-			fcmMessages.add(new FcmMessage(token, title, content));
-		});
+		fcmTokens.stream().forEach(token -> fcmMessages.add(new FcmMessage(token, title, content)));
 
 		return fcmMessages;
 	}
