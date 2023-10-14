@@ -7,10 +7,12 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.coniverse.dangjang.domain.notification.service.NotificationService;
 import com.coniverse.dangjang.domain.user.dto.response.DuplicateNicknameResponse;
 import com.coniverse.dangjang.domain.user.dto.response.MypageResponse;
 import com.coniverse.dangjang.domain.user.service.MypageService;
@@ -18,6 +20,7 @@ import com.coniverse.dangjang.domain.user.service.UserSignupService;
 import com.coniverse.dangjang.domain.user.service.UserWithdrawalService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +37,7 @@ public class UserController { // TODO 전체 수정 (위치: signup, 이름: dup
 	private final UserSignupService userSignupService;
 	private final MypageService mypageService;
 	private final UserWithdrawalService userWithdrawalService;
+	private final NotificationService notificationService;
 
 	/**
 	 * @param nickname 확인이 필요한 닉네임을 담아온다.
@@ -42,7 +46,7 @@ public class UserController { // TODO 전체 수정 (위치: signup, 이름: dup
 	 */
 	@GetMapping("/duplicateNickname")
 	public ResponseEntity<SuccessSingleResponse<DuplicateNicknameResponse>> checkDuplicateNickname(
-		@RequestParam @Pattern(regexp = "^[a-zA-Z]{1,8}$", message = "닉네임은 영어로만 이루어져있어야 합니다.") @NotBlank(message = "닉네임은 1~8글자 이내여야 합니다.") String nickname) {
+		@RequestParam @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-zA-Z0-9]{1,8}$", message = "닉네임은 영어,한글,숫자 1~8글자 이내로 이루어져있어야 합니다.") @NotBlank(message = "닉네임은 1~8글자 이내여야 합니다.") String nickname) {
 		DuplicateNicknameResponse duplicateNicknameResponse = userSignupService.checkDuplicatedNickname(nickname);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), duplicateNicknameResponse));
 	}
@@ -63,5 +67,11 @@ public class UserController { // TODO 전체 수정 (위치: signup, 이름: dup
 	public ResponseEntity<?> withdraw(@AuthenticationPrincipal User user) {
 		userWithdrawalService.withdraw(user.getUsername());
 		return ResponseEntity.noContent().build();
+	}
+
+	@PostMapping("/fcmToken")
+	public ResponseEntity<SuccessSingleResponse<?>> registerFcmToken(@AuthenticationPrincipal User user, HttpServletRequest request) {
+		notificationService.saveFcmToken(request.getHeader("FcmToken"), user.getUsername());
+		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}
 }

@@ -38,7 +38,7 @@ class UserControllerTest extends ControllerTest {
 	}
 
 	@ParameterizedTest
-	@ValueSource(strings = {"test90", "", "testtesttesttesttest"})
+	@ValueSource(strings = {"", "testtesttesttesttest"})
 	void 조건에_맞지_않는_닉네임을_받아와_Bad_Request를_반환한다(String nickname) throws Exception {
 		//given
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -82,6 +82,21 @@ class UserControllerTest extends ControllerTest {
 		// then
 		resultActions.andExpectAll(
 			status().isNoContent()
+		);
+	}
+
+	@WithDangjangUser
+	@Test
+	void fcmToken_등록을_성공한다() throws Exception {
+		// given
+		String subUrl = "/fcmToken";
+
+		// when
+		ResultActions resultActions = post(mockMvc, URI + subUrl);
+
+		// then
+		resultActions.andExpectAll(
+			status().isOk()
 		);
 	}
 }
