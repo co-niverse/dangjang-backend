@@ -8,6 +8,7 @@ import org.mapstruct.Mappings;
 
 import com.coniverse.dangjang.domain.notification.dto.response.NotificationResponse;
 import com.coniverse.dangjang.domain.notification.entity.Notification;
+import com.coniverse.dangjang.domain.notification.entity.NotificationType;
 import com.coniverse.dangjang.domain.notification.entity.UserFcmToken;
 import com.coniverse.dangjang.domain.user.entity.User;
 
@@ -45,4 +46,22 @@ public interface NotificationMapper {
 		@Mapping(target = "createdAt", source = "createdAt")
 	})
 	UserFcmToken toEntity(User user, String fcmToken, LocalDate createdAt);
+
+	/**
+	 * Notification Entity 생성
+	 *
+	 * @param user             사용자
+	 * @param title            사용자 title
+	 * @param content          사용자 content
+	 * @param createdAt        fcmToken 저장 날짜
+	 * @param notificationType notificationType
+	 * @return Notification Entity
+	 * @since 1.1.0
+	 */
+	@Mappings({
+		@Mapping(target = "user", source = "user"),
+		@Mapping(target = "createdAt", source = "createdAt")
+	})
+	Notification toEntity(User user, String title, String content, LocalDate createdAt, NotificationType notificationType);
+
 }
