@@ -2,7 +2,7 @@ package com.coniverse.dangjang.domain.notification.service;
 
 import static com.coniverse.dangjang.fixture.NotificationFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
-import static org.assertj.core.api.AssertionsForClassTypes.*;
+import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,7 +24,7 @@ import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
-public class NotificationSearchServiceTest {
+class NotificationSearchServiceTest {
 	@Autowired
 	private NotificationSearchService notificationSearchService;
 	@Autowired
@@ -37,7 +37,7 @@ public class NotificationSearchServiceTest {
 	private NotificationRepository notificationRepository;
 
 	@BeforeAll
-	public void setUp() throws Exception {
+	void setUp() throws Exception {
 		User 이브 = userRepository.save(유저_이브());
 		이브.updateAccessedAt(LocalDate.now().minusDays(1));
 		userRepository.save(이브);
@@ -55,17 +55,17 @@ public class NotificationSearchServiceTest {
 	}
 
 	@Test
-	public void 오늘_접속_안한_유저의_fcmToken을_조회한다() {
+	void 오늘_접속_안한_유저의_fcmToken을_조회한다() {
 		//given
 		LocalDate date = LocalDate.now();
 		//when
 		List<UserFcmToken> userFcmTokens = notificationSearchService.findNotAccessUserFcmToken(date);
 		//then
-		assertThat(userFcmTokens.size()).isEqualTo(1);
+		assertThat(userFcmTokens).hasSize(1);
 	}
 
 	@Test
-	public void notificationType을_조회한다() {
+	void notificationType을_조회한다() {
 		//given
 		LocalDate date = LocalDate.now();
 		//when

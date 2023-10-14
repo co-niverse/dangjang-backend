@@ -22,7 +22,7 @@ import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
-public class SchedulerServiceTest {
+class SchedulerServiceTest {
 	@Autowired
 	private SchedulerService schedulerService;
 	@Autowired
@@ -64,7 +64,7 @@ public class SchedulerServiceTest {
 	}
 
 	@Test
-	public void 스케줄러를_실행한다() {
+	void 스케줄러를_실행한다() {
 		//given
 		schedulerService.makeNotification();
 		//when
