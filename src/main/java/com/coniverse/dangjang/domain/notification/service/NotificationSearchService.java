@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.notification.entity.NotificationType;
 import com.coniverse.dangjang.domain.notification.entity.UserFcmToken;
+import com.coniverse.dangjang.domain.notification.exception.InvalidNotificationTypeException;
 import com.coniverse.dangjang.domain.notification.repository.NotificationTypeRepository;
 import com.coniverse.dangjang.domain.notification.repository.UserFcmTokenRepository;
-import com.coniverse.dangjang.global.exception.InvalidNotificationTypeException;
 
 import lombok.RequiredArgsConstructor;
 
