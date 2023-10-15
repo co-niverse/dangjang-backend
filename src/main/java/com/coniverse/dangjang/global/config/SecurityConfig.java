@@ -74,6 +74,7 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.POST, "/api/signup/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/user/duplicateNickname").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/user/mypage/**").authenticated()
+				.requestMatchers(HttpMethod.POST, "/api/user/**").authenticated()
 				.requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/api-docs/**").permitAll()
 				.requestMatchers(HttpMethod.POST, "/api/health-metric/**").authenticated()
 				.requestMatchers(HttpMethod.GET, "/api/health-metric/**").authenticated()

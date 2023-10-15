@@ -7,9 +7,12 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.coniverse.dangjang.domain.notification.dto.fluentd.FcmMessage;
 import com.coniverse.dangjang.domain.notification.dto.request.CheckNotificationIdRequest;
 import com.coniverse.dangjang.domain.notification.dto.response.NotificationResponse;
 import com.coniverse.dangjang.domain.notification.entity.Notification;
+import com.coniverse.dangjang.domain.notification.entity.NotificationType;
+import com.coniverse.dangjang.domain.notification.entity.UserFcmToken;
 import com.coniverse.dangjang.domain.notification.exception.InvalidFcmTokenException;
 import com.coniverse.dangjang.domain.notification.mapper.NotificationMapper;
 import com.coniverse.dangjang.domain.notification.repository.NotificationRepository;
@@ -34,6 +37,7 @@ public class NotificationService {
 	private final NotificationMapper notificationMapper;
 	private final UserSearchService userSearchService;
 	private final NotificationRepository notificationRepository;
+	private final NotificationSearchService notificationSearchService;
 
 	/**
 	 * 유저의 알림 목록을 조회한다
@@ -95,8 +99,35 @@ public class NotificationService {
 	 * @since 1.1.0
 	 */
 	public void deleteFcmToken(String fcmToken) {
-		userFcmTokenRepository.findById(fcmToken).orElseThrow(InvalidFcmTokenException::new);
 		userFcmTokenRepository.deleteById(fcmToken);
+	}
 
+	/**
+	 * accessFcmMessage 생성
+	 *
+	 * @return FcmMessage
+	 * @since 1.1.0
+	 */
+	public List<FcmMessage> makeAccessFcmMessage() {
+
+		//Todo : accessFcmMessage 생성 로직 분리 , title,Body Enum으로 관리
+		LocalDate date = LocalDate.now();
+		List<UserFcmToken> userFcmTokens = notificationSearchService.findNotAccessUserFcmToken(date);
+		List<String> fcmTokens = userFcmTokens.stream()
+			.map(userFcmToken -> userFcmToken.getFcmToken())
+			.collect(Collectors.toList());
+		String title = "오늘의 접속";
+		String content = "오늘 접속하지 않았어요! 접속하고 포인트를 받아가세요!";
+		NotificationType notificationType = notificationSearchService.findNotificationType("접속");
+
+		List<Notification> notifications = userFcmTokens.stream()
+			.map(fcmToken -> notificationMapper.toEntity(fcmToken.getUser(), title, content, date, notificationType))
+			.collect(Collectors.toList());
+
+		notificationRepository.saveAll(notifications);
+
+		return fcmTokens.stream()
+			.map(token -> new FcmMessage(token, title, content))
+			.toList();
 	}
 }

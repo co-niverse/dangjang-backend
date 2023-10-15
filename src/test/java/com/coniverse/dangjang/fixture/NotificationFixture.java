@@ -1,5 +1,7 @@
 package com.coniverse.dangjang.fixture;
 
+import static com.coniverse.dangjang.fixture.UserFixture.*;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -29,6 +31,10 @@ public class NotificationFixture {
 	public static NotificationType 알림_타입_접속 = NotificationType.builder().type("접속").build();
 	public static NotificationType 알림_타입_기록 = NotificationType.builder().type("기록").build();
 
+	public static List<NotificationType> 알림_종류_목록() {
+		return List.of(알림_타입_접속, 알림_타입_기록);
+	}
+
 	public static List<NotificationType> 알림_종류_엔티티_목록() {
 		return List.of(NotificationType.builder().type("접속").build(), NotificationType.builder().type("기록").build());
 
@@ -46,11 +52,16 @@ public class NotificationFixture {
 		return new CheckNotificationIdRequest(List.of(1L, 2L));
 	}
 
-	public static UserFcmToken 사용자_fcmToken_엔티티(String fcmToken, User 이브) {
+	public static List<UserFcmToken> 사용자_fcmToken_엔티티_목록() {
+		return List.of(사용자_fcmToken_엔티티("fcmToken1", 유저_이브()), 사용자_fcmToken_엔티티("fcmToken2", 유저_테오()));
+	}
+
+	public static UserFcmToken 사용자_fcmToken_엔티티(String fcmToken, User user) {
 		return UserFcmToken.builder()
 			.fcmToken(fcmToken)
-			.user(이브)
+			.user(user)
 			.createdAt(LocalDate.now())
 			.build();
 	}
+
 }

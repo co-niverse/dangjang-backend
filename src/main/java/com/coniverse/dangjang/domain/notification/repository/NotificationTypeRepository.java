@@ -10,5 +10,6 @@ import com.coniverse.dangjang.domain.notification.entity.NotificationType;
  * @author EVE
  * @since 1.1.0
  */
-public interface NotificationTypeRepository extends JpaRepository<NotificationType, Long> {
+
+public interface NotificationTypeRepository extends JpaRepository<NotificationType, String> {
 }

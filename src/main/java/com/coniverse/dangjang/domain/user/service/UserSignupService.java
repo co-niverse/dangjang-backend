@@ -11,6 +11,8 @@ import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.mapper.AuthMapper;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
+import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
+import com.coniverse.dangjang.domain.guide.weight.service.WeightGuideSearchService;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
 import com.coniverse.dangjang.domain.infrastructure.auth.dto.OAuthInfoResponse;
@@ -44,6 +46,7 @@ public class UserSignupService {
 	private final UserMapper userMapper;
 	private final AuthMapper authMapper;
 	private final NotificationService notificationService;
+	private final WeightGuideSearchService weightGuideSearchService;
 
 	/**
 	 * 회원가입
@@ -120,12 +123,16 @@ public class UserSignupService {
 	 */
 
 	private void registerWeight(User user, int weight) {
-		HealthMetricPostRequest healthMetricPostRequest = HealthMetricPostRequest.builder()
-			.type("체중")
-			.createdAt(user.getCreatedAt().toLocalDate().toString())
-			.unit(String.valueOf(weight))
-			.build();
-		healthMetricRegisterService.register(healthMetricPostRequest, user.getOauthId());
+		try {
+			weightGuideSearchService.findByUserIdAndCreatedAt(user.getOauthId(), user.getCreatedAt().toLocalDate().toString());
+		} catch (GuideNotFoundException e) {
+			HealthMetricPostRequest healthMetricPostRequest = HealthMetricPostRequest.builder()
+				.type("체중")
+				.createdAt(user.getCreatedAt().toLocalDate().toString())
+				.unit(String.valueOf(weight))
+				.build();
+			healthMetricRegisterService.register(healthMetricPostRequest, user.getOauthId());
+		}
 	}
 
 	/**
