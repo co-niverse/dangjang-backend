@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.notification.dto.fluentd.FcmMessage;
-import com.coniverse.dangjang.domain.notification.service.NotificationFluentbitService;
+import com.coniverse.dangjang.domain.notification.service.NotificationSendService;
 import com.coniverse.dangjang.domain.notification.service.NotificationService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class SchedulerService {
 	private final NotificationService notificationService;
-	private final NotificationFluentbitService notificationFluentbitService;
+	private final NotificationSendService notificationSendService;
 	private final JobLauncher jobLauncher;
 	private final Job job;
 
@@ -36,7 +36,7 @@ public class SchedulerService {
 	@Scheduled(cron = "0 0 18 * * *", zone = "Asia/Seoul")
 	public void makeNotification() {
 		List<FcmMessage> fcmMessage = notificationService.makeAccessFcmMessage();
-		fcmMessage.forEach(message -> notificationFluentbitService.sendMessageToFluentbit(message));
+		fcmMessage.forEach(message -> notificationSendService.sendMessage(message));
 
 	}
 }

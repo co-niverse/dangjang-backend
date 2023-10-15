@@ -22,8 +22,8 @@ import com.coniverse.dangjang.domain.notification.entity.NotificationType;
 import com.coniverse.dangjang.domain.notification.entity.UserFcmToken;
 import com.coniverse.dangjang.domain.notification.mapper.NotificationMapper;
 import com.coniverse.dangjang.domain.notification.repository.NotificationRepository;
-import com.coniverse.dangjang.domain.notification.service.NotificationFluentbitService;
 import com.coniverse.dangjang.domain.notification.service.NotificationSearchService;
+import com.coniverse.dangjang.domain.notification.service.NotificationSendService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,7 +39,7 @@ import lombok.RequiredArgsConstructor;
 public class NotificationJobConfiguration {
 	private final NotificationSearchService notificationSearchService;
 	private final NotificationRepository notificationRepository;
-	private final NotificationFluentbitService notificationFluentbitService;
+	private final NotificationSendService notificationSendService;
 	private final NotificationMapper notificationMapper;
 
 	@Bean

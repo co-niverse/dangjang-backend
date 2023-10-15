@@ -19,12 +19,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class NotificationFluentbitService {
+public class NotificationSendService {
 	private final RestTemplate restTemplate;
 	@Value("${fluentbit.notification-url}")
 	private String url;
 
-	public void sendMessageToFluentbit(FcmMessage message) {
+	public void sendMessage(FcmMessage message) {
 		try {
 			restTemplate.postForEntity(url, message, String.class);
 		} catch (ResourceAccessException e) {
