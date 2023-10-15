@@ -18,7 +18,6 @@ import com.coniverse.dangjang.domain.notification.mapper.NotificationMapper;
 import com.coniverse.dangjang.domain.notification.repository.NotificationRepository;
 import com.coniverse.dangjang.domain.notification.repository.UserFcmTokenRepository;
 import com.coniverse.dangjang.domain.user.entity.User;
-import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
 
 import jakarta.transaction.Transactional;
@@ -39,7 +38,6 @@ public class NotificationService {
 	private final UserSearchService userSearchService;
 	private final NotificationRepository notificationRepository;
 	private final NotificationSearchService notificationSearchService;
-	private final UserRepository userRepository;
 
 	/**
 	 * 유저의 알림 목록을 조회한다
@@ -101,7 +99,6 @@ public class NotificationService {
 	 * @since 1.1.0
 	 */
 	public void deleteFcmToken(String fcmToken) {
-		userFcmTokenRepository.findById(fcmToken).orElseThrow(InvalidFcmTokenException::new);
 		userFcmTokenRepository.deleteById(fcmToken);
 	}
 
@@ -125,7 +122,7 @@ public class NotificationService {
 
 		List<Notification> notifications = userFcmTokens.stream()
 			.map(fcmToken -> notificationMapper.toEntity(fcmToken.getUser(), title, content, date, notificationType))
-			.toList();
+			.collect(Collectors.toList());
 
 		notificationRepository.saveAll(notifications);
 
