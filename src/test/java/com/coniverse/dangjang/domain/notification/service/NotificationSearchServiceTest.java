@@ -72,8 +72,6 @@ class NotificationSearchServiceTest {
 
 	@Test
 	void notificationType을_조회한다() {
-		//given
-		LocalDate date = LocalDate.now();
 		//when
 		NotificationType type = notificationSearchService.findNotificationType("접속");
 		//then
