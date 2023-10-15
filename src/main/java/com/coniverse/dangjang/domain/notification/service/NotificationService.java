@@ -124,9 +124,9 @@ public class NotificationService {
 		String content = "오늘 접속하지 않았어요! 접속하고 포인트를 받아가세요!";
 		NotificationType notificationType = notificationSearchService.findNotificationType("접속");
 
-		List<Notification> notifications = new ArrayList<>();
-		userFcmTokens.forEach(userFcmToken -> notifications.add(notificationMapper.toEntity(userFcmToken.getUser(), title, content, date, notificationType))
-		);
+		List<Notification> notifications = userFcmTokens.stream()
+			.map(fcmToken -> notificationMapper.toEntity(fcmToken.getUser(), title, content, date, notificationType))
+			.toList();
 
 		notificationRepository.saveAll(notifications);
 
