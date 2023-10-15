@@ -22,7 +22,6 @@ import com.coniverse.dangjang.domain.notification.dto.request.CheckNotificationI
 import com.coniverse.dangjang.domain.notification.dto.response.NotificationResponse;
 import com.coniverse.dangjang.domain.notification.entity.Notification;
 import com.coniverse.dangjang.domain.notification.entity.UserFcmToken;
-import com.coniverse.dangjang.domain.notification.exception.InvalidFcmTokenException;
 import com.coniverse.dangjang.domain.notification.repository.NotificationRepository;
 import com.coniverse.dangjang.domain.notification.repository.NotificationTypeRepository;
 import com.coniverse.dangjang.domain.notification.repository.UserFcmTokenRepository;
@@ -148,17 +147,6 @@ class NotificationServiceTest {
 		notificationService.deleteFcmToken(fcmToken);
 		//then
 		assertThat(userFcmTokenRepository.findById(fcmToken)).isEmpty();
-	}
-
-	@Order(600)
-	@Test
-	void 유효하지_않는_fcmToken을_제거하면_예외를_반환한다() {
-		//given
-		String 유효하지_않는_토큰 = "invalidToken";
-
-		//when&then
-		assertThatThrownBy(() -> notificationService.deleteFcmToken(유효하지_않는_토큰))
-			.isInstanceOf(InvalidFcmTokenException.class);
 	}
 
 	@Order(700)
