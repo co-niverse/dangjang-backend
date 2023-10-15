@@ -171,7 +171,7 @@ class NotificationServiceTest {
 		//then
 		assertThat(fcmMessages.get(0).title()).isEqualTo("오늘의 접속");
 		assertThat(fcmMessages.get(0).body()).isEqualTo("오늘 접속하지 않았어요! 접속하고 포인트를 받아가세요!");
-		assertThat(fcmMessages.get(0).registrationTokens()).isEqualTo(이브_fcmToken);
+		assertThat(fcmMessages.get(0).registrationToken()).isEqualTo(이브_fcmToken);
 	}
 
 }
