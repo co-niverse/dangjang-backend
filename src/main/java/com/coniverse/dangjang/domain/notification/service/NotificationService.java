@@ -1,7 +1,6 @@
 package com.coniverse.dangjang.domain.notification.service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -130,9 +129,9 @@ public class NotificationService {
 
 		notificationRepository.saveAll(notifications);
 
-		List<FcmMessage> fcmMessages = new ArrayList<>();
-		fcmTokens.stream().forEach(token -> fcmMessages.add(new FcmMessage(token, title, content)));
-
+		List<FcmMessage> fcmMessages = fcmTokens.stream()
+			.map(token -> new FcmMessage(token, title, content))
+			.toList();
 		return fcmMessages;
 	}
 }
