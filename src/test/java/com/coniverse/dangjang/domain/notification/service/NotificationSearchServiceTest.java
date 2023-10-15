@@ -22,6 +22,12 @@ import com.coniverse.dangjang.domain.notification.repository.UserFcmTokenReposit
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
+/**
+ * NotificationSearchService Test
+ *
+ * @author EVE
+ * @since 1.1.0
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
 class NotificationSearchServiceTest {
