@@ -126,9 +126,8 @@ public class NotificationService {
 
 		notificationRepository.saveAll(notifications);
 
-		List<FcmMessage> fcmMessages = fcmTokens.stream()
+		return fcmTokens.stream()
 			.map(token -> new FcmMessage(token, title, content))
 			.toList();
-		return fcmMessages;
 	}
 }
