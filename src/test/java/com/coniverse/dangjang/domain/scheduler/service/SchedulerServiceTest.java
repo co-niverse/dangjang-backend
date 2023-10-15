@@ -20,6 +20,12 @@ import com.coniverse.dangjang.domain.notification.service.NotificationService;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
+/**
+ * SchedulerService Test
+ *
+ * @author EVE
+ * @since 1.1.0
+ */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
 class SchedulerServiceTest {
