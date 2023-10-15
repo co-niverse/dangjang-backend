@@ -16,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.coniverse.dangjang.domain.notification.repository.NotificationRepository;
 import com.coniverse.dangjang.domain.notification.repository.NotificationTypeRepository;
 import com.coniverse.dangjang.domain.notification.repository.UserFcmTokenRepository;
-import com.coniverse.dangjang.domain.notification.service.NotificationService;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
@@ -33,8 +32,6 @@ class SchedulerServiceTest {
 	private SchedulerService schedulerService;
 	@Autowired
 	private NotificationRepository notificationRepository;
-	@Autowired
-	private NotificationService notificationService;
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
