@@ -66,7 +66,7 @@ public class UserSignupService {
 		registerWeight(savedUser, signUpRequest.weight());
 		pointService.addSignupPoint(savedUser.getOauthId());
 		notificationService.saveFcmToken(fcmToken, savedUser.getOauthId());
-		return authMapper.toLoginResponse(savedUser.getNickname(), false, false);
+		return authMapper.toLoginResponse(savedUser.getNickname(), false, savedUser.getHealthConnect().isConnecting());
 	}
 
 	/**

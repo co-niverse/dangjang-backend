@@ -24,10 +24,9 @@ import com.coniverse.dangjang.domain.healthmetric.controller.HealthMetricControl
 import com.coniverse.dangjang.domain.healthmetric.service.HealthConnectService;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricChartSearchService;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
+import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricSearchService;
 import com.coniverse.dangjang.domain.intro.controller.IntroController;
 import com.coniverse.dangjang.domain.intro.service.IntroService;
-import com.coniverse.dangjang.domain.log.controller.AppLogController;
-import com.coniverse.dangjang.domain.log.service.LogService;
 import com.coniverse.dangjang.domain.log.controller.AppLogController;
 import com.coniverse.dangjang.domain.log.service.LogService;
 import com.coniverse.dangjang.domain.notification.controller.NotificationController;
@@ -109,5 +108,7 @@ public class ControllerTest {
 	private UserWithdrawalService userWithdrawalService;
 	@MockBean
 	private NotificationService notificationService;
+	@MockBean
+	private HealthMetricSearchService healthMetricSearchService;
 
 }

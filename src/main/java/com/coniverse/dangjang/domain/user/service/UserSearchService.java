@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.coniverse.dangjang.domain.healthmetric.enums.HealthConnect;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
@@ -55,5 +56,15 @@ public class UserSearchService {
 	 */
 	public User findJoinUserPoint(String oauthId) {
 		return userRepository.findJoinUserPoint(oauthId).orElseThrow(NonExistentUserException::new);
+	}
+
+	/**
+	 * 헬스커넥트 연동 여부를 조회한다.
+	 *
+	 * @param oauthId 사용자 PK
+	 * @return boolean 헬스커넥트 연동 여부
+	 */
+	public HealthConnect findInterlockHealthConnect(String oauthId) {
+		return userRepository.findHealthConnectByOauthId(oauthId);
 	}
 }

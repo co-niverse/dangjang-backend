@@ -41,7 +41,7 @@ class HealthConnectControllerTest extends ControllerTest {
 	}
 
 	@Test
-	void 헬스_커넥를_연동하면_성공_메시지를_반환한다() throws Exception {
+	void 헬스_커넥트를_연동하면_성공_메시지를_반환한다() throws Exception {
 		// given
 		HealthConnectRegisterRequest request = 헬스_커넥트_연동_요청(true);
 		String content = objectMapper.writeValueAsString(request);
@@ -56,4 +56,5 @@ class HealthConnectControllerTest extends ControllerTest {
 			jsonPath("$.data").doesNotExist()
 		);
 	}
+
 }
