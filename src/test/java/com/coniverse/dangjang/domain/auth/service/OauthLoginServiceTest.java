@@ -89,7 +89,7 @@ class OauthLoginServiceTest {
 		);
 	}
 
-	@Order(200)
+	@Order(250)
 	@Test
 	void 헬스커넥트를_연동한_유저면_로그인시_healthConnect를_true로_반환한다() {
 		//given
