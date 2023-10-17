@@ -46,7 +46,8 @@ public class UserController { // TODO 전체 수정 (위치: signup, 이름: dup
 	 */
 	@GetMapping("/duplicateNickname")
 	public ResponseEntity<SuccessSingleResponse<DuplicateNicknameResponse>> checkDuplicateNickname(
-		@RequestParam @Pattern(regexp = "^[ㄱ-ㅎ가-힣a-zA-Z0-9]{1,8}$", message = "닉네임은 영어,한글,숫자 1~8글자 이내로 이루어져있어야 합니다.") @NotBlank(message = "닉네임은 1~8글자 이내여야 합니다.") String nickname) {
+		@RequestParam @Pattern(regexp = "^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]{1,8}$", message = "닉네임은 영어,한글,숫자 1~8글자 이내로 이루어져있어야 합니다.") @NotBlank(message = "닉네임은 1~8글자 이내여야 합니다.") String nickname) {
+		System.out.println("닉네임 : " + nickname);
 		DuplicateNicknameResponse duplicateNicknameResponse = userSignupService.checkDuplicatedNickname(nickname);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), duplicateNicknameResponse));
 	}
