@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
+import com.coniverse.dangjang.domain.healthmetric.dto.HealthMetricLastDateResponse;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.healthmetric.exception.HealthMetricNotFoundException;
 import com.coniverse.dangjang.domain.healthmetric.repository.HealthMetricRepository;
@@ -40,6 +41,7 @@ class HealthMetricSearchServiceTest {
 	@Autowired
 	private UserRepository userRepository;
 	private String oauthId;
+	private LocalDate 마지막_생성일 = 조회_날짜.plusDays(10);
 
 	@BeforeEach
 	void setUpUser() {
@@ -50,6 +52,7 @@ class HealthMetricSearchServiceTest {
 				.mapToObj(i -> 건강지표_엔티티(user, 조회_타입, 조회_날짜.plusDays(i)))
 				.toList()
 		);
+		healthMetricRepository.save(건강지표_엔티티(user, 조회_타입, 마지막_생성일));
 	}
 
 	@Test
@@ -126,4 +129,14 @@ class HealthMetricSearchServiceTest {
 					&& 조회된_건강지표_리스트.get(i - 1).getCreatedAt().equals(조회_날짜.plusDays(i)))
 		);
 	}
+
+	@Test
+	void 건강지표_마지막_생성일을_조회한다() {
+		// when
+		HealthMetricLastDateResponse 조회된_마지막_생성일 = healthMetricSearchService.findHealthMetricLastDate(oauthId);
+
+		// then
+		assertThat(조회된_마지막_생성일.date()).isEqualTo(마지막_생성일);
+	}
+
 }
