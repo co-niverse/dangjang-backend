@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.code.enums.GroupCode;
+import com.coniverse.dangjang.domain.healthmetric.dto.HealthMetricLastDateResponse;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.healthmetric.exception.HealthMetricNotFoundException;
 import com.coniverse.dangjang.domain.healthmetric.repository.HealthMetricRepository;
@@ -75,5 +76,18 @@ public class HealthMetricSearchService {
 	 */
 	public List<HealthMetric> findWeeklyHealthMetricByGroupCode(String oauthId, GroupCode code, LocalDate startDate, LocalDate endDate) {
 		return healthMetricRepository.findLastWeekByGroupCodeAndCreatedAt(oauthId, code, startDate, endDate);
+	}
+
+	/**
+	 * 유저의 마지막 건강 지표 생성일을 조회한다.
+	 *
+	 * @param oauthId 유저 아이디
+	 * @return HealthMetricLastDateResponse 유저의 마지막 건강 지표 생성일
+	 * @throws HealthMetricNotFoundException 유저의 건강 지표를 찾을 수 없을 경우 발생한다.
+	 * @since 1.1.0
+	 */
+	public HealthMetricLastDateResponse findHealthMetricLastDate(String oauthId) {
+		LocalDate lastDate = healthMetricRepository.findCreatedAtByOauthId(oauthId).orElseThrow(HealthMetricNotFoundException::new);
+		return new HealthMetricLastDateResponse(lastDate);
 	}
 }
