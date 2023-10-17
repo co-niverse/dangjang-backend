@@ -96,7 +96,7 @@ class HealthMetricSearchServiceTest {
 		// then
 		assertAll(
 			() -> assertThat(조회된_건강지표.getType()).isEqualTo(조회_타입),
-			() -> assertThat(조회된_건강지표.getCreatedAt()).isEqualTo(조회_날짜.plusDays(9)),
+			() -> assertThat(조회된_건강지표.getCreatedAt()).isEqualTo(마지막_생성일),
 			() -> assertThat(조회된_건강지표.getOauthId()).isEqualTo(oauthId)
 		);
 	}
