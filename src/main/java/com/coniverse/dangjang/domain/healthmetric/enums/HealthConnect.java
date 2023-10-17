@@ -1,5 +1,8 @@
 package com.coniverse.dangjang.domain.healthmetric.enums;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * health connect 연동여부 Enum
  * <p>
@@ -8,8 +11,12 @@ package com.coniverse.dangjang.domain.healthmetric.enums;
  * @author EVE
  * @since 1.0.0
  */
+@AllArgsConstructor
+@Getter
 public enum HealthConnect {
-	NEVER_CONNECTED,
-	CONNECTING,
-	DISCONNECTED
+	NEVER_CONNECTED(false),
+	CONNECTING(true),
+	DISCONNECTED(false);
+
+	boolean isConnecting;
 }

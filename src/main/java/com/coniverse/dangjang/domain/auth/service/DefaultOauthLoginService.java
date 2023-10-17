@@ -21,6 +21,7 @@ import com.coniverse.dangjang.domain.auth.entity.RefreshToken;
 import com.coniverse.dangjang.domain.auth.mapper.AuthMapper;
 import com.coniverse.dangjang.domain.auth.repository.BlackTokenRepository;
 import com.coniverse.dangjang.domain.auth.repository.RefreshTokenRepository;
+import com.coniverse.dangjang.domain.healthmetric.enums.HealthConnect;
 import com.coniverse.dangjang.domain.infrastructure.auth.client.OAuthClient;
 import com.coniverse.dangjang.domain.infrastructure.auth.dto.OAuthInfoResponse;
 import com.coniverse.dangjang.domain.notification.service.NotificationService;
@@ -82,8 +83,9 @@ public class DefaultOauthLoginService implements OauthLoginService {
 		OAuthInfoResponse oAuthInfoResponse = request(params);
 		User user = userSearchService.findUserByOauthId(oAuthInfoResponse.getOauthId());
 		notificationService.saveFcmToken(fcmToken, user.getOauthId());
+		HealthConnect healthConnect = userSearchService.findInterlockHealthConnect(user.getOauthId());
 		user.verifyActiveUser();
-		return new LoginResponse(user.getNickname(), false, false);
+		return new LoginResponse(user.getNickname(), false, healthConnect.isConnecting());
 	}
 
 	/**
