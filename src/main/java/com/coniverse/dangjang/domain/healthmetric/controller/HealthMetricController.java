@@ -97,7 +97,7 @@ public class HealthMetricController {
 	 * @since 1.1.0
 	 */
 
-	@GetMapping("/lastDate")
+	@GetMapping("/last-date")
 	public ResponseEntity<SuccessSingleResponse<HealthMetricLastDateResponse>> getHealthMetricLastDate(@AuthenticationPrincipal User principal) {
 		String oauthId = principal.getUsername();
 		HealthMetricLastDateResponse response = healthMetricSearchService.findHealthMetricLastDate(oauthId);
