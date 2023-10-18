@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @AllArgsConstructor
 public enum Version {
-	MINIMUM("1.0.0"),
-	LATEST("1.0.0");
+	MINIMUM("1.0.1"),
+	LATEST("1.0.1");
 
 	@Getter
 	private final String version;
