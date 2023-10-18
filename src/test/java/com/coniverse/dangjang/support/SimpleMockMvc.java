@@ -24,6 +24,26 @@ public class SimpleMockMvc {
 		);
 	}
 
+	// public static ResultActions post(final MockMvc mockMvc, final String uri, final String header, final String content, final Object... pathVariables) throws
+	// 	Exception {
+	// 	return mockMvc.perform(
+	// 		MockMvcRequestBuilders.post(uri, pathVariables)
+	// 			.accept(MediaType.APPLICATION_JSON)
+	// 			.contentType(MediaType.APPLICATION_JSON)
+	// 			.content(content)
+	// 			.header(HttpHeaders.AUTHORIZATION, header)
+	// 	);
+	// }
+
+	public static ResultActions post(final MockMvc mockMvc, final String uri, final Object... pathVariables) throws
+		Exception {
+		return mockMvc.perform(
+			MockMvcRequestBuilders.post(uri, pathVariables)
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+		);
+	}
+
 	public static ResultActions put(final MockMvc mockMvc, final String uri, final String content, final String header, final Object... pathVariables) throws
 		Exception {
 		return mockMvc.perform(

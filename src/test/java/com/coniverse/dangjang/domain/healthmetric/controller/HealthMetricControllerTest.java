@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import com.coniverse.dangjang.domain.healthmetric.dto.HealthMetricLastDateResponse;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.response.BloodSugarMinMax;
@@ -30,6 +31,7 @@ import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricChart
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricChartSearchService;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
+import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricSearchService;
 import com.coniverse.dangjang.support.ControllerTest;
 import com.coniverse.dangjang.support.annotation.WithDangjangUser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -50,6 +52,8 @@ class HealthMetricControllerTest extends ControllerTest {
 	private HealthMetricRegisterService healthMetricRegisterService;
 	@Autowired
 	private HealthMetricChartSearchService healthMetricChartSearchService;
+	@Autowired
+	private HealthMetricSearchService healthMetricSearchService;
 	public static LocalDate 시작_날짜 = LocalDate.parse("2023-12-31");
 	public static LocalDate 마지막_날짜 = LocalDate.parse("2024-01-06");
 	public static LocalDate 생성_날짜 = LocalDate.of(2023, 12, 31);
@@ -245,6 +249,26 @@ class HealthMetricControllerTest extends ControllerTest {
 		resultActions.andExpectAll(
 			status().isBadRequest(),
 			jsonPath("$.errorCode").value(400)
+		);
+	}
+
+	@Order(700)
+	@Test
+	void 건강지표_마지막_생성일을_전달한다() throws Exception {
+		//given
+		String subUrl = URL + "/last-date";
+		LocalDate lastDate = LocalDate.now();
+		HealthMetricLastDateResponse response = new HealthMetricLastDateResponse(lastDate);
+		given(healthMetricSearchService.findHealthMetricLastDate(any())).willReturn(response);
+
+		//when
+		ResultActions resultActions = get(mockMvc, subUrl);
+
+		//then
+		resultActions.andExpectAll(
+			status().isOk(),
+			jsonPath("$.message").value("OK"),
+			jsonPath("$.data.date").value(response.date().toString())
 		);
 	}
 }

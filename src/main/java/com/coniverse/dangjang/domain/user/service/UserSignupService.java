@@ -5,21 +5,25 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.coniverse.dangjang.domain.auth.dto.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
-import com.coniverse.dangjang.domain.auth.service.AuthTokenGenerator;
+import com.coniverse.dangjang.domain.auth.mapper.AuthMapper;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
+import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
+import com.coniverse.dangjang.domain.guide.weight.service.WeightGuideSearchService;
+import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
+import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
 import com.coniverse.dangjang.domain.infrastructure.auth.dto.OAuthInfoResponse;
+import com.coniverse.dangjang.domain.notification.service.NotificationService;
+import com.coniverse.dangjang.domain.point.service.PointService;
 import com.coniverse.dangjang.domain.user.dto.request.SignUpRequest;
 import com.coniverse.dangjang.domain.user.dto.response.DuplicateNicknameResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
-import com.coniverse.dangjang.domain.user.entity.enums.Role;
-import com.coniverse.dangjang.domain.user.entity.enums.Status;
+import com.coniverse.dangjang.domain.user.mapper.UserMapper;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -35,44 +39,34 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class UserSignupService {
 	private final UserRepository userRepository;
+	private final HealthMetricRegisterService healthMetricRegisterService;
+	private final UserSearchService userSearchService;
 	private final OauthLoginService oauthLoginService;
-	private final AuthTokenGenerator authTokensGenerator;
+	private final PointService pointService;
+	private final UserMapper userMapper;
+	private final AuthMapper authMapper;
+	private final NotificationService notificationService;
+	private final WeightGuideSearchService weightGuideSearchService;
 
 	/**
 	 * 회원가입
 	 *
 	 * @param signUpRequest 회원가입 정보
+	 * @param fcmToken      notification 디바이스 토큰
 	 * @return LoginResponse 로그인 응답
 	 * @since 1.0.0
 	 */
-	public LoginResponse signUp(SignUpRequest signUpRequest) {
-
+	public LoginResponse signUp(SignUpRequest signUpRequest, String fcmToken) {
 		OAuthInfoResponse oAuthInfoResponse = getOauthInfo(OauthProvider.of(signUpRequest.provider()), signUpRequest.accessToken());
 		ActivityAmount activityAmount = ActivityAmount.of(signUpRequest.activityAmount());
-
 		Gender gender = Gender.of(signUpRequest.gender());
-
 		int recommendedCalorie = calculateRecommendedCalorie(Gender.of(signUpRequest.gender()), signUpRequest.height(),
 			ActivityAmount.of(signUpRequest.activityAmount()));
-
-		User user = User.builder() // TODO mapper
-			.oauthId(oAuthInfoResponse.getOauthId())
-			.oauthProvider(oAuthInfoResponse.getOauthProvider())
-			.nickname(signUpRequest.nickname())
-			.birthday(signUpRequest.birthday())
-			.activityAmount(activityAmount)
-			.gender(gender)
-			.height(signUpRequest.height())
-			.status(Status.ACTIVE)
-			.role(Role.USER)
-			.recommendedCalorie(recommendedCalorie)
-			.diabetic(signUpRequest.diabetes())
-			.diabetesYear(signUpRequest.diabetesYear())
-			.medicine(signUpRequest.medicine())
-			.injection(signUpRequest.injection())
-			.build();
-
-		return signupAfterLogin(userRepository.save(user));
+		User savedUser = userRepository.save(userMapper.toEntity(oAuthInfoResponse, signUpRequest, activityAmount, gender, recommendedCalorie));
+		registerWeight(savedUser, signUpRequest.weight());
+		pointService.addSignupPoint(savedUser.getOauthId());
+		notificationService.saveFcmToken(fcmToken, savedUser.getOauthId());
+		return authMapper.toLoginResponse(savedUser.getNickname(), false, savedUser.getHealthConnect().isConnecting());
 	}
 
 	/**
@@ -84,15 +78,13 @@ public class UserSignupService {
 	 * @throws IllegalArgumentException 잘못된 provider 일때 발생하는 오류
 	 * @since 1.0.0
 	 */
-	public OAuthInfoResponse getOauthInfo(OauthProvider provider, String accessToken) {
+	private OAuthInfoResponse getOauthInfo(OauthProvider provider, String accessToken) {
 		if (provider.equals(OauthProvider.KAKAO)) {
 			KakaoLoginRequest kakaoLoginRequest = new KakaoLoginRequest(accessToken);
 			return oauthLoginService.request(kakaoLoginRequest);
-
-		} else {
-			NaverLoginRequest naverLoginRequest = new NaverLoginRequest(accessToken);
-			return oauthLoginService.request(naverLoginRequest);
 		}
+		NaverLoginRequest naverLoginRequest = new NaverLoginRequest(accessToken);
+		return oauthLoginService.request(naverLoginRequest);
 	}
 
 	/**
@@ -105,7 +97,7 @@ public class UserSignupService {
 	 * @since 1.0.0
 	 */
 
-	public int calculateRecommendedCalorie(Gender gender, int height, ActivityAmount activityAmount) {
+	private int calculateRecommendedCalorie(Gender gender, int height, ActivityAmount activityAmount) {
 		double standardWeight;
 		if (gender.isTrue()) {
 			standardWeight = (Math.pow(height / 100.0, 2.0) * 21);
@@ -123,16 +115,24 @@ public class UserSignupService {
 	}
 
 	/**
-	 * 회원가입 후 로그인
+	 * Weight HealthMetric 등록
 	 *
-	 * @param user 사용자 정보
-	 * @return LoginResponse 로그인 정보
+	 * @param user   사용자
+	 * @param weight 체중
 	 * @since 1.0.0
 	 */
-	//Todo merge 수정
-	public LoginResponse signupAfterLogin(User user) {
-		AuthToken authToken = authTokensGenerator.generate(user.getOauthId(), user.getRole());
-		return new LoginResponse(user.getNickname(), false, false);
+
+	private void registerWeight(User user, int weight) {
+		try {
+			weightGuideSearchService.findByUserIdAndCreatedAt(user.getOauthId(), user.getCreatedAt().toLocalDate().toString());
+		} catch (GuideNotFoundException e) {
+			HealthMetricPostRequest healthMetricPostRequest = HealthMetricPostRequest.builder()
+				.type("체중")
+				.createdAt(user.getCreatedAt().toLocalDate().toString())
+				.unit(String.valueOf(weight))
+				.build();
+			healthMetricRegisterService.register(healthMetricPostRequest, user.getOauthId());
+		}
 	}
 
 	/**
@@ -143,7 +143,7 @@ public class UserSignupService {
 	 * @since 1.0.0
 	 */
 	public DuplicateNicknameResponse checkDuplicatedNickname(String nickname) { // TODO 수정 필요 (중복됐으면 에러뱉게)
-		Optional<User> findNickname = userRepository.findByNickname(nickname);
+		Optional<User> findNickname = userSearchService.findNickname(nickname);
 		if (findNickname.isPresent()) {
 			return new DuplicateNicknameResponse(false);
 		} else {

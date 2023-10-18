@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.coniverse.dangjang.domain.healthmetric.dto.HealthMetricLastDateResponse;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricChartResponse;
@@ -22,6 +23,7 @@ import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricRespo
 import com.coniverse.dangjang.domain.healthmetric.exception.SameTypeException;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricChartSearchService;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
+import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricSearchService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 import com.coniverse.dangjang.global.validator.ValidLocalDate;
 
@@ -41,6 +43,7 @@ import lombok.RequiredArgsConstructor;
 public class HealthMetricController {
 	private final HealthMetricRegisterService healthMetricRegisterService;
 	private final HealthMetricChartSearchService healthMetricChartSearchService;
+	private final HealthMetricSearchService healthMetricSearchService;
 
 	/**
 	 * HTTP POST METHOD
@@ -84,5 +87,20 @@ public class HealthMetricController {
 		HealthMetricChartResponse response = healthMetricChartSearchService.findHealthMetricChart(principal.getUsername(), LocalDate.parse(startDate),
 			LocalDate.parse(endDate));
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
+	}
+
+	/**
+	 * 마지막 건강지표 생성일을 조회한다
+	 *
+	 * @param principal 유저 정보
+	 * @return 유저의 마지막 건강지표 생성일
+	 * @since 1.1.0
+	 */
+
+	@GetMapping("/last-date")
+	public ResponseEntity<SuccessSingleResponse<HealthMetricLastDateResponse>> getHealthMetricLastDate(@AuthenticationPrincipal User principal) {
+		String oauthId = principal.getUsername();
+		HealthMetricLastDateResponse response = healthMetricSearchService.findHealthMetricLastDate(oauthId);
+		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
 }

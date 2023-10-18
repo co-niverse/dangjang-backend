@@ -1,5 +1,6 @@
 package com.coniverse.dangjang.domain.guide.weight.service;
 
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
@@ -25,6 +26,7 @@ public class WeightGuideGenerateService implements GuideGenerateService {
 	private final WeightGuideSearchService weightGuideSearchService;
 	private final WeightGuideRepository weightGuideRepository;
 	private final WeightMapper weightMapper;
+	private final MongoTemplate mongoTemplate;
 
 	/**
 	 * 체중 가이드를 생성한다.
@@ -38,7 +40,7 @@ public class WeightGuideGenerateService implements GuideGenerateService {
 		WeightAnalysisData data = (WeightAnalysisData)analysisData;
 		String content = createContent(data);
 		WeightGuide weightGuide = weightMapper.toDocument(data, content);
-		return weightMapper.toResponse(weightGuideRepository.save(weightGuide));
+		return weightMapper.toResponse(mongoTemplate.save(weightGuide));
 	}
 
 	/**
