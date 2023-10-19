@@ -17,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.BloodSugarGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.repository.BloodSugarGuideRepository;
-import com.coniverse.dangjang.domain.guide.common.dto.DayGuideResponse;
+import com.coniverse.dangjang.domain.guide.common.dto.response.DayGuideResponse;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
 import com.coniverse.dangjang.domain.guide.exercise.repository.ExerciseGuideRepository;
 import com.coniverse.dangjang.domain.guide.weight.document.WeightGuide;
@@ -81,6 +81,11 @@ class DayGuideServiceTest {
 		assertThat(하루_가이드_응답.bloodSugars()).hasSize(혈당_가이드.getTodayGuides().size());
 		assertThat(하루_가이드_응답.exercise().calorie()).isEqualTo(운동_칼로리);
 		assertThat(하루_가이드_응답.exercise().stepCount()).isEqualTo(운동_가이드.getStepCount());
+		assertThat(하루_가이드_응답.userLog().birthYear()).isEqualTo(테오.getBirthYear());
+		assertThat(하루_가이드_응답.userLog().gender()).isEqualTo(테오.getGender().isTrue());
+		assertThat(하루_가이드_응답.userLog().diabetesYear()).isEqualTo(테오.getDiabetesYear());
+		assertThat(하루_가이드_응답.userLog().diabetic()).isEqualTo(테오.isDiabetic());
+		assertThat(하루_가이드_응답.userLog().weightAlert()).isEqualTo(체중_가이드.getAlert().getTitle());
 	}
 
 	@Order(200)

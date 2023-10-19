@@ -16,8 +16,8 @@ import com.coniverse.dangjang.domain.guide.bloodsugar.document.SubGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.TodayGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.dto.BloodSugarGuideResponse;
 import com.coniverse.dangjang.domain.guide.bloodsugar.dto.SubGuideResponse;
-import com.coniverse.dangjang.domain.guide.common.dto.DayGuideResponse;
-import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
+import com.coniverse.dangjang.domain.guide.common.dto.response.DayGuideResponse;
+import com.coniverse.dangjang.domain.guide.common.dto.response.GuideResponse;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseCalorie;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseDayGuide;
@@ -25,6 +25,7 @@ import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseGuideResponse;
 import com.coniverse.dangjang.domain.guide.weight.document.WeightGuide;
 import com.coniverse.dangjang.domain.guide.weight.dto.WeightDayGuide;
 import com.coniverse.dangjang.domain.guide.weight.dto.WeightGuideResponse;
+import com.coniverse.dangjang.domain.log.dto.request.UserLog;
 import com.coniverse.dangjang.domain.user.entity.User;
 
 /**
@@ -152,12 +153,16 @@ public class GuideFixture {
 
 	}
 
-	public static DayGuideResponse 하루_가이드_응답(String nickname, LocalDate date, List<TodayGuide> 혈당가이드, WeightDayGuide 체중가이드, ExerciseDayGuide 운동가이드) {
-		return new DayGuideResponse(nickname, date, 혈당가이드, 체중가이드, 운동가이드, false);
+	public static DayGuideResponse 하루_가이드_응답(User user, LocalDate date, List<TodayGuide> 혈당가이드, WeightDayGuide 체중가이드, ExerciseDayGuide 운동가이드) {
+		return new DayGuideResponse(user.getNickname(), date, 혈당가이드, 체중가이드, 운동가이드, false, 유저_로깅정보(user, 체중가이드.alert()));
+	}
+
+	public static UserLog 유저_로깅정보(User 유저, String alert) {
+		return new UserLog(유저.getGender().isTrue(), 유저.getBirthYear(), 유저.isDiabetic(), 유저.getDiabetesYear(), alert);
 	}
 
 	public static WeightDayGuide 체중_하루_가이드() {
-		return new WeightDayGuide("70", 18.89, "정상이에요! 표준 체중보다 1kg 많아요");
+		return new WeightDayGuide("70", 18.89, "정상이에요! 표준 체중보다 1kg 많아요", "정상체중");
 	}
 
 	public static ExerciseDayGuide 운동_하루_가이드() {

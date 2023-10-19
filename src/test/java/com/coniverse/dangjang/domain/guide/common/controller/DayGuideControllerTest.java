@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import com.coniverse.dangjang.domain.guide.common.dto.DayGuideResponse;
+import com.coniverse.dangjang.domain.guide.common.dto.response.DayGuideResponse;
 import com.coniverse.dangjang.domain.guide.common.service.DayGuideService;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.support.ControllerTest;
@@ -34,7 +34,7 @@ class DayGuideControllerTest extends ControllerTest {
 	private String 조회_날짜 = "2023-12-31";
 	private LocalDate 조회_날짜_Date = LocalDate.parse(조회_날짜);
 	private String 유효하지_않은_날짜 = "2023-12-35";
-	private DayGuideResponse 조회_응답 = 하루_가이드_응답(테오_닉네임, 조회_날짜_Date, 혈당_오늘의_가이드(조회_날짜), 체중_하루_가이드(), 운동_하루_가이드());
+	private DayGuideResponse 조회_응답 = 하루_가이드_응답(user, 조회_날짜_Date, 혈당_오늘의_가이드(조회_날짜), 체중_하루_가이드(), 운동_하루_가이드());
 
 	@Test
 	void 하루_가이드를_조회하면_성공을_반환한다() throws Exception {
