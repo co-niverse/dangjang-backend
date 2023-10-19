@@ -12,7 +12,7 @@ import com.coniverse.dangjang.domain.guide.bloodsugar.factory.BloodSugarGuideFor
 import com.coniverse.dangjang.domain.guide.bloodsugar.factory.guideformat.GuideFormat;
 import com.coniverse.dangjang.domain.guide.bloodsugar.mapper.BloodSugarGuideMapper;
 import com.coniverse.dangjang.domain.guide.bloodsugar.repository.BloodSugarGuideRepository;
-import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
+import com.coniverse.dangjang.domain.guide.common.dto.response.GuideResponse;
 import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
 import com.coniverse.dangjang.domain.guide.common.service.GuideGenerateService;
 

@@ -1,6 +1,6 @@
 package com.coniverse.dangjang.domain.guide.weight.dto;
 
-import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
+import com.coniverse.dangjang.domain.guide.common.dto.response.GuideResponse;
 
 /**
  * 체중 가이드 응답 dto

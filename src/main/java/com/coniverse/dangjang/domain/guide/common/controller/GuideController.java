@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.coniverse.dangjang.domain.guide.common.dto.DayGuideResponse;
+import com.coniverse.dangjang.domain.guide.common.dto.response.DayGuideResponse;
 import com.coniverse.dangjang.domain.guide.common.service.DayGuideService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 import com.coniverse.dangjang.global.validator.ValidLocalDate;

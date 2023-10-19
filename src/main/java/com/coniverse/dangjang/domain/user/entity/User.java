@@ -177,4 +177,13 @@ public class User extends BaseEntity implements Persistable<String> {
 		this.status = Status.INACTIVE;
 		this.inactivatedAt = LocalDate.now();
 	}
+
+	/**
+	 * 유저 탄생년도를 계산한다
+	 *
+	 * @since 1.1.0
+	 */
+	public int getBirthYear() {
+		return this.birthday.getYear();
+	}
 }

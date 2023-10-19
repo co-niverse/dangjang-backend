@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.guide.common.dto;
+package com.coniverse.dangjang.domain.guide.common.dto.response;
 
 /**
  * 가이드 응답 dto

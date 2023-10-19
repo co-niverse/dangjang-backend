@@ -2,7 +2,7 @@ package com.coniverse.dangjang.domain.guide.exercise.dto;
 
 import java.util.List;
 
-import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
+import com.coniverse.dangjang.domain.guide.common.dto.response.GuideResponse;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseCalorie;
 
 /**
