@@ -67,4 +67,14 @@ public interface HealthMetricRepository extends JpaRepository<HealthMetric, Heal
 	 */
 	@Query("SELECT h FROM HealthMetric h WHERE h.healthMetricId.oauthId = ?1 AND h.groupCode = ?2 and h.healthMetricId.createdAt between ?3 and ?4")
 	List<HealthMetric> findLastWeekByGroupCodeAndCreatedAt(String oauthId, GroupCode groupCode, LocalDate startDate, LocalDate endDate);
+
+	/**
+	 * 사용자의 health metrics 마지막 생성일 조회
+	 *
+	 * @param oauthId 사용자 ID
+	 * @return CreatedAt
+	 * @since 1.1.0
+	 */
+	@Query("SELECT h.healthMetricId.createdAt FROM HealthMetric h WHERE h.healthMetricId.oauthId = ?1 ORDER BY h.healthMetricId.createdAt DESC LIMIT 1")
+	Optional<LocalDate> findCreatedAtByOauthId(String oauthId);
 }

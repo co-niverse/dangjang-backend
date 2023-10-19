@@ -89,6 +89,26 @@ class OauthLoginServiceTest {
 		);
 	}
 
+	@Order(250)
+	@Test
+	void 헬스커넥트를_연동한_유저면_로그인시_healthConnect를_true로_반환한다() {
+		//given
+		User 이브 = userRepository.save(유저_이브());
+		이브.connectToHealthConnect();
+		entityManager.flush();
+		KakaoLoginRequest request = 카카오_로그인_요청();
+		int tokenCount = 0;
+		//when
+		LoginResponse response = oauthLoginService.login(request, fcmToken);
+
+		//then
+		assertAll(
+			() -> assertThat(response.nickname()).isEqualTo(이브.getNickname()),
+			() -> assertThat(response.dangjangClub()).isFalse(),
+			() -> assertThat(response.healthConnect()).isTrue()
+		);
+	}
+
 	@Order(300)
 	@Test
 	void 존재하는_사용자라면_auth토큰을_발급해준다() {
