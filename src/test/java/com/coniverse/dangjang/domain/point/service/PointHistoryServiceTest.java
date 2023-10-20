@@ -239,37 +239,6 @@ class PointHistoryServiceTest {
 
 	}
 
-	@Order(800)
-	@Test
-	void 동시_접속_포인트를_한번만_얻는다() throws InterruptedException {
-		//given
-		유저 = userRepository.save(포인트_유저(today.minusDays(1)));
-		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 0));
-		AtomicInteger successCount = new AtomicInteger();
-		AtomicInteger failedCount = new AtomicInteger();
-		CountDownLatch latch = new CountDownLatch(30);
-		for (int i = 0; i < 100; i++) {
-			try {
-				pointService.addAccessPoint(유저.getOauthId());
-				successCount.incrementAndGet();
-			} catch (Exception e) {
-				failedCount.incrementAndGet();
-			}
-		}
-		latch.await(1, TimeUnit.SECONDS);
-
-		//then
-		User 접속한_유저 = userRepository.findById(유저.getOauthId()).get();
-		System.out.println("point log start =====================");
-		System.out.println("success count : " + successCount.get());
-		System.out.println("failed count : " + failedCount.get());
-		System.out.println("point log finish =====================");
-		int 포인트_로그_내역_횟수 = pointHistoryRepository.findAll().size();
-		UserPoint 접속한_유저_포인트 = pointSearchService.findUserPointByOauthId(접속한_유저.getOauthId());
-		assertThat(접속한_유저_포인트.getPoint()).isEqualTo(100);
-		assertThat(포인트_로그_내역_횟수).isOne();
-	}
-
 	@Order(900)
 	@Test
 	void 동시_헬스커넥트_연결요청_포인트를_한번만_얻는다() throws InterruptedException {

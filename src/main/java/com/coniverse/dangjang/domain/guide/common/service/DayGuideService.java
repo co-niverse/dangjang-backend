@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.TodayGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.service.BloodSugarGuideSearchService;
-import com.coniverse.dangjang.domain.guide.common.dto.DayGuideResponse;
+import com.coniverse.dangjang.domain.guide.common.dto.response.DayGuideResponse;
 import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseCalorie;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
@@ -17,7 +17,9 @@ import com.coniverse.dangjang.domain.guide.exercise.service.ExerciseGuideSearchS
 import com.coniverse.dangjang.domain.guide.weight.document.WeightGuide;
 import com.coniverse.dangjang.domain.guide.weight.dto.WeightDayGuide;
 import com.coniverse.dangjang.domain.guide.weight.service.WeightGuideSearchService;
+import com.coniverse.dangjang.domain.log.dto.request.UserLog;
 import com.coniverse.dangjang.domain.notification.service.NotificationService;
+import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
 
 import lombok.RequiredArgsConstructor;
@@ -49,12 +51,14 @@ public class DayGuideService {
 	 */
 	public DayGuideResponse getDayGuide(String oauthId, String date) {
 		LocalDate localDate = LocalDate.parse(date);
-		String userNickname = userSearchService.findUserByOauthId(oauthId).getNickname();
+		User user = userSearchService.findUserByOauthId(oauthId);
+		String userNickname = user.getNickname();
 		List<TodayGuide> bloodSugarTodayGuide = getBloodSugarTodayGuide(oauthId, localDate);
 		WeightDayGuide weightDayGuide = getWeightGuide(oauthId, date);
 		ExerciseDayGuide exerciseDayGuide = getExerciseGuide(oauthId, localDate);
 		Boolean existsNotification = notificationService.isExistsNotReadNotification(oauthId);
-		return new DayGuideResponse(userNickname, localDate, bloodSugarTodayGuide, weightDayGuide, exerciseDayGuide, existsNotification);
+		UserLog userLog = new UserLog(user.getGender().isTrue(), user.getBirthYear(), user.isDiabetic(), user.getDiabetesYear(), weightDayGuide.alert());
+		return new DayGuideResponse(userNickname, localDate, bloodSugarTodayGuide, weightDayGuide, exerciseDayGuide, existsNotification, userLog);
 	}
 
 	/**
@@ -84,9 +88,9 @@ public class DayGuideService {
 	private WeightDayGuide getWeightGuide(String oauthId, String date) {
 		try {
 			WeightGuide weightGuide = weightGuideSearchService.findByUserIdAndCreatedAt(oauthId, date);
-			return new WeightDayGuide(weightGuide.getUnit(), weightGuide.getBmi(), weightGuide.getContent());
+			return new WeightDayGuide(weightGuide.getUnit(), weightGuide.getBmi(), weightGuide.getContent(), weightGuide.getAlert().getTitle());
 		} catch (GuideNotFoundException e) {
-			return new WeightDayGuide("", 0, "");
+			return new WeightDayGuide("", 0, "", "");
 		}
 	}
 

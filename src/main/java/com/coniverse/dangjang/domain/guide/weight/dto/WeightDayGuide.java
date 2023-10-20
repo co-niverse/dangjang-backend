@@ -1,5 +1,7 @@
 package com.coniverse.dangjang.domain.guide.weight.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * 체중 하루 요약 가이드
  * <p>
@@ -8,5 +10,5 @@ package com.coniverse.dangjang.domain.guide.weight.dto;
  * @author EVE
  * @since 1.0.0
  */
-public record WeightDayGuide(String unit, double bmi, String title) {
+public record WeightDayGuide(String unit, double bmi, String title, @JsonIgnore String alert) {
 }
