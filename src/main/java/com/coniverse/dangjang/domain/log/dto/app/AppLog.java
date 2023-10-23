@@ -10,5 +10,5 @@ import com.coniverse.dangjang.domain.log.enums.Event;
  * @author TEO
  * @since 1.0.0
  */
-public record AppLog(Event event, String screenName, int logVersion, String sessionId, Map<String, Object> logData, boolean diabetic, int diabetesYear) {
+public record AppLog(Event event, String screenName, int logVersion, String appVersion, String sessionId, Map<String, Object> logData) {
 }

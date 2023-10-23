@@ -5,8 +5,6 @@ import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.HashMap;
-
 import org.junit.jupiter.api.Test;
 
 import com.coniverse.dangjang.domain.log.dto.app.AppLog;
@@ -43,7 +41,7 @@ class LogMapperTest {
 	@Test
 	void LogRequest의_eventLogName이_존재하지_않으면_에러를_발생한다() {
 		// given
-		LogRequest request = new LogRequest("nonExistentEventLogName", "screenName", 1, "1.1.0", "sessionId", new HashMap<>());
+		LogRequest request = 로그_요청_이벤트_로그명("nonExistentEventLogName");
 		User user = 유저_테오();
 
 		// when & then
