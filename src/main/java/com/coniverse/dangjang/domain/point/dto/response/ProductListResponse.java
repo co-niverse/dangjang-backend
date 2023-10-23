@@ -10,5 +10,5 @@ import com.coniverse.dangjang.domain.point.entity.PointProduct;
  * @author EVE
  * @since 1.0.0
  */
-public record ProductListResponse(int balancedPoint, List<PointProduct> productList) {
+public record ProductListResponse(int balancedPoint, List<PointProduct> productList, List<String> descriptionListToEarnPoint) {
 }

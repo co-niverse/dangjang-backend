@@ -86,6 +86,7 @@ CREATE TABLE `POINT_PRODUCT`
     `PRODUCT_NAME` varchar(255) NOT NULL,
     `POINT`        int,
     `TYPE`         varchar(20)  NOT NULL,
+    `DESCRIPTION`  varchar(255),
     PRIMARY KEY (`PRODUCT_NAME`)
 );
 

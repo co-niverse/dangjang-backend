@@ -191,12 +191,14 @@ class PointHistoryServiceTest {
 		//given
 		유저 = userRepository.save(포인트_유저(today));
 		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 500));
-		int productSize = pointSearchService.findAllByType(PointType.USE).size();
+		int useTypeProductSize = pointSearchService.findAllByType(PointType.USE).size();
+		int earnTypeProductSize = pointSearchService.findAllByType(PointType.EARN).size();
 		//when
 		ProductListResponse response = pointService.getProducts(유저.getOauthId());
 		//then
 		assertThat(response.balancedPoint()).isEqualTo(유저_포인트.getPoint());
-		assertThat(response.productList()).hasSize(productSize);
+		assertThat(response.productList()).hasSize(useTypeProductSize);
+		assertThat(response.descriptionListToEarnPoint()).hasSize(earnTypeProductSize);
 	}
 
 	@Order(700)
