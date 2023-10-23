@@ -30,12 +30,13 @@ class PointHistoryControllerTest extends ControllerTest {
 	private static String URL = "/api/point";
 	@Autowired
 	private PointService pointService;
-	private List<PointProduct> products = 포인트_상품_목록();
+	private List<PointProduct> products = 구매가능_포인트_상품_목록();
+	private List<String> descriptionListToEarnPoint = 적립_방법_목록();
 
 	@Test
 	void 포인트_상품_목록_조회() throws Exception {
 		// given
-		ProductListResponse response = new ProductListResponse(1000, products);
+		ProductListResponse response = new ProductListResponse(1000, products, descriptionListToEarnPoint);
 		when(pointService.getProducts(any())).thenReturn(response);
 		// when
 		ResultActions resultActions = get(mockMvc, URL);
@@ -44,7 +45,9 @@ class PointHistoryControllerTest extends ControllerTest {
 			status().isOk(),
 			jsonPath("$.message").value("OK"),
 			jsonPath("$.data.balancedPoint").value(response.balancedPoint()),
-			jsonPath("$.data.productList").isNotEmpty()
+			jsonPath("$.data.productList").isNotEmpty(),
+			jsonPath("$.data.descriptionListToEarnPoint").isNotEmpty()
+
 		);
 	}
 
