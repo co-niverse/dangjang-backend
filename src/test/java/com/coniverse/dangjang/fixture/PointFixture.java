@@ -27,7 +27,7 @@ public class PointFixture {
 			PointProduct.builder().point(500).productName("기기연동").type(PointType.EARN).description("헬스커넥트 기기연동으로 500 포인트를 적립할 수 있어요.").build(),
 			PointProduct.builder().point(5000).productName("스타벅스 오천원 금액권").type(PointType.USE).build(),
 			PointProduct.builder().point(5000).productName("CU 오천원 금액권").type(PointType.USE).build(),
-			PointProduct.builder().point(10000).productName("배민 일만원 금액권").type(PointType.USE).build(),
+			PointProduct.builder().point(5000).productName("다이소 오천원 금액권").type(PointType.USE).build(),
 			PointProduct.builder().point(5000).productName("네이버페이 오천원 금액권").type(PointType.USE).build());
 	}
 
