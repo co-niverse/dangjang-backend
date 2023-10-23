@@ -114,7 +114,7 @@ class AppLogControllerTest extends ControllerTest {
 	}
 
 	@ParameterizedTest
-	@ValueSource(strings = {"", " "})
+	@ValueSource(strings = {"", " ", "1/1/1", "r.1.1"})
 	void RequestBody의_appVersion이_유효하지_않으면_예외가_발생한다(String appVersion) throws Exception {
 		// given
 		LogRequest request = 로그_요청_앱_버전(appVersion);
