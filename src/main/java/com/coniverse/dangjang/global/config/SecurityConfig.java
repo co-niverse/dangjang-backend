@@ -82,7 +82,7 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.PATCH, "/api/health-connect/**").authenticated()
 				.requestMatchers(HttpMethod.POST, "/api/point/**").authenticated()
 				.requestMatchers(HttpMethod.GET, "/api/point/**").authenticated()
-				.requestMatchers(HttpMethod.POST, "/api/log/**").authenticated()
+				.requestMatchers(HttpMethod.POST, "/api/log/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/notification/**").authenticated()
 				.requestMatchers(HttpMethod.POST, "/api/notification/**").authenticated()
 				.requestMatchers(HttpMethod.PATCH, "/api/notification/**").authenticated()
