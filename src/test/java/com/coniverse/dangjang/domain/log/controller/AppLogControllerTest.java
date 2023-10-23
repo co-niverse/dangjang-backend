@@ -112,4 +112,23 @@ class AppLogControllerTest extends ControllerTest {
 			jsonPath("$.fieldErrors[0].rejectedValue").value(sessionId)
 		);
 	}
+
+	@ParameterizedTest
+	@ValueSource(strings = {"", " "})
+	void RequestBody의_appVersion이_유효하지_않으면_예외가_발생한다(String appVersion) throws Exception {
+		// given
+		LogRequest request = 로그_요청_앱_버전(appVersion);
+		String content = objectMapper.writeValueAsString(request);
+
+		// when
+		ResultActions resultActions = post(mockMvc, URL, content);
+
+		// then
+		resultActions.andExpectAll(
+			status().isBadRequest(),
+			jsonPath("$.errorCode").value(400),
+			jsonPath("$.fieldErrors[0].field").value("appVersion"),
+			jsonPath("$.fieldErrors[0].rejectedValue").value(appVersion)
+		);
+	}
 }

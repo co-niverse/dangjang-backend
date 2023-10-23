@@ -34,6 +34,10 @@ public class LogFixture {
 		return new LogRequest(EVENT_LOG_NAME, SCREEN_NAME, logVersion, APP_VERSION, SESSION_ID, LOG_DATA);
 	}
 
+	public static LogRequest 로그_요청_앱_버전(String appVersion) {
+		return new LogRequest(EVENT_LOG_NAME, SCREEN_NAME, LOG_VERSION, appVersion, SESSION_ID, LOG_DATA);
+	}
+
 	public static LogRequest 로그_요청_세션_아이디(String sessionId) {
 		return new LogRequest(EVENT_LOG_NAME, SCREEN_NAME, LOG_VERSION, APP_VERSION, sessionId, LOG_DATA);
 	}
