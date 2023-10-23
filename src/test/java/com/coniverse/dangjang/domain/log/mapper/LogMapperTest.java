@@ -5,6 +5,8 @@ import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.HashMap;
+
 import org.junit.jupiter.api.Test;
 
 import com.coniverse.dangjang.domain.log.dto.app.AppLog;
@@ -26,7 +28,7 @@ class LogMapperTest {
 		User user = 유저_테오();
 
 		// when
-		AppLog appLog = logMapper.toAppLog(request, user);
+		AppLog appLog = logMapper.toAppLog(request);
 
 		// then
 		assertAll(
@@ -34,20 +36,18 @@ class LogMapperTest {
 			() -> assertThat(appLog.screenName()).isEqualTo(request.screenName()),
 			() -> assertThat(appLog.logVersion()).isEqualTo(request.logVersion()),
 			() -> assertThat(appLog.sessionId()).isEqualTo(request.sessionId()),
-			() -> assertThat(appLog.logData()).isEqualTo(request.logData()),
-			() -> assertThat(appLog.diabetic()).isEqualTo(user.isDiabetic()),
-			() -> assertThat(appLog.diabetesYear()).isEqualTo(user.getDiabetesYear())
+			() -> assertThat(appLog.logData()).isEqualTo(request.logData())
 		);
 	}
 
 	@Test
 	void LogRequest의_eventLogName이_존재하지_않으면_에러를_발생한다() {
 		// given
-		LogRequest request = new LogRequest("nonExistentEventLogName", "screenName", 1, "sessionId", null);
+		LogRequest request = new LogRequest("nonExistentEventLogName", "screenName", 1, "1.1.0", "sessionId", new HashMap<>());
 		User user = 유저_테오();
 
 		// when & then
-		assertThatThrownBy(() -> logMapper.toAppLog(request, user))
+		assertThatThrownBy(() -> logMapper.toAppLog(request))
 			.isInstanceOf(EnumNonExistentException.class);
 	}
 }
