@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.log.dto.request;
+package com.coniverse.dangjang.domain.guide.common.dto.response;
 
 /**
  * User log

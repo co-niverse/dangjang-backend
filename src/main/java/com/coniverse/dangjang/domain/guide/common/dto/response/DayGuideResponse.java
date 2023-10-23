@@ -6,7 +6,6 @@ import java.util.List;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.TodayGuide;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseDayGuide;
 import com.coniverse.dangjang.domain.guide.weight.dto.WeightDayGuide;
-import com.coniverse.dangjang.domain.log.dto.request.UserLog;
 
 /**
  * 하루 가이드 조회 응답
