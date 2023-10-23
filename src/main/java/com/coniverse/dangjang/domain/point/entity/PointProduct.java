@@ -28,11 +28,14 @@ public class PointProduct {
 	@JsonIgnore
 	@Enumerated(EnumType.STRING)
 	private PointType type;
+	@JsonIgnore
+	private String description;
 
 	@Builder
-	private PointProduct(String productName, int point, PointType type) {
+	private PointProduct(String productName, int point, PointType type, String description) {
 		this.productName = productName;
 		this.point = point;
 		this.type = type;
+		this.description = description;
 	}
 }
