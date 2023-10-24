@@ -102,9 +102,9 @@ public class PointService {
 	public UsePointResponse purchaseProduct(String oauthId, UsePointRequest request) {
 		User user = userSearchService.findUserByOauthId(oauthId);
 		PointHistory savedPointHistory = addPointEvent(request.type(), user);
-		PurchaseHistory purchase = purchaseHistoryRepository.save(pointMapper.toEntity(user, savedPointHistory.getPointProduct(), request.phone()));
+		PurchaseHistory purchase = purchaseHistoryRepository.save(pointMapper.toEntity(user, savedPointHistory.getPointProduct(), request));
 		return new UsePointResponse(purchase.getPhone(), purchase.getPointProduct().getProductName(), savedPointHistory.getChangePoint(),
-			savedPointHistory.getBalancePoint());
+			savedPointHistory.getBalancePoint(), purchase.getName(), purchase.getComment());
 	}
 
 	/**

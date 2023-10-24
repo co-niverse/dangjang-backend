@@ -7,6 +7,7 @@ import org.springframework.data.domain.Persistable;
 
 import com.coniverse.dangjang.domain.user.entity.User;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -31,9 +32,14 @@ public class PurchaseHistory implements Persistable<PointId> {
 	@EmbeddedId
 	@Getter(AccessLevel.PRIVATE)
 	private PointId pointId;
+	@Column(nullable = false)
 	private String phone;
 	@ColumnDefault("false")
 	private boolean completed;
+	@Column(nullable = false)
+	private String name;
+	private String comment;
+
 	@MapsId("oauthId")
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "oauth_id", insertable = false, updatable = false)
@@ -44,12 +50,14 @@ public class PurchaseHistory implements Persistable<PointId> {
 	private PointProduct pointProduct;
 
 	@Builder
-	public PurchaseHistory(User user, String phone, PointProduct pointProduct, boolean completed) {
+	public PurchaseHistory(User user, String phone, PointProduct pointProduct, boolean completed, String name, String comment) {
 		this.pointId = new PointId();
 		this.phone = phone;
 		this.completed = completed;
 		this.user = user;
 		this.pointProduct = pointProduct;
+		this.name = name;
+		this.comment = comment;
 	}
 
 	public String getOauthId() {

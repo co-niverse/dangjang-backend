@@ -6,5 +6,5 @@ package com.coniverse.dangjang.domain.point.dto.response;
  * @author EVE
  * @since 1.0.0
  */
-public record UsePointResponse(String phone, String type, int changePoint, int balancedPoint) {
+public record UsePointResponse(String phone, String type, int changePoint, int balancedPoint, String name, String comment) {
 }
