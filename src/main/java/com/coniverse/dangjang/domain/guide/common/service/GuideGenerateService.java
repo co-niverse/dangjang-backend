@@ -3,7 +3,7 @@ package com.coniverse.dangjang.domain.guide.common.service;
 import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.code.enums.GroupCode;
-import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
+import com.coniverse.dangjang.domain.guide.common.dto.response.GuideResponse;
 
 /**
  * 가이드 생성 service

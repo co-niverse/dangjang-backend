@@ -1,6 +1,7 @@
 package com.coniverse.dangjang.fixture;
 
 import static com.coniverse.dangjang.fixture.CommonCodeFixture.*;
+import static com.coniverse.dangjang.fixture.UserFixture.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,8 +17,8 @@ import com.coniverse.dangjang.domain.guide.bloodsugar.document.SubGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.TodayGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.dto.BloodSugarGuideResponse;
 import com.coniverse.dangjang.domain.guide.bloodsugar.dto.SubGuideResponse;
-import com.coniverse.dangjang.domain.guide.common.dto.DayGuideResponse;
-import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
+import com.coniverse.dangjang.domain.guide.common.dto.response.DayGuideResponse;
+import com.coniverse.dangjang.domain.guide.common.dto.response.GuideResponse;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseCalorie;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseDayGuide;
@@ -152,12 +153,12 @@ public class GuideFixture {
 
 	}
 
-	public static DayGuideResponse 하루_가이드_응답(String nickname, LocalDate date, List<TodayGuide> 혈당가이드, WeightDayGuide 체중가이드, ExerciseDayGuide 운동가이드) {
-		return new DayGuideResponse(nickname, date, 혈당가이드, 체중가이드, 운동가이드, false);
+	public static DayGuideResponse 하루_가이드_응답(User user, LocalDate date, List<TodayGuide> 혈당가이드, WeightDayGuide 체중가이드, ExerciseDayGuide 운동가이드) {
+		return new DayGuideResponse(user.getNickname(), date, 혈당가이드, 체중가이드, 운동가이드, false, 유저_당뇨정보(user, 체중가이드.alert()));
 	}
 
 	public static WeightDayGuide 체중_하루_가이드() {
-		return new WeightDayGuide("70", 18.89, "정상이에요! 표준 체중보다 1kg 많아요");
+		return new WeightDayGuide("70", 18.89, "정상이에요! 표준 체중보다 1kg 많아요", "정상체중");
 	}
 
 	public static ExerciseDayGuide 운동_하루_가이드() {

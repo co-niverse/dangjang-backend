@@ -19,7 +19,10 @@ public enum Event implements EnumCode {
 	HOME_CALENDAR_CLICK("home_calendar_click"),
 	BLOOD_SUGAR_STAY_TIME("bloodsugar_stay_time"),
 	HEALTH_CONNECT_JOIN_CLICK("healthconnect_join_click"),
-	HEALTH_CONNECT_MANUAL("healthconnect_manual");
+	HEALTH_CONNECT_MANUAL("healthconnect_manual"),
+	SIGNUP_STAY_TIME("signup_stay_time"),
+	SIGNUP_AFTER_TIME("signup_after_time"),
+	EXPOSURE_LOG("exposure_log");
 
 	private final String title;
 

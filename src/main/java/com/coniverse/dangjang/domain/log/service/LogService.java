@@ -8,8 +8,6 @@ import org.springframework.web.client.RestTemplate;
 import com.coniverse.dangjang.domain.log.dto.app.AppLog;
 import com.coniverse.dangjang.domain.log.dto.request.LogRequest;
 import com.coniverse.dangjang.domain.log.mapper.LogMapper;
-import com.coniverse.dangjang.domain.user.entity.User;
-import com.coniverse.dangjang.domain.user.service.UserSearchService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LogService {
 	private final RestTemplate restTemplate;
-	private final UserSearchService userSearchService;
 	private final LogMapper logMapper;
 	@Value("${fluentbit.app-log-url}")
 	private String url;
@@ -35,9 +32,8 @@ public class LogService {
 	 *
 	 * @since 1.0.0
 	 */
-	public void sendLog(LogRequest request, String oauthId) {
-		User user = userSearchService.findUserByOauthId(oauthId);
-		AppLog appLog = logMapper.toAppLog(request, user);
+	public void sendLog(LogRequest request) {
+		AppLog appLog = logMapper.toAppLog(request);
 		try {
 			restTemplate.postForEntity(url, appLog, String.class);
 		} catch (ResourceAccessException e) {

@@ -87,6 +87,7 @@ CREATE TABLE `POINT_PRODUCT`
     `PRODUCT_NAME` varchar(255) NOT NULL,
     `POINT`        int,
     `TYPE`         varchar(20)  NOT NULL,
+    `DESCRIPTION`  varchar(255),
     PRIMARY KEY (`PRODUCT_NAME`)
 );
 
@@ -117,6 +118,8 @@ CREATE TABLE `PURCHASE_HISTORY`
     `PRODUCT_NAME` varchar(255) NOT NULL,
     `CREATED_AT`   dateTime     NOT NULL,
     `PHONE`        varchar(20)  NOT NULL,
+    `NAME`         varchar(20)  NOT NULL,
+    `COMMENT`     varchar(255),
     `COMPLETED`    boolean,
     PRIMARY KEY (`OAUTH_ID`, `PRODUCT_NAME`, `CREATED_AT`),
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`),

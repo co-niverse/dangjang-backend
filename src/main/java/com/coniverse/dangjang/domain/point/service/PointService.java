@@ -2,6 +2,7 @@ package com.coniverse.dangjang.domain.point.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -101,9 +102,9 @@ public class PointService {
 	public UsePointResponse purchaseProduct(String oauthId, UsePointRequest request) {
 		User user = userSearchService.findUserByOauthId(oauthId);
 		PointHistory savedPointHistory = addPointEvent(request.type(), user);
-		PurchaseHistory purchase = purchaseHistoryRepository.save(pointMapper.toEntity(user, savedPointHistory.getPointProduct(), request.phone()));
+		PurchaseHistory purchase = purchaseHistoryRepository.save(pointMapper.toEntity(user, savedPointHistory.getPointProduct(), request));
 		return new UsePointResponse(purchase.getPhone(), purchase.getPointProduct().getProductName(), savedPointHistory.getChangePoint(),
-			savedPointHistory.getBalancePoint());
+			savedPointHistory.getBalancePoint(), purchase.getName(), purchase.getComment());
 	}
 
 	/**
@@ -168,6 +169,9 @@ public class PointService {
 	public ProductListResponse getProducts(String oauthId) {
 		int balancePoint = pointSearchService.findUserPointByOauthId(oauthId).getPoint();
 		List<PointProduct> productList = pointSearchService.findAllByType(PointType.USE);
-		return new ProductListResponse(balancePoint, productList);
+		List<String> descriptionListToEarnPoint = pointSearchService.findAllByType(PointType.EARN).stream()
+			.map(PointProduct::getDescription)
+			.collect(Collectors.toList());
+		return new ProductListResponse(balancePoint, productList, descriptionListToEarnPoint);
 	}
 }

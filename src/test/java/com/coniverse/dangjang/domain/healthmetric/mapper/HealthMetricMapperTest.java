@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import com.coniverse.dangjang.domain.guide.common.dto.GuideResponse;
+import com.coniverse.dangjang.domain.guide.common.dto.response.GuideResponse;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;

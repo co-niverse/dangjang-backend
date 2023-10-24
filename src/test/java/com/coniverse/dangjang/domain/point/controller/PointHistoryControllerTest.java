@@ -30,12 +30,13 @@ class PointHistoryControllerTest extends ControllerTest {
 	private static String URL = "/api/point";
 	@Autowired
 	private PointService pointService;
-	private List<PointProduct> products = 포인트_상품_목록();
+	private List<PointProduct> products = 구매가능_포인트_상품_목록();
+	private List<String> descriptionListToEarnPoint = 적립_방법_목록();
 
 	@Test
 	void 포인트_상품_목록_조회() throws Exception {
 		// given
-		ProductListResponse response = new ProductListResponse(1000, products);
+		ProductListResponse response = new ProductListResponse(1000, products, descriptionListToEarnPoint);
 		when(pointService.getProducts(any())).thenReturn(response);
 		// when
 		ResultActions resultActions = get(mockMvc, URL);
@@ -44,15 +45,17 @@ class PointHistoryControllerTest extends ControllerTest {
 			status().isOk(),
 			jsonPath("$.message").value("OK"),
 			jsonPath("$.data.balancedPoint").value(response.balancedPoint()),
-			jsonPath("$.data.productList").isNotEmpty()
+			jsonPath("$.data.productList").isNotEmpty(),
+			jsonPath("$.data.descriptionListToEarnPoint").isNotEmpty()
+
 		);
 	}
 
 	@Test
 	void 포인트_상품_구매한다() throws Exception {
 		// given
-		UsePointRequest request = new UsePointRequest("010-xxxx-xxxx", "CU오천원금액권");
-		UsePointResponse response = new UsePointResponse("010-xxxx-xxxx", "CU오천원금액권", 5000, 1000);
+		UsePointRequest request = new UsePointRequest("010-0000-0000", "CU오천원금액권", "이름", "코멘트");
+		UsePointResponse response = new UsePointResponse("010-0000-0000", "CU오천원금액권", 5000, 1000, "이름", "코멘트");
 		when(pointService.purchaseProduct(any(), any())).thenReturn(response);
 		String content = objectMapper.writeValueAsString(request);
 
@@ -64,6 +67,22 @@ class PointHistoryControllerTest extends ControllerTest {
 			jsonPath("$.message").value("OK"),
 			jsonPath("$.data.phone").value(request.phone()),
 			jsonPath("$.data.type").value(request.type())
+		);
+	}
+
+	@Test
+	void 조건에_맞지않는_request로_포인트_상품_구매를_요청하면_예외를_던진다() throws Exception {
+		// given
+		UsePointRequest request = new UsePointRequest("010-22-0000", "CU오천원금액권", "이름", "코멘트");
+		
+		String content = objectMapper.writeValueAsString(request);
+
+		// when
+		ResultActions resultActions = post(mockMvc, URL, content);
+		// then
+		resultActions.andExpectAll(
+			status().isBadRequest(),
+			jsonPath("$.errorCode").value(400)
 		);
 	}
 }

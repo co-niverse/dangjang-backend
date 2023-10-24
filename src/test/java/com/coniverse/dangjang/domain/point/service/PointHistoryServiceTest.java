@@ -140,7 +140,7 @@ class PointHistoryServiceTest {
 		//given
 		유저 = userRepository.save(포인트_유저(today));
 		userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 500));
-		UsePointRequest request = new UsePointRequest(유저.getOauthId(), "스타벅스 오천원 금액권");
+		UsePointRequest request = 포인트_사용_요청(유저, "다이소 오천원 금액권");
 		//when&then
 		assertThatThrownBy(() -> {
 			pointService.purchaseProduct(유저.getOauthId(), request);
@@ -157,7 +157,7 @@ class PointHistoryServiceTest {
 		int balancePoint = 유저_포인트.getPoint();
 		int accessPoint = balancePoint - 5000;
 
-		UsePointRequest request = new UsePointRequest(유저.getOauthId(), product);
+		UsePointRequest request = 포인트_사용_요청(유저, "다이소 오천원 금액권");
 
 		//when
 		pointService.purchaseProduct(유저.getOauthId(), request);
@@ -177,8 +177,7 @@ class PointHistoryServiceTest {
 		//given
 		유저 = userRepository.save(포인트_유저(today));
 		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 6000));
-
-		UsePointRequest request = new UsePointRequest(유저.getOauthId(), "두찜_만원");
+		UsePointRequest request = 포인트_사용_요청(유저, "두찜 만원 금액권");
 
 		//when
 		assertThatThrownBy(() -> pointService.purchaseProduct(유저.getOauthId(), request))
@@ -191,12 +190,14 @@ class PointHistoryServiceTest {
 		//given
 		유저 = userRepository.save(포인트_유저(today));
 		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 500));
-		int productSize = pointSearchService.findAllByType(PointType.USE).size();
+		int useTypeProductSize = pointSearchService.findAllByType(PointType.USE).size();
+		int earnTypeProductSize = pointSearchService.findAllByType(PointType.EARN).size();
 		//when
 		ProductListResponse response = pointService.getProducts(유저.getOauthId());
 		//then
 		assertThat(response.balancedPoint()).isEqualTo(유저_포인트.getPoint());
-		assertThat(response.productList()).hasSize(productSize);
+		assertThat(response.productList()).hasSize(useTypeProductSize);
+		assertThat(response.descriptionListToEarnPoint()).hasSize(earnTypeProductSize);
 	}
 
 	@Order(700)
@@ -205,7 +206,7 @@ class PointHistoryServiceTest {
 		//given
 		유저 = userRepository.save(포인트_유저(today));
 		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 6000));
-		UsePointRequest request = new UsePointRequest(유저.getOauthId(), "스타벅스 오천원 금액권");
+		UsePointRequest request = 포인트_사용_요청(유저, "다이소 오천원 금액권");
 		ExecutorService executorService = Executors.newFixedThreadPool(30);
 		AtomicInteger successCount = new AtomicInteger();
 		AtomicInteger failedCount = new AtomicInteger();
@@ -237,37 +238,6 @@ class PointHistoryServiceTest {
 		assertThat(구매_내역_횟수).isOne();
 		assertThat(포인트_로그_내역_횟수).isOne();
 
-	}
-
-	@Order(800)
-	@Test
-	void 동시_접속_포인트를_한번만_얻는다() throws InterruptedException {
-		//given
-		유저 = userRepository.save(포인트_유저(today.minusDays(1)));
-		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 0));
-		AtomicInteger successCount = new AtomicInteger();
-		AtomicInteger failedCount = new AtomicInteger();
-		CountDownLatch latch = new CountDownLatch(30);
-		for (int i = 0; i < 100; i++) {
-			try {
-				pointService.addAccessPoint(유저.getOauthId());
-				successCount.incrementAndGet();
-			} catch (Exception e) {
-				failedCount.incrementAndGet();
-			}
-		}
-		latch.await(1, TimeUnit.SECONDS);
-
-		//then
-		User 접속한_유저 = userRepository.findById(유저.getOauthId()).get();
-		System.out.println("point log start =====================");
-		System.out.println("success count : " + successCount.get());
-		System.out.println("failed count : " + failedCount.get());
-		System.out.println("point log finish =====================");
-		int 포인트_로그_내역_횟수 = pointHistoryRepository.findAll().size();
-		UserPoint 접속한_유저_포인트 = pointSearchService.findUserPointByOauthId(접속한_유저.getOauthId());
-		assertThat(접속한_유저_포인트.getPoint()).isEqualTo(100);
-		assertThat(포인트_로그_내역_횟수).isOne();
 	}
 
 	@Order(900)

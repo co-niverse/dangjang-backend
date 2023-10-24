@@ -16,14 +16,14 @@ INSERT INTO users (oauth_id, oauth_provider, nickname, gender, birthday, activit
 VALUES ('44444444', 'NAVER', 'user4', 'F', '2001-12-24', 'LOW', 160, 1500, 'ACTIVE', 'USER', 'user/image/eve', true, 3, true, true, now(), now(), now(),
         'NEVER_CONNECTED');
 
-INSERT INTO point_product (product_name, point, type)
-VALUES ("접속", 100, 'EARN'),
-       ("등록", 500, 'EARN'),
-       ("기기연동", 500, 'EARN'),
-       ("스타벅스 오천원 금액권", 5000, 'USE'),
-       ("CU 오천원 금액권", 5000, 'USE'),
-       ("배민 일만원 금액권", 10000, 'USE'),
-       ("네이버페이 오천원 금액권", 5000, 'USE');
+INSERT INTO point_product (product_name, point, type, description)
+VALUES ("접속", 100, 'EARN', "1일 1회 접속으로 100 포인트를 적립할 수 있어요!"),
+       ("등록", 500, 'EARN', "회원가입으로 500 포인트를 적립할 수 있어요!"),
+       ("기기연동", 500, 'EARN', "헬스커넥트 기기연동으로 500 포인트를 적립할 수 있어요!"),
+       ("스타벅스 오천원 금액권", 5000, 'USE', null),
+       ("CU 오천원 금액권", 5000, 'USE', null),
+       ("다이소 오천원 금액권", 5000, 'USE', null),
+       ("네이버페이 오천원 금액권", 5000, 'USE', null);
 
 INSERT INTO notification_type (type)
 VALUES ("접속"),
