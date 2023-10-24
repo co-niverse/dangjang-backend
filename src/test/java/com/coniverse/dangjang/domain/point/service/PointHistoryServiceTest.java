@@ -140,7 +140,7 @@ class PointHistoryServiceTest {
 		//given
 		유저 = userRepository.save(포인트_유저(today));
 		userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 500));
-		UsePointRequest request = new UsePointRequest(유저.getOauthId(), "스타벅스 오천원 금액권");
+		UsePointRequest request = 포인트_사용_요청(유저, "다이소 오천원 금액권");
 		//when&then
 		assertThatThrownBy(() -> {
 			pointService.purchaseProduct(유저.getOauthId(), request);
@@ -157,7 +157,7 @@ class PointHistoryServiceTest {
 		int balancePoint = 유저_포인트.getPoint();
 		int accessPoint = balancePoint - 5000;
 
-		UsePointRequest request = new UsePointRequest(유저.getOauthId(), product);
+		UsePointRequest request = 포인트_사용_요청(유저, "다이소 오천원 금액권");
 
 		//when
 		pointService.purchaseProduct(유저.getOauthId(), request);
@@ -177,8 +177,7 @@ class PointHistoryServiceTest {
 		//given
 		유저 = userRepository.save(포인트_유저(today));
 		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 6000));
-
-		UsePointRequest request = new UsePointRequest(유저.getOauthId(), "두찜_만원");
+		UsePointRequest request = 포인트_사용_요청(유저, "두찜 만원 금액권");
 
 		//when
 		assertThatThrownBy(() -> pointService.purchaseProduct(유저.getOauthId(), request))
@@ -207,7 +206,7 @@ class PointHistoryServiceTest {
 		//given
 		유저 = userRepository.save(포인트_유저(today));
 		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 6000));
-		UsePointRequest request = new UsePointRequest(유저.getOauthId(), "스타벅스 오천원 금액권");
+		UsePointRequest request = 포인트_사용_요청(유저, "다이소 오천원 금액권");
 		ExecutorService executorService = Executors.newFixedThreadPool(30);
 		AtomicInteger successCount = new AtomicInteger();
 		AtomicInteger failedCount = new AtomicInteger();
