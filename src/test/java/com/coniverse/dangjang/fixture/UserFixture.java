@@ -3,6 +3,7 @@ package com.coniverse.dangjang.fixture;
 import java.time.LocalDate;
 
 import com.coniverse.dangjang.domain.auth.dto.OauthProvider;
+import com.coniverse.dangjang.domain.user.dto.response.UserDiabeticResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.entity.enums.ActivityAmount;
 import com.coniverse.dangjang.domain.user.entity.enums.Gender;
@@ -102,5 +103,9 @@ public class UserFixture {
 		User user = 유저_테오();
 		user.inactivate();
 		return user;
+	}
+
+	public static UserDiabeticResponse 유저_당뇨정보(User 유저, String alert) {
+		return new UserDiabeticResponse(유저.getGender().isTrue(), 유저.getBirthYear(), 유저.isDiabetic(), 유저.getDiabetesYear(), alert);
 	}
 }

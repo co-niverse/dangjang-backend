@@ -17,8 +17,8 @@ import com.coniverse.dangjang.domain.guide.exercise.service.ExerciseGuideSearchS
 import com.coniverse.dangjang.domain.guide.weight.document.WeightGuide;
 import com.coniverse.dangjang.domain.guide.weight.dto.WeightDayGuide;
 import com.coniverse.dangjang.domain.guide.weight.service.WeightGuideSearchService;
-import com.coniverse.dangjang.domain.log.dto.request.UserLog;
 import com.coniverse.dangjang.domain.notification.service.NotificationService;
+import com.coniverse.dangjang.domain.user.dto.response.UserDiabeticResponse;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
 
@@ -57,7 +57,8 @@ public class DayGuideService {
 		WeightDayGuide weightDayGuide = getWeightGuide(oauthId, date);
 		ExerciseDayGuide exerciseDayGuide = getExerciseGuide(oauthId, localDate);
 		Boolean existsNotification = notificationService.isExistsNotReadNotification(oauthId);
-		UserLog userLog = new UserLog(user.getGender().isTrue(), user.getBirthYear(), user.isDiabetic(), user.getDiabetesYear(), weightDayGuide.alert());
+		UserDiabeticResponse userLog = new UserDiabeticResponse(user.getGender().isTrue(), user.getBirthYear(), user.isDiabetic(), user.getDiabetesYear(),
+			weightDayGuide.alert());
 		return new DayGuideResponse(userNickname, localDate, bloodSugarTodayGuide, weightDayGuide, exerciseDayGuide, existsNotification, userLog);
 	}
 
