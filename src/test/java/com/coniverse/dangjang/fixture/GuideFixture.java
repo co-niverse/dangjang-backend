@@ -18,7 +18,6 @@ import com.coniverse.dangjang.domain.guide.bloodsugar.dto.BloodSugarGuideRespons
 import com.coniverse.dangjang.domain.guide.bloodsugar.dto.SubGuideResponse;
 import com.coniverse.dangjang.domain.guide.common.dto.response.DayGuideResponse;
 import com.coniverse.dangjang.domain.guide.common.dto.response.GuideResponse;
-import com.coniverse.dangjang.domain.guide.common.dto.response.UserLog;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseCalorie;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
 import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseDayGuide;
@@ -26,6 +25,7 @@ import com.coniverse.dangjang.domain.guide.exercise.dto.ExerciseGuideResponse;
 import com.coniverse.dangjang.domain.guide.weight.document.WeightGuide;
 import com.coniverse.dangjang.domain.guide.weight.dto.WeightDayGuide;
 import com.coniverse.dangjang.domain.guide.weight.dto.WeightGuideResponse;
+import com.coniverse.dangjang.domain.user.dto.response.UserLog;
 import com.coniverse.dangjang.domain.user.entity.User;
 
 /**

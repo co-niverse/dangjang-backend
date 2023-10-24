@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.TodayGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.service.BloodSugarGuideSearchService;
 import com.coniverse.dangjang.domain.guide.common.dto.response.DayGuideResponse;
-import com.coniverse.dangjang.domain.guide.common.dto.response.UserLog;
 import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseCalorie;
 import com.coniverse.dangjang.domain.guide.exercise.document.ExerciseGuide;
@@ -19,6 +18,7 @@ import com.coniverse.dangjang.domain.guide.weight.document.WeightGuide;
 import com.coniverse.dangjang.domain.guide.weight.dto.WeightDayGuide;
 import com.coniverse.dangjang.domain.guide.weight.service.WeightGuideSearchService;
 import com.coniverse.dangjang.domain.notification.service.NotificationService;
+import com.coniverse.dangjang.domain.user.dto.response.UserLog;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
 
