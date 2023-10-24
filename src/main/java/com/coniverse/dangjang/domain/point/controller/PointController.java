@@ -34,14 +34,14 @@ public class PointController {
 	private final PointService pointService;
 
 	/**
-	 * 포인트 사용
+	 * 포인트 상품 구매
 	 *
-	 * @param request 포인트 사용하고자 하는 내역 정보
-	 * @return response 사용자 사용 완료 내역
+	 * @param request 포인트 구매하고자 하는 내역 정보
+	 * @return response 사용자 구매 완료 내역
 	 * @since 1.0.0
 	 */
 	@PostMapping
-	public ResponseEntity<SuccessSingleResponse<UsePointResponse>> usePoint(@Valid @RequestBody UsePointRequest request,
+	public ResponseEntity<SuccessSingleResponse<UsePointResponse>> purchaseProduct(@Valid @RequestBody UsePointRequest request,
 		@AuthenticationPrincipal User user) {
 		UsePointResponse response = pointService.purchaseProduct(user.getUsername(), request);
 		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));

@@ -2,9 +2,11 @@ package com.coniverse.dangjang.fixture;
 
 import java.util.List;
 
+import com.coniverse.dangjang.domain.point.dto.request.UsePointRequest;
 import com.coniverse.dangjang.domain.point.entity.PointProduct;
 import com.coniverse.dangjang.domain.point.entity.UserPoint;
 import com.coniverse.dangjang.domain.point.enums.PointType;
+import com.coniverse.dangjang.domain.user.entity.User;
 
 /**
  * 포인트 관련 Fixture
@@ -42,6 +44,10 @@ public class PointFixture {
 			.filter(pointProduct -> pointProduct.getType().equals(PointType.EARN))
 			.map(PointProduct::getDescription)
 			.toList();
+	}
+
+	public static UsePointRequest 포인트_사용_요청(User user, String type) {
+		return new UsePointRequest(user.getOauthId(), type, "이름", "코멘트");
 	}
 
 }
