@@ -1,10 +1,7 @@
 package com.coniverse.dangjang.domain.user.dto.response;
 
 /**
- * User log
- * <p>
- * 로깅에 필요한 유저 정보
- * 홈 API 호출 시, 로깅에 필요한 유저 정보를 전달한다
+ * 유저 당뇨 정보
  *
  * @author EVE
  * @since 1.1.0
