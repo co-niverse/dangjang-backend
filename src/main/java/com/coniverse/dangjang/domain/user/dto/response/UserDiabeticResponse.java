@@ -9,5 +9,5 @@ package com.coniverse.dangjang.domain.user.dto.response;
  * @author EVE
  * @since 1.1.0
  */
-public record UserLog(boolean gender, int birthYear, boolean diabetic, int diabetesYear, String weightAlert) {
+public record UserDiabeticResponse(boolean gender, int birthYear, boolean diabetic, int diabetesYear, String weightAlert) {
 }
