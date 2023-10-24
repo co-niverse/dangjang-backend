@@ -26,6 +26,11 @@ import lombok.RequiredArgsConstructor;
 public class AppLogController {
 	private final LogService logService;
 
+	/**
+	 * 앱 로그를 post 요청한다.
+	 *
+	 * @since 1.0.0
+	 */
 	@PostMapping
 	public ResponseEntity<SuccessSingleResponse<?>> post(@Valid @RequestBody LogRequest request) {
 		logService.sendLog(request);
