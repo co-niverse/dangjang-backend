@@ -7,6 +7,9 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
+
 import com.coniverse.dangjang.domain.notification.dto.fluentd.FcmMessage;
 import com.coniverse.dangjang.domain.notification.service.NotificationSendService;
 import com.coniverse.dangjang.domain.notification.service.NotificationService;
@@ -21,6 +24,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 @Service
+@EnableSchedulerLock(defaultLockAtMostFor = "PT10S")
 public class SchedulerService {
 	private final NotificationService notificationService;
 	private final NotificationSendService notificationSendService;
@@ -34,6 +38,7 @@ public class SchedulerService {
 	 * @since 1.1.0
 	 */
 	@Scheduled(cron = "0 0 18 * * *", zone = "Asia/Seoul")
+	@SchedulerLock(name = "SchedulerService_makeNotification", lockAtLeastFor = "PT60S", lockAtMostFor = "PT70S")
 	public void makeNotification() {
 		List<FcmMessage> fcmMessage = notificationService.makeAccessFcmMessage();
 		fcmMessage.forEach(message -> notificationSendService.sendMessage(message));
