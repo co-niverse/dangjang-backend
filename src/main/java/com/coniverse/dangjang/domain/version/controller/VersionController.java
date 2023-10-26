@@ -20,7 +20,7 @@ public class VersionController {
 
 	@GetMapping("/intro")
 	public ResponseEntity<SuccessSingleResponse<VersionResponse<?>>> getIntro() {
-		VersionResponse<?> versionResponse = versionService.getIntroResponse();
+		VersionResponse<?> versionResponse = versionService.getVersionResponse();
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), versionResponse));
 	}
 }

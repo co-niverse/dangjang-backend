@@ -23,7 +23,7 @@ class VersionServiceTest {
 		@Test
 		void 호출하면_IntroResponse가_반환된다() {
 			// when
-			VersionResponse<?> versionResponse = versionService.getIntroResponse();
+			VersionResponse<?> versionResponse = versionService.getVersionResponse();
 
 			// then
 			assertThat(versionResponse).isNotNull();
