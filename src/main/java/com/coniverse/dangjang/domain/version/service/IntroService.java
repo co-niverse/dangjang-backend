@@ -1,9 +1,9 @@
-package com.coniverse.dangjang.domain.intro.service;
+package com.coniverse.dangjang.domain.version.service;
 
 import org.springframework.stereotype.Service;
 
-import com.coniverse.dangjang.domain.intro.dto.IntroResponse;
-import com.coniverse.dangjang.domain.intro.dto.Version;
+import com.coniverse.dangjang.domain.version.dto.IntroResponse;
+import com.coniverse.dangjang.domain.version.dto.Version;
 import com.coniverse.dangjang.global.exception.BadRequestException;
 
 import lombok.RequiredArgsConstructor;

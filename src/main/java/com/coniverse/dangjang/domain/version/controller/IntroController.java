@@ -1,8 +1,8 @@
-package com.coniverse.dangjang.domain.intro.controller;
+package com.coniverse.dangjang.domain.version.controller;
 
 import org.springframework.http.ResponseEntity;
 
-import com.coniverse.dangjang.domain.intro.dto.IntroResponse;
+import com.coniverse.dangjang.domain.version.dto.IntroResponse;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
 /**

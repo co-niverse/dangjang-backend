@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.intro.service;
+package com.coniverse.dangjang.domain.version.service;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.coniverse.dangjang.domain.intro.dto.IntroResponse;
+import com.coniverse.dangjang.domain.version.dto.IntroResponse;
 import com.coniverse.dangjang.global.exception.BadRequestException;
 
 /**

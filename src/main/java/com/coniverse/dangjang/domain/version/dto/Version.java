@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.intro.dto;
+package com.coniverse.dangjang.domain.version.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.intro.controller;
+package com.coniverse.dangjang.domain.version.controller;
 
 import static com.coniverse.dangjang.support.SimpleMockMvc.*;
 import static org.mockito.BDDMockito.*;
@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.coniverse.dangjang.domain.intro.dto.IntroResponse;
-import com.coniverse.dangjang.domain.intro.dto.Version;
-import com.coniverse.dangjang.domain.intro.service.IntroService;
+import com.coniverse.dangjang.domain.version.dto.IntroResponse;
+import com.coniverse.dangjang.domain.version.dto.Version;
+import com.coniverse.dangjang.domain.version.service.IntroService;
 import com.coniverse.dangjang.global.exception.BadRequestException;
 import com.coniverse.dangjang.support.ControllerTest;
 
