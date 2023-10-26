@@ -1,6 +1,6 @@
 package com.coniverse.dangjang.domain.version.entity;
 
-import com.coniverse.dangjang.global.support.BaseEntity;
+import com.coniverse.dangjang.global.support.CreatedAtOnlyEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Version extends BaseEntity {
+public class Version extends CreatedAtOnlyEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long versionId;
