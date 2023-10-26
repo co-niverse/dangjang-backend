@@ -3,6 +3,8 @@ package com.coniverse.dangjang.domain.version.entity;
 import com.coniverse.dangjang.global.support.BaseEntity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -20,7 +22,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Version extends BaseEntity {
 	@Id
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long versionId;
 	private String minVersion;
 	private String latestVersion;
 
