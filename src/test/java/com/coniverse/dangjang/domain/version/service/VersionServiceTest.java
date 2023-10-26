@@ -15,16 +15,16 @@ import com.coniverse.dangjang.global.exception.BadRequestException;
  * @since 1.0.0
  */
 @SpringBootTest
-class IntroServiceTest {
+class VersionServiceTest {
 	@Autowired
-	private IntroService introService;
+	private VersionService versionService;
 
 	@Nested
 	class TestIntroResponse를 {
 		@Test
 		void 한_번_호출하면_IntroResponse가_반환된다() {
 			// when
-			IntroResponse<?> introResponse = introService.getTestIntroResponse();
+			IntroResponse<?> introResponse = versionService.getTestIntroResponse();
 
 			// then
 			assertThat(introResponse).isNotNull();
@@ -33,10 +33,10 @@ class IntroServiceTest {
 		@Test
 		void 두_번_연속_호출하면_BadRequestException이_발생한다() {
 			// given
-			introService.getTestIntroResponse();
+			versionService.getTestIntroResponse();
 
 			// when & then
-			assertThatThrownBy(() -> introService.getTestIntroResponse()).isInstanceOf(BadRequestException.class);
+			assertThatThrownBy(() -> versionService.getTestIntroResponse()).isInstanceOf(BadRequestException.class);
 		}
 	}
 
@@ -45,7 +45,7 @@ class IntroServiceTest {
 		@Test
 		void 호출하면_IntroResponse가_반환된다() {
 			// when
-			IntroResponse<?> introResponse = introService.getProdIntroResponse();
+			IntroResponse<?> introResponse = versionService.getProdIntroResponse();
 
 			// then
 			assertThat(introResponse).isNotNull();

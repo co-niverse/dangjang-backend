@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Service
 @RequiredArgsConstructor
-public class IntroService {
+public class VersionService {
 	private static final String MIN_VERSION = Version.MINIMUM.getVersion();
 	private static final String LATEST_VERSION = Version.LATEST.getVersion();
 	private int error = -1;

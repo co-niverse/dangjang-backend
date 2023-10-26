@@ -12,19 +12,19 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.coniverse.dangjang.domain.version.dto.IntroResponse;
 import com.coniverse.dangjang.domain.version.dto.Version;
-import com.coniverse.dangjang.domain.version.service.IntroService;
+import com.coniverse.dangjang.domain.version.service.VersionService;
 import com.coniverse.dangjang.support.ControllerTest;
 
 /**
  * @author TEO
  * @since 1.0.0
  */
-class IntroControllerTest extends ControllerTest {
+class VersionControllerTest extends ControllerTest {
 	private static final String URI = "/api/intro";
 	private static final String MIN_VERSION = Version.MINIMUM.getVersion();
 	private static final String LATEST_VERSION = Version.LATEST.getVersion();
 	@Autowired
-	private IntroService introService;
+	private VersionService versionService;
 
 	@Nested
 	class Prod_Intro_URL에_접근시 {
@@ -32,7 +32,7 @@ class IntroControllerTest extends ControllerTest {
 		void 성공한_응답을_반환한다() throws Exception {
 			// given
 			IntroResponse introResponse = new IntroResponse<>(MIN_VERSION, LATEST_VERSION, null);
-			given(introService.getProdIntroResponse()).willReturn(introResponse);
+			given(versionService.getProdIntroResponse()).willReturn(introResponse);
 
 			// when
 			ResultActions resultActions = get(mockMvc, URI + "/prod");
