@@ -13,12 +13,12 @@ import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/intro")
+@RequestMapping("/api/version")
 @RequiredArgsConstructor
 public class VersionController {
 	private final VersionService versionService;
 
-	@GetMapping("/prod")
+	@GetMapping("/intro")
 	public ResponseEntity<SuccessSingleResponse<IntroResponse<?>>> getIntro() {
 		IntroResponse<?> introResponse = versionService.getProdIntroResponse();
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), introResponse));
