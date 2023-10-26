@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.coniverse.dangjang.domain.version.dto.IntroResponse;
 import com.coniverse.dangjang.domain.version.dto.Version;
+import com.coniverse.dangjang.domain.version.dto.response.VersionResponse;
 import com.coniverse.dangjang.domain.version.service.VersionService;
 import com.coniverse.dangjang.support.ControllerTest;
 
@@ -31,8 +31,8 @@ class VersionControllerTest extends ControllerTest {
 		@Test
 		void 성공한_응답을_반환한다() throws Exception {
 			// given
-			IntroResponse introResponse = new IntroResponse<>(MIN_VERSION, LATEST_VERSION, null);
-			given(versionService.getProdIntroResponse()).willReturn(introResponse);
+			VersionResponse versionResponse = new VersionResponse<>(MIN_VERSION, LATEST_VERSION, null);
+			given(versionService.getProdIntroResponse()).willReturn(versionResponse);
 
 			// when
 			ResultActions resultActions = get(mockMvc, URI + "/prod");
@@ -41,8 +41,8 @@ class VersionControllerTest extends ControllerTest {
 			resultActions.andExpectAll(
 				status().isOk(),
 				jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
-				jsonPath("$.data.minVersion").value(introResponse.minVersion()),
-				jsonPath("$.data.latestVersion").value(introResponse.latestVersion())
+				jsonPath("$.data.minVersion").value(versionResponse.minVersion()),
+				jsonPath("$.data.latestVersion").value(versionResponse.latestVersion())
 			);
 		}
 	}

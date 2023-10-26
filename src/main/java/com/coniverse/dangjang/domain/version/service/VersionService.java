@@ -2,8 +2,8 @@ package com.coniverse.dangjang.domain.version.service;
 
 import org.springframework.stereotype.Service;
 
-import com.coniverse.dangjang.domain.version.dto.IntroResponse;
 import com.coniverse.dangjang.domain.version.dto.Version;
+import com.coniverse.dangjang.domain.version.dto.response.VersionResponse;
 import com.coniverse.dangjang.global.exception.BadRequestException;
 
 import lombok.RequiredArgsConstructor;
@@ -25,11 +25,11 @@ public class VersionService {
 	 * @return IntroResponse
 	 * @since 1.0.0
 	 */
-	public IntroResponse<?> getTestIntroResponse() {
-		IntroResponse<?> introResponse = new IntroResponse<>(MIN_VERSION, LATEST_VERSION, null);
+	public VersionResponse<?> getTestIntroResponse() {
+		VersionResponse<?> versionResponse = new VersionResponse<>(MIN_VERSION, LATEST_VERSION, null);
 		error += 1;
 		if (error % 2 == 0) {
-			return introResponse;
+			return versionResponse;
 		}
 		throw new BadRequestException();
 	}
@@ -40,9 +40,9 @@ public class VersionService {
 	 * @return IntroResponse
 	 * @since 1.0.0
 	 */
-	public IntroResponse<?> getProdIntroResponse() {
-		IntroResponse<?> introResponse = new IntroResponse<>(MIN_VERSION, LATEST_VERSION, null);
+	public VersionResponse<?> getProdIntroResponse() {
+		VersionResponse<?> versionResponse = new VersionResponse<>(MIN_VERSION, LATEST_VERSION, null);
 
-		return introResponse;
+		return versionResponse;
 	}
 }

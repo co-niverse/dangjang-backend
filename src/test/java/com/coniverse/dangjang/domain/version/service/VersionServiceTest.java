@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.coniverse.dangjang.domain.version.dto.IntroResponse;
+import com.coniverse.dangjang.domain.version.dto.response.VersionResponse;
 import com.coniverse.dangjang.global.exception.BadRequestException;
 
 /**
@@ -24,10 +24,10 @@ class VersionServiceTest {
 		@Test
 		void 한_번_호출하면_IntroResponse가_반환된다() {
 			// when
-			IntroResponse<?> introResponse = versionService.getTestIntroResponse();
+			VersionResponse<?> versionResponse = versionService.getTestIntroResponse();
 
 			// then
-			assertThat(introResponse).isNotNull();
+			assertThat(versionResponse).isNotNull();
 		}
 
 		@Test
@@ -45,10 +45,10 @@ class VersionServiceTest {
 		@Test
 		void 호출하면_IntroResponse가_반환된다() {
 			// when
-			IntroResponse<?> introResponse = versionService.getProdIntroResponse();
+			VersionResponse<?> versionResponse = versionService.getProdIntroResponse();
 
 			// then
-			assertThat(introResponse).isNotNull();
+			assertThat(versionResponse).isNotNull();
 		}
 	}
 }
