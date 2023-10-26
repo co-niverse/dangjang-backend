@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.coniverse.dangjang.domain.version.dto.Version;
 import com.coniverse.dangjang.domain.version.dto.response.VersionResponse;
 import com.coniverse.dangjang.domain.version.service.VersionService;
 import com.coniverse.dangjang.support.ControllerTest;
@@ -21,8 +20,7 @@ import com.coniverse.dangjang.support.ControllerTest;
  */
 class VersionControllerTest extends ControllerTest {
 	private static final String URI = "/api/intro";
-	private static final String MIN_VERSION = Version.MINIMUM.getVersion();
-	private static final String LATEST_VERSION = Version.LATEST.getVersion();
+
 	@Autowired
 	private VersionService versionService;
 
