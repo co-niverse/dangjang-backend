@@ -132,7 +132,7 @@ CREATE TABLE `USER_FCM_TOKEN`
 (
     `OAUTH_ID`   varchar(50)  NOT NULL,
     `FCM_TOKEN`  varchar(255) NOT NULL,
-    `CREATED_AT` dateTime     NOT NULL,
+    `CREATED_AT` date         NOT NULL,
     PRIMARY KEY (`FCM_TOKEN`),
     FOREIGN KEY (`OAUTH_ID`) REFERENCES USERS (`OAUTH_ID`) ON DELETE CASCADE
 );
@@ -159,10 +159,10 @@ CREATE TABLE `NOTIFICATION`
 
 CREATE TABLE `SHEDLOCK`
 (
-    `NAME`       VARCHAR(64),
-    `LOCK_UNTIL` TIMESTAMP(3) NULL,
-    `LOCKED_AT`  TIMESTAMP(3) NULL,
-    `LOCKED_BY`  VARCHAR(255),
+    `NAME`       varchar(64)  NOT NULL,
+    `LOCK_UNTIL` timestamp(3) NOT NULL,
+    `LOCKED_AT`  timestamp(3) NOT NULL,
+    `LOCKED_BY`  varchar(255) NOT NULL,
     PRIMARY KEY (NAME)
 );
 
@@ -172,6 +172,5 @@ CREATE TABLE `VERSION`
     `MIN_VERSION`    varchar(10) NOT NULL,
     `LATEST_VERSION` varchar(10) NOT NULL,
     `CREATED_AT`     datetime    NOT NULL,
-    `UPDATED_AT`     datetime    NOT NULL,
     PRIMARY KEY (`VERSION_ID`)
 )
