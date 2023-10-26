@@ -9,6 +9,8 @@ import com.coniverse.dangjang.domain.version.repository.VersionRepository;
 import lombok.RequiredArgsConstructor;
 
 /**
+ * 앱 버전 관련 service
+ *
  * @author TEO
  * @since 1.3.0
  */

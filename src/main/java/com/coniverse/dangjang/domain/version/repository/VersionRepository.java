@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.coniverse.dangjang.domain.version.entity.Version;
 
 /**
- * version repository
+ * app version repository
  *
  * @author TEO
  * @since 1.3.0

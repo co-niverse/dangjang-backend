@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * version entity
+ * app version entity
  *
  * @author TEO
  * @since 1.3.0
