@@ -32,7 +32,7 @@ class VersionControllerTest extends ControllerTest {
 		void 성공한_응답을_반환한다() throws Exception {
 			// given
 			VersionResponse versionResponse = new VersionResponse<>(MIN_VERSION, LATEST_VERSION, null);
-			given(versionService.getProdIntroResponse()).willReturn(versionResponse);
+			given(versionService.getIntroResponse()).willReturn(versionResponse);
 
 			// when
 			ResultActions resultActions = get(mockMvc, URI + "/prod");
