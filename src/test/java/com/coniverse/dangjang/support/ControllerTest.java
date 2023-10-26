@@ -37,7 +37,6 @@ import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.domain.user.service.MypageService;
 import com.coniverse.dangjang.domain.user.service.UserSignupService;
 import com.coniverse.dangjang.domain.user.service.UserWithdrawalService;
-import com.coniverse.dangjang.domain.version.controller.IntroController;
 import com.coniverse.dangjang.domain.version.service.IntroService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -51,7 +50,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @WebMvcTest(
 	controllers = {
-		IntroController.class,
 		HealthMetricController.class,
 		LoginController.class,
 		SignupController.class,

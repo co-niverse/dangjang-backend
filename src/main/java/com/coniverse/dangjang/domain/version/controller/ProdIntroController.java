@@ -15,11 +15,9 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/intro")
 @RequiredArgsConstructor
-public class ProdIntroController implements IntroController {
+public class ProdIntroController {
 	private final IntroService introService;
 
-	// TODO
-	@Override
 	@GetMapping("/prod")
 	public ResponseEntity<SuccessSingleResponse<IntroResponse<?>>> getIntro() {
 		IntroResponse<?> introResponse = introService.getProdIntroResponse();
