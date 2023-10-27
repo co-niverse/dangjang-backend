@@ -18,7 +18,7 @@ import com.coniverse.dangjang.support.annotation.JpaRepositoryTest;
  * @since 1.3.0
  */
 @JpaRepositoryTest
-public class VersionRepositoryTest {
+class VersionRepositoryTest {
 	@Autowired
 	private VersionRepository versionRepository;
 
