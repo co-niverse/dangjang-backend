@@ -21,6 +21,8 @@ class VersionServiceTest {
 	private VersionService versionService;
 	private VersionRepository versionRepository;
 	private static final String KEY = "1234";
+	private static final String MIN_VERSION = "1.3.1";
+	private static final String LATEST_VERSION = "1.3.1";
 
 	@BeforeEach
 	void setUp() {
@@ -31,43 +33,37 @@ class VersionServiceTest {
 	@Test
 	void 버전_응답을_반환한다() {
 		// given
-		String minVersion = "1.0.1";
-		String latestVersion = "1.0.1";
-		Version version = 버전_엔티티(minVersion, latestVersion);
+		Version version = 버전_엔티티(MIN_VERSION, LATEST_VERSION);
 		doReturn(version).when(versionRepository).findFirstByOrderByCreatedAtDesc();
 
 		// when
 		VersionResponse<?> versionResponse = versionService.getVersionResponse();
 
 		// then
-		assertThat(versionResponse.minVersion()).isEqualTo(minVersion);
-		assertThat(versionResponse.latestVersion()).isEqualTo(latestVersion);
+		assertThat(versionResponse.minVersion()).isEqualTo(MIN_VERSION);
+		assertThat(versionResponse.latestVersion()).isEqualTo(LATEST_VERSION);
 	}
 
 	@Test
 	void 키가_같으면_버전을_성공적으로_저장한다() {
 		// given
-		String minVersion = "1.0.1";
-		String latestVersion = "1.0.1";
 		doReturn(null)
 			.when(versionRepository)
 			.save(any());
-		VersionRequest versionRequest = 버전_요청(minVersion, latestVersion, KEY);
+		VersionRequest versionRequest = 버전_요청(MIN_VERSION, LATEST_VERSION, KEY);
 
 		// when
 		VersionResponse<?> versionResponse = versionService.saveVersion(versionRequest);
 
 		// then
-		assertThat(versionResponse.minVersion()).isEqualTo(minVersion);
-		assertThat(versionResponse.latestVersion()).isEqualTo(latestVersion);
+		assertThat(versionResponse.minVersion()).isEqualTo(MIN_VERSION);
+		assertThat(versionResponse.latestVersion()).isEqualTo(LATEST_VERSION);
 	}
 
 	@Test
 	void 키가_다르면_예외가_발생한다() {
 		// given
-		String minVersion = "1.0.1";
-		String latestVersion = "1.0.1";
-		VersionRequest versionRequest = 버전_요청(minVersion, latestVersion, "wrong key");
+		VersionRequest versionRequest = 버전_요청(MIN_VERSION, LATEST_VERSION, "wrong key");
 
 		// when
 		assertThatThrownBy(() -> versionService.saveVersion(versionRequest))
