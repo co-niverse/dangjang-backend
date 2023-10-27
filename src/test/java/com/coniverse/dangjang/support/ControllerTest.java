@@ -25,8 +25,6 @@ import com.coniverse.dangjang.domain.healthmetric.service.HealthConnectService;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricChartSearchService;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricSearchService;
-import com.coniverse.dangjang.domain.intro.controller.IntroController;
-import com.coniverse.dangjang.domain.intro.service.IntroService;
 import com.coniverse.dangjang.domain.log.controller.AppLogController;
 import com.coniverse.dangjang.domain.log.service.LogService;
 import com.coniverse.dangjang.domain.notification.controller.NotificationController;
@@ -39,6 +37,8 @@ import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.domain.user.service.MypageService;
 import com.coniverse.dangjang.domain.user.service.UserSignupService;
 import com.coniverse.dangjang.domain.user.service.UserWithdrawalService;
+import com.coniverse.dangjang.domain.version.controller.VersionController;
+import com.coniverse.dangjang.domain.version.service.VersionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -51,7 +51,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @WebMvcTest(
 	controllers = {
-		IntroController.class,
+		VersionController.class,
 		HealthMetricController.class,
 		LoginController.class,
 		SignupController.class,
@@ -75,7 +75,7 @@ public class ControllerTest {
 	@Autowired
 	protected ObjectMapper objectMapper;
 	@MockBean
-	private IntroService introService;
+	private VersionService versionService;
 	@MockBean
 	private OauthLoginService oAuthLoginService;
 	@MockBean
@@ -110,5 +110,4 @@ public class ControllerTest {
 	private NotificationService notificationService;
 	@MockBean
 	private HealthMetricSearchService healthMetricSearchService;
-
 }
