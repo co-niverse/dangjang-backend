@@ -6,6 +6,8 @@ import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.ResultActions;
@@ -60,6 +62,63 @@ class VersionControllerTest extends ControllerTest {
 			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
 			jsonPath("$.data.minVersion").value(versionResponse.minVersion()),
 			jsonPath("$.data.latestVersion").value(versionResponse.latestVersion())
+		);
+	}
+
+	@ParameterizedTest
+	@ValueSource(strings = {"", " ", "1/1/1", "1.1.0 ", " 1.0.1"})
+	void RequestBody의_minVersion이_잘못됐을_경우_실패한_응답을_반환한다(String minVersion) throws Exception {
+		// given
+		VersionRequest versionRequest = 버전_요청(minVersion, "1.0.1", "1234");
+		String content = objectMapper.writeValueAsString(versionRequest);
+
+		// when
+		ResultActions resultActions = post(mockMvc, URI, content);
+
+		// then
+		resultActions.andExpectAll(
+			status().isBadRequest(),
+			jsonPath("$.errorCode").value(400),
+			jsonPath("$.fieldErrors[0].field").value("minVersion"),
+			jsonPath("$.fieldErrors[0].rejectedValue").value(minVersion)
+		);
+	}
+
+	@ParameterizedTest
+	@ValueSource(strings = {"", " ", "1/1/1", "1.1.0 ", " 1.0.1"})
+	void RequestBody의_latestVersion이_잘못됐을_경우_실패한_응답을_반환한다(String latestVersion) throws Exception {
+		// given
+		VersionRequest versionRequest = 버전_요청("1.0.1", latestVersion, "1234");
+		String content = objectMapper.writeValueAsString(versionRequest);
+
+		// when
+		ResultActions resultActions = post(mockMvc, URI, content);
+
+		// then
+		resultActions.andExpectAll(
+			status().isBadRequest(),
+			jsonPath("$.errorCode").value(400),
+			jsonPath("$.fieldErrors[0].field").value("latestVersion"),
+			jsonPath("$.fieldErrors[0].rejectedValue").value(latestVersion)
+		);
+	}
+
+	@ParameterizedTest
+	@ValueSource(strings = {"", " ", "\n"})
+	void RequestBody의_key가_잘못됐을_경우_실패한_응답을_반환한다(String key) throws Exception {
+		// given
+		VersionRequest versionRequest = 버전_요청("1.0.1", "1.0.1", key);
+		String content = objectMapper.writeValueAsString(versionRequest);
+
+		// when
+		ResultActions resultActions = post(mockMvc, URI, content);
+
+		// then
+		resultActions.andExpectAll(
+			status().isBadRequest(),
+			jsonPath("$.errorCode").value(400),
+			jsonPath("$.fieldErrors[0].field").value("key"),
+			jsonPath("$.fieldErrors[0].rejectedValue").value(key)
 		);
 	}
 }
