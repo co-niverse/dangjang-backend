@@ -1,10 +1,12 @@
 package com.coniverse.dangjang.domain.version.entity;
 
-import com.coniverse.dangjang.global.support.CreatedAtOnlyEntity;
+import java.time.LocalDateTime;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -20,10 +22,11 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Version extends CreatedAtOnlyEntity {
+@EntityListeners(AuditingEntityListener.class)
+public class Version {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long versionId;
+	@CreatedDate
+	private LocalDateTime createdAt;
 	private String minVersion;
 	private String latestVersion;
 

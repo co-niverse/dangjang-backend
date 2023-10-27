@@ -168,9 +168,8 @@ CREATE TABLE `SHEDLOCK`
 
 CREATE TABLE `VERSION`
 (
-    `VERSION_ID`     bigint      NOT NULL AUTO_INCREMENT,
+    `CREATED_AT`     datetime    NOT NULL,
     `MIN_VERSION`    varchar(10) NOT NULL,
     `LATEST_VERSION` varchar(10) NOT NULL,
-    `CREATED_AT`     datetime    NOT NULL,
-    PRIMARY KEY (`VERSION_ID`)
-)
+    PRIMARY KEY (`CREATED_AT`)
+);
