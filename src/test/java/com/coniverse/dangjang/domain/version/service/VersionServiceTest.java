@@ -61,7 +61,7 @@ class VersionServiceTest {
 	}
 
 	@Test
-	void 키가_다르면_예외가_발생한다() {
+	void 키가_다르면_버전을_저장할_때_예외가_발생한다() {
 		// given
 		VersionRequest versionRequest = 버전_요청(MIN_VERSION, LATEST_VERSION, "wrong key");
 
