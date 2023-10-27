@@ -1,5 +1,6 @@
 package com.coniverse.dangjang.domain.version.repository;
 
+import static com.coniverse.dangjang.fixture.VersionFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,11 +27,7 @@ public class VersionRepositoryTest {
 		// given
 		int count = 30;
 		List<Version> versions = IntStream.rangeClosed(1, count)
-			.mapToObj(i -> Version.builder()
-				.minVersion("1.0." + i)
-				.latestVersion("1.0." + i)
-				.build()
-			)
+			.mapToObj(i -> 버전_엔티티("1.0." + i, "1.0." + i))
 			.toList();
 		versionRepository.saveAll(versions);
 
