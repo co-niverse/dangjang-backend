@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class VersionService {
 	private final VersionRepository versionRepository;
 	@Value("${version.key}")
-	private String serverKey;
+	private final String serverKey;
 
 	/**
 	 * 가장 최근의 버전 정보를 반환한다.
