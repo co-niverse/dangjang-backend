@@ -1,5 +1,7 @@
 package com.coniverse.dangjang.domain.guide.bloodsugar.service;
 
+import java.time.LocalDate;
+
 import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
@@ -95,6 +97,17 @@ public class BloodSugarGuideGenerateService implements GuideGenerateService {
 		guide.updateSubGuide(subGuide, prevType);
 		bloodSugarGuideRepository.save(guide);
 		return mapper.toSubGuideResponse(subGuide, guide.getTodayGuides());
+	}
+
+	@Override
+	public void removeGuide(String oauthId, LocalDate createdAt, CommonCode type) {
+		BloodSugarGuide guide = bloodSugarGuideSearchService.findByUserIdAndCreatedAt(oauthId, createdAt);
+		guide.removeSubGuide(type);
+		if (guide.existsSubGuide()) {
+			bloodSugarGuideRepository.save(guide);
+			return;
+		}
+		bloodSugarGuideRepository.delete(guide);
 	}
 
 	@Override
