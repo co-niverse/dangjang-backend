@@ -166,4 +166,16 @@ public class BloodSugarGuide {
 			.findFirst()
 			.ifPresent(TodayGuide::minusCount);
 	}
+
+	/**
+	 * 서브 가이드를 삭제한다.
+	 *
+	 * @param type 서브 가이드 타입
+	 * @since 1.3.0
+	 */
+	public void removeSubGuide(CommonCode type) {
+		SubGuide subGuide = getSubGuide(type);
+		this.subGuides.remove(subGuide);
+		minusAlertCount(subGuide.getAlert());
+	}
 }
