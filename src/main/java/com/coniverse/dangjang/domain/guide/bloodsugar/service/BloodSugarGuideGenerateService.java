@@ -99,6 +99,14 @@ public class BloodSugarGuideGenerateService implements GuideGenerateService {
 		return mapper.toSubGuideResponse(subGuide, guide.getTodayGuides());
 	}
 
+	/**
+	 * 서브 가이드를 삭제한다. 서브 가이드가 존재하지 않으면 혈당 가이드를 삭제한다.
+	 *
+	 * @param oauthId   유저 PK
+	 * @param createdAt 생성일자
+	 * @param type      타입
+	 * @since 1.3.0
+	 */
 	@Override
 	public void removeGuide(String oauthId, LocalDate createdAt, CommonCode type) {
 		BloodSugarGuide guide = bloodSugarGuideSearchService.findByUserIdAndCreatedAt(oauthId, createdAt);
