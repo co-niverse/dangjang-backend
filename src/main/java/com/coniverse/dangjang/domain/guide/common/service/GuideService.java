@@ -1,5 +1,6 @@
 package com.coniverse.dangjang.domain.guide.common.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -69,5 +70,11 @@ public class GuideService {
 	 */
 	private GuideGenerateService findGuideGenerateService(GroupCode groupCode) {
 		return guideGenerateServiceMap.get(groupCode);
+	}
+
+	public void removeGuide(String oauthId, LocalDate createdAt, CommonCode type) {
+		GroupCode groupCode = GroupCode.findByCode(type);
+		GuideGenerateService guideGenerateService = findGuideGenerateService(groupCode);
+		guideGenerateService.removeGuide(oauthId, createdAt, type);
 	}
 }

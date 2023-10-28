@@ -115,5 +115,6 @@ public class HealthMetricRegisterService {
 		LocalDate createdAt = LocalDate.parse(date);
 		HealthMetric healthMetric = healthMetricSearchService.findByHealthMetricId(oauthId, createdAt, type);
 		healthMetricRepository.delete(healthMetric);
+		guideService.removeGuide(oauthId, createdAt, type);
 	}
 }
