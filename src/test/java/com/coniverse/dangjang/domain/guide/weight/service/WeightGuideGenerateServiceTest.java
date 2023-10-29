@@ -85,7 +85,7 @@ class WeightGuideGenerateServiceTest {
 	void 체중_가이드를_성공적으로_삭제한다() {
 		// given
 		String oauthId = 테오_아이디;
-		String createdAt = 등록_일자;
+		String createdAt = "2023-11-01";
 		weightGuideRepository.save(체중_가이드(oauthId, createdAt));
 
 		// when
