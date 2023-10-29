@@ -69,15 +69,12 @@ public class ExerciseGuide { // TODO 걸음 가이드, 칼로리 가이드로 �
 	 * <p>
 	 * 기존에 존재하는 운동 칼로리를 삭제하고, 새로운 운동 칼로리를 추가한다.
 	 *
-	 * @param updateExerciseCalorie 운동칼로리 객체
+	 * @param updatedExerciseCalorie 운동칼로리 객체
 	 * @since 1.0.0
 	 */
-	public void changeExerciseCalories(ExerciseCalorie updateExerciseCalorie) {
-		exerciseCalories.stream()
-			.filter(existExerciseCalorie -> existExerciseCalorie.type().equals(updateExerciseCalorie.type()))
-			.findFirst()
-			.ifPresent(existExerciseCalorie -> exerciseCalories.remove(existExerciseCalorie));
-		exerciseCalories.add(updateExerciseCalorie);
+	public void changeExerciseCalories(ExerciseCalorie updatedExerciseCalorie) {
+		removeExerciseCalorie(updatedExerciseCalorie.type());
+		exerciseCalories.add(updatedExerciseCalorie);
 	}
 
 	/**
