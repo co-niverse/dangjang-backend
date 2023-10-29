@@ -211,7 +211,7 @@ class ExerciseGuideGenerateServiceTest {
 	void 소모칼로리_가이드를_성공적으로_삭제한다() {
 		// given
 		String oauthId = user.getOauthId();
-		LocalDate createdAt = LocalDate.parse("2021-08-02");
+		LocalDate createdAt = LocalDate.parse("2021-08-03");
 		CommonCode type = CommonCode.HEALTH;
 		ExerciseGuide 운동_가이드 = 운동_가이드(oauthId, createdAt);
 		exerciseGuideRepository.save(운동_가이드);
@@ -222,5 +222,22 @@ class ExerciseGuideGenerateServiceTest {
 		// then
 		ExerciseGuide 삭제한_가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(oauthId, createdAt).orElseThrow();
 		assertThat(삭제한_가이드.getExerciseCalories()).hasSize(운동_가이드.getExerciseCalories().size() - 1);
+	}
+
+	@Test
+	void 걸음수_소모칼로리_가이드가_존재하지_않으면_운동_가이드를_성공적으로_삭제한다() {
+		// given
+		String oauthId = user.getOauthId();
+		LocalDate createdAt = LocalDate.parse("2021-08-04");
+		ExerciseGuide 운동_가이드 = 걸음수_운동_가이드(oauthId, createdAt);
+		exerciseGuideRepository.save(운동_가이드);
+
+		// when
+		List.of(CommonCode.STEP_COUNT, CommonCode.HEALTH, CommonCode.RUN)
+			.forEach(type -> exerciseGuideGenerateService.removeGuide(oauthId, createdAt.minusDays(1), type));
+
+		// then
+		assertThatThrownBy(() -> exerciseGuideSearchService.findByOauthIdAndCreatedAt(oauthId, createdAt))
+			.isInstanceOf(GuideNotFoundException.class);
 	}
 }
