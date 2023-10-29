@@ -5,6 +5,7 @@ import static com.coniverse.dangjang.fixture.GuideFixture.*;
 import static com.coniverse.dangjang.fixture.HealthMetricFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -180,6 +182,45 @@ class ExerciseGuideGenerateServiceTest {
 				break;
 			}
 		}
+	}
 
+	@Test
+	void 걸음_가이드를_성공적으로_삭제한다() {
+		// given
+		String oauthId = user.getOauthId();
+		LocalDate createdAt = LocalDate.parse("2021-08-02");
+		CommonCode type = CommonCode.STEP_COUNT;
+		ExerciseGuide 운동_가이드 = 걸음수_운동_가이드(oauthId, createdAt);
+		exerciseGuideRepository.save(운동_가이드);
+
+		// when
+		exerciseGuideGenerateService.removeGuide(oauthId, createdAt.minusDays(1), type);
+
+		// then
+		ExerciseGuide 삭제한_가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(oauthId, createdAt).orElseThrow();
+		assertAll(
+			() -> assertThat(삭제한_가이드.getContent()).isNull(),
+			() -> assertThat(삭제한_가이드.getComparedToLastWeek()).isNull(),
+			() -> assertThat(삭제한_가이드.getNeedStepByLastWeek()).isEqualTo(0),
+			() -> assertThat(삭제한_가이드.getNeedStepByTTS()).isEqualTo(0),
+			() -> assertThat(삭제한_가이드.getStepCount()).isEqualTo(0)
+		);
+	}
+
+	@Test
+	void 소모칼로리_가이드를_성공적으로_삭제한다() {
+		// given
+		String oauthId = user.getOauthId();
+		LocalDate createdAt = LocalDate.parse("2021-08-02");
+		CommonCode type = CommonCode.HEALTH;
+		ExerciseGuide 운동_가이드 = 운동_가이드(oauthId, createdAt);
+		exerciseGuideRepository.save(운동_가이드);
+
+		// when
+		exerciseGuideGenerateService.removeGuide(oauthId, createdAt.minusDays(1), type);
+
+		// then
+		ExerciseGuide 삭제한_가이드 = exerciseGuideRepository.findByOauthIdAndCreatedAt(oauthId, createdAt).orElseThrow();
+		assertThat(삭제한_가이드.getExerciseCalories()).hasSize(운동_가이드.getExerciseCalories().size() - 1);
 	}
 }
