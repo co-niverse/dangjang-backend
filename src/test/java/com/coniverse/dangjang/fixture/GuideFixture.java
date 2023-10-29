@@ -78,11 +78,7 @@ public class GuideFixture {
 
 		return ExerciseGuide.builder()
 			.oauthId(oauthId)
-			.needStepByLastWeek(0)
-			.comparedToLastWeek("저번주 대비 가이드입니다.")
-			.content("가이드 내용입니다.")
 			.createdAt(조회_날짜)
-			.stepCount(0)
 			.exerciseCalories(exerciseCalories)
 			.build();
 	}
@@ -118,8 +114,7 @@ public class GuideFixture {
 	}
 
 	public static WeightGuideResponse 체중_가이드_응답(String createdAt) {
-		return new WeightGuideResponse(CommonCode.MEASUREMENT.getTitle(), createdAt, 20, Alert.LEVEL_1_OBESITY.getTitle(), "가이드입니다", 18.0,
-			"50");
+		return new WeightGuideResponse(CommonCode.MEASUREMENT.getTitle(), createdAt, 20, Alert.LEVEL_1_OBESITY.getTitle(), "가이드입니다", 18.0, "50");
 	}
 
 	public static ExerciseGuideResponse 운동_가이드_응답(String 조회_날짜) {
@@ -131,10 +126,6 @@ public class GuideFixture {
 		double percent = ExerciseCoefficient.findCoefficientByType(type);
 		int calorie = (int)(percent * weight / 15 * unit);
 		return new ExerciseCalorie(type, calorie, unit);
-	}
-
-	public static GuideResponse 당화혈색소_가이드_응답() { // TODO return 수정
-		return null;
 	}
 
 	public static List<ExerciseGuide> 운동가이드_리스트(User user, LocalDate createdAt, int unit, int needCount) {
@@ -150,7 +141,6 @@ public class GuideFixture {
 				.stepCount(8000)
 				.createdAt(createdAt.plusDays(n))
 				.build()).collect(Collectors.toList());
-
 	}
 
 	public static DayGuideResponse 하루_가이드_응답(User user, LocalDate date, List<TodayGuide> 혈당가이드, WeightDayGuide 체중가이드, ExerciseDayGuide 운동가이드) {
@@ -164,5 +154,4 @@ public class GuideFixture {
 	public static ExerciseDayGuide 운동_하루_가이드() {
 		return new ExerciseDayGuide(1400, 11000);
 	}
-
 }
