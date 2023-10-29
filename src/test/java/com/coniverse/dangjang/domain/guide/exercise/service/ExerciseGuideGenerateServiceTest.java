@@ -201,9 +201,9 @@ class ExerciseGuideGenerateServiceTest {
 		assertAll(
 			() -> assertThat(삭제한_가이드.getContent()).isNull(),
 			() -> assertThat(삭제한_가이드.getComparedToLastWeek()).isNull(),
-			() -> assertThat(삭제한_가이드.getNeedStepByLastWeek()).isEqualTo(0),
-			() -> assertThat(삭제한_가이드.getNeedStepByTTS()).isEqualTo(0),
-			() -> assertThat(삭제한_가이드.getStepCount()).isEqualTo(0)
+			() -> assertThat(삭제한_가이드.getNeedStepByLastWeek()).isZero(),
+			() -> assertThat(삭제한_가이드.getNeedStepByTTS()).isZero(),
+			() -> assertThat(삭제한_가이드.getStepCount()).isZero()
 		);
 	}
 

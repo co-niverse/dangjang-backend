@@ -149,11 +149,11 @@ class HealthMetricRegisterServiceTest {
 	@Test
 	void 존재하지_않는_건강지표를_삭제할_경우_예외가_발생한다() {
 		// given
-		CommonCode type = 수정된_건강지표.getType();
-		LocalDate createdAt = 수정된_건강지표.getCreatedAt();
+		String type = 수정된_건강지표.getType().getTitle();
+		String createdAt = 수정된_건강지표.getCreatedAt().toString();
 
 		// when & then
-		assertThatThrownBy(() -> healthMetricRegisterService.remove(createdAt.toString(), type.getTitle(), oauthId))
+		assertThatThrownBy(() -> healthMetricRegisterService.remove(createdAt, type, oauthId))
 			.isInstanceOf(HealthMetricNotFoundException.class);
 	}
 }

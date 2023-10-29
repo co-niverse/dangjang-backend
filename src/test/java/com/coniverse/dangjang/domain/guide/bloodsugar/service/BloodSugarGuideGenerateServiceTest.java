@@ -240,7 +240,7 @@ class BloodSugarGuideGenerateServiceTest {
 
 		// then
 		BloodSugarGuide 삭제한_가이드 = bloodSugarGuideRepository.findByOauthIdAndCreatedAt(oauthId, createdAt).orElseThrow();
-		assertThat(삭제한_가이드.getSubGuides().size()).isEqualTo(혈당_가이드.getSubGuides().size() - 1);
+		assertThat(삭제한_가이드.getSubGuides()).hasSize(혈당_가이드.getSubGuides().size() - 1);
 	}
 
 	@Test
