@@ -25,6 +25,7 @@ import com.coniverse.dangjang.domain.notification.entity.UserFcmToken;
 import com.coniverse.dangjang.domain.notification.repository.NotificationRepository;
 import com.coniverse.dangjang.domain.notification.repository.NotificationTypeRepository;
 import com.coniverse.dangjang.domain.notification.repository.UserFcmTokenRepository;
+import com.coniverse.dangjang.domain.user.dto.request.FcmTokenRequest;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
@@ -50,15 +51,15 @@ class NotificationServiceTest {
 	private UserFcmTokenRepository userFcmTokenRepository;
 	@Autowired
 	private NotificationTypeRepository notificationTypeRepository;
-	@Autowired
-	private NotificationSearchService notificationSearchService;
 
 	private User 테오;
 	private User 이브;
 	private String 테오_아이디;
 	private String 이브_아이디;
 	private String fcmToken = "token";
+	private String deviceId = "deviceId";
 	private String 이브_fcmToken = "token2";
+	private FcmTokenRequest fcmTokenRequest = fcm_등록_및_업데이트_요청(fcmToken, deviceId);
 
 	@Transactional
 	@BeforeAll
@@ -69,7 +70,7 @@ class NotificationServiceTest {
 		이브 = userRepository.save(유저_이브());
 		이브.updateAccessedAt(LocalDate.now().minusDays(1));
 		userRepository.save(이브);
-		userFcmTokenRepository.save(사용자_fcmToken_엔티티(이브_fcmToken, 이브));
+		userFcmTokenRepository.save(사용자_fcmToken_엔티티(이브_fcmToken, 이브, deviceId));
 		notificationRepository.saveAll(사용자_알림_엔티티_목록(테오));
 	}
 
@@ -131,22 +132,37 @@ class NotificationServiceTest {
 	@Test
 	void fcmToken을_저장한다() {
 		//when
-		notificationService.saveFcmToken(fcmToken, 테오_아이디);
+		notificationService.saveFcmToken(fcmTokenRequest, 테오_아이디);
 		//then
-		UserFcmToken 조회_결과 = userFcmTokenRepository.findById(fcmToken).get();
+		UserFcmToken 조회_결과 = userFcmTokenRepository.findUserFcmTokenByFcmId(테오_아이디, fcmTokenRequest.deviceId()).get();
 		assertThat(조회_결과.getUser().getId()).isEqualTo(테오_아이디);
 		assertThat(조회_결과.getFcmToken()).isEqualTo(fcmToken);
+	}
+
+	@Transactional
+	@Order(450)
+	@Test
+	void fcmToken을_수정한다() {
+		//when
+		UserFcmToken userFcmToken = userFcmTokenRepository.findUserFcmTokenByFcmId(이브.getOauthId(), deviceId).get();
+		String newFcmToken = "새로운_fcmToken";
+		notificationService.saveFcmToken(fcm_등록_및_업데이트_요청(newFcmToken, deviceId), 이브.getOauthId());
+		//then
+		UserFcmToken 조회_결과 = userFcmTokenRepository.findUserFcmTokenByFcmId(이브.getOauthId(), deviceId).get();
+		assertThat(조회_결과.getUser().getId()).isEqualTo(이브.getOauthId());
+		assertThat(조회_결과.getFcmToken()).isEqualTo(newFcmToken);
+		assertThat(userFcmToken.getFcmId()).isNotSameAs(newFcmToken);
 	}
 
 	@Order(500)
 	@Test
 	void fcmToken을_제거한다() {
 		//given
-		notificationService.saveFcmToken(fcmToken, 테오_아이디);
+		notificationService.saveFcmToken(fcmTokenRequest, 테오_아이디);
 		//when
 		notificationService.deleteFcmToken(fcmToken);
 		//then
-		assertThat(userFcmTokenRepository.findById(fcmToken)).isEmpty();
+		assertThat(userFcmTokenRepository.findUserFcmTokenByFcmId(테오_아이디, fcmTokenRequest.deviceId())).isEmpty();
 	}
 
 	@Order(700)

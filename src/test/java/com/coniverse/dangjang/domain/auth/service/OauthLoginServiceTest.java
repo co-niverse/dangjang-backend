@@ -47,6 +47,7 @@ class OauthLoginServiceTest {
 	@Autowired
 	private BlackTokenRepository blackTokenRepository;
 	private final String fcmToken = "fcmToken";
+	private String deviceId = "deviceId";
 	@Autowired
 	private EntityManager entityManager;
 	@Autowired
@@ -171,7 +172,7 @@ class OauthLoginServiceTest {
 	void 로그아웃을_성공한다() {
 		//given
 		User 이브 = userRepository.save(유저_이브());
-		userFcmTokenRepository.save(사용자_fcmToken_엔티티(fcmToken, 이브));
+		userFcmTokenRepository.save(사용자_fcmToken_엔티티(fcmToken, 이브, deviceId));
 		String accessToken = oauthLoginService.getAuthToken(이브.getNickname());
 		String header = "Bearer " + accessToken;
 		//when
