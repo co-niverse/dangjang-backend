@@ -151,7 +151,7 @@ class NotificationServiceTest {
 		UserFcmToken 조회_결과 = userFcmTokenRepository.findUserFcmTokenByFcmId(이브.getOauthId(), deviceId).get();
 		assertThat(조회_결과.getUser().getId()).isEqualTo(이브.getOauthId());
 		assertThat(조회_결과.getFcmToken()).isEqualTo(newFcmToken);
-		assertThat(userFcmToken.getFcmId()).isNotSameAs(newFcmToken);
+		assertThat(userFcmToken.getFcmToken()).isNotSameAs(newFcmToken);
 	}
 
 	@Order(500)
