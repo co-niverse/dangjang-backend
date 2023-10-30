@@ -87,4 +87,13 @@ public class SimpleMockMvc {
 				.accept(MediaType.APPLICATION_JSON)
 		);
 	}
+
+	public static ResultActions delete(final MockMvc mockMvc, final String uri, final MultiValueMap<String, String> params,
+		final Object... pathVariables) throws Exception {
+		return mockMvc.perform(
+			MockMvcRequestBuilders.delete(uri, pathVariables)
+				.params(params)
+				.accept(MediaType.APPLICATION_JSON)
+		);
+	}
 }
