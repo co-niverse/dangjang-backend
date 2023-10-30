@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,7 @@ import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 import com.coniverse.dangjang.global.validator.ValidLocalDate;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -96,11 +98,26 @@ public class HealthMetricController {
 	 * @return 유저의 마지막 건강지표 생성일
 	 * @since 1.1.0
 	 */
-
 	@GetMapping("/last-date")
 	public ResponseEntity<SuccessSingleResponse<HealthMetricLastDateResponse>> getHealthMetricLastDate(@AuthenticationPrincipal User principal) {
 		String oauthId = principal.getUsername();
 		HealthMetricLastDateResponse response = healthMetricSearchService.findHealthMetricLastDate(oauthId);
 		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
+	}
+
+	/**
+	 * 건강지표를 DELETE 요청한다.
+	 *
+	 * @param date      건강지표 생성일
+	 * @param type      건강지표 타입
+	 * @param principal 유저 정보
+	 * @return 성공 메시지
+	 * @since 1.3.0
+	 */
+	@DeleteMapping
+	public ResponseEntity<SuccessSingleResponse<?>> deleteHealthMetric(@ValidLocalDate @RequestParam String date, @NotBlank @RequestParam String type,
+		@AuthenticationPrincipal User principal) {
+		healthMetricRegisterService.remove(date, type, principal.getUsername());
+		return ResponseEntity.noContent().build();
 	}
 }
