@@ -8,11 +8,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coniverse.dangjang.domain.notification.service.NotificationService;
+import com.coniverse.dangjang.domain.user.dto.request.FcmTokenRequest;
 import com.coniverse.dangjang.domain.user.dto.response.DuplicateNicknameResponse;
 import com.coniverse.dangjang.domain.user.dto.response.MypageResponse;
 import com.coniverse.dangjang.domain.user.service.MypageService;
@@ -20,7 +22,7 @@ import com.coniverse.dangjang.domain.user.service.UserSignupService;
 import com.coniverse.dangjang.domain.user.service.UserWithdrawalService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
@@ -69,9 +71,17 @@ public class UserController { // TODO 전체 수정 (위치: signup, 이름: dup
 		return ResponseEntity.noContent().build();
 	}
 
+	/**
+	 * fcmToken 저장 및 업데이트
+	 *
+	 * @param user    사용자 정보
+	 * @param request fcmToken
+	 * @return MyPageResponse 사용자 닉네임과 포인트
+	 * @since 1.0.0
+	 */
 	@PostMapping("/fcmToken")
-	public ResponseEntity<SuccessSingleResponse<?>> registerFcmToken(@AuthenticationPrincipal User user, HttpServletRequest request) {
-		notificationService.saveFcmToken(request.getHeader("FcmToken"), user.getUsername());
+	public ResponseEntity<SuccessSingleResponse<?>> postFcmToken(@AuthenticationPrincipal User user, @Valid @RequestBody FcmTokenRequest request) {
+		notificationService.saveFcmToken(request, user.getUsername());
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}
 }

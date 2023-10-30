@@ -82,7 +82,6 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	public LoginResponse login(OauthLoginRequest params, String fcmToken) {
 		OAuthInfoResponse oAuthInfoResponse = request(params);
 		User user = userSearchService.findUserByOauthId(oAuthInfoResponse.getOauthId());
-		notificationService.saveFcmToken(fcmToken, user.getOauthId());
 		HealthConnect healthConnect = userSearchService.findInterlockHealthConnect(user.getOauthId());
 		user.verifyActiveUser();
 		return new LoginResponse(user.getNickname(), false, healthConnect.isConnecting());

@@ -17,6 +17,7 @@ import com.coniverse.dangjang.domain.notification.exception.InvalidFcmTokenExcep
 import com.coniverse.dangjang.domain.notification.mapper.NotificationMapper;
 import com.coniverse.dangjang.domain.notification.repository.NotificationRepository;
 import com.coniverse.dangjang.domain.notification.repository.UserFcmTokenRepository;
+import com.coniverse.dangjang.domain.user.dto.request.FcmTokenRequest;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
 
@@ -81,14 +82,25 @@ public class NotificationService {
 
 	/**
 	 * fcmToken 저장
+	 * <p>
+	 * 기존에 있는 fcm 토큰이라면 업데이트하고, 없다면 새로 저장한다.
 	 *
-	 * @param fcmToken fcmToken
-	 * @param oauthId  사용자 아이디
+	 * @param request fcmToken 요청
+	 * @param oauthId 사용자 아이디
 	 * @since 1.1.0
 	 */
-	public void saveFcmToken(String fcmToken, String oauthId) {
+	public void saveFcmToken(FcmTokenRequest request, String oauthId) {
 		User user = userSearchService.findUserByOauthId(oauthId);
-		userFcmTokenRepository.save(notificationMapper.toEntity(user, fcmToken, LocalDate.now()));
+		UserFcmToken userFcmToken = notificationMapper.toEntity(user, request.fcmToken(), request.deviceId());
+		Optional<UserFcmToken> exitsFcmToken = userFcmTokenRepository.findUserFcmTokenByFcmId(oauthId, request.deviceId());
+		if (exitsFcmToken.isEmpty()) {
+			userFcmTokenRepository.save(userFcmToken);
+		} else {
+			UserFcmToken updateFcmToken = exitsFcmToken.get();
+			updateFcmToken.setFcmToken(request.fcmToken());
+			userFcmTokenRepository.save(updateFcmToken);
+		}
+
 	}
 
 	/**
@@ -99,7 +111,7 @@ public class NotificationService {
 	 * @since 1.1.0
 	 */
 	public void deleteFcmToken(String fcmToken) {
-		userFcmTokenRepository.deleteById(fcmToken);
+		userFcmTokenRepository.deleteByFcmToken(fcmToken);
 	}
 
 	/**

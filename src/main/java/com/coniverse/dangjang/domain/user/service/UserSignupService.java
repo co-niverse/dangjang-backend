@@ -16,7 +16,6 @@ import com.coniverse.dangjang.domain.guide.weight.service.WeightGuideSearchServi
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
 import com.coniverse.dangjang.domain.infrastructure.auth.dto.OAuthInfoResponse;
-import com.coniverse.dangjang.domain.notification.service.NotificationService;
 import com.coniverse.dangjang.domain.point.service.PointService;
 import com.coniverse.dangjang.domain.user.dto.request.SignUpRequest;
 import com.coniverse.dangjang.domain.user.dto.response.DuplicateNicknameResponse;
@@ -45,7 +44,6 @@ public class UserSignupService {
 	private final PointService pointService;
 	private final UserMapper userMapper;
 	private final AuthMapper authMapper;
-	private final NotificationService notificationService;
 	private final WeightGuideSearchService weightGuideSearchService;
 
 	/**
@@ -65,7 +63,6 @@ public class UserSignupService {
 		User savedUser = userRepository.save(userMapper.toEntity(oAuthInfoResponse, signUpRequest, activityAmount, gender, recommendedCalorie));
 		registerWeight(savedUser, signUpRequest.weight());
 		pointService.addSignupPoint(savedUser.getOauthId());
-		notificationService.saveFcmToken(fcmToken, savedUser.getOauthId());
 		return authMapper.toLoginResponse(savedUser.getNickname(), false, savedUser.getHealthConnect().isConnecting());
 	}
 
