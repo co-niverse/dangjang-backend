@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
+import com.coniverse.dangjang.domain.auth.dto.request.LogoutFcmTokenRequest;
 import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
@@ -79,12 +80,13 @@ public class LoginController {
 	/**
 	 * 로그아웃
 	 *
-	 * @param request 요청
+	 * @param request               HttpServletRequest oauthId
+	 * @param logoutFcmTokenRequest fcmToken
 	 * @since 1.1.0
 	 */
 	@PostMapping("/logout")
-	public ResponseEntity<SuccessSingleResponse> logout(HttpServletRequest request) {
-		oauthLoginService.logout(request.getHeader(headerKeyAuthorization), request.getHeader(headerKeyFcmToken));
+	public ResponseEntity<SuccessSingleResponse> logout(HttpServletRequest request, @RequestBody LogoutFcmTokenRequest logoutFcmTokenRequest) {
+		oauthLoginService.logout(request.getHeader(headerKeyAuthorization), logoutFcmTokenRequest.fcmToken());
 		return ResponseEntity.ok()
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}
