@@ -132,7 +132,7 @@ class NotificationServiceTest {
 	@Test
 	void fcmToken을_저장한다() {
 		//when
-		notificationService.saveFcmToken(fcmTokenRequest, 테오_아이디);
+		notificationService.saveOrUpdateFcmToken(fcmTokenRequest, 테오_아이디);
 		//then
 		UserFcmToken 조회_결과 = userFcmTokenRepository.findUserFcmTokenByFcmId(테오_아이디, fcmTokenRequest.deviceId()).get();
 		assertThat(조회_결과.getUser().getId()).isEqualTo(테오_아이디);
@@ -146,7 +146,7 @@ class NotificationServiceTest {
 		//when
 		UserFcmToken userFcmToken = userFcmTokenRepository.findUserFcmTokenByFcmId(이브.getOauthId(), deviceId).get();
 		String newFcmToken = "새로운_fcmToken";
-		notificationService.saveFcmToken(fcm_등록_및_업데이트_요청(newFcmToken, deviceId), 이브.getOauthId());
+		notificationService.saveOrUpdateFcmToken(fcm_등록_및_업데이트_요청(newFcmToken, deviceId), 이브.getOauthId());
 		//then
 		UserFcmToken 조회_결과 = userFcmTokenRepository.findUserFcmTokenByFcmId(이브.getOauthId(), deviceId).get();
 		assertThat(조회_결과.getUser().getId()).isEqualTo(이브.getOauthId());
@@ -157,7 +157,7 @@ class NotificationServiceTest {
 	@Test
 	void fcmToken을_제거한다() {
 		//given
-		notificationService.saveFcmToken(fcmTokenRequest, 테오_아이디);
+		notificationService.saveOrUpdateFcmToken(fcmTokenRequest, 테오_아이디);
 		//when
 		notificationService.deleteFcmToken(fcmToken);
 		//then
