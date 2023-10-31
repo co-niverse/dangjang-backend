@@ -81,7 +81,7 @@ public class UserController { // TODO 전체 수정 (위치: signup, 이름: dup
 	 */
 	@PostMapping("/fcmToken")
 	public ResponseEntity<SuccessSingleResponse<?>> postFcmToken(@AuthenticationPrincipal User user, @Valid @RequestBody FcmTokenRequest request) {
-		notificationService.saveFcmToken(request, user.getUsername());
+		notificationService.saveOrUpdateFcmToken(request, user.getUsername());
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}
 }

@@ -89,18 +89,37 @@ public class NotificationService {
 	 * @param oauthId 사용자 아이디
 	 * @since 1.1.0
 	 */
+	public void saveOrUpdateFcmToken(FcmTokenRequest request, String oauthId) {
+		Optional<UserFcmToken> existFcmToken = userFcmTokenRepository.findUserFcmTokenByFcmId(oauthId, request.deviceId());
+		if (!existFcmToken.isEmpty()) {
+			updateFcmToken(existFcmToken.get(), request.fcmToken());
+			return;
+		}
+		saveFcmToken(request, oauthId);
+	}
+
+	/**
+	 * fcmToken 업데이트
+	 *
+	 * @param userFcmToken 기존의 userFcmToken
+	 * @param newFcmToken  새로운 fcmToken
+	 * @since 1.3.0
+	 */
+	public void updateFcmToken(UserFcmToken userFcmToken, String newFcmToken) {
+		userFcmToken.setFcmToken(newFcmToken);
+	}
+
+	/**
+	 * fcmToken 저장
+	 *
+	 * @param request 요청
+	 * @param oauthId 사용자 아이디
+	 * @since 1.3.0
+	 */
 	public void saveFcmToken(FcmTokenRequest request, String oauthId) {
 		User user = userSearchService.findUserByOauthId(oauthId);
 		UserFcmToken userFcmToken = notificationMapper.toEntity(user, request.fcmToken(), request.deviceId());
-		Optional<UserFcmToken> exitsFcmToken = userFcmTokenRepository.findUserFcmTokenByFcmId(oauthId, request.deviceId());
-		if (exitsFcmToken.isEmpty()) {
-			userFcmTokenRepository.save(userFcmToken);
-		} else {
-			UserFcmToken updateFcmToken = exitsFcmToken.get();
-			updateFcmToken.setFcmToken(request.fcmToken());
-			userFcmTokenRepository.save(updateFcmToken);
-		}
-
+		userFcmTokenRepository.save(userFcmToken);
 	}
 
 	/**
