@@ -47,7 +47,6 @@ class OauthLoginServiceTest {
 	@Autowired
 	private BlackTokenRepository blackTokenRepository;
 	private final String fcmToken = "fcmToken";
-	private String deviceId = "deviceId";
 	@Autowired
 	private EntityManager entityManager;
 	@Autowired
@@ -67,7 +66,7 @@ class OauthLoginServiceTest {
 		KakaoLoginRequest request = 카카오_로그인_요청();
 
 		// when & then
-		assertThatThrownBy(() -> oauthLoginService.login(request))
+		assertThatThrownBy(() -> oauthLoginService.login(request, fcmToken))
 			.isInstanceOf(NonExistentUserException.class);
 	}
 
@@ -80,7 +79,7 @@ class OauthLoginServiceTest {
 		KakaoLoginRequest request = 카카오_로그인_요청();
 		int tokenCount = 0;
 		//when
-		LoginResponse response = oauthLoginService.login(request);
+		LoginResponse response = oauthLoginService.login(request, fcmToken);
 
 		//then
 		assertAll(
@@ -100,7 +99,7 @@ class OauthLoginServiceTest {
 		KakaoLoginRequest request = 카카오_로그인_요청();
 		int tokenCount = 0;
 		//when
-		LoginResponse response = oauthLoginService.login(request);
+		LoginResponse response = oauthLoginService.login(request, fcmToken);
 
 		//then
 		assertAll(
@@ -172,7 +171,7 @@ class OauthLoginServiceTest {
 	void 로그아웃을_성공한다() {
 		//given
 		User 이브 = userRepository.save(유저_이브());
-		userFcmTokenRepository.save(사용자_fcmToken_엔티티(fcmToken, 이브, deviceId));
+		userFcmTokenRepository.save(사용자_fcmToken_엔티티(fcmToken, 이브));
 		String accessToken = oauthLoginService.getAuthToken(이브.getNickname());
 		String header = "Bearer " + accessToken;
 		//when
@@ -201,7 +200,7 @@ class OauthLoginServiceTest {
 		KakaoLoginRequest request = 카카오_로그인_요청();
 
 		//when & then
-		assertThatThrownBy(() -> oauthLoginService.login(request))
+		assertThatThrownBy(() -> oauthLoginService.login(request, fcmToken))
 			.isInstanceOf(WithdrawalUserException.class);
 	}
 

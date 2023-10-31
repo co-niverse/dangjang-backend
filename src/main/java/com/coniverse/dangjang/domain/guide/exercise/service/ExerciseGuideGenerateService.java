@@ -1,6 +1,5 @@
 package com.coniverse.dangjang.domain.guide.exercise.service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -28,7 +27,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Service
 @RequiredArgsConstructor
-public class ExerciseGuideGenerateService implements GuideGenerateService { // TODO 리팩토링 필수
+public class ExerciseGuideGenerateService implements GuideGenerateService {
 	private final ExerciseGuideSearchService exerciseGuideSearchService;
 	private final ExerciseGuideMapper exerciseGuideMapper;
 	private final ExerciseGuideRepository exerciseGuideRepository;
@@ -105,36 +104,6 @@ public class ExerciseGuideGenerateService implements GuideGenerateService { // T
 			exerciseAnalysisData.getUnit());
 		updateExerciseGuide.changeExerciseCalories(exerciseCalorie);
 		return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(updateExerciseGuide));
-	}
-
-	/**
-	 * 걸음 수 가이드 또는 칼로리 가이드를 삭제한다.
-	 *
-	 * @since 1.3.0
-	 */
-	@Override
-	public void removeGuide(String oauthId, LocalDate createdAt, CommonCode type) {
-		ExerciseGuide exerciseGuide = exerciseGuideSearchService.findByOauthIdAndCreatedAt(oauthId, createdAt);
-		if (type.equals(CommonCode.STEP_COUNT)) {
-			exerciseGuide.changeAboutWalk(0, 0, null, null, 0);
-			removeEmptyExerciseGuide(exerciseGuide);
-			return;
-		}
-		exerciseGuide.removeExerciseCalorie(type);
-		removeEmptyExerciseGuide(exerciseGuide);
-	}
-
-	/**
-	 * 운동 가이드가 비어있으면 삭제한다.
-	 *
-	 * @since 1.3.0
-	 */
-	private void removeEmptyExerciseGuide(ExerciseGuide exerciseGuide) {
-		if (exerciseGuide.getContent() == null && exerciseGuide.getExerciseCalories().isEmpty()) {
-			exerciseGuideRepository.delete(exerciseGuide);
-			return;
-		}
-		exerciseGuideRepository.save(exerciseGuide);
 	}
 
 	@Override

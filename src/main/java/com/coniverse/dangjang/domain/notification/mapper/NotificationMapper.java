@@ -35,16 +35,17 @@ public interface NotificationMapper {
 	/**
 	 * UserFcmToken Entity 생성
 	 *
-	 * @param user     사용자
-	 * @param fcmToken 사용자 fcmToken
+	 * @param user      사용자
+	 * @param fcmToken  사용자 fcmToken
+	 * @param createdAt fcmToken 저장 날짜
 	 * @return UserFcmToken 사용자 fcmToken Entity
 	 * @since 1.1.0
 	 */
 	@Mappings({
 		@Mapping(target = "user", source = "user"),
-		@Mapping(target = "deviceId", source = "deviceId")
+		@Mapping(target = "createdAt", source = "createdAt")
 	})
-	UserFcmToken toEntity(User user, String fcmToken, String deviceId);
+	UserFcmToken toEntity(User user, String fcmToken, LocalDate createdAt);
 
 	/**
 	 * Notification Entity 생성

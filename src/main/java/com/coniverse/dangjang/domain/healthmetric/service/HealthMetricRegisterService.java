@@ -47,7 +47,7 @@ public class HealthMetricRegisterService {
 	 */
 	public HealthMetricResponse register(HealthMetricPostRequest request, String oauthId) {
 		final User user = userSearchService.findUserByOauthId(oauthId);
-		final HealthMetric healthMetric = healthMetricRepository.save(mapper.toEntity(request, user));
+		final HealthMetric healthMetric = healthMetricRepository.save(mapper.toEntity(request, user)); // TODO 가이드보다 insert 쿼리가 먼저 가도록 수정
 		final GuideResponse guideResponse = guideService.createGuide(analysisService.analyze(healthMetric));
 		return mapper.toResponse(healthMetric, guideResponse);
 	}
@@ -100,21 +100,5 @@ public class HealthMetricRegisterService {
 		final HealthMetric healthMetric = healthMetricRepository.save(mapper.toEntity(request, user));
 		final GuideResponse guideResponse = guideService.updateGuideWithType(analysisService.analyze(healthMetric), prevHealthMetric.getType());
 		return mapper.toResponse(healthMetric, guideResponse);
-	}
-
-	/**
-	 * 건강지표를 삭제한다.
-	 *
-	 * @param date        건강지표 생성일
-	 * @param requestType 건강지표 타입
-	 * @param oauthId     건강지표 삭제 유저 PK
-	 * @since 1.3.0
-	 */
-	public void remove(String date, String requestType, String oauthId) {
-		CommonCode type = EnumFindUtil.findByTitle(CommonCode.class, requestType);
-		LocalDate createdAt = LocalDate.parse(date);
-		HealthMetric healthMetric = healthMetricSearchService.findByHealthMetricId(oauthId, createdAt, type);
-		healthMetricRepository.delete(healthMetric);
-		guideService.removeGuide(oauthId, createdAt, type);
 	}
 }

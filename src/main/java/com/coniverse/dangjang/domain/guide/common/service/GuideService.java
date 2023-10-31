@@ -1,6 +1,5 @@
 package com.coniverse.dangjang.domain.guide.common.service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -35,7 +34,8 @@ public class GuideService {
 	 * @since 1.0.0
 	 */
 	public GuideResponse createGuide(AnalysisData analysisData) {
-		GuideGenerateService guideGenerateService = findGuideGenerateService(analysisData.getType());
+		GroupCode groupCode = GroupCode.findByCode(analysisData.getType());
+		GuideGenerateService guideGenerateService = findGuideGenerateService(groupCode);
 		return guideGenerateService.createGuide(analysisData);
 	}
 
@@ -45,7 +45,8 @@ public class GuideService {
 	 * @since 1.0.0
 	 */
 	public GuideResponse updateGuide(AnalysisData analysisData) {
-		GuideGenerateService guideGenerateService = findGuideGenerateService(analysisData.getType());
+		GroupCode groupCode = GroupCode.findByCode(analysisData.getType());
+		GuideGenerateService guideGenerateService = findGuideGenerateService(groupCode);
 		return guideGenerateService.updateGuide(analysisData);
 	}
 
@@ -55,18 +56,9 @@ public class GuideService {
 	 * @since 1.0.0
 	 */
 	public GuideResponse updateGuideWithType(AnalysisData analysisData, CommonCode prevType) {
-		GuideGenerateService guideGenerateService = findGuideGenerateService(analysisData.getType());
+		GroupCode groupCode = GroupCode.findByCode(analysisData.getType());
+		GuideGenerateService guideGenerateService = findGuideGenerateService(groupCode);
 		return guideGenerateService.updateGuideWithType(analysisData, prevType);
-	}
-
-	/**
-	 * 가이드를 삭제한다.
-	 *
-	 * @since 1.3.0
-	 */
-	public void removeGuide(String oauthId, LocalDate createdAt, CommonCode type) {
-		GuideGenerateService guideGenerateService = findGuideGenerateService(type);
-		guideGenerateService.removeGuide(oauthId, createdAt, type);
 	}
 
 	/**
@@ -75,8 +67,7 @@ public class GuideService {
 	 * @see GroupCode
 	 * @since 1.0.0
 	 */
-	private GuideGenerateService findGuideGenerateService(CommonCode type) {
-		GroupCode groupCode = GroupCode.findByCode(type);
+	private GuideGenerateService findGuideGenerateService(GroupCode groupCode) {
 		return guideGenerateServiceMap.get(groupCode);
 	}
 }

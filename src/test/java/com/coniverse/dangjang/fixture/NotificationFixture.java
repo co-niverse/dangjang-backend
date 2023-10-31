@@ -10,7 +10,6 @@ import com.coniverse.dangjang.domain.notification.dto.response.NotificationRespo
 import com.coniverse.dangjang.domain.notification.entity.Notification;
 import com.coniverse.dangjang.domain.notification.entity.NotificationType;
 import com.coniverse.dangjang.domain.notification.entity.UserFcmToken;
-import com.coniverse.dangjang.domain.user.dto.request.PostFcmTokenRequest;
 import com.coniverse.dangjang.domain.user.entity.User;
 
 /**
@@ -54,19 +53,15 @@ public class NotificationFixture {
 	}
 
 	public static List<UserFcmToken> 사용자_fcmToken_엔티티_목록() {
-		return List.of(사용자_fcmToken_엔티티("fcmToken1", 유저_이브(), "deviceId1"), 사용자_fcmToken_엔티티("fcmToken2", 유저_테오(), "deviceId2"));
+		return List.of(사용자_fcmToken_엔티티("fcmToken1", 유저_이브()), 사용자_fcmToken_엔티티("fcmToken2", 유저_테오()));
 	}
 
-	public static UserFcmToken 사용자_fcmToken_엔티티(String fcmToken, User user, String deviceId) {
+	public static UserFcmToken 사용자_fcmToken_엔티티(String fcmToken, User user) {
 		return UserFcmToken.builder()
 			.fcmToken(fcmToken)
-			.deviceId(deviceId)
 			.user(user)
+			.createdAt(LocalDate.now())
 			.build();
-	}
-
-	public static PostFcmTokenRequest fcm_등록_및_업데이트_요청(String fcmToken, String deviceId) {
-		return new PostFcmTokenRequest(fcmToken, deviceId);
 	}
 
 }

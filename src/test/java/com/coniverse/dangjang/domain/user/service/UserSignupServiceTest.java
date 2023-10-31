@@ -39,6 +39,7 @@ class UserSignupServiceTest {
 	private UserRepository userRepository;
 	@Autowired
 	private UserFcmTokenRepository userFcmTokenRepository;
+	private final String fcmToken = "fcmToken";
 
 	@AfterEach
 	void tearDown() {
@@ -56,7 +57,7 @@ class UserSignupServiceTest {
 			diseases);
 
 		// when
-		LoginResponse loginResponse = userSignupService.signUp(signUpRequest);
+		LoginResponse loginResponse = userSignupService.signUp(signUpRequest, fcmToken);
 
 		// that
 		assertThat(loginResponse.nickname()).isEqualTo(signUpRequest.nickname());
@@ -74,7 +75,7 @@ class UserSignupServiceTest {
 			diseases);
 
 		// when
-		LoginResponse loginResponse = userSignupService.signUp(signUpRequest);
+		LoginResponse loginResponse = userSignupService.signUp(signUpRequest, fcmToken);
 
 		// that
 		assertThat(loginResponse.nickname()).isEqualTo(signUpRequest.nickname());
@@ -92,7 +93,7 @@ class UserSignupServiceTest {
 			diseases);
 
 		//when&that
-		assertThatThrownBy(() -> userSignupService.signUp(signUpRequest))
+		assertThatThrownBy(() -> userSignupService.signUp(signUpRequest, fcmToken))
 			.isInstanceOf(IllegalArgumentException.class);
 	}
 
@@ -104,7 +105,7 @@ class UserSignupServiceTest {
 		SignUpRequest signUpRequest = SignUpFixture.getSignUpRequest("287873365589", "test", "naver", true, LocalDate.parse("2021-06-21"), 150, 50, "MEDIUM",
 			false, 0, false, false,
 			diseases);
-		userSignupService.signUp(signUpRequest);
+		userSignupService.signUp(signUpRequest, fcmToken);
 		//when
 		DuplicateNicknameResponse isDuplicated = userSignupService.checkDuplicatedNickname(signUpRequest.nickname());
 
