@@ -67,7 +67,7 @@ class OauthLoginServiceTest {
 		KakaoLoginRequest request = 카카오_로그인_요청();
 
 		// when & then
-		assertThatThrownBy(() -> oauthLoginService.login(request, fcmToken))
+		assertThatThrownBy(() -> oauthLoginService.login(request))
 			.isInstanceOf(NonExistentUserException.class);
 	}
 
@@ -80,7 +80,7 @@ class OauthLoginServiceTest {
 		KakaoLoginRequest request = 카카오_로그인_요청();
 		int tokenCount = 0;
 		//when
-		LoginResponse response = oauthLoginService.login(request, fcmToken);
+		LoginResponse response = oauthLoginService.login(request);
 
 		//then
 		assertAll(
@@ -100,7 +100,7 @@ class OauthLoginServiceTest {
 		KakaoLoginRequest request = 카카오_로그인_요청();
 		int tokenCount = 0;
 		//when
-		LoginResponse response = oauthLoginService.login(request, fcmToken);
+		LoginResponse response = oauthLoginService.login(request);
 
 		//then
 		assertAll(
@@ -201,7 +201,7 @@ class OauthLoginServiceTest {
 		KakaoLoginRequest request = 카카오_로그인_요청();
 
 		//when & then
-		assertThatThrownBy(() -> oauthLoginService.login(request, fcmToken))
+		assertThatThrownBy(() -> oauthLoginService.login(request))
 			.isInstanceOf(WithdrawalUserException.class);
 	}
 

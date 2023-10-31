@@ -36,7 +36,7 @@ class LoginControllerTest extends ControllerTest {
 		AuthToken authToken = new AuthToken();
 		authToken.setAccessToken("accessToken");
 		authToken.setRefreshToken("refreshToken");
-		given(oauthLoginService.login(any(), any())).willReturn(response);
+		given(oauthLoginService.login(any())).willReturn(response);
 		given(oauthLoginService.getAuthToken(any())).willReturn(authToken.getAccessToken());
 
 		// when
@@ -77,7 +77,7 @@ class LoginControllerTest extends ControllerTest {
 		AuthToken authToken = new AuthToken();
 		authToken.setAccessToken("accessToken");
 		authToken.setRefreshToken("refreshToken");
-		given(oauthLoginService.login(any(), any())).willReturn(response);
+		given(oauthLoginService.login(any())).willReturn(response);
 		given(oauthLoginService.getAuthToken(any())).willReturn(authToken.getAccessToken());
 
 		// when
