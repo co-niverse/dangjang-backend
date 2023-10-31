@@ -29,13 +29,13 @@ INSERT INTO notification_type (type)
 VALUES ("접속"),
        ("기록");
 
-INSERT INTO user_fcm_token (oauth_id, fcm_token, created_at)
-VALUES ("11111111", "fcmToken1", '2023-10-08'),
-       ("22222222", "fcmToken2", '2023-10-08'),
-       ("11111111", "fcmToken3", '2023-10-09'),
-       ("33333333", "fcmToken4", '2023-10-09'),
-       ("33333333", "fcmToken5", '2023-10-10'),
-       ("44444444", "fcmToken6", '2023-10-10');
+INSERT INTO user_fcm_token (oauth_id, device_id, fcm_token, created_at, updated_at)
+VALUES ("11111111", "device1", "fcmToken1", '2023-10-08', '2023-10-08'),
+       ("22222222", "device2", "fcmToken2", '2023-10-08', '2023-10-08'),
+       ("11111111", "device3", "fcmToken3", '2023-10-09', '2023-10-09'),
+       ("33333333", "device4", "fcmToken4", '2023-10-09', '2023-10-09'),
+       ("33333333", "device5", "fcmToken5", '2023-10-10', '2023-10-10'),
+       ("44444444", "device6", "fcmToken6", '2023-10-10', '2023-10-10');
 
 -- INSERT INTO notification(title, content, created_at, type, oauth_id, is_read)
 -- VALUES ("체중 기록!", "오늘 체중을 기록해보세요 ~ ", '2023-10-08', "기록", "11111111", true),

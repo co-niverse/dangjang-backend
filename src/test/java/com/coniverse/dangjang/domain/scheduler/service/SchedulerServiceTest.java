@@ -44,6 +44,7 @@ class SchedulerServiceTest {
 	private String 테오_아이디;
 	private String 이브_아이디;
 	private String fcmToken = "token";
+	private String deviceId = "deviceId";
 	private String 이브_fcmToken = "token2";
 
 	@BeforeAll
@@ -54,7 +55,7 @@ class SchedulerServiceTest {
 		이브 = userRepository.save(유저_이브());
 		이브.updateAccessedAt(LocalDate.now().minusDays(1));
 		userRepository.save(이브);
-		userFcmTokenRepository.save(사용자_fcmToken_엔티티(이브_fcmToken, 이브));
+		userFcmTokenRepository.save(사용자_fcmToken_엔티티(이브_fcmToken, 이브, deviceId));
 		notificationRepository.saveAll(사용자_알림_엔티티_목록(테오));
 	}
 
