@@ -42,9 +42,9 @@ public interface NotificationMapper {
 	 */
 	@Mappings({
 		@Mapping(target = "user", source = "user"),
-		@Mapping(target = "deviceId", source = "device_id")
+		@Mapping(target = "deviceId", source = "deviceId")
 	})
-	UserFcmToken toEntity(User user, String fcmToken, String device_id);
+	UserFcmToken toEntity(User user, String fcmToken, String deviceId);
 
 	/**
 	 * Notification Entity 생성
