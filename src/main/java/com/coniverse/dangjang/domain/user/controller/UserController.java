@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coniverse.dangjang.domain.notification.service.NotificationService;
-import com.coniverse.dangjang.domain.user.dto.request.FcmTokenRequest;
+import com.coniverse.dangjang.domain.user.dto.request.PostFcmTokenRequest;
 import com.coniverse.dangjang.domain.user.dto.response.DuplicateNicknameResponse;
 import com.coniverse.dangjang.domain.user.dto.response.MypageResponse;
 import com.coniverse.dangjang.domain.user.service.MypageService;
@@ -80,7 +80,7 @@ public class UserController { // TODO 전체 수정 (위치: signup, 이름: dup
 	 * @since 1.0.0
 	 */
 	@PostMapping("/fcmToken")
-	public ResponseEntity<SuccessSingleResponse<?>> postFcmToken(@AuthenticationPrincipal User user, @Valid @RequestBody FcmTokenRequest request) {
+	public ResponseEntity<SuccessSingleResponse<?>> postFcmToken(@AuthenticationPrincipal User user, @Valid @RequestBody PostFcmTokenRequest request) {
 		notificationService.saveOrUpdateFcmToken(request, user.getUsername());
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}

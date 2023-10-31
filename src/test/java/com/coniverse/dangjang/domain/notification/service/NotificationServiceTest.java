@@ -25,7 +25,7 @@ import com.coniverse.dangjang.domain.notification.entity.UserFcmToken;
 import com.coniverse.dangjang.domain.notification.repository.NotificationRepository;
 import com.coniverse.dangjang.domain.notification.repository.NotificationTypeRepository;
 import com.coniverse.dangjang.domain.notification.repository.UserFcmTokenRepository;
-import com.coniverse.dangjang.domain.user.dto.request.FcmTokenRequest;
+import com.coniverse.dangjang.domain.user.dto.request.PostFcmTokenRequest;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
@@ -59,7 +59,7 @@ class NotificationServiceTest {
 	private String fcmToken = "token";
 	private String deviceId = "deviceId";
 	private String 이브_fcmToken = "token2";
-	private FcmTokenRequest fcmTokenRequest = fcm_등록_및_업데이트_요청(fcmToken, deviceId);
+	private PostFcmTokenRequest postFcmTokenRequest = fcm_등록_및_업데이트_요청(fcmToken, deviceId);
 
 	@Transactional
 	@BeforeAll
@@ -132,9 +132,9 @@ class NotificationServiceTest {
 	@Test
 	void fcmToken을_저장한다() {
 		//when
-		notificationService.saveOrUpdateFcmToken(fcmTokenRequest, 테오_아이디);
+		notificationService.saveOrUpdateFcmToken(postFcmTokenRequest, 테오_아이디);
 		//then
-		UserFcmToken 조회_결과 = userFcmTokenRepository.findUserFcmTokenByFcmId(테오_아이디, fcmTokenRequest.deviceId()).get();
+		UserFcmToken 조회_결과 = userFcmTokenRepository.findUserFcmTokenByFcmId(테오_아이디, postFcmTokenRequest.deviceId()).get();
 		assertThat(조회_결과.getUser().getId()).isEqualTo(테오_아이디);
 		assertThat(조회_결과.getFcmToken()).isEqualTo(fcmToken);
 	}
@@ -157,11 +157,11 @@ class NotificationServiceTest {
 	@Test
 	void fcmToken을_제거한다() {
 		//given
-		notificationService.saveOrUpdateFcmToken(fcmTokenRequest, 테오_아이디);
+		notificationService.saveOrUpdateFcmToken(postFcmTokenRequest, 테오_아이디);
 		//when
 		notificationService.deleteFcmToken(fcmToken);
 		//then
-		assertThat(userFcmTokenRepository.findUserFcmTokenByFcmId(테오_아이디, fcmTokenRequest.deviceId())).isEmpty();
+		assertThat(userFcmTokenRepository.findUserFcmTokenByFcmId(테오_아이디, postFcmTokenRequest.deviceId())).isEmpty();
 	}
 
 	@Order(700)

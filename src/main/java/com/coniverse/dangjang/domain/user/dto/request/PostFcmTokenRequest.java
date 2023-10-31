@@ -8,6 +8,6 @@ import jakarta.validation.constraints.NotBlank;
  * @author EVE
  * @since 1.3.0
  */
-public record FcmTokenRequest(@NotBlank(message = "FCM Token은 필수로 필요합니다") String fcmToken, @NotBlank(message = "Device ID는 필수로 필요합니다") String deviceId) {
+public record PostFcmTokenRequest(@NotBlank(message = "FCM Token은 필수로 필요합니다") String fcmToken, @NotBlank(message = "Device ID는 필수로 필요합니다") String deviceId) {
 
 }

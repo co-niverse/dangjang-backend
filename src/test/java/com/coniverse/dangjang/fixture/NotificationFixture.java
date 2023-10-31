@@ -10,7 +10,7 @@ import com.coniverse.dangjang.domain.notification.dto.response.NotificationRespo
 import com.coniverse.dangjang.domain.notification.entity.Notification;
 import com.coniverse.dangjang.domain.notification.entity.NotificationType;
 import com.coniverse.dangjang.domain.notification.entity.UserFcmToken;
-import com.coniverse.dangjang.domain.user.dto.request.FcmTokenRequest;
+import com.coniverse.dangjang.domain.user.dto.request.PostFcmTokenRequest;
 import com.coniverse.dangjang.domain.user.entity.User;
 
 /**
@@ -65,8 +65,8 @@ public class NotificationFixture {
 			.build();
 	}
 
-	public static FcmTokenRequest fcm_등록_및_업데이트_요청(String fcmToken, String deviceId) {
-		return new FcmTokenRequest(fcmToken, deviceId);
+	public static PostFcmTokenRequest fcm_등록_및_업데이트_요청(String fcmToken, String deviceId) {
+		return new PostFcmTokenRequest(fcmToken, deviceId);
 	}
 
 }

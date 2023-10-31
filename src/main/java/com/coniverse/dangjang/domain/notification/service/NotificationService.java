@@ -17,7 +17,7 @@ import com.coniverse.dangjang.domain.notification.exception.InvalidFcmTokenExcep
 import com.coniverse.dangjang.domain.notification.mapper.NotificationMapper;
 import com.coniverse.dangjang.domain.notification.repository.NotificationRepository;
 import com.coniverse.dangjang.domain.notification.repository.UserFcmTokenRepository;
-import com.coniverse.dangjang.domain.user.dto.request.FcmTokenRequest;
+import com.coniverse.dangjang.domain.user.dto.request.PostFcmTokenRequest;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
 
@@ -89,7 +89,7 @@ public class NotificationService {
 	 * @param oauthId 사용자 아이디
 	 * @since 1.1.0
 	 */
-	public void saveOrUpdateFcmToken(FcmTokenRequest request, String oauthId) {
+	public void saveOrUpdateFcmToken(PostFcmTokenRequest request, String oauthId) {
 		Optional<UserFcmToken> existFcmToken = userFcmTokenRepository.findUserFcmTokenByFcmId(oauthId, request.deviceId());
 		if (!existFcmToken.isEmpty()) {
 			updateFcmToken(existFcmToken.get(), request.fcmToken());
@@ -116,7 +116,7 @@ public class NotificationService {
 	 * @param oauthId 사용자 아이디
 	 * @since 1.3.0
 	 */
-	private void saveFcmToken(FcmTokenRequest request, String oauthId) {
+	private void saveFcmToken(PostFcmTokenRequest request, String oauthId) {
 		User user = userSearchService.findUserByOauthId(oauthId);
 		UserFcmToken userFcmToken = notificationMapper.toEntity(user, request.fcmToken(), request.deviceId());
 		userFcmTokenRepository.save(userFcmToken);
