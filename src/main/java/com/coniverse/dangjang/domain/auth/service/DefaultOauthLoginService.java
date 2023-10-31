@@ -73,13 +73,12 @@ public class DefaultOauthLoginService implements OauthLoginService {
 	}
 
 	/**
-	 * @param params   카카오,네이버 accessToken
-	 * @param fcmToken notifiaction 디바이스 토큰
+	 * @param params 카카오,네이버 accessToken
 	 * @return Content 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, authID)를 전달한다.
 	 * @since 1.0.0
 	 */
 	@Override
-	public LoginResponse login(OauthLoginRequest params, String fcmToken) {
+	public LoginResponse login(OauthLoginRequest params) {
 		OAuthInfoResponse oAuthInfoResponse = request(params);
 		User user = userSearchService.findUserByOauthId(oAuthInfoResponse.getOauthId());
 		HealthConnect healthConnect = userSearchService.findInterlockHealthConnect(user.getOauthId());

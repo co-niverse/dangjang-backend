@@ -34,14 +34,13 @@ public class LoginController {
 	private static String headerKeyAuthorization = "Authorization";
 
 	/**
-	 * @param params  카카오 accessToken
-	 * @param request request에서 fcmToken header가 필요
+	 * @param params 카카오 accessToken
 	 * @return ResponseEntity 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, auth id)를 전달한다.
 	 * @since 1.0.0
 	 */
 	@PostMapping("/kakao")
-	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginKakao(@Valid @RequestBody KakaoLoginRequest params, HttpServletRequest request) {
-		LoginResponse loginResponse = oauthLoginService.login(params, request.getHeader(headerKeyFcmToken));
+	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginKakao(@Valid @RequestBody KakaoLoginRequest params) {
+		LoginResponse loginResponse = oauthLoginService.login(params);
 		String accessToken = oauthLoginService.getAuthToken(loginResponse.nickname());
 		return ResponseEntity.ok()
 			.header(headerKeyAccessToken.toString(), accessToken)
@@ -49,14 +48,13 @@ public class LoginController {
 	}
 
 	/**
-	 * @param params  네이버 accessToken
-	 * @param request request에서 fcmToken header가 필요
+	 * @param params 네이버 accessToken
 	 * @return ResponseEntity 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, auth id)를 전달한다.
 	 * @since 1.0.0
 	 */
 	@PostMapping("/naver")
-	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginNaver(@Valid @RequestBody NaverLoginRequest params, HttpServletRequest request) {
-		LoginResponse loginResponse = oauthLoginService.login(params, request.getHeader(headerKeyFcmToken));
+	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginNaver(@Valid @RequestBody NaverLoginRequest params) {
+		LoginResponse loginResponse = oauthLoginService.login(params);
 		String accessToken = oauthLoginService.getAuthToken(loginResponse.nickname());
 		return ResponseEntity.ok()
 			.header(headerKeyAccessToken, accessToken)

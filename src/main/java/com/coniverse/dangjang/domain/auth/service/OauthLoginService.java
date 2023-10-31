@@ -9,7 +9,7 @@ import com.coniverse.dangjang.domain.infrastructure.auth.dto.OAuthInfoResponse;
  * @since 1.0.0
  */
 public interface OauthLoginService {
-	LoginResponse login(OauthLoginRequest params, String fcmToken);
+	LoginResponse login(OauthLoginRequest params);
 
 	String getAuthToken(String nickname);
 

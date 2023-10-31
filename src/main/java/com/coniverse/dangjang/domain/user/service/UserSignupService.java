@@ -50,11 +50,10 @@ public class UserSignupService {
 	 * 회원가입
 	 *
 	 * @param signUpRequest 회원가입 정보
-	 * @param fcmToken      notification 디바이스 토큰
 	 * @return LoginResponse 로그인 응답
 	 * @since 1.0.0
 	 */
-	public LoginResponse signUp(SignUpRequest signUpRequest, String fcmToken) {
+	public LoginResponse signUp(SignUpRequest signUpRequest) {
 		OAuthInfoResponse oAuthInfoResponse = getOauthInfo(OauthProvider.of(signUpRequest.provider()), signUpRequest.accessToken());
 		ActivityAmount activityAmount = ActivityAmount.of(signUpRequest.activityAmount());
 		Gender gender = Gender.of(signUpRequest.gender());
