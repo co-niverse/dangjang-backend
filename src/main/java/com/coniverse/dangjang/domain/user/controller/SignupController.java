@@ -13,7 +13,6 @@ import com.coniverse.dangjang.domain.user.dto.request.SignUpRequest;
 import com.coniverse.dangjang.domain.user.service.UserSignupService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -27,18 +26,16 @@ import lombok.RequiredArgsConstructor;
 public class SignupController {
 	private final UserSignupService userSignupService;
 	private final OauthLoginService oauthLoginService;
-	private static String headerKeyFcmToken = "FcmToken";
 	private static String headerKeyAccessToken = "AccessToken";
 
 	/**
-	 * @param params  회원가입에 필요한 정보를 담아온다.
-	 * @param request request에서 fcmToken header 이용
+	 * @param params 회원가입에 필요한 정보를 담아온다.
 	 * @return 회원가입 후 로그인을 시도 , ResponseEntity 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, authID)를 전달한다.
 	 * @since 1.0
 	 */
 	@PostMapping
-	public ResponseEntity<SuccessSingleResponse<LoginResponse>> signUp(@Valid @RequestBody SignUpRequest params, HttpServletRequest request) {
-		LoginResponse loginResponse = userSignupService.signUp(params, request.getHeader(headerKeyFcmToken));
+	public ResponseEntity<SuccessSingleResponse<LoginResponse>> signUp(@Valid @RequestBody SignUpRequest params) {
+		LoginResponse loginResponse = userSignupService.signUp(params);
 		String accessToken = oauthLoginService.getAuthToken(loginResponse.nickname());
 		return ResponseEntity.ok()
 			.header(headerKeyAccessToken, accessToken)

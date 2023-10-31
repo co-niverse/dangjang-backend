@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.coniverse.dangjang.domain.auth.dto.AuthToken;
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
+import com.coniverse.dangjang.domain.auth.dto.request.LogoutFcmTokenRequest;
 import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
@@ -36,7 +37,7 @@ class LoginControllerTest extends ControllerTest {
 		AuthToken authToken = new AuthToken();
 		authToken.setAccessToken("accessToken");
 		authToken.setRefreshToken("refreshToken");
-		given(oauthLoginService.login(any(), any())).willReturn(response);
+		given(oauthLoginService.login(any())).willReturn(response);
 		given(oauthLoginService.getAuthToken(any())).willReturn(authToken.getAccessToken());
 
 		// when
@@ -77,7 +78,7 @@ class LoginControllerTest extends ControllerTest {
 		AuthToken authToken = new AuthToken();
 		authToken.setAccessToken("accessToken");
 		authToken.setRefreshToken("refreshToken");
-		given(oauthLoginService.login(any(), any())).willReturn(response);
+		given(oauthLoginService.login(any())).willReturn(response);
 		given(oauthLoginService.getAuthToken(any())).willReturn(authToken.getAccessToken());
 
 		// when
@@ -113,9 +114,10 @@ class LoginControllerTest extends ControllerTest {
 	@Test
 	void 로그아웃을_성공한다() throws Exception {
 		String subURL = "/logout";
-
+		LogoutFcmTokenRequest request = new LogoutFcmTokenRequest("fcmToken");
+		String content = objectMapper.writeValueAsString(request);
 		// when
-		ResultActions resultActions = post(mockMvc, URI + subURL);
+		ResultActions resultActions = post(mockMvc, URI + subURL, content);
 
 		// then
 		resultActions.andExpectAll(

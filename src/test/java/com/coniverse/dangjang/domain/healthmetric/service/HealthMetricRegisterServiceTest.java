@@ -5,6 +5,8 @@ import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -23,7 +25,9 @@ import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchR
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricResponse;
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
+import com.coniverse.dangjang.domain.healthmetric.exception.HealthMetricNotFoundException;
 import com.coniverse.dangjang.domain.healthmetric.repository.HealthMetricRepository;
+import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.global.util.EnumFindUtil;
 
@@ -45,12 +49,15 @@ class HealthMetricRegisterServiceTest {
 	private AnalysisService analysisService;
 	@MockBean
 	private GuideService guideService;
-	private String 테오_아이디;
+	private User user;
+	private String oauthId;
 	private HealthMetric 등록된_건강지표;
+	private HealthMetric 수정된_건강지표;
 
 	@BeforeAll
 	void setUp() {
-		테오_아이디 = userRepository.save(유저_테오()).getOauthId();
+		user = userRepository.save(유저_테오());
+		oauthId = user.getOauthId();
 	}
 
 	@AfterAll
@@ -66,17 +73,17 @@ class HealthMetricRegisterServiceTest {
 		HealthMetricPostRequest request = 건강지표_등록_요청();
 
 		// when
-		HealthMetricResponse response = healthMetricRegisterService.register(request, 테오_아이디);
+		HealthMetricResponse response = healthMetricRegisterService.register(request, oauthId);
 
 		// then
 		등록된_건강지표 = healthMetricRepository
-			.findByHealthMetricId(테오_아이디, response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.type())).orElseThrow();
+			.findByHealthMetricId(oauthId, response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.type())).orElseThrow();
 
 		assertAll(
 			() -> assertThat(등록된_건강지표.getType().getTitle()).isEqualTo(request.type()),
 			() -> assertThat(등록된_건강지표.getUnit()).isEqualTo(request.unit()),
 			() -> assertThat(등록된_건강지표.getCreatedAt()).isEqualTo(request.createdAt()),
-			() -> assertThat(등록된_건강지표.getOauthId()).isEqualTo(테오_아이디)
+			() -> assertThat(등록된_건강지표.getOauthId()).isEqualTo(oauthId)
 		);
 	}
 
@@ -87,12 +94,12 @@ class HealthMetricRegisterServiceTest {
 		HealthMetricPatchRequest request = 단위_변경한_건강지표_수정_요청();
 
 		// when
-		HealthMetricResponse response = healthMetricRegisterService.update(request, 테오_아이디);
+		HealthMetricResponse response = healthMetricRegisterService.update(request, oauthId);
 
 		// then
 
 		HealthMetric 수정된_건강지표 = healthMetricRepository
-			.findByHealthMetricId(테오_아이디, response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.type())).orElseThrow();
+			.findByHealthMetricId(oauthId, response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.type())).orElseThrow();
 
 		assertAll(
 			() -> assertThat(수정된_건강지표.getUnit()).isNotEqualTo(등록된_건강지표.getUnit()),
@@ -110,11 +117,11 @@ class HealthMetricRegisterServiceTest {
 		HealthMetricPatchRequest request = 타입_변경한_건강지표_수정_요청();
 
 		// when
-		HealthMetricResponse response = healthMetricRegisterService.update(request, 테오_아이디);
+		HealthMetricResponse response = healthMetricRegisterService.update(request, oauthId);
 
 		// then
-		HealthMetric 수정된_건강지표 = healthMetricRepository
-			.findByHealthMetricId(테오_아이디, response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.type())).orElseThrow();
+		수정된_건강지표 = healthMetricRepository
+			.findByHealthMetricId(oauthId, response.createdAt(), EnumFindUtil.findByTitle(CommonCode.class, response.type())).orElseThrow();
 
 		assertAll(
 			() -> assertThat(수정된_건강지표.getType().getTitle()).isEqualTo(request.newType()),
@@ -122,5 +129,31 @@ class HealthMetricRegisterServiceTest {
 			() -> assertThat(수정된_건강지표.getOauthId()).isEqualTo(등록된_건강지표.getOauthId()),
 			() -> assertThat(수정된_건강지표.getType()).isNotEqualTo(등록된_건강지표.getType())
 		);
+	}
+
+	@Order(300)
+	@Test
+	void 건강지표를_성공적으로_삭제한다() {
+		// given
+		CommonCode type = 수정된_건강지표.getType();
+		LocalDate createdAt = 수정된_건강지표.getCreatedAt();
+
+		// when
+		healthMetricRegisterService.remove(createdAt.toString(), type.getTitle(), oauthId);
+
+		// then
+		assertThat(healthMetricRepository.findByHealthMetricId(oauthId, createdAt, type)).isEmpty();
+	}
+
+	@Order(400)
+	@Test
+	void 존재하지_않는_건강지표를_삭제할_경우_예외가_발생한다() {
+		// given
+		String type = 수정된_건강지표.getType().getTitle();
+		String createdAt = 수정된_건강지표.getCreatedAt().toString();
+
+		// when & then
+		assertThatThrownBy(() -> healthMetricRegisterService.remove(createdAt, type, oauthId))
+			.isInstanceOf(HealthMetricNotFoundException.class);
 	}
 }
