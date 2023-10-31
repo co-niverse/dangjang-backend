@@ -85,4 +85,18 @@ class UserControllerTest extends ControllerTest {
 		);
 	}
 
+	@WithDangjangUser
+	@Test
+	void fcmToken_등록을_성공한다() throws Exception {
+		// given
+		String subUrl = "/fcmToken";
+
+		// when
+		ResultActions resultActions = post(mockMvc, URI + subUrl);
+
+		// then
+		resultActions.andExpectAll(
+			status().isOk()
+		);
+	}
 }

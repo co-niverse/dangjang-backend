@@ -1,13 +1,10 @@
 package com.coniverse.dangjang.domain.guide.weight.service;
 
-import java.time.LocalDate;
-
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
 import com.coniverse.dangjang.domain.analysis.dto.healthMetric.WeightAnalysisData;
-import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.guide.common.dto.response.GuideResponse;
 import com.coniverse.dangjang.domain.guide.common.service.GuideGenerateService;
@@ -60,20 +57,6 @@ public class WeightGuideGenerateService implements GuideGenerateService {
 		String content = createContent(data);
 		weightGuide.changeAboutWeight(data.getWeightDiff(), data.getAlert(), content, data.getBmi(), String.valueOf(data.getUnit()));
 		return weightMapper.toResponse(weightGuideRepository.save(weightGuide));
-	}
-
-	/**
-	 * 체중 가이드를 삭제한다.
-	 *
-	 * @param oauthId   유저 PK
-	 * @param createdAt 생성일자
-	 * @param type      타입
-	 * @since 1.3.0
-	 */
-	@Override
-	public void removeGuide(String oauthId, LocalDate createdAt, CommonCode type) {
-		WeightGuide weightGuide = weightGuideSearchService.findByUserIdAndCreatedAt(oauthId, createdAt.toString());
-		weightGuideRepository.delete(weightGuide);
 	}
 
 	@Override

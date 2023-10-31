@@ -1,7 +1,5 @@
 package com.coniverse.dangjang.domain.guide.bloodsugar.service;
 
-import java.time.LocalDate;
-
 import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
@@ -36,6 +34,8 @@ public class BloodSugarGuideGenerateService implements GuideGenerateService {
 
 	/**
 	 * 서브 가이드를 생성해서 혈당 가이드에 저장한다.
+	 * <p>
+	 * 혈당 가이드가 존재하면 새로운 서브 가이드를 추가하고, 존재하지 않으면 혈당 가이드를 생성하여 서브 가이드를 추가한다.
 	 *
 	 * @param analysisData 혈당 분석 데이터
 	 * @return 서브 가이드 응답
@@ -44,27 +44,17 @@ public class BloodSugarGuideGenerateService implements GuideGenerateService {
 	@Override
 	public GuideResponse createGuide(AnalysisData analysisData) {
 		BloodSugarAnalysisData data = (BloodSugarAnalysisData)analysisData;
-		BloodSugarGuide guide = getGuide(data);
+		BloodSugarGuide guide;
+		try {
+			guide = bloodSugarGuideSearchService.findByUserIdAndCreatedAt(data.getOauthId(), data.getCreatedAt());
+		} catch (GuideNotFoundException e) {
+			guide = mapper.toDocument(data);
+		}
 		GuideFormat guideFormat = bloodSugarGuideFormatFactory.createGuideFormat(data);
 		SubGuide subGuide = mapper.toSubGuide(data, guideFormat);
 		guide.addSubGuide(subGuide);
 		bloodSugarGuideRepository.save(guide);
 		return mapper.toSubGuideResponse(subGuide, guide.getTodayGuides());
-	}
-
-	/**
-	 * 혈당 가이드가 존재하면 그대로 반환하고, 존재하지 않으면 새로 생성해서 반환한다.
-	 *
-	 * @param data 혈당 분석 데이터
-	 * @return 혈당 가이드
-	 * @since 1.3.0
-	 */
-	private BloodSugarGuide getGuide(BloodSugarAnalysisData data) {
-		try {
-			return bloodSugarGuideSearchService.findByUserIdAndCreatedAt(data.getOauthId(), data.getCreatedAt());
-		} catch (GuideNotFoundException e) {
-			return mapper.toDocument(data);
-		}
 	}
 
 	/**
@@ -105,25 +95,6 @@ public class BloodSugarGuideGenerateService implements GuideGenerateService {
 		guide.updateSubGuide(subGuide, prevType);
 		bloodSugarGuideRepository.save(guide);
 		return mapper.toSubGuideResponse(subGuide, guide.getTodayGuides());
-	}
-
-	/**
-	 * 서브 가이드를 삭제한다. 서브 가이드가 존재하지 않으면 혈당 가이드를 삭제한다.
-	 *
-	 * @param oauthId   유저 PK
-	 * @param createdAt 생성일자
-	 * @param type      타입
-	 * @since 1.3.0
-	 */
-	@Override
-	public void removeGuide(String oauthId, LocalDate createdAt, CommonCode type) {
-		BloodSugarGuide guide = bloodSugarGuideSearchService.findByUserIdAndCreatedAt(oauthId, createdAt);
-		guide.removeSubGuide(type);
-		if (guide.existsSubGuide()) {
-			bloodSugarGuideRepository.save(guide);
-			return;
-		}
-		bloodSugarGuideRepository.delete(guide);
 	}
 
 	@Override

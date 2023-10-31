@@ -45,13 +45,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class HealthMetricControllerTest extends ControllerTest {
 	public static final String URL = "/api/health-metric";
-	public static LocalDate 시작_날짜 = LocalDate.parse("2023-12-31");
-	public static LocalDate 마지막_날짜 = LocalDate.parse("2024-01-06");
-	public static LocalDate 생성_날짜 = LocalDate.of(2023, 12, 31);
-	public static List<BloodSugarMinMax> 혈당차트 = 혈당차트_생성(생성_날짜, 100, 200);
-	public static List<HealthMetricChartData> 체중차트 = 체중차트_생성(생성_날짜, 100);
-	public static List<HealthMetricChartData> 걸음수차트 = 걸음수차트_생성(생성_날짜, 10000);
-	public static List<HealthMetricChartData> 칼로리차트 = 칼로리차트_생성(생성_날짜, 400);
 	private final HealthMetricResponse response = 건강지표_등록_응답();
 	private String postContent;
 	private String patchContent;
@@ -61,6 +54,13 @@ class HealthMetricControllerTest extends ControllerTest {
 	private HealthMetricChartSearchService healthMetricChartSearchService;
 	@Autowired
 	private HealthMetricSearchService healthMetricSearchService;
+	public static LocalDate 시작_날짜 = LocalDate.parse("2023-12-31");
+	public static LocalDate 마지막_날짜 = LocalDate.parse("2024-01-06");
+	public static LocalDate 생성_날짜 = LocalDate.of(2023, 12, 31);
+	public static List<BloodSugarMinMax> 혈당차트 = 혈당차트_생성(생성_날짜, 100, 200);
+	public static List<HealthMetricChartData> 체중차트 = 체중차트_생성(생성_날짜, 100);
+	public static List<HealthMetricChartData> 걸음수차트 = 걸음수차트_생성(생성_날짜, 10000);
+	public static List<HealthMetricChartData> 칼로리차트 = 칼로리차트_생성(생성_날짜, 400);
 
 	@BeforeAll
 	void setUp() throws JsonProcessingException {
@@ -269,60 +269,6 @@ class HealthMetricControllerTest extends ControllerTest {
 			status().isOk(),
 			jsonPath("$.message").value("OK"),
 			jsonPath("$.data.date").value(response.date().toString())
-		);
-	}
-
-	@Test
-	void 건강지표를_성공적으로_삭제한다() throws Exception {
-		// given
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		params.add("date", "2021-01-01");
-		params.add("type", "아침식전");
-
-		// when
-		ResultActions resultActions = delete(mockMvc, URL, params);
-
-		// then
-		resultActions.andExpectAll(
-			status().isNoContent()
-		);
-	}
-
-	@ParameterizedTest
-	@ValueSource(strings = {"2021-01-51", "2021-02-29", "2021-04-31", "2021-06-31", "2021-09-31", "2021-11-31", "2021.01.01", "2021/01/01", "2021-1-1"})
-	void 잘못된_날짜_parameter를_전달할_경우_400에러를_반환한다(String date) throws Exception {
-		// given
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		params.add("date", date);
-		params.add("type", "아침식전");
-
-		// when
-		ResultActions resultActions = delete(mockMvc, URL, params);
-
-		// then
-		resultActions.andExpectAll(
-			status().isBadRequest(),
-			jsonPath("$.errorCode").value(400),
-			jsonPath("$.violationErrors[0].rejectedValue").value(date)
-		);
-	}
-
-	@ParameterizedTest
-	@ValueSource(strings = {" ", ""})
-	void 잘못된_타입_parameter를_전달할_경우_400에러를_반환한다(String type) throws Exception {
-		// given
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		params.add("date", "2021-01-01");
-		params.add("type", type);
-
-		// when
-		ResultActions resultActions = delete(mockMvc, URL, params);
-
-		// then
-		resultActions.andExpectAll(
-			status().isBadRequest(),
-			jsonPath("$.errorCode").value(400),
-			jsonPath("$.violationErrors[0].rejectedValue").value(type)
 		);
 	}
 }
