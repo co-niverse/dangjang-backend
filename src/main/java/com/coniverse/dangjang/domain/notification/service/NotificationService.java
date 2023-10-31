@@ -105,7 +105,7 @@ public class NotificationService {
 	 * @param newFcmToken  새로운 fcmToken
 	 * @since 1.3.0
 	 */
-	public void updateFcmToken(UserFcmToken userFcmToken, String newFcmToken) {
+	private void updateFcmToken(UserFcmToken userFcmToken, String newFcmToken) {
 		userFcmToken.setFcmToken(newFcmToken);
 	}
 
@@ -116,7 +116,7 @@ public class NotificationService {
 	 * @param oauthId 사용자 아이디
 	 * @since 1.3.0
 	 */
-	public void saveFcmToken(FcmTokenRequest request, String oauthId) {
+	private void saveFcmToken(FcmTokenRequest request, String oauthId) {
 		User user = userSearchService.findUserByOauthId(oauthId);
 		UserFcmToken userFcmToken = notificationMapper.toEntity(user, request.fcmToken(), request.deviceId());
 		userFcmTokenRepository.save(userFcmToken);
