@@ -1,9 +1,13 @@
 package com.coniverse.dangjang.domain.guide.bloodsugar.service;
 
 import static com.coniverse.dangjang.fixture.AnalysisDataFixture.*;
+import static com.coniverse.dangjang.fixture.CommonCodeFixture.*;
+import static com.coniverse.dangjang.fixture.GuideFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -19,6 +23,7 @@ import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.BloodSugarGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.document.SubGuide;
 import com.coniverse.dangjang.domain.guide.bloodsugar.dto.SubGuideResponse;
+import com.coniverse.dangjang.domain.guide.bloodsugar.repository.BloodSugarGuideRepository;
 import com.coniverse.dangjang.domain.guide.common.exception.GuideAlreadyExistsException;
 import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
 import com.coniverse.dangjang.domain.user.entity.User;
@@ -38,6 +43,8 @@ class BloodSugarGuideGenerateServiceTest {
 	private BloodSugarAnalysisStrategy bloodSugarAnalysisStrategy;
 	@Autowired
 	private BloodSugarGuideSearchService bloodSugarGuideSearchService;
+	@Autowired
+	private BloodSugarGuideRepository bloodSugarGuideRepository;
 
 	@Order(100)
 	@Test
@@ -217,5 +224,37 @@ class BloodSugarGuideGenerateServiceTest {
 				assertThat(서브_가이드.getType()).isEqualTo(CommonCode.EMPTY_STOMACH);
 			}
 		);
+	}
+
+	@Test
+	void 서브_가이드를_정상적으로_삭제한다() {
+		// given
+		String oauthId = user.getOauthId();
+		String createdAt = "2021-08-01";
+		CommonCode type = CommonCode.BEFORE_BREAKFAST;
+		BloodSugarGuide 혈당_가이드 = 혈당_가이드_도큐먼트(oauthId, createdAt);
+		bloodSugarGuideRepository.save(혈당_가이드);
+
+		// when
+		bloodSugarGuideGenerateService.removeGuide(oauthId, LocalDate.parse(createdAt), type);
+
+		// then
+		BloodSugarGuide 삭제한_가이드 = bloodSugarGuideRepository.findByOauthIdAndCreatedAt(oauthId, createdAt).orElseThrow();
+		assertThat(삭제한_가이드.getSubGuides()).hasSize(혈당_가이드.getSubGuides().size() - 1);
+	}
+
+	@Test
+	void 서브_가이드를_모두_삭제하면_혈당_가이드도_삭제된다() {
+		// given
+		String oauthId = user.getOauthId();
+		String createdAt = "2021-08-01";
+		BloodSugarGuide 혈당_가이드 = 혈당_가이드_도큐먼트(oauthId, createdAt);
+		bloodSugarGuideRepository.save(혈당_가이드);
+
+		// when
+		혈당_타입().forEach(type -> bloodSugarGuideGenerateService.removeGuide(oauthId, LocalDate.parse(createdAt), type));
+
+		// then
+		assertThat(bloodSugarGuideRepository.findByOauthIdAndCreatedAt(oauthId, createdAt)).isEmpty();
 	}
 }

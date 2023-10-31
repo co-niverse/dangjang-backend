@@ -6,11 +6,12 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.coniverse.dangjang.domain.code.enums.CommonCode;
+
 import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * 운동 가이드 Document
@@ -18,15 +19,14 @@ import lombok.Setter;
  * @author EVE
  * @since 1.0.0
  */
-@Setter
 @Getter
 @Document
 @NoArgsConstructor
-public class ExerciseGuide {
+public class ExerciseGuide { // TODO 걸음 가이드, 칼로리 가이드로 분리해서 리팩토링
 	@Id
 	private String id;
 	private String oauthId;
-	private int needStepByTTS;
+	private int needStepByTTS; // TODO 걸음 수 관련 필드 -> 객체로 묶기
 	private int needStepByLastWeek;
 	private LocalDate createdAt;
 	private String content;
@@ -69,14 +69,24 @@ public class ExerciseGuide {
 	 * <p>
 	 * 기존에 존재하는 운동 칼로리를 삭제하고, 새로운 운동 칼로리를 추가한다.
 	 *
-	 * @param updateExerciseCalorie 운동칼로리 객체
+	 * @param updatedExerciseCalorie 운동칼로리 객체
 	 * @since 1.0.0
 	 */
-	public void changeExerciseCalories(ExerciseCalorie updateExerciseCalorie) {
+	public void changeExerciseCalories(ExerciseCalorie updatedExerciseCalorie) {
+		removeExerciseCalorie(updatedExerciseCalorie.type());
+		exerciseCalories.add(updatedExerciseCalorie);
+	}
+
+	/**
+	 * 운동 칼로리를 삭제한다.
+	 *
+	 * @param type 운동 타입
+	 * @since 1.3.0
+	 */
+	public void removeExerciseCalorie(CommonCode type) {
 		exerciseCalories.stream()
-			.filter(existExerciseCalorie -> existExerciseCalorie.type().equals(updateExerciseCalorie.type()))
+			.filter(exerciseCalorie -> exerciseCalorie.type().equals(type))
 			.findFirst()
-			.ifPresent(existExerciseCalorie -> exerciseCalories.remove(existExerciseCalorie));
-		exerciseCalories.add(updateExerciseCalorie);
+			.ifPresent(exerciseCalorie -> exerciseCalories.remove(exerciseCalorie));
 	}
 }
