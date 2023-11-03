@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.analysis.service.AnalysisService;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
+import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.guide.common.dto.response.GuideResponse;
 import com.coniverse.dangjang.domain.guide.common.service.GuideService;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchRequest;
@@ -53,6 +54,8 @@ public class HealthMetricRegisterService {
 		final GuideResponse guideResponse = guideService.createGuide(analysisService.analyze(healthMetric));
 		if (request.type().equals(CommonCode.MEASUREMENT.getTitle())) {
 			pointService.addWeightPoint(oauthId, LocalDate.parse(request.createdAt()));
+		} else if (GroupCode.findByCode(EnumFindUtil.findByTitle(CommonCode.class, request.type())).equals(GroupCode.EXERCISE)) {
+			pointService.addExercisePoint(oauthId, LocalDate.parse(request.createdAt()), GroupCode.EXERCISE);
 		}
 		return mapper.toResponse(healthMetric, guideResponse);
 	}

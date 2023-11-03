@@ -90,4 +90,17 @@ public class HealthMetricSearchService {
 		LocalDate lastDate = healthMetricRepository.findCreatedAtByOauthId(oauthId).orElseThrow(HealthMetricNotFoundException::new);
 		return new HealthMetricLastDateResponse(lastDate);
 	}
+
+	/**
+	 * 그룹코드와 생성날짜로 건강 지표를 조회한다
+	 *
+	 * @param oauthId   유저 PK
+	 * @param createdAt 생성일
+	 * @param groupCode 그룹코드
+	 * @return int 건강 지표 조회 개수
+	 * @since 1.3.0
+	 */
+	public int findByGroupCode(String oauthId, GroupCode groupCode, LocalDate createdAt) {
+		return healthMetricRepository.findByGroupCode(oauthId, groupCode, createdAt);
+	}
 }
