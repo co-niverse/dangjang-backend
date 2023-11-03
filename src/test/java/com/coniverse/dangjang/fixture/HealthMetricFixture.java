@@ -38,6 +38,10 @@ public class HealthMetricFixture {
 		return new HealthMetricPostRequest(등록_건강지표_상세명, 생성일자, 등록_건강지표_단위);
 	}
 
+	public static HealthMetricPostRequest 체중_건강지표_등록_요청() {
+		return new HealthMetricPostRequest(CommonCode.MEASUREMENT.getTitle(), 생성일자, 등록_건강지표_단위);
+	}
+
 	public static HealthConnectPostRequest 헬스_커넥트_데이터_등록_요청(String type, int count) {
 		return new HealthConnectPostRequest(new HashSet<>(
 			IntStream.range(0, count)
