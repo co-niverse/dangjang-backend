@@ -15,6 +15,7 @@ import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricRespo
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.healthmetric.mapper.HealthMetricMapper;
 import com.coniverse.dangjang.domain.healthmetric.repository.HealthMetricRepository;
+import com.coniverse.dangjang.domain.point.service.PointService;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
 import com.coniverse.dangjang.global.util.EnumFindUtil;
@@ -37,6 +38,7 @@ public class HealthMetricRegisterService {
 	private final HealthMetricSearchService healthMetricSearchService;
 	private final AnalysisService analysisService;
 	private final GuideService guideService;
+	private final PointService pointService;
 
 	/**
 	 * 건강지표를 저장한다.
@@ -49,6 +51,9 @@ public class HealthMetricRegisterService {
 		final User user = userSearchService.findUserByOauthId(oauthId);
 		final HealthMetric healthMetric = healthMetricRepository.save(mapper.toEntity(request, user));
 		final GuideResponse guideResponse = guideService.createGuide(analysisService.analyze(healthMetric));
+		if (request.type().equals(CommonCode.MEASUREMENT.name())) {
+			pointService.addWeightPoint(oauthId, LocalDate.parse(request.createdAt()));
+		}
 		return mapper.toResponse(healthMetric, guideResponse);
 	}
 
