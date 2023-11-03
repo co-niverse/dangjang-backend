@@ -33,7 +33,9 @@ public class PointFixture {
 			PointProduct.builder().point(5000).productName("스타벅스 오천원 금액권").type(PointType.USE).build(),
 			PointProduct.builder().point(5000).productName("CU 오천원 금액권").type(PointType.USE).build(),
 			PointProduct.builder().point(5000).productName("다이소 오천원 금액권").type(PointType.USE).build(),
-			PointProduct.builder().point(5000).productName("네이버페이 오천원 금액권").type(PointType.USE).build());
+			PointProduct.builder().point(5000).productName("네이버페이 오천원 금액권").type(PointType.USE).build(),
+			PointProduct.builder().point(3000).productName("다이소 삼천원 금액권").type(PointType.USE).build(),
+			PointProduct.builder().point(3000).productName("GS25 삼천원 금액권").type(PointType.USE).build());
 	}
 
 	public static List<PointProduct> 구매가능_포인트_상품_목록() {
