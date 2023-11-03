@@ -53,7 +53,9 @@ public class HealthMetricRegisterService {
 		final HealthMetric healthMetric = healthMetricRepository.save(mapper.toEntity(request, user));
 		final GuideResponse guideResponse = guideService.createGuide(analysisService.analyze(healthMetric));
 		GroupCode groupCode = GroupCode.findByCode(EnumFindUtil.findByTitle(CommonCode.class, request.type()));
-		pointService.addHealthMetricPoint(oauthId, LocalDate.parse(request.createdAt()), groupCode);
+		if (!groupCode.equals(GroupCode.GLYCATED_HEMOGLOBIN)) {
+			pointService.addHealthMetricPoint(oauthId, LocalDate.parse(request.createdAt()), groupCode);
+		}
 		return mapper.toResponse(healthMetric, guideResponse);
 	}
 
