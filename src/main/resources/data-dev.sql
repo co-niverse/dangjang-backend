@@ -17,7 +17,7 @@ VALUES ('44444444', 'NAVER', 'user4', 'F', '2001-12-24', 'LOW', 160, 1500, 'ACTI
         'NEVER_CONNECTED');
 
 INSERT INTO point_product (product_name, point, type, description)
-VALUES ("접속", 100, 'EARN', "1일 1회 접속으로 100 포인트를 적립할 수 있어요!"),
+VALUES ("접속", 500, 'EARN', "1일 1회 접속으로 500 포인트를 적립할 수 있어요!"),
        ("등록", 500, 'EARN', "회원가입으로 500 포인트를 적립할 수 있어요!"),
        ("기기연동", 500, 'EARN', "헬스커넥트 기기연동으로 500 포인트를 적립할 수 있어요!"),
        ("스타벅스 오천원 금액권", 5000, 'USE', null),

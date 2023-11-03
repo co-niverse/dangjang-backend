@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum EarnPoint {
-	ACCESS(100, "접속"),
+	ACCESS(500, "접속"),
 	REGISTER(500, "등록"),
 	HEALTH_CONNECT(500, "기기연동");
 	private final int changePoint;

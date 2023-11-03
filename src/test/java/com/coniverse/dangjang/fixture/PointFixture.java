@@ -24,7 +24,7 @@ public class PointFixture {
 
 	public static List<PointProduct> 전체_포인트_상품_목록() {
 		return List.of(
-			PointProduct.builder().point(100).productName("접속").type(PointType.EARN).description("1일 1회 접속으로 100 포인트를 적립할 수 있어요. ").build(),
+			PointProduct.builder().point(500).productName("접속").type(PointType.EARN).description("1일 1회 접속으로 100 포인트를 적립할 수 있어요. ").build(),
 			PointProduct.builder().point(500).productName("등록").type(PointType.EARN).description("회원가입으로 500 포인트를 적립할 수 있어요. ").build(),
 			PointProduct.builder().point(500).productName("기기연동").type(PointType.EARN).description("헬스커넥트 기기연동으로 500 포인트를 적립할 수 있어요.").build(),
 			PointProduct.builder().point(5000).productName("스타벅스 오천원 금액권").type(PointType.USE).build(),
