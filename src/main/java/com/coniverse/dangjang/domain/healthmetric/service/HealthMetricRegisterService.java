@@ -56,6 +56,8 @@ public class HealthMetricRegisterService {
 			pointService.addWeightPoint(oauthId, LocalDate.parse(request.createdAt()));
 		} else if (GroupCode.findByCode(EnumFindUtil.findByTitle(CommonCode.class, request.type())).equals(GroupCode.EXERCISE)) {
 			pointService.addExercisePoint(oauthId, LocalDate.parse(request.createdAt()), GroupCode.EXERCISE);
+		} else if (GroupCode.findByCode(EnumFindUtil.findByTitle(CommonCode.class, request.type())).equals(GroupCode.BLOOD_SUGAR)) {
+			pointService.addBloodSugarPoint(oauthId, LocalDate.parse(request.createdAt()), GroupCode.BLOOD_SUGAR);
 		}
 		return mapper.toResponse(healthMetric, guideResponse);
 	}

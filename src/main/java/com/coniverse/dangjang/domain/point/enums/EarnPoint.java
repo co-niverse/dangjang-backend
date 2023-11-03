@@ -15,7 +15,7 @@ public enum EarnPoint {
 	ACCESS(500, "접속"),
 	REGISTER(500, "등록"),
 	HEALTH_CONNECT(500, "기기연동"),
-	BLOODSUGAR(300, "혈당"),
+	BLOOD_SUGAR(300, "혈당"),
 	EXERCISE(200, "운동"),
 	WEIGHT(200, "체중");
 	private final int changePoint;

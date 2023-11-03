@@ -81,6 +81,22 @@ public class PointService {
 	}
 
 	/**
+	 * 혈당 등록시, 포인트 적립
+	 *
+	 * @param oauthId   유저 아이디
+	 * @param date      LocalDate 저장 날짜
+	 * @param groupCode 그룹 코드
+	 * @since 1.3.0
+	 */
+	public void addBloodSugarPoint(String oauthId, LocalDate date, GroupCode groupCode) {
+		User user = userSearchService.findUserByOauthId(oauthId);
+		int healthMetric = healthMetricSearchService.findByGroupCode(oauthId, groupCode, date);
+		if (healthMetric == 1) {
+			addPointEvent(EarnPoint.BLOOD_SUGAR.getTitle(), user);
+		}
+	}
+
+	/**
 	 * 1일 1접속 포인트 적립
 	 * <p>
 	 * 1일 1접속 가능 유저인지 자격을 확인하고,
