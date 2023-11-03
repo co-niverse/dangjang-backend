@@ -181,6 +181,24 @@ class PointHistoryServiceTest {
 		assertThat(등록후_포인트).isEqualTo(예상_포인트);
 	}
 
+	@Order(380)
+	@Test
+	@Transactional
+	void 혈당_등록시_포인트_적립을_받는다() {
+		//given
+		유저 = userRepository.save(헬스커넥트_연동_유저());
+		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 500));
+		HealthMetricPostRequest request = 혈당_건강지표_등록_요청();
+		int 예상_포인트 = 유저_포인트.getPoint() + EarnPoint.BLOOD_SUGAR.getChangePoint();
+
+		// when
+		healthMetricRegisterService.register(request, 유저.getOauthId());
+		int 등록후_포인트 = pointSearchService.findUserPointByOauthId(유저.getOauthId()).getPoint();
+
+		//then
+		assertThat(등록후_포인트).isEqualTo(예상_포인트);
+	}
+
 	@Order(400)
 	@Test
 	void 구매중_포인트가_부족하면_에러를_발생한다() {
