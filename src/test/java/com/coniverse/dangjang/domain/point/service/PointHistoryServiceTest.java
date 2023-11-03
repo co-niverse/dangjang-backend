@@ -25,8 +25,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectRegisterRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
+import com.coniverse.dangjang.domain.healthmetric.repository.HealthMetricRepository;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthConnectService;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
 import com.coniverse.dangjang.domain.point.dto.request.UsePointRequest;
@@ -70,6 +72,8 @@ class PointHistoryServiceTest {
 	private PurchaseHistoryRepository purchaseHistoryRepository;
 	@Autowired
 	private HealthMetricRegisterService healthMetricRegisterService;
+	@Autowired
+	private HealthMetricRepository healthMetricRepository;
 
 	private User 유저;
 	private LocalDate today = LocalDate.now();
@@ -148,6 +152,26 @@ class PointHistoryServiceTest {
 		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 500));
 		HealthMetricPostRequest request = 체중_건강지표_등록_요청();
 		int 예상_포인트 = 유저_포인트.getPoint() + EarnPoint.WEIGHT.getChangePoint();
+
+		// when
+		healthMetricRegisterService.register(request, 유저.getOauthId());
+		int 등록후_포인트 = pointSearchService.findUserPointByOauthId(유저.getOauthId()).getPoint();
+
+		//then
+		assertThat(등록후_포인트).isEqualTo(예상_포인트);
+	}
+
+	@Order(360)
+	@Test
+	@Transactional
+	void 운동_등록시_포인트_적립을_받는다() {
+		//given
+		유저 = userRepository.save(헬스커넥트_연동_유저());
+		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 500));
+		healthMetricRepository.save(건강지표_엔티티(유저, CommonCode.MEASUREMENT, today));
+
+		HealthMetricPostRequest request = 운동_건강지표_등록_요청();
+		int 예상_포인트 = 유저_포인트.getPoint() + EarnPoint.EXERCISE.getChangePoint();
 
 		// when
 		healthMetricRegisterService.register(request, 유저.getOauthId());
