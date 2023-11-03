@@ -1,5 +1,8 @@
 package com.coniverse.dangjang.domain.point.enums;
 
+import com.coniverse.dangjang.domain.code.enums.GroupCode;
+import com.coniverse.dangjang.domain.healthmetric.exception.HealthMetricNotFoundException;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -20,4 +23,26 @@ public enum EarnPoint {
 	WEIGHT(200, "체중");
 	private final int changePoint;
 	private final String title;
+
+	/**
+	 * 그룹 코드에 따른 포인트 적립 종류를 반환한다.
+	 *
+	 * @return EarnPoint 포인트 적립 종류
+	 * @throws HealthMetricNotFoundException 건강지표를 찾을 수 없을 때 발생하는 예외
+	 * @author EVE
+	 * @since 1.3.0
+	 */
+	public static EarnPoint findByGroupCode(GroupCode groupCode) {
+		switch (groupCode) {
+			case BLOOD_SUGAR:
+				return EarnPoint.BLOOD_SUGAR;
+			case EXERCISE:
+				return EarnPoint.EXERCISE;
+			case WEIGHT:
+				return EarnPoint.WEIGHT;
+			default:
+				throw new HealthMetricNotFoundException();
+		}
+	}
+
 }

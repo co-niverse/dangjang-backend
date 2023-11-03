@@ -26,6 +26,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
+import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectRegisterRequest;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
 import com.coniverse.dangjang.domain.healthmetric.repository.HealthMetricRepository;
@@ -193,6 +194,25 @@ class PointHistoryServiceTest {
 
 		// when
 		healthMetricRegisterService.register(request, 유저.getOauthId());
+		int 등록후_포인트 = pointSearchService.findUserPointByOauthId(유저.getOauthId()).getPoint();
+
+		//then
+		assertThat(등록후_포인트).isEqualTo(예상_포인트);
+	}
+
+	@Order(390)
+	@Test
+	@Transactional
+	void 체중_혈당_운동_기록하지_않았으면_포인트를_등록하지_않는다() {
+		//given
+		유저 = userRepository.save(헬스커넥트_연동_유저());
+		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 500));
+		int 예상_포인트 = 유저_포인트.getPoint();
+
+		// when
+		pointService.addHealthMetricPoint(유저.getOauthId(), today, GroupCode.BLOOD_SUGAR);
+		pointService.addHealthMetricPoint(유저.getOauthId(), today, GroupCode.EXERCISE);
+		pointService.addHealthMetricPoint(유저.getOauthId(), today, GroupCode.WEIGHT);
 		int 등록후_포인트 = pointSearchService.findUserPointByOauthId(유저.getOauthId()).getPoint();
 
 		//then

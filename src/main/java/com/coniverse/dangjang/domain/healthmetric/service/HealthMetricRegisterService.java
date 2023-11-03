@@ -52,13 +52,8 @@ public class HealthMetricRegisterService {
 		final User user = userSearchService.findUserByOauthId(oauthId);
 		final HealthMetric healthMetric = healthMetricRepository.save(mapper.toEntity(request, user));
 		final GuideResponse guideResponse = guideService.createGuide(analysisService.analyze(healthMetric));
-		if (request.type().equals(CommonCode.MEASUREMENT.getTitle())) {
-			pointService.addWeightPoint(oauthId, LocalDate.parse(request.createdAt()));
-		} else if (GroupCode.findByCode(EnumFindUtil.findByTitle(CommonCode.class, request.type())).equals(GroupCode.EXERCISE)) {
-			pointService.addExercisePoint(oauthId, LocalDate.parse(request.createdAt()), GroupCode.EXERCISE);
-		} else if (GroupCode.findByCode(EnumFindUtil.findByTitle(CommonCode.class, request.type())).equals(GroupCode.BLOOD_SUGAR)) {
-			pointService.addBloodSugarPoint(oauthId, LocalDate.parse(request.createdAt()), GroupCode.BLOOD_SUGAR);
-		}
+		GroupCode groupCode = GroupCode.findByCode(EnumFindUtil.findByTitle(CommonCode.class, request.type()));
+		pointService.addHealthMetricPoint(oauthId, LocalDate.parse(request.createdAt()), groupCode);
 		return mapper.toResponse(healthMetric, guideResponse);
 	}
 
