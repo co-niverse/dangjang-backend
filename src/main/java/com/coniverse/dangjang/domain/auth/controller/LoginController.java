@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coniverse.dangjang.domain.auth.dto.request.KakaoLoginRequest;
+import com.coniverse.dangjang.domain.auth.dto.request.LogoutFcmTokenRequest;
 import com.coniverse.dangjang.domain.auth.dto.request.NaverLoginRequest;
 import com.coniverse.dangjang.domain.auth.dto.response.LoginResponse;
 import com.coniverse.dangjang.domain.auth.service.OauthLoginService;
@@ -34,14 +35,13 @@ public class LoginController {
 	private static String headerKeyAuthorization = "Authorization";
 
 	/**
-	 * @param params  카카오 accessToken
-	 * @param request request에서 fcmToken header가 필요
+	 * @param params 카카오 accessToken
 	 * @return ResponseEntity 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, auth id)를 전달한다.
 	 * @since 1.0.0
 	 */
 	@PostMapping("/kakao")
-	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginKakao(@Valid @RequestBody KakaoLoginRequest params, HttpServletRequest request) {
-		LoginResponse loginResponse = oauthLoginService.login(params, request.getHeader(headerKeyFcmToken));
+	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginKakao(@Valid @RequestBody KakaoLoginRequest params) {
+		LoginResponse loginResponse = oauthLoginService.login(params);
 		String accessToken = oauthLoginService.getAuthToken(loginResponse.nickname());
 		return ResponseEntity.ok()
 			.header(headerKeyAccessToken.toString(), accessToken)
@@ -49,14 +49,13 @@ public class LoginController {
 	}
 
 	/**
-	 * @param params  네이버 accessToken
-	 * @param request request에서 fcmToken header가 필요
+	 * @param params 네이버 accessToken
 	 * @return ResponseEntity 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, auth id)를 전달한다.
 	 * @since 1.0.0
 	 */
 	@PostMapping("/naver")
-	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginNaver(@Valid @RequestBody NaverLoginRequest params, HttpServletRequest request) {
-		LoginResponse loginResponse = oauthLoginService.login(params, request.getHeader(headerKeyFcmToken));
+	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginNaver(@Valid @RequestBody NaverLoginRequest params) {
+		LoginResponse loginResponse = oauthLoginService.login(params);
 		String accessToken = oauthLoginService.getAuthToken(loginResponse.nickname());
 		return ResponseEntity.ok()
 			.header(headerKeyAccessToken, accessToken)
@@ -81,12 +80,13 @@ public class LoginController {
 	/**
 	 * 로그아웃
 	 *
-	 * @param request 요청
+	 * @param request               HttpServletRequest oauthId
+	 * @param logoutFcmTokenRequest fcmToken
 	 * @since 1.1.0
 	 */
 	@PostMapping("/logout")
-	public ResponseEntity<SuccessSingleResponse> logout(HttpServletRequest request) {
-		oauthLoginService.logout(request.getHeader(headerKeyAuthorization), request.getHeader(headerKeyFcmToken));
+	public ResponseEntity<SuccessSingleResponse> logout(HttpServletRequest request, @RequestBody LogoutFcmTokenRequest logoutFcmTokenRequest) {
+		oauthLoginService.logout(request.getHeader(headerKeyAuthorization), logoutFcmTokenRequest.fcmToken());
 		return ResponseEntity.ok()
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}

@@ -1,5 +1,7 @@
 package com.coniverse.dangjang.domain.guide.common.service;
 
+import java.time.LocalDate;
+
 import com.coniverse.dangjang.domain.analysis.dto.AnalysisData;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.code.enums.GroupCode;
@@ -19,6 +21,8 @@ public interface GuideGenerateService {
 	default GuideResponse updateGuideWithType(AnalysisData analysisData, CommonCode prevType) {
 		throw new UnsupportedOperationException("잘못된 메서드 호출입니다.");
 	}
+
+	void removeGuide(String oauthId, LocalDate createdAt, CommonCode type);
 
 	GroupCode getGroupCode();
 }

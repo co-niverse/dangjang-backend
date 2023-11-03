@@ -47,9 +47,9 @@ jwt:
     exp: 3600000
 
 fluentbit:
-  app-log-url: http://localhost:8888/app.log
-  server-log-url: http://localhost:8888/server.log
-  notification-url: http://localhost:8888/notification
+  app-log-url: http://localhost:1234/app.log
+  server-log-url: http://localhost:1234/server.log
+  notification-url: http://localhost:1234/notification
 
 cors:
   allowed-origins: "*"
@@ -61,6 +61,9 @@ oauth:
   naver:
     url:
       api: https://openapi.naver.com
+
+version:
+  key: "1234"
 
 logging:
   level:

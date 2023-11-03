@@ -48,7 +48,7 @@ class SignupControllerTest extends ControllerTest {
 		AuthToken authToken = new AuthToken();
 		authToken.setAccessToken("accessToken");
 		authToken.setRefreshToken("refreshToken");
-		given(userSignupService.signUp(any(), any())).willReturn(loginResponse);
+		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		given(oauthLoginService.getAuthToken(loginResponse.nickname())).willReturn(authToken.getAccessToken());
 		String content = objectMapper.writeValueAsString(signUpRequest);
 
@@ -73,7 +73,7 @@ class SignupControllerTest extends ControllerTest {
 			false, 0, false, false,
 			diseases);
 		LoginResponse loginResponse = new LoginResponse("test", false, false);
-		given(userSignupService.signUp(any(), any())).willReturn(loginResponse);
+		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 
 		// when
@@ -96,7 +96,7 @@ class SignupControllerTest extends ControllerTest {
 			false, 0, false, false,
 			diseases);
 		LoginResponse loginResponse = new LoginResponse("test", false, false);
-		given(userSignupService.signUp(any(), any())).willReturn(loginResponse);
+		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
 
@@ -118,7 +118,7 @@ class SignupControllerTest extends ControllerTest {
 			false, 0, false, false,
 			diseases);
 		LoginResponse loginResponse = new LoginResponse("test", false, false);
-		given(userSignupService.signUp(any(), any())).willReturn(loginResponse);
+		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
 
@@ -141,7 +141,7 @@ class SignupControllerTest extends ControllerTest {
 			false, 0, false, false,
 			diseases);
 		LoginResponse loginResponse = new LoginResponse("test", false, false);
-		given(userSignupService.signUp(any(), any())).willReturn(loginResponse);
+		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
 
@@ -163,7 +163,7 @@ class SignupControllerTest extends ControllerTest {
 			false, 0, false, false,
 			diseases);
 		LoginResponse loginResponse = new LoginResponse("test", false, false);
-		given(userSignupService.signUp(any(), any())).willReturn(loginResponse);
+		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
 		ResultActions resultActions = post(mockMvc, URI, content);
@@ -184,7 +184,7 @@ class SignupControllerTest extends ControllerTest {
 			false, 0, false, false,
 			diseases);
 		LoginResponse loginResponse = new LoginResponse("test", false, false);
-		given(userSignupService.signUp(any(), any())).willReturn(loginResponse);
+		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
 
@@ -206,7 +206,7 @@ class SignupControllerTest extends ControllerTest {
 			false, 0, false, false,
 			diseases);
 		LoginResponse loginResponse = new LoginResponse("test", false, false);
-		given(userSignupService.signUp(any(), any())).willReturn(loginResponse);
+		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
 
@@ -228,7 +228,7 @@ class SignupControllerTest extends ControllerTest {
 			false, 0, false, false,
 			diseases);
 		LoginResponse loginResponse = new LoginResponse("test", false, false);
-		given(userSignupService.signUp(any(), any())).willReturn(loginResponse);
+		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
 
@@ -250,7 +250,7 @@ class SignupControllerTest extends ControllerTest {
 			null, 0, false, false,
 			diseases);
 		LoginResponse loginResponse = new LoginResponse("test", false, false);
-		given(userSignupService.signUp(any(), any())).willReturn(loginResponse);
+		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
 
@@ -272,7 +272,7 @@ class SignupControllerTest extends ControllerTest {
 			false, -1, false, false,
 			diseases);
 		LoginResponse loginResponse = new LoginResponse("test", false, false);
-		given(userSignupService.signUp(any(), any())).willReturn(loginResponse);
+		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
 
@@ -294,7 +294,7 @@ class SignupControllerTest extends ControllerTest {
 			false, 0, null, false,
 			diseases);
 		LoginResponse loginResponse = new LoginResponse("test", false, false);
-		given(userSignupService.signUp(any(), any())).willReturn(loginResponse);
+		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
 
@@ -316,7 +316,7 @@ class SignupControllerTest extends ControllerTest {
 			false, 0, false, null,
 			diseases);
 		LoginResponse loginResponse = new LoginResponse("test", false, false);
-		given(userSignupService.signUp(any(), any())).willReturn(loginResponse);
+		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
 
@@ -338,7 +338,7 @@ class SignupControllerTest extends ControllerTest {
 			false, 0, false, false,
 			diseases);
 		LoginResponse loginResponse = new LoginResponse("test", false, false);
-		given(userSignupService.signUp(any(), any())).willReturn(loginResponse);
+		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
 
@@ -358,7 +358,7 @@ class SignupControllerTest extends ControllerTest {
 			false, 0, false, false,
 			null);
 		LoginResponse loginResponse = new LoginResponse("test", false, false);
-		given(userSignupService.signUp(any(), any())).willReturn(loginResponse);
+		given(userSignupService.signUp(any())).willReturn(loginResponse);
 		String content = objectMapper.writeValueAsString(signUpRequest);
 		// when
 
