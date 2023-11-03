@@ -51,7 +51,7 @@ public class HealthMetricRegisterService {
 		final User user = userSearchService.findUserByOauthId(oauthId);
 		final HealthMetric healthMetric = healthMetricRepository.save(mapper.toEntity(request, user));
 		final GuideResponse guideResponse = guideService.createGuide(analysisService.analyze(healthMetric));
-		if (request.type().equals(CommonCode.MEASUREMENT.name())) {
+		if (request.type().equals(CommonCode.MEASUREMENT.getTitle())) {
 			pointService.addWeightPoint(oauthId, LocalDate.parse(request.createdAt()));
 		}
 		return mapper.toResponse(healthMetric, guideResponse);
