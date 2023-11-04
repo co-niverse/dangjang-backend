@@ -92,7 +92,7 @@ public class HealthMetricSearchService {
 	}
 
 	/**
-	 * 그룹코드와 생성날짜로 건강 지표를 조회한다
+	 * 그룹코드와 생성날짜로 조회된 건강지표 개수를 카운트한다
 	 *
 	 * @param oauthId   유저 PK
 	 * @param createdAt 생성일
@@ -101,6 +101,6 @@ public class HealthMetricSearchService {
 	 * @since 1.3.0
 	 */
 	public int findByGroupCode(String oauthId, GroupCode groupCode, LocalDate createdAt) {
-		return healthMetricRepository.findByGroupCode(oauthId, groupCode, createdAt);
+		return healthMetricRepository.findHealthMetricCountByGroupCode(oauthId, groupCode, createdAt);
 	}
 }

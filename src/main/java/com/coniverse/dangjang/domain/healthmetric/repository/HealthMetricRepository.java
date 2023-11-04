@@ -79,7 +79,7 @@ public interface HealthMetricRepository extends JpaRepository<HealthMetric, Heal
 	Optional<LocalDate> findCreatedAtByOauthId(String oauthId);
 
 	/**
-	 * 사용자의 group code와 생성일로 건강지표 조회
+	 * 사용자의 그룹코드와 생성날짜로 조회된 건강지표 개수를 카운트한다
 	 *
 	 * @param oauthId   사용자 ID
 	 * @param groupCode group code
@@ -88,5 +88,5 @@ public interface HealthMetricRepository extends JpaRepository<HealthMetric, Heal
 	 * @since 1.3.0
 	 */
 	@Query("SELECT count(h) FROM HealthMetric h WHERE h.healthMetricId.oauthId = ?1 AND h.groupCode = ?2 AND h.healthMetricId.createdAt = ?3")
-	int findByGroupCode(String oauthId, GroupCode groupCode, LocalDate createdAt);
+	int findHealthMetricCountByGroupCode(String oauthId, GroupCode groupCode, LocalDate createdAt);
 }
