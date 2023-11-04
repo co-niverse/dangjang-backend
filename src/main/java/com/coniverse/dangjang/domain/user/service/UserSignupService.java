@@ -60,8 +60,8 @@ public class UserSignupService {
 		int recommendedCalorie = calculateRecommendedCalorie(Gender.of(signUpRequest.gender()), signUpRequest.height(),
 			ActivityAmount.of(signUpRequest.activityAmount()));
 		User savedUser = userRepository.save(userMapper.toEntity(oAuthInfoResponse, signUpRequest, activityAmount, gender, recommendedCalorie));
-		registerWeight(savedUser, signUpRequest.weight());
 		pointService.addSignupPoint(savedUser.getOauthId());
+		registerWeight(savedUser, signUpRequest.weight());
 		return authMapper.toLoginResponse(savedUser.getNickname(), false, savedUser.getHealthConnect().isConnecting());
 	}
 

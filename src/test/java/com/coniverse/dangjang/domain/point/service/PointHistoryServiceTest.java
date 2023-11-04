@@ -25,8 +25,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.coniverse.dangjang.domain.code.enums.CommonCode;
+import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthConnectRegisterRequest;
+import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPostRequest;
+import com.coniverse.dangjang.domain.healthmetric.repository.HealthMetricRepository;
 import com.coniverse.dangjang.domain.healthmetric.service.HealthConnectService;
+import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricRegisterService;
 import com.coniverse.dangjang.domain.point.dto.request.UsePointRequest;
 import com.coniverse.dangjang.domain.point.dto.response.ProductListResponse;
 import com.coniverse.dangjang.domain.point.entity.UserPoint;
@@ -66,6 +71,10 @@ class PointHistoryServiceTest {
 	private HealthConnectService healthConnectService;
 	@Autowired
 	private PurchaseHistoryRepository purchaseHistoryRepository;
+	@Autowired
+	private HealthMetricRegisterService healthMetricRegisterService;
+	@Autowired
+	private HealthMetricRepository healthMetricRepository;
 
 	private User 유저;
 	private LocalDate today = LocalDate.now();
@@ -132,6 +141,82 @@ class PointHistoryServiceTest {
 		User 접속한_유저 = userRepository.findById(유저.getOauthId()).get();
 		UserPoint 접속한_유저_포인트 = pointSearchService.findUserPointByOauthId(접속한_유저.getOauthId());
 		assertThat(접속한_유저_포인트.getPoint()).isEqualTo(accessPoint);
+	}
+
+	@Order(330)
+	@Test
+	@Transactional
+	void 체중_등록시_포인트_적립을_받는다() {
+
+		//given
+		유저 = userRepository.save(헬스커넥트_연동_유저());
+		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 500));
+		HealthMetricPostRequest request = 체중_건강지표_등록_요청();
+		int 예상_포인트 = 유저_포인트.getPoint() + EarnPoint.WEIGHT.getChangePoint();
+
+		// when
+		healthMetricRegisterService.register(request, 유저.getOauthId());
+		int 등록후_포인트 = pointSearchService.findUserPointByOauthId(유저.getOauthId()).getPoint();
+
+		//then
+		assertThat(등록후_포인트).isEqualTo(예상_포인트);
+	}
+
+	@Order(360)
+	@Test
+	@Transactional
+	void 운동_등록시_포인트_적립을_받는다() {
+		//given
+		유저 = userRepository.save(헬스커넥트_연동_유저());
+		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 500));
+		healthMetricRepository.save(건강지표_엔티티(유저, CommonCode.MEASUREMENT, today));
+
+		HealthMetricPostRequest request = 운동_건강지표_등록_요청();
+		int 예상_포인트 = 유저_포인트.getPoint() + EarnPoint.EXERCISE.getChangePoint();
+
+		// when
+		healthMetricRegisterService.register(request, 유저.getOauthId());
+		int 등록후_포인트 = pointSearchService.findUserPointByOauthId(유저.getOauthId()).getPoint();
+
+		//then
+		assertThat(등록후_포인트).isEqualTo(예상_포인트);
+	}
+
+	@Order(380)
+	@Test
+	@Transactional
+	void 혈당_등록시_포인트_적립을_받는다() {
+		//given
+		유저 = userRepository.save(헬스커넥트_연동_유저());
+		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 500));
+		HealthMetricPostRequest request = 혈당_건강지표_등록_요청();
+		int 예상_포인트 = 유저_포인트.getPoint() + EarnPoint.BLOOD_SUGAR.getChangePoint();
+
+		// when
+		healthMetricRegisterService.register(request, 유저.getOauthId());
+		int 등록후_포인트 = pointSearchService.findUserPointByOauthId(유저.getOauthId()).getPoint();
+
+		//then
+		assertThat(등록후_포인트).isEqualTo(예상_포인트);
+	}
+
+	@Order(390)
+	@Test
+	@Transactional
+	void 체중_혈당_운동_기록하지_않았으면_포인트를_등록하지_않는다() {
+		//given
+		유저 = userRepository.save(헬스커넥트_연동_유저());
+		UserPoint 유저_포인트 = userPointRepository.save(유저_포인트_생성(유저.getOauthId(), 500));
+		int 예상_포인트 = 유저_포인트.getPoint();
+
+		// when
+		pointService.addHealthMetricPoint(유저.getOauthId(), today, GroupCode.BLOOD_SUGAR);
+		pointService.addHealthMetricPoint(유저.getOauthId(), today, GroupCode.EXERCISE);
+		pointService.addHealthMetricPoint(유저.getOauthId(), today, GroupCode.WEIGHT);
+		int 등록후_포인트 = pointSearchService.findUserPointByOauthId(유저.getOauthId()).getPoint();
+
+		//then
+		assertThat(등록후_포인트).isEqualTo(예상_포인트);
 	}
 
 	@Order(400)
