@@ -59,8 +59,8 @@ public class PointService {
 	 */
 	public void addHealthMetricPoint(String oauthId, LocalDate date, GroupCode groupCode) {
 		User user = userSearchService.findUserByOauthId(oauthId);
-		int healthMetric = healthMetricSearchService.findByGroupCode(oauthId, groupCode, date);
-		if (healthMetric == 1) {
+		int healthMetricCount = healthMetricSearchService.findByGroupCode(oauthId, groupCode, date);
+		if (healthMetricCount == 1) {
 			addPointEvent(EarnPoint.findByGroupCode(groupCode).getTitle(), user);
 		}
 	}
