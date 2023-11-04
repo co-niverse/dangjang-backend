@@ -33,16 +33,12 @@ public enum EarnPoint {
 	 * @since 1.3.0
 	 */
 	public static EarnPoint findByGroupCode(GroupCode groupCode) {
-		switch (groupCode) {
-			case BLOOD_SUGAR:
-				return EarnPoint.BLOOD_SUGAR;
-			case EXERCISE:
-				return EarnPoint.EXERCISE;
-			case WEIGHT:
-				return EarnPoint.WEIGHT;
-			default:
-				throw new HealthMetricNotFoundException();
-		}
+		return switch (groupCode) {
+			case BLOOD_SUGAR -> EarnPoint.BLOOD_SUGAR;
+			case EXERCISE -> EarnPoint.EXERCISE;
+			case WEIGHT -> EarnPoint.WEIGHT;
+			default -> throw new HealthMetricNotFoundException();
+		};
 	}
 
 }
