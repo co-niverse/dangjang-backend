@@ -14,6 +14,6 @@ import jakarta.validation.constraints.Positive;
  * @since 1.0.0
  */
 public record LogRequest(@NotBlank String eventLogName, @NotBlank String screenName, @Positive int logVersion,
-						 @NotBlank @Pattern(regexp = "^\\d+\\.\\d+\\.\\d$") String appVersion, @NotBlank String sessionId,
+						 @NotBlank @Pattern(regexp = "^\\d+\\.\\d+\\.\\d+$") String appVersion, @NotBlank String sessionId,
 						 @NotNull Map<@NotBlank String, Object> logData) {
 }
