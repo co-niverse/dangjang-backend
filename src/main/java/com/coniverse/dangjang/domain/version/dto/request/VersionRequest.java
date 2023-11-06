@@ -9,6 +9,6 @@ import jakarta.validation.constraints.Pattern;
  * @author TEO
  * @since 1.3.0
  */
-public record VersionRequest(@NotBlank @Pattern(regexp = "^\\d\\.\\d\\.\\d$") String minVersion,
-							 @NotBlank @Pattern(regexp = "^\\d\\.\\d\\.\\d$") String latestVersion, @NotBlank String key) {
+public record VersionRequest(@NotBlank @Pattern(regexp = "^\\d+\\.\\d+\\.\\d+$") String minVersion,
+							 @NotBlank @Pattern(regexp = "^\\d+\\.\\d+\\.\\d+$") String latestVersion, @NotBlank String key) {
 }
