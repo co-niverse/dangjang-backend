@@ -27,6 +27,7 @@ import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricRespo
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.healthmetric.exception.HealthMetricNotFoundException;
 import com.coniverse.dangjang.domain.healthmetric.repository.HealthMetricRepository;
+import com.coniverse.dangjang.domain.point.service.PointService;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 import com.coniverse.dangjang.global.util.EnumFindUtil;
@@ -49,6 +50,8 @@ class HealthMetricRegisterServiceTest {
 	private AnalysisService analysisService;
 	@MockBean
 	private GuideService guideService;
+	@MockBean
+	private PointService pointService;
 	private User user;
 	private String oauthId;
 	private HealthMetric 등록된_건강지표;

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.analysis.service.AnalysisService;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
+import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.guide.common.dto.response.GuideResponse;
 import com.coniverse.dangjang.domain.guide.common.service.GuideService;
 import com.coniverse.dangjang.domain.healthmetric.dto.request.HealthMetricPatchRequest;
@@ -15,6 +16,7 @@ import com.coniverse.dangjang.domain.healthmetric.dto.response.HealthMetricRespo
 import com.coniverse.dangjang.domain.healthmetric.entity.HealthMetric;
 import com.coniverse.dangjang.domain.healthmetric.mapper.HealthMetricMapper;
 import com.coniverse.dangjang.domain.healthmetric.repository.HealthMetricRepository;
+import com.coniverse.dangjang.domain.point.service.PointService;
 import com.coniverse.dangjang.domain.user.entity.User;
 import com.coniverse.dangjang.domain.user.service.UserSearchService;
 import com.coniverse.dangjang.global.util.EnumFindUtil;
@@ -37,6 +39,7 @@ public class HealthMetricRegisterService {
 	private final HealthMetricSearchService healthMetricSearchService;
 	private final AnalysisService analysisService;
 	private final GuideService guideService;
+	private final PointService pointService;
 
 	/**
 	 * 건강지표를 저장한다.
@@ -49,6 +52,10 @@ public class HealthMetricRegisterService {
 		final User user = userSearchService.findUserByOauthId(oauthId);
 		final HealthMetric healthMetric = healthMetricRepository.save(mapper.toEntity(request, user));
 		final GuideResponse guideResponse = guideService.createGuide(analysisService.analyze(healthMetric));
+		GroupCode groupCode = GroupCode.findByCode(EnumFindUtil.findByTitle(CommonCode.class, request.type()));
+		if (!groupCode.equals(GroupCode.GLYCATED_HEMOGLOBIN)) {
+			pointService.addHealthMetricPoint(oauthId, LocalDate.parse(request.createdAt()), groupCode);
+		}
 		return mapper.toResponse(healthMetric, guideResponse);
 	}
 

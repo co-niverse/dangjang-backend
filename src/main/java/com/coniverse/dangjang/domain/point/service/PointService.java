@@ -8,6 +8,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.coniverse.dangjang.domain.auth.service.DefaultOauthLoginService;
+import com.coniverse.dangjang.domain.code.enums.GroupCode;
+import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricSearchService;
 import com.coniverse.dangjang.domain.point.dto.request.UsePointRequest;
 import com.coniverse.dangjang.domain.point.dto.response.ProductListResponse;
 import com.coniverse.dangjang.domain.point.dto.response.UsePointResponse;
@@ -45,6 +47,23 @@ public class PointService {
 	private final DefaultOauthLoginService defaultOauthLoginService;
 	private final UserPointRepository userPointRepository;
 	private final PurchaseHistoryRepository purchaseHistoryRepository;
+	private final HealthMetricSearchService healthMetricSearchService;
+
+	/**
+	 * 체중,혈당,체중 등록시, 포인트 적립
+	 *
+	 * @param oauthId   유저 아이디
+	 * @param date      LocalDate 저장 날짜
+	 * @param groupCode 그룹 코드
+	 * @since 1.3.0
+	 */
+	public void addHealthMetricPoint(String oauthId, LocalDate date, GroupCode groupCode) {
+		User user = userSearchService.findUserByOauthId(oauthId);
+		int healthMetricCount = healthMetricSearchService.findByGroupCode(oauthId, groupCode, date);
+		if (healthMetricCount == 1) {
+			addPointEvent(EarnPoint.findByGroupCode(groupCode).getTitle(), user);
+		}
+	}
 
 	/**
 	 * 1일 1접속 포인트 적립
