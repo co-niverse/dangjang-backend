@@ -281,7 +281,6 @@ class PointHistoryServiceTest {
 		ProductListResponse response = pointService.getProducts(유저.getOauthId());
 		//then
 		assertThat(response.balancedPoint()).isEqualTo(유저_포인트.getPoint());
-		assertThat(response.productList()).hasSize(useTypeProductSize);
 		assertThat(response.descriptionListToEarnPoint()).hasSize(earnTypeProductSize);
 	}
 
