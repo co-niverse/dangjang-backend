@@ -1,6 +1,7 @@
 package com.coniverse.dangjang.domain.point.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -181,13 +182,14 @@ public class PointService {
 	 * 구매 가능 상품 조회
 	 * <p>
 	 * 유저의 현재 포인트와 구매 가능한 상품을 조회한다.
+	 * 11월 10일 이후 포인트 서비스를 종료한다.
 	 *
 	 * @param oauthId 유저 아이디
 	 * @since 1.0.0
 	 */
 	public ProductListResponse getProducts(String oauthId) {
 		int balancePoint = pointSearchService.findUserPointByOauthId(oauthId).getPoint();
-		List<PointProduct> productList = pointSearchService.findAllByType(PointType.USE);
+		List<PointProduct> productList = new ArrayList<>();
 		List<String> descriptionListToEarnPoint = pointSearchService.findAllByType(PointType.EARN).stream()
 			.map(PointProduct::getDescription)
 			.collect(Collectors.toList());
