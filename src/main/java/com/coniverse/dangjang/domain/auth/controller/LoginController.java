@@ -50,8 +50,10 @@ public class LoginController {
 	}
 
 	/**
-	 * @param params 카카오 accessToken
-	 * @return ResponseEntity 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, auth id)를 전달한다.
+	 * 카카오 로그인
+	 *
+	 * @param params 카카오 access token
+	 * @return jwt token, 로그인 정보
 	 * @since 1.4.0
 	 */
 	@ApiVersion("1")
@@ -81,8 +83,10 @@ public class LoginController {
 	}
 
 	/**
-	 * @param params 네이버 accessToken
-	 * @return ResponseEntity 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, auth id)를 전달한다.
+	 * 네이버 로그인
+	 *
+	 * @param params 네이버 access token
+	 * @return jwt token, 로그인 정보
 	 * @since 1.4.0
 	 */
 	@ApiVersion("1")
@@ -113,9 +117,9 @@ public class LoginController {
 	}
 
 	/**
-	 * refreshToken으로 AuthToken 재발급
+	 * refresh token으로 access token 재발급
 	 *
-	 * @param request 재발급 요청 , header에 accessToken이 필요
+	 * @param request 재발급 요청, header에 access token 필요
 	 * @return AuthToken
 	 * @since 1.4.0
 	 */
@@ -147,8 +151,8 @@ public class LoginController {
 	/**
 	 * 로그아웃
 	 *
-	 * @param request               HttpServletRequest oauthId
-	 * @param logoutFcmTokenRequest fcmToken
+	 * @param request               HttpServletRequest
+	 * @param logoutFcmTokenRequest fcm token 정보
 	 * @since 1.4.0
 	 */
 	@ApiVersion("1")
