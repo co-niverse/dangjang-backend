@@ -18,6 +18,7 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -79,6 +80,9 @@ dependencies {
     //scheduler
     implementation 'net.javacrumbs.shedlock:shedlock-spring:4.14.0'
     implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:4.14.0'
+
+    // api versioning
+    implementation 'com.github.GIVEN53:api-versioning-library:0.2.0'
 
 }
 
