@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.coniverse.dangjang.domain.notification.dto.fluentd.FcmMessage;
+import com.coniverse.dangjang.domain.notification.dto.message.FcmMessage;
 import com.coniverse.dangjang.domain.notification.dto.request.CheckNotificationIdRequest;
 import com.coniverse.dangjang.domain.notification.dto.response.NotificationResponse;
 import com.coniverse.dangjang.domain.notification.entity.Notification;

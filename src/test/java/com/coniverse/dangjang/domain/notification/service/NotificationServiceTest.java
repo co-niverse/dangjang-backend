@@ -17,7 +17,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.coniverse.dangjang.domain.notification.dto.fluentd.FcmMessage;
+import com.coniverse.dangjang.domain.notification.dto.message.FcmMessage;
 import com.coniverse.dangjang.domain.notification.dto.request.CheckNotificationIdRequest;
 import com.coniverse.dangjang.domain.notification.dto.response.NotificationResponse;
 import com.coniverse.dangjang.domain.notification.entity.Notification;

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 
-import com.coniverse.dangjang.domain.notification.dto.fluentd.FcmMessage;
+import com.coniverse.dangjang.domain.notification.dto.message.FcmMessage;
 import com.coniverse.dangjang.domain.notification.service.NotificationSendService;
 import com.coniverse.dangjang.domain.notification.service.NotificationService;
 

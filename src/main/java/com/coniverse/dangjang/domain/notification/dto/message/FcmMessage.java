@@ -1,4 +1,4 @@
-package com.coniverse.dangjang.domain.notification.dto.fluentd;
+package com.coniverse.dangjang.domain.notification.dto.message;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
