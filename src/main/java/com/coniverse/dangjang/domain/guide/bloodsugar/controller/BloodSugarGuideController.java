@@ -15,6 +15,7 @@ import com.coniverse.dangjang.domain.guide.bloodsugar.service.BloodSugarGuideSea
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 import com.coniverse.dangjang.global.validator.ValidLocalDate;
 
+import given.apiversion.core.annotation.ApiVersion;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -24,9 +25,9 @@ import lombok.RequiredArgsConstructor;
  * @since 1.0.0
  */
 @RestController
-@RequestMapping("/guide/blood-sugar")
 @RequiredArgsConstructor
 @Validated
+@RequestMapping("/guide/blood-sugar")
 public class BloodSugarGuideController {
 	private final BloodSugarGuideSearchService bloodSugarGuideSearchService;
 
@@ -37,11 +38,30 @@ public class BloodSugarGuideController {
 	 * @param principal 사용자 정보
 	 * @return 혈당 가이드 응답 dto
 	 * @since 1.0.0
+	 * @deprecated 1.4.0
 	 */
+	@Deprecated(since = "1.4.0")
 	@GetMapping
 	public ResponseEntity<SuccessSingleResponse<BloodSugarGuideResponse>> get(@ValidLocalDate @RequestParam String date,
 		@AuthenticationPrincipal User principal) {
 		BloodSugarGuideResponse response = bloodSugarGuideSearchService.findGuide(principal.getUsername(), date);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
+	}
+
+	/**
+	 * 혈당 가이드를 조회한다.
+	 *
+	 * @param date      조회할 일자
+	 * @param principal 사용자 정보
+	 * @return 혈당 가이드 응답 dto
+	 * @since 1.4.0
+	 */
+	@ApiVersion("1")
+	@GetMapping
+	public ResponseEntity<SuccessSingleResponse<BloodSugarGuideResponse>> getBloodSugarGuideV1(@ValidLocalDate @RequestParam String date,
+		@AuthenticationPrincipal User principal) {
+		BloodSugarGuideResponse response = bloodSugarGuideSearchService.findGuide(principal.getUsername(), date);
+		return ResponseEntity.ok()
+			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
 }

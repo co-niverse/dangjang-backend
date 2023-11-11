@@ -11,6 +11,7 @@ import com.coniverse.dangjang.domain.log.dto.request.LogRequest;
 import com.coniverse.dangjang.domain.log.service.LogService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
+import given.apiversion.core.annotation.ApiVersion;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -21,8 +22,8 @@ import lombok.RequiredArgsConstructor;
  * @since 1.0.0
  */
 @RestController
-@RequestMapping("/log")
 @RequiredArgsConstructor
+@RequestMapping("/log")
 public class AppLogController {
 	private final LogService logService;
 
@@ -30,10 +31,25 @@ public class AppLogController {
 	 * 앱 로그를 post 요청한다.
 	 *
 	 * @since 1.0.0
+	 * @deprecated 1.4.0
 	 */
+	@Deprecated(since = "1.4.0")
 	@PostMapping
 	public ResponseEntity<SuccessSingleResponse<?>> post(@Valid @RequestBody LogRequest request) {
 		logService.sendLog(request);
 		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
+	}
+
+	/**
+	 * 앱 로그를 post 요청한다.
+	 *
+	 * @param request 로그 요청
+	 * @since 1.4.0
+	 */
+	@ApiVersion("1")
+	@PostMapping
+	public ResponseEntity<SuccessSingleResponse<?>> postLogV1(@Valid @RequestBody LogRequest request) {
+		logService.sendLog(request);
+		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}
 }

@@ -15,6 +15,7 @@ import com.coniverse.dangjang.domain.guide.common.service.DayGuideService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 import com.coniverse.dangjang.global.validator.ValidLocalDate;
 
+import given.apiversion.core.annotation.ApiVersion;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -23,10 +24,10 @@ import lombok.RequiredArgsConstructor;
  * @author EVE
  * @since 1.0.0
  */
-@RequestMapping("/guide")
 @RestController
 @RequiredArgsConstructor
 @Validated
+@RequestMapping("/guide")
 public class GuideController {
 	private final DayGuideService dayGuideService;
 
@@ -36,11 +37,29 @@ public class GuideController {
 	 * @param date 조회날짜
 	 * @author EVE
 	 * @since 1.0.0
+	 * @deprecated 1.4.0
 	 */
+	@Deprecated(since = "1.4.0")
 	@GetMapping
 	public ResponseEntity<SuccessSingleResponse<DayGuideResponse>> getDayGuide(@ValidLocalDate @RequestParam String date,
 		@AuthenticationPrincipal User principal) {
 		DayGuideResponse dayGuideResponse = dayGuideService.getDayGuide(principal.getUsername(), date);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), dayGuideResponse));
+	}
+
+	/**
+	 * 하루 요약 가이드를 조회하여 전달한다
+	 *
+	 * @param date 조회날짜
+	 * @author EVE
+	 * @since 1.4.0
+	 */
+	@ApiVersion("1")
+	@GetMapping
+	public ResponseEntity<SuccessSingleResponse<DayGuideResponse>> getDayGuideV1(@ValidLocalDate @RequestParam String date,
+		@AuthenticationPrincipal User principal) {
+		DayGuideResponse dayGuideResponse = dayGuideService.getDayGuide(principal.getUsername(), date);
+		return ResponseEntity.ok()
+			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), dayGuideResponse));
 	}
 }
