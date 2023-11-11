@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @Validated
-@RequestMapping("/api/guide/exercise")
+@RequestMapping("/guide/exercise")
 public class ExerciseGuideController {
 	private final ExerciseGuideSearchService exerciseGuideSearchService;
 

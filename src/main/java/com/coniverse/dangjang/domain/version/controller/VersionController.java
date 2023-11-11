@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
  * @since 1.3.0
  */
 @RestController
-@RequestMapping("/api/version")
+@RequestMapping("/version")
 @RequiredArgsConstructor
 public class VersionController {
 	private final VersionService versionService;

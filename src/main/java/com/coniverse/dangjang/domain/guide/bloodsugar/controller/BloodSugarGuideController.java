@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
  * @since 1.0.0
  */
 @RestController
-@RequestMapping("/api/guide/blood-sugar")
+@RequestMapping("/guide/blood-sugar")
 @RequiredArgsConstructor
 @Validated
 public class BloodSugarGuideController {

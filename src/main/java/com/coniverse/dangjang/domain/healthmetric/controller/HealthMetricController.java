@@ -39,7 +39,7 @@ import lombok.RequiredArgsConstructor;
  * @since 1.0.0
  */
 @RestController
-@RequestMapping("/api/health-metric")
+@RequestMapping("/health-metric")
 @RequiredArgsConstructor
 @Validated
 public class HealthMetricController {

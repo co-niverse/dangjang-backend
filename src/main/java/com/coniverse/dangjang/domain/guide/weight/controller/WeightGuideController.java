@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
  * @since 1.0.0
  */
 
-@RequestMapping("/api/guide/weight")
+@RequestMapping("/guide/weight")
 @RequiredArgsConstructor
 @RestController
 @Validated

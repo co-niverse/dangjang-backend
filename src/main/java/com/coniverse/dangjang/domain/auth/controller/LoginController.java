@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class LoginController {
 	private final OauthLoginService oauthLoginService;
 	private static String headerKeyFcmToken = "FcmToken";

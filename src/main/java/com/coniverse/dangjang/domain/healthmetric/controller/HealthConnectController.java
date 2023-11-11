@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
  * @since 1.0.0
  */
 @RestController
-@RequestMapping("/api/health-connect")
+@RequestMapping("/health-connect")
 @RequiredArgsConstructor
 public class HealthConnectController {
 	private final HealthConnectService healthConnectService;

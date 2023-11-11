@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
  * @since 1.0.0
  */
 @RestController
-@RequestMapping("/api/log")
+@RequestMapping("/log")
 @RequiredArgsConstructor
 public class AppLogController {
 	private final LogService logService;
