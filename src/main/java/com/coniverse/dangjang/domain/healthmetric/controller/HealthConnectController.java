@@ -37,9 +37,9 @@ public class HealthConnectController {
 	 * @param requests  건강 지표 request post dto n개
 	 * @param principal 유저 정보
 	 * @since 1.0.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@PostMapping
 	public ResponseEntity<SuccessSingleResponse<?>> postHealthConnect(@Valid @RequestBody HealthConnectPostRequest requests,
 		@AuthenticationPrincipal User principal) {
@@ -53,7 +53,7 @@ public class HealthConnectController {
 	 *
 	 * @param requests  건강 지표 request post dto n개
 	 * @param principal 유저 정보
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@PostMapping
@@ -71,9 +71,9 @@ public class HealthConnectController {
 	 * @param requests  health connect 연동 여부 데이터
 	 * @param principal 유저 정보
 	 * @since 1.0.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@PatchMapping("/interlock")
 	public ResponseEntity<SuccessSingleResponse<?>> interlockHealthConnect(@Valid @RequestBody HealthConnectRegisterRequest requests,
 		@AuthenticationPrincipal User principal) {
@@ -87,7 +87,7 @@ public class HealthConnectController {
 	 *
 	 * @param requests  health connect 연동 여부 데이터
 	 * @param principal 유저 정보
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@PatchMapping("/interlock")

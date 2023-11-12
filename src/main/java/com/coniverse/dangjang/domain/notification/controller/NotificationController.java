@@ -37,9 +37,9 @@ public class NotificationController {
 	 * @param user 사용자
 	 * @return notificationList 확인 안된 알림 목록
 	 * @since 1.0.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@GetMapping
 	public ResponseEntity<SuccessSingleResponse<NotificationListResponse>> get(@AuthenticationPrincipal User user) {
 		NotificationListResponse response = new NotificationListResponse(notificationService.getNotificationList(user.getUsername()));
@@ -51,7 +51,7 @@ public class NotificationController {
 	 *
 	 * @param user 사용자 정보
 	 * @return notificationList 확인하지 않은 알림 목록
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@GetMapping
@@ -69,9 +69,9 @@ public class NotificationController {
 	 *
 	 * @param notificationIdList 알림Id 목록
 	 * @since 1.0.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@PatchMapping
 	public ResponseEntity<SuccessSingleResponse<?>> patch(@Valid @RequestBody CheckNotificationIdRequest notificationIdList) {
 		notificationService.updateNotificationIsRead(notificationIdList);
@@ -84,7 +84,7 @@ public class NotificationController {
 	 * 클라이언트에서 사용자가 확인한 알림 id 목록을 서버로 전달하고 서버에서 알림 확인 여부를 변경한다.
 	 *
 	 * @param notificationIds 푸쉬 알림 id 목록
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@PatchMapping

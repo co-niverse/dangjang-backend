@@ -33,9 +33,9 @@ public class VersionController {
 	 * 버전 정보를 GET 요청한다.
 	 *
 	 * @since 1.3.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@GetMapping("/intro")
 	public ResponseEntity<SuccessSingleResponse<VersionResponse<?>>> getIntro() {
 		VersionResponse<?> versionResponse = versionService.getVersionResponse();
@@ -46,7 +46,7 @@ public class VersionController {
 	 * 버전 정보를 조회한다.
 	 *
 	 * @return 버전 정보
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@GetMapping("/intro")
@@ -59,9 +59,9 @@ public class VersionController {
 	 * 버전 정보를 POST 요청한다.
 	 *
 	 * @since 1.3.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@PostMapping
 	public ResponseEntity<SuccessSingleResponse<VersionResponse<?>>> postVersion(@Valid @RequestBody VersionRequest request) {
 		VersionResponse<?> versionResponse = versionService.saveVersion(request);
@@ -73,7 +73,7 @@ public class VersionController {
 	 *
 	 * @param request 버전 정보
 	 * @return 등록된 버전 정보
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@PostMapping

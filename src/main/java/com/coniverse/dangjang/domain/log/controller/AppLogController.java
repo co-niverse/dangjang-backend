@@ -31,9 +31,9 @@ public class AppLogController {
 	 * 앱 로그를 post 요청한다.
 	 *
 	 * @since 1.0.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@PostMapping
 	public ResponseEntity<SuccessSingleResponse<?>> post(@Valid @RequestBody LogRequest request) {
 		logService.sendLog(request);
@@ -44,7 +44,7 @@ public class AppLogController {
 	 * 앱 로그를 post 요청한다.
 	 *
 	 * @param request 로그 요청
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@PostMapping

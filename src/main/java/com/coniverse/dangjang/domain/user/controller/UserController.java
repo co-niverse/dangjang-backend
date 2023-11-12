@@ -47,9 +47,9 @@ public class UserController {
 	 * @param nickname 확인이 필요한 닉네임을 담아온다.
 	 * @return 닉네임이 중복되지 않았으면 true, 중복된 닉네임이면 false를 담은 DuplicateNicknameResponse 객체를 반환한다.
 	 * @since 1.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@GetMapping("/duplicateNickname")
 	public ResponseEntity<SuccessSingleResponse<DuplicateNicknameResponse>> checkDuplicateNickname(
 		@RequestParam @Pattern(regexp = "^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]{1,8}$", message = "닉네임은 영어,한글,숫자 1~8글자 이내로 이루어져있어야 합니다.") @NotBlank(message = "닉네임은 1~8글자 이내여야 합니다.") String nickname) {
@@ -62,7 +62,7 @@ public class UserController {
 	 *
 	 * @param nickname 확인이 필요한 닉네임
 	 * @return 닉네임이 중복되지 않았으면 true, 중복된 닉네임이면 false를 담은 DuplicateNicknameResponse 객체를 반환한다.
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@GetMapping("/duplicateNickname") // TODO 위치: signup, 이름: duplicated-nickname, 바디없어도됨
@@ -78,9 +78,9 @@ public class UserController {
 	 *
 	 * @return MypageResponse 사용자 닉네임과 포인트
 	 * @since 1.0.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@GetMapping("/mypage")
 	public ResponseEntity<SuccessSingleResponse<MypageResponse>> getMyPage(@AuthenticationPrincipal User user) {
 		MypageResponse response = mypageService.getMypage(user.getUsername());
@@ -92,7 +92,7 @@ public class UserController {
 	 *
 	 * @param user 사용자 정보
 	 * @return 닉네임, 보유 포인트
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@GetMapping("/mypage")
@@ -108,9 +108,9 @@ public class UserController {
 	 * @param user 사용자 정보
 	 * @return ResponseEntity
 	 * @since 1.0.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@DeleteMapping("/withdrawal")
 	public ResponseEntity<?> withdraw(@AuthenticationPrincipal User user) {
 		userWithdrawalService.withdraw(user.getUsername());
@@ -122,7 +122,7 @@ public class UserController {
 	 *
 	 * @param user 사용자 정보
 	 * @return ResponseEntity
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@DeleteMapping("/withdrawal")
@@ -138,9 +138,9 @@ public class UserController {
 	 * @param request fcmToken
 	 * @return MyPageResponse 사용자 닉네임과 포인트
 	 * @since 1.0.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@PostMapping("/fcmToken")
 	public ResponseEntity<SuccessSingleResponse<?>> postFcmToken(@AuthenticationPrincipal User user, @Valid @RequestBody PostFcmTokenRequest request) {
 		notificationService.saveOrUpdateFcmToken(request, user.getUsername());
@@ -152,7 +152,7 @@ public class UserController {
 	 *
 	 * @param user    사용자 정보
 	 * @param request fcm token 정보
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@PostMapping("/fcmToken")

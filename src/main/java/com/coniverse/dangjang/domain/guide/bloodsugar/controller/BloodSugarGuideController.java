@@ -38,9 +38,9 @@ public class BloodSugarGuideController {
 	 * @param principal 사용자 정보
 	 * @return 혈당 가이드 응답 dto
 	 * @since 1.0.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@GetMapping
 	public ResponseEntity<SuccessSingleResponse<BloodSugarGuideResponse>> get(@ValidLocalDate @RequestParam String date,
 		@AuthenticationPrincipal User principal) {
@@ -54,7 +54,7 @@ public class BloodSugarGuideController {
 	 * @param date      조회할 일자
 	 * @param principal 사용자 정보
 	 * @return 혈당 가이드 응답 dto
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@GetMapping

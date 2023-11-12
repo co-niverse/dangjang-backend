@@ -40,9 +40,9 @@ public class PointController {
 	 * @param request 포인트 구매하고자 하는 내역 정보
 	 * @return response 사용자 구매 완료 내역
 	 * @since 1.0.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@PostMapping
 	public ResponseEntity<SuccessSingleResponse<UsePointResponse>> purchaseProduct(@Valid @RequestBody UsePointRequest request,
 		@AuthenticationPrincipal User user) {
@@ -56,7 +56,7 @@ public class PointController {
 	 * @param request 포인트 구매하고자 하는 내역 정보
 	 * @param user    사용자 정보
 	 * @return response 사용자 구매 완료 내역
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@PostMapping
@@ -72,9 +72,9 @@ public class PointController {
 	 *
 	 * @return response 사용자 포인트 잔액, 구매 가능한 상품 내역
 	 * @since 1.0.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@GetMapping
 	public ResponseEntity<SuccessSingleResponse<ProductListResponse>> getProductList(@AuthenticationPrincipal User user) {
 		ProductListResponse response = pointService.getProducts(user.getUsername());
@@ -86,7 +86,7 @@ public class PointController {
 	 *
 	 * @param user 사용자 정보
 	 * @return response 사용자 포인트 잔액, 구매 가능한 상품 내역
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@GetMapping

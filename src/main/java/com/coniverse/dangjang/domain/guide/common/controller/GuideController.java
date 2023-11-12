@@ -37,9 +37,9 @@ public class GuideController {
 	 * @param date 조회날짜
 	 * @author EVE
 	 * @since 1.0.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@GetMapping
 	public ResponseEntity<SuccessSingleResponse<DayGuideResponse>> getDayGuide(@ValidLocalDate @RequestParam String date,
 		@AuthenticationPrincipal User principal) {
@@ -52,7 +52,7 @@ public class GuideController {
 	 *
 	 * @param date 조회날짜
 	 * @author EVE
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@GetMapping

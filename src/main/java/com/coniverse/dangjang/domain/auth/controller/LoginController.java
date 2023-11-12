@@ -37,9 +37,9 @@ public class LoginController {
 	 * @param params 카카오 accessToken
 	 * @return ResponseEntity 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, auth id)를 전달한다.
 	 * @since 1.0.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@PostMapping("/kakao")
 	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginKakao(@Valid @RequestBody KakaoLoginRequest params) {
 		LoginResponse loginResponse = oauthLoginService.login(params);
@@ -54,7 +54,7 @@ public class LoginController {
 	 *
 	 * @param params 카카오 access token
 	 * @return jwt token, 로그인 정보
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@PostMapping("/kakao")
@@ -70,9 +70,9 @@ public class LoginController {
 	 * @param params 네이버 accessToken
 	 * @return ResponseEntity 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, auth id)를 전달한다.
 	 * @since 1.0.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@PostMapping("/naver")
 	public ResponseEntity<SuccessSingleResponse<LoginResponse>> loginNaver(@Valid @RequestBody NaverLoginRequest params) {
 		LoginResponse loginResponse = oauthLoginService.login(params);
@@ -87,7 +87,7 @@ public class LoginController {
 	 *
 	 * @param params 네이버 access token
 	 * @return jwt token, 로그인 정보
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@PostMapping("/naver")
@@ -105,9 +105,9 @@ public class LoginController {
 	 * @param request 재발급 요청 , header에 accessToken이 필요
 	 * @return AuthToken
 	 * @since 1.0.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@PostMapping("/reissue")
 	public ResponseEntity<SuccessSingleResponse<?>> reissue(HttpServletRequest request) {
 		String newAccessToken = oauthLoginService.reissueToken(request.getHeader(AUTHORIZATION));
@@ -121,7 +121,7 @@ public class LoginController {
 	 *
 	 * @param request 재발급 요청, header에 access token 필요
 	 * @return AuthToken
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@PostMapping("/reissue")
@@ -138,9 +138,9 @@ public class LoginController {
 	 * @param request               HttpServletRequest oauthId
 	 * @param logoutFcmTokenRequest fcmToken
 	 * @since 1.1.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@PostMapping("/logout")
 	public ResponseEntity<SuccessSingleResponse> logout(HttpServletRequest request, @RequestBody LogoutFcmTokenRequest logoutFcmTokenRequest) {
 		oauthLoginService.logout(request.getHeader(AUTHORIZATION), logoutFcmTokenRequest.fcmToken());
@@ -153,7 +153,7 @@ public class LoginController {
 	 *
 	 * @param request               HttpServletRequest
 	 * @param logoutFcmTokenRequest fcm token 정보
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@PostMapping("/logout")

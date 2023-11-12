@@ -52,9 +52,9 @@ public class HealthMetricController {
 	 * HTTP POST METHOD
 	 *
 	 * @since 1.0.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@PostMapping
 	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> post(@Valid @RequestBody HealthMetricPostRequest postRequest,
 		@AuthenticationPrincipal User principal) {
@@ -65,7 +65,7 @@ public class HealthMetricController {
 	/**
 	 * HTTP POST METHOD // TODO 작성
 	 *
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@PostMapping
@@ -80,9 +80,9 @@ public class HealthMetricController {
 	 * HTTP PATCH METHOD
 	 *
 	 * @since 1.0.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@PatchMapping
 	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> patch(@Valid @RequestBody HealthMetricPatchRequest patchRequest,
 		@AuthenticationPrincipal User principal) {
@@ -96,7 +96,7 @@ public class HealthMetricController {
 	/*
 	 * HTTP PATCH METHOD // TODO 작성
 	 *
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@PatchMapping
@@ -118,9 +118,9 @@ public class HealthMetricController {
 	 * @param principal 유저 정보
 	 * @return 건강지표 차트 데이터
 	 * @since 1.0.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@GetMapping
 	public ResponseEntity<SuccessSingleResponse<HealthMetricChartResponse>> getHealthMetrics(@ValidLocalDate @RequestParam String startDate,
 		@ValidLocalDate @RequestParam String endDate, @AuthenticationPrincipal User principal) {
@@ -136,7 +136,7 @@ public class HealthMetricController {
 	 * @param endDate   조회 종료 날짜
 	 * @param principal 유저 정보
 	 * @return 건강지표 차트 데이터
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@GetMapping
@@ -154,9 +154,9 @@ public class HealthMetricController {
 	 * @param principal 유저 정보
 	 * @return 유저의 마지막 건강지표 생성일
 	 * @since 1.1.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@GetMapping("/last-date")
 	public ResponseEntity<SuccessSingleResponse<HealthMetricLastDateResponse>> getHealthMetricLastDate(@AuthenticationPrincipal User principal) {
 		String oauthId = principal.getUsername();
@@ -169,7 +169,7 @@ public class HealthMetricController {
 	 *
 	 * @param principal 유저 정보
 	 * @return 유저의 마지막 건강지표 생성일
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@GetMapping("/last-date")
@@ -188,9 +188,9 @@ public class HealthMetricController {
 	 * @param principal 유저 정보
 	 * @return 성공 메시지
 	 * @since 1.3.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@DeleteMapping
 	public ResponseEntity<SuccessSingleResponse<?>> deleteHealthMetric(@ValidLocalDate @RequestParam String date, @NotBlank @RequestParam String type,
 		@AuthenticationPrincipal User principal) {
@@ -205,7 +205,7 @@ public class HealthMetricController {
 	 * @param type      건강지표 타입
 	 * @param principal 유저 정보
 	 * @return 성공 메시지
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@DeleteMapping

@@ -33,9 +33,9 @@ public class SignupController {
 	 * @param params 회원가입에 필요한 정보를 담아온다.
 	 * @return 회원가입 후 로그인을 시도 , ResponseEntity 로그인을 성공하면, JWT TOKEN과 사용자 정보(nickname, authID)를 전달한다.
 	 * @since 1.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@PostMapping
 	public ResponseEntity<SuccessSingleResponse<LoginResponse>> signUp(@Valid @RequestBody SignUpRequest params) {
 		LoginResponse loginResponse = userSignupService.signUp(params);
@@ -50,7 +50,7 @@ public class SignupController {
 	 *
 	 * @param params 회원가입에 필요한 정보
 	 * @return jwt token, 로그인 정보
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@PostMapping

@@ -39,9 +39,9 @@ public class WeightGuideController {
 	 * @param principal 유저 정보
 	 * @author EVE
 	 * @since 1.0.0
-	 * @deprecated 1.4.0
+	 * @deprecated 1.6.0
 	 */
-	@Deprecated(since = "1.4.0")
+	@Deprecated(since = "1.6.0")
 	@GetMapping
 	public ResponseEntity<SuccessSingleResponse<WeightGuideResponse>> get(@ValidLocalDate @RequestParam String date,
 		@AuthenticationPrincipal User principal) {
@@ -55,7 +55,7 @@ public class WeightGuideController {
 	 * @param date      조회하는 날짜
 	 * @param principal 유저 정보
 	 * @author EVE
-	 * @since 1.4.0
+	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
 	@GetMapping
