@@ -13,6 +13,7 @@ import com.coniverse.dangjang.domain.version.dto.response.VersionResponse;
 import com.coniverse.dangjang.domain.version.service.VersionService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
+import given.apiversion.core.annotation.ApiVersion;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -23,8 +24,8 @@ import lombok.RequiredArgsConstructor;
  * @since 1.3.0
  */
 @RestController
-@RequestMapping("/api/version")
 @RequiredArgsConstructor
+@RequestMapping("/version")
 public class VersionController {
 	private final VersionService versionService;
 
@@ -32,9 +33,24 @@ public class VersionController {
 	 * 버전 정보를 GET 요청한다.
 	 *
 	 * @since 1.3.0
+	 * @deprecated 1.6.0
 	 */
+	@Deprecated(since = "1.6.0")
 	@GetMapping("/intro")
 	public ResponseEntity<SuccessSingleResponse<VersionResponse<?>>> getIntro() {
+		VersionResponse<?> versionResponse = versionService.getVersionResponse();
+		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), versionResponse));
+	}
+
+	/**
+	 * 버전 정보를 조회한다.
+	 *
+	 * @return 버전 정보
+	 * @since 1.6.0
+	 */
+	@ApiVersion("1")
+	@GetMapping("/intro")
+	public ResponseEntity<SuccessSingleResponse<VersionResponse<?>>> getIntroV1() {
 		VersionResponse<?> versionResponse = versionService.getVersionResponse();
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), versionResponse));
 	}
@@ -43,9 +59,25 @@ public class VersionController {
 	 * 버전 정보를 POST 요청한다.
 	 *
 	 * @since 1.3.0
+	 * @deprecated 1.6.0
 	 */
+	@Deprecated(since = "1.6.0")
 	@PostMapping
 	public ResponseEntity<SuccessSingleResponse<VersionResponse<?>>> postVersion(@Valid @RequestBody VersionRequest request) {
+		VersionResponse<?> versionResponse = versionService.saveVersion(request);
+		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), versionResponse));
+	}
+
+	/**
+	 * 버전 정보를 등록한다.
+	 *
+	 * @param request 버전 정보
+	 * @return 등록된 버전 정보
+	 * @since 1.6.0
+	 */
+	@ApiVersion("1")
+	@PostMapping
+	public ResponseEntity<SuccessSingleResponse<VersionResponse<?>>> postVersionV1(@Valid @RequestBody VersionRequest request) {
 		VersionResponse<?> versionResponse = versionService.saveVersion(request);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), versionResponse));
 	}

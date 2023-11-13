@@ -15,6 +15,7 @@ import com.coniverse.dangjang.domain.guide.exercise.service.ExerciseGuideSearchS
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 import com.coniverse.dangjang.global.validator.ValidLocalDate;
 
+import given.apiversion.core.annotation.ApiVersion;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -27,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @Validated
-@RequestMapping("/api/guide/exercise")
+@RequestMapping("/guide/exercise")
 public class ExerciseGuideController {
 	private final ExerciseGuideSearchService exerciseGuideSearchService;
 
@@ -38,13 +39,31 @@ public class ExerciseGuideController {
 	 * @param principal 유저 정보
 	 * @return 운동 가이드 응답
 	 * @since 1.0.0
+	 * @deprecated 1.6.0
 	 */
-
+	@Deprecated(since = "1.6.0")
 	@GetMapping
 	public ResponseEntity<SuccessSingleResponse<ExerciseGuideResponse>> get(@ValidLocalDate @RequestParam String date,
 		@AuthenticationPrincipal User principal) {
 		ExerciseGuideResponse response = exerciseGuideSearchService.findGuide(principal.getUsername(), date);
-		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
+		return ResponseEntity.ok()
+			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
 
+	/**
+	 * 운동 조회
+	 *
+	 * @param date      조회하는 날짜
+	 * @param principal 유저 정보
+	 * @return 운동 가이드 응답
+	 * @since 1.6.0
+	 */
+	@ApiVersion("1")
+	@GetMapping
+	public ResponseEntity<SuccessSingleResponse<ExerciseGuideResponse>> getExerciseGuideV1(@ValidLocalDate @RequestParam String date,
+		@AuthenticationPrincipal User principal) {
+		ExerciseGuideResponse response = exerciseGuideSearchService.findGuide(principal.getUsername(), date);
+		return ResponseEntity.ok()
+			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
+	}
 }

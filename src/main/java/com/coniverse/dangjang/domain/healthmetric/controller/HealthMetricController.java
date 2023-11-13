@@ -28,6 +28,7 @@ import com.coniverse.dangjang.domain.healthmetric.service.HealthMetricSearchServ
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 import com.coniverse.dangjang.global.validator.ValidLocalDate;
 
+import given.apiversion.core.annotation.ApiVersion;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -39,9 +40,9 @@ import lombok.RequiredArgsConstructor;
  * @since 1.0.0
  */
 @RestController
-@RequestMapping("/api/health-metric")
 @RequiredArgsConstructor
 @Validated
+@RequestMapping("/health-metric")
 public class HealthMetricController {
 	private final HealthMetricRegisterService healthMetricRegisterService;
 	private final HealthMetricChartSearchService healthMetricChartSearchService;
@@ -51,7 +52,9 @@ public class HealthMetricController {
 	 * HTTP POST METHOD
 	 *
 	 * @since 1.0.0
+	 * @deprecated 1.6.0
 	 */
+	@Deprecated(since = "1.6.0")
 	@PostMapping
 	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> post(@Valid @RequestBody HealthMetricPostRequest postRequest,
 		@AuthenticationPrincipal User principal) {
@@ -59,11 +62,27 @@ public class HealthMetricController {
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
 
+	/**
+	 * HTTP POST METHOD // TODO 작성
+	 *
+	 * @since 1.6.0
+	 */
+	@ApiVersion("1")
+	@PostMapping
+	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> postHealthMetricV1(@Valid @RequestBody HealthMetricPostRequest postRequest,
+		@AuthenticationPrincipal User principal) {
+		HealthMetricResponse response = healthMetricRegisterService.register(postRequest, principal.getUsername());
+		return ResponseEntity.ok()
+			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
+	}
+
 	/*
 	 * HTTP PATCH METHOD
 	 *
 	 * @since 1.0.0
+	 * @deprecated 1.6.0
 	 */
+	@Deprecated(since = "1.6.0")
 	@PatchMapping
 	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> patch(@Valid @RequestBody HealthMetricPatchRequest patchRequest,
 		@AuthenticationPrincipal User principal) {
@@ -74,6 +93,23 @@ public class HealthMetricController {
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
 
+	/*
+	 * HTTP PATCH METHOD // TODO 작성
+	 *
+	 * @since 1.6.0
+	 */
+	@ApiVersion("1")
+	@PatchMapping
+	public ResponseEntity<SuccessSingleResponse<HealthMetricResponse>> patchHealthMetricV1(@Valid @RequestBody HealthMetricPatchRequest patchRequest,
+		@AuthenticationPrincipal User principal) {
+		if (patchRequest.isSameType()) {
+			throw new SameTypeException(); // TODO 이동
+		}
+		HealthMetricResponse response = healthMetricRegisterService.update(patchRequest, principal.getUsername());
+		return ResponseEntity.ok()
+			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
+	}
+
 	/**
 	 * 건강지표 차트 데이터를 조회한다.
 	 *
@@ -82,7 +118,9 @@ public class HealthMetricController {
 	 * @param principal 유저 정보
 	 * @return 건강지표 차트 데이터
 	 * @since 1.0.0
+	 * @deprecated 1.6.0
 	 */
+	@Deprecated(since = "1.6.0")
 	@GetMapping
 	public ResponseEntity<SuccessSingleResponse<HealthMetricChartResponse>> getHealthMetrics(@ValidLocalDate @RequestParam String startDate,
 		@ValidLocalDate @RequestParam String endDate, @AuthenticationPrincipal User principal) {
@@ -92,17 +130,54 @@ public class HealthMetricController {
 	}
 
 	/**
+	 * 건강지표 차트 데이터를 조회한다.
+	 *
+	 * @param startDate 조회 시작 날짜
+	 * @param endDate   조회 종료 날짜
+	 * @param principal 유저 정보
+	 * @return 건강지표 차트 데이터
+	 * @since 1.6.0
+	 */
+	@ApiVersion("1")
+	@GetMapping
+	public ResponseEntity<SuccessSingleResponse<HealthMetricChartResponse>> getHealthMetricsBetweenDatesV1(@ValidLocalDate @RequestParam String startDate,
+		@ValidLocalDate @RequestParam String endDate, @AuthenticationPrincipal User principal) {
+		HealthMetricChartResponse response = healthMetricChartSearchService.findHealthMetricChart(principal.getUsername(), LocalDate.parse(startDate),
+			LocalDate.parse(endDate)); // TODO LocalDate.parse 이동
+		return ResponseEntity.ok()
+			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
+	}
+
+	/**
 	 * 마지막 건강지표 생성일을 조회한다
 	 *
 	 * @param principal 유저 정보
 	 * @return 유저의 마지막 건강지표 생성일
 	 * @since 1.1.0
+	 * @deprecated 1.6.0
 	 */
+	@Deprecated(since = "1.6.0")
 	@GetMapping("/last-date")
 	public ResponseEntity<SuccessSingleResponse<HealthMetricLastDateResponse>> getHealthMetricLastDate(@AuthenticationPrincipal User principal) {
 		String oauthId = principal.getUsername();
 		HealthMetricLastDateResponse response = healthMetricSearchService.findHealthMetricLastDate(oauthId);
 		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
+	}
+
+	/**
+	 * 마지막 건강지표 생성일을 조회한다
+	 *
+	 * @param principal 유저 정보
+	 * @return 유저의 마지막 건강지표 생성일
+	 * @since 1.6.0
+	 */
+	@ApiVersion("1")
+	@GetMapping("/last-date")
+	public ResponseEntity<SuccessSingleResponse<HealthMetricLastDateResponse>> getLastHealthMetricCreationDateV1(@AuthenticationPrincipal User principal) {
+		String oauthId = principal.getUsername();
+		HealthMetricLastDateResponse response = healthMetricSearchService.findHealthMetricLastDate(oauthId);
+		return ResponseEntity.ok()
+			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
 
 	/**
@@ -113,9 +188,28 @@ public class HealthMetricController {
 	 * @param principal 유저 정보
 	 * @return 성공 메시지
 	 * @since 1.3.0
+	 * @deprecated 1.6.0
 	 */
+	@Deprecated(since = "1.6.0")
 	@DeleteMapping
 	public ResponseEntity<SuccessSingleResponse<?>> deleteHealthMetric(@ValidLocalDate @RequestParam String date, @NotBlank @RequestParam String type,
+		@AuthenticationPrincipal User principal) {
+		healthMetricRegisterService.remove(date, type, principal.getUsername());
+		return ResponseEntity.noContent().build();
+	}
+
+	/**
+	 * 건강지표를 DELETE 요청한다.
+	 *
+	 * @param date      건강지표 생성일
+	 * @param type      건강지표 타입
+	 * @param principal 유저 정보
+	 * @return 성공 메시지
+	 * @since 1.6.0
+	 */
+	@ApiVersion("1")
+	@DeleteMapping
+	public ResponseEntity<SuccessSingleResponse<?>> deleteHealthMetricV1(@ValidLocalDate @RequestParam String date, @NotBlank @RequestParam String type,
 		@AuthenticationPrincipal User principal) {
 		healthMetricRegisterService.remove(date, type, principal.getUsername());
 		return ResponseEntity.noContent().build();
