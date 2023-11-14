@@ -3,12 +3,11 @@ package com.coniverse.dangjang;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
-@EnableScheduling
+import given.apiversion.autoconfigure.EnableApiVersion;
+
+@EnableApiVersion
 @EnableJpaAuditing
-@EnableAsync
 @SpringBootApplication
 public class DangjangApplication {
 	public static void main(String[] args) {

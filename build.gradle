@@ -18,6 +18,7 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -36,7 +37,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
     // swagger
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0' // TODO
 
     // jwt
     implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
@@ -53,12 +54,6 @@ dependencies {
     // mongo db
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo.spring30x:4.7.0'
-
-    // kafka
-    implementation 'org.springframework.kafka:spring-kafka:3.0.11'
-
-    // kinesis KPL
-    implementation 'software.amazon.kinesis:amazon-kinesis-client:2.5.2'
 
     // aop
     implementation 'org.springframework.boot:spring-boot-starter-aop'
@@ -79,6 +74,9 @@ dependencies {
     //scheduler
     implementation 'net.javacrumbs.shedlock:shedlock-spring:4.14.0'
     implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:4.14.0'
+
+    // api versioning
+    implementation 'com.github.GIVEN53:api-versioning-library:0.2.0'
 
 }
 

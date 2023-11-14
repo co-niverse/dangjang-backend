@@ -65,6 +65,11 @@ oauth:
 version:
   key: "1234"
 
+api:
+  version:
+    uri-prefix: /api
+    sharing-uri-prefix: true
+
 logging:
   level:
     org:
@@ -83,6 +88,8 @@ logging:
             core:
               MongoTemplate: debug
     web: trace
+    given:
+      apiversion: trace
 
 ---
 spring:

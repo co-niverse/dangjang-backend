@@ -36,8 +36,10 @@ public class SecurityConfig {
 	private final JwtValidationFilter jwtValidationFilter;
 	private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	@Value("${api.version.uri-prefix}")
+	private final String uriPrefix;
 	@Value("${cors.allowed-origins}")
-	private String allowedOrigins;
+	private final String allowedOrigins;
 
 	/**
 	 * SecurityFilterChain 설정
@@ -58,40 +60,69 @@ public class SecurityConfig {
 			.headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions(
 				HeadersConfigurer.FrameOptionsConfig::sameOrigin))
 			.csrf(AbstractHttpConfigurer::disable)
-			.cors(
-				corsConfigurer -> corsConfigurer.configurationSource(configurationSource())
-			)
+			.cors(corsConfigurer -> corsConfigurer.configurationSource(configurationSource()))
 			.formLogin(AbstractHttpConfigurer::disable)
 			.httpBasic(AbstractHttpConfigurer::disable)
-			.sessionManagement(
-				sessionManagementConfigurer -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			)
+			.sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.addFilterAt(jwtValidationFilter, UsernamePasswordAuthenticationFilter.class)
 			.authorizeHttpRequests(authorize -> authorize
-				.requestMatchers(HttpMethod.GET, "/api/intro/**").permitAll()
-				.requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll() // TODO 수정 로그아웃은 인증 필요
-				.requestMatchers(HttpMethod.POST, "/api/signup/**").permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/user/duplicateNickname").permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/user/mypage/**").authenticated()
-				.requestMatchers(HttpMethod.POST, "/api/user/**").authenticated()
-				.requestMatchers(HttpMethod.GET, "/swagger-ui/**", "/api-docs/**").permitAll()
-				.requestMatchers(HttpMethod.POST, "/api/health-metric/**").authenticated()
-				.requestMatchers(HttpMethod.GET, "/api/health-metric/**").authenticated()
-				.requestMatchers(HttpMethod.GET, "/api/guide/**").authenticated()
-				.requestMatchers(HttpMethod.POST, "/api/health-connect/**").authenticated()
-				.requestMatchers(HttpMethod.PATCH, "/api/health-connect/**").authenticated()
-				.requestMatchers(HttpMethod.POST, "/api/point/**").authenticated()
-				.requestMatchers(HttpMethod.GET, "/api/point/**").authenticated()
-				.requestMatchers(HttpMethod.POST, "/api/log/**").permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/notification/**").authenticated()
-				.requestMatchers(HttpMethod.POST, "/api/notification/**").authenticated()
-				.requestMatchers(HttpMethod.PATCH, "/api/notification/**").authenticated()
+				// version
+				.requestMatchers(HttpMethod.GET, uriPrefix + "/version/**").permitAll() //TODO 제거
+				.requestMatchers(HttpMethod.GET, uriPrefix + "/*/version/**").permitAll()
+
+				// auth
+				.requestMatchers(HttpMethod.POST, uriPrefix + "/auth/logout").authenticated() //TODO 제거
+				.requestMatchers(HttpMethod.POST, uriPrefix + "/*/auth/logout").authenticated()
+				.requestMatchers(HttpMethod.POST, uriPrefix + "/api/auth/**").permitAll() //TODO 제거
+				.requestMatchers(HttpMethod.POST, uriPrefix + "/*/api/auth/**").permitAll()
+
+				// user
+				.requestMatchers(HttpMethod.POST, uriPrefix + "/signup/**").permitAll() //TODO 제거
+				.requestMatchers(HttpMethod.POST, uriPrefix + "/*/signup/**").permitAll()
+				.requestMatchers(HttpMethod.POST, uriPrefix + "/user/**").authenticated() //TODO 제거
+				.requestMatchers(HttpMethod.POST, uriPrefix + "/*/user/**").authenticated()
+				.requestMatchers(HttpMethod.DELETE, uriPrefix + "/user/**").authenticated() //TODO 제거
+				.requestMatchers(HttpMethod.DELETE, uriPrefix + "/*/user/**").authenticated()
+				.requestMatchers(HttpMethod.GET, uriPrefix + "/user/duplicateNickname").permitAll() //TODO 제거
+				.requestMatchers(HttpMethod.GET, uriPrefix + "/*/user/duplicateNickname").permitAll()
+				.requestMatchers(HttpMethod.GET, uriPrefix + "/user/mypage/**").authenticated() //TODO 제거
+				.requestMatchers(HttpMethod.GET, uriPrefix + "/*/user/mypage/**").authenticated()
+
+				// health-metric
+				.requestMatchers(uriPrefix + "/health-metric/**").authenticated() //TODO 제거
+				.requestMatchers(uriPrefix + "/*/health-metric/**").authenticated()
+
+				// health-connect
+				.requestMatchers(HttpMethod.POST, uriPrefix + "/health-connect/**").authenticated() //TODO 제거
+				.requestMatchers(HttpMethod.POST, uriPrefix + "/*/health-connect/**").authenticated()
+				.requestMatchers(HttpMethod.PATCH, uriPrefix + "/health-connect/**").authenticated() //TODO 제거
+				.requestMatchers(HttpMethod.PATCH, uriPrefix + "/*/health-connect/**").authenticated()
+
+				// guide
+				.requestMatchers(HttpMethod.GET, uriPrefix + "/guide/**").authenticated() //TODO 제거
+				.requestMatchers(HttpMethod.GET, uriPrefix + "/*/guide/**").authenticated()
+
+				// point
+				.requestMatchers(HttpMethod.POST, uriPrefix + "/point/**").authenticated() //TODO 제거
+				.requestMatchers(HttpMethod.POST, uriPrefix + "/*/point/**").authenticated()
+				.requestMatchers(HttpMethod.GET, uriPrefix + "/point/**").authenticated() //TODO 제거
+				.requestMatchers(HttpMethod.GET, uriPrefix + "/*/point/**").authenticated()
+
+				// log
+				.requestMatchers(HttpMethod.POST, uriPrefix + "/log/**").permitAll() //TODO 제거
+				.requestMatchers(HttpMethod.POST, uriPrefix + "/*/log/**").permitAll()
+
+				// notification
+				.requestMatchers(HttpMethod.GET, uriPrefix + "/notification/**").authenticated() //TODO 제거
+				.requestMatchers(HttpMethod.GET, uriPrefix + "/*/notification/**").authenticated()
+				.requestMatchers(HttpMethod.PATCH, uriPrefix + "/notification/**").authenticated() //TODO 제거
+				.requestMatchers(HttpMethod.PATCH, uriPrefix + "/*/notification/**").authenticated()
+
+				// etc
 				.anyRequest().permitAll()
 			)
-			.exceptionHandling(
-				handler -> handler.accessDeniedHandler(jwtAccessDeniedHandler)
-					.authenticationEntryPoint(jwtAuthenticationEntryPoint)
-			);
+			.exceptionHandling(handler -> handler.accessDeniedHandler(jwtAccessDeniedHandler)
+				.authenticationEntryPoint(jwtAuthenticationEntryPoint));
 		return http.build();
 	}
 

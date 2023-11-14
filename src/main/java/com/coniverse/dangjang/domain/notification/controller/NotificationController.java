@@ -15,6 +15,7 @@ import com.coniverse.dangjang.domain.notification.dto.response.NotificationListR
 import com.coniverse.dangjang.domain.notification.service.NotificationService;
 import com.coniverse.dangjang.global.dto.SuccessSingleResponse;
 
+import given.apiversion.core.annotation.ApiVersion;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -25,8 +26,8 @@ import lombok.RequiredArgsConstructor;
  * @since 1.1.0
  */
 @RestController
-@RequestMapping("/api/notification")
 @RequiredArgsConstructor
+@RequestMapping("/notification")
 public class NotificationController {
 	private final NotificationService notificationService;
 
@@ -36,11 +37,28 @@ public class NotificationController {
 	 * @param user 사용자
 	 * @return notificationList 확인 안된 알림 목록
 	 * @since 1.0.0
+	 * @deprecated 1.6.0
 	 */
+	@Deprecated(since = "1.6.0")
 	@GetMapping
 	public ResponseEntity<SuccessSingleResponse<NotificationListResponse>> get(@AuthenticationPrincipal User user) {
 		NotificationListResponse response = new NotificationListResponse(notificationService.getNotificationList(user.getUsername()));
 		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
+	}
+
+	/**
+	 * 미확인 알림 목록 조회
+	 *
+	 * @param user 사용자 정보
+	 * @return notificationList 확인하지 않은 알림 목록
+	 * @since 1.6.0
+	 */
+	@ApiVersion("1")
+	@GetMapping
+	public ResponseEntity<SuccessSingleResponse<NotificationListResponse>> getUnreadNotificationsV1(@AuthenticationPrincipal User user) {
+		NotificationListResponse response = new NotificationListResponse(notificationService.getNotificationList(user.getUsername())); // TODO 객체 생성 이동
+		return ResponseEntity.ok()
+			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
 
 	/**
@@ -51,12 +69,28 @@ public class NotificationController {
 	 *
 	 * @param notificationIdList 알림Id 목록
 	 * @since 1.0.0
+	 * @deprecated 1.6.0
 	 */
-
+	@Deprecated(since = "1.6.0")
 	@PatchMapping
 	public ResponseEntity<SuccessSingleResponse<?>> patch(@Valid @RequestBody CheckNotificationIdRequest notificationIdList) {
 		notificationService.updateNotificationIsRead(notificationIdList);
 		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}
 
+	/**
+	 * 확인된 푸쉬 알림 변경
+	 * <p>
+	 * 클라이언트에서 사용자가 확인한 알림 id 목록을 서버로 전달하고 서버에서 알림 확인 여부를 변경한다.
+	 *
+	 * @param notificationIds 푸쉬 알림 id 목록
+	 * @since 1.6.0
+	 */
+	@ApiVersion("1")
+	@PatchMapping
+	public ResponseEntity<SuccessSingleResponse<?>> patchNotificationsAsReadV1(@Valid @RequestBody CheckNotificationIdRequest notificationIds) {
+		notificationService.updateNotificationIsRead(notificationIds);
+		return ResponseEntity.ok()
+			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
+	}
 }

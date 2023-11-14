@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.coniverse.dangjang.domain.notification.dto.fluentd.FcmMessage;
+import com.coniverse.dangjang.domain.notification.dto.message.FcmMessage;
 import com.coniverse.dangjang.domain.notification.dto.request.CheckNotificationIdRequest;
 import com.coniverse.dangjang.domain.notification.dto.response.NotificationResponse;
 import com.coniverse.dangjang.domain.notification.entity.Notification;
@@ -147,8 +147,8 @@ public class NotificationService {
 		List<String> fcmTokens = userFcmTokens.stream()
 			.map(userFcmToken -> userFcmToken.getFcmToken())
 			.collect(Collectors.toList());
-		String title = "오늘의 접속";
-		String content = "오늘 접속하지 않았어요! 접속하고 포인트를 받아가세요!";
+		String title = "오늘의 건강 상태는?"; //TODO : title, content Enum으로 관리
+		String content = "꾸준히 기록하고, 건강 상태를 비교해 봐요!";
 		NotificationType notificationType = notificationSearchService.findNotificationType("접속");
 
 		List<Notification> notifications = userFcmTokens.stream()

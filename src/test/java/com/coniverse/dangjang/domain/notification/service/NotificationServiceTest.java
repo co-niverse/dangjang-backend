@@ -17,7 +17,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.coniverse.dangjang.domain.notification.dto.fluentd.FcmMessage;
+import com.coniverse.dangjang.domain.notification.dto.message.FcmMessage;
 import com.coniverse.dangjang.domain.notification.dto.request.CheckNotificationIdRequest;
 import com.coniverse.dangjang.domain.notification.dto.response.NotificationResponse;
 import com.coniverse.dangjang.domain.notification.entity.Notification;
@@ -172,8 +172,8 @@ class NotificationServiceTest {
 		//when
 		List<FcmMessage> fcmMessages = notificationService.makeAccessFcmMessage();
 		//then
-		assertThat(fcmMessages.get(0).title()).isEqualTo("오늘의 접속");
-		assertThat(fcmMessages.get(0).body()).isEqualTo("오늘 접속하지 않았어요! 접속하고 포인트를 받아가세요!");
+		assertThat(fcmMessages.get(0).title()).isEqualTo("오늘의 건강 상태는?");
+		assertThat(fcmMessages.get(0).body()).isEqualTo("꾸준히 기록하고, 건강 상태를 비교해 봐요!");
 		assertThat(fcmMessages.get(0).registrationToken()).isEqualTo(이브_fcmToken);
 	}
 
