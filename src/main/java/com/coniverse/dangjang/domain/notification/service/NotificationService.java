@@ -147,8 +147,8 @@ public class NotificationService {
 		List<String> fcmTokens = userFcmTokens.stream()
 			.map(userFcmToken -> userFcmToken.getFcmToken())
 			.collect(Collectors.toList());
-		String title = "오늘의 접속";
-		String content = "오늘 접속하지 않았어요! 접속하고 포인트를 받아가세요!";
+		String title = "오늘의 건강 상태는?";
+		String content = "꾸준히 기록하고, 현재 건강 상태를 확인해 봐요!";
 		NotificationType notificationType = notificationSearchService.findNotificationType("접속");
 
 		List<Notification> notifications = userFcmTokens.stream()
