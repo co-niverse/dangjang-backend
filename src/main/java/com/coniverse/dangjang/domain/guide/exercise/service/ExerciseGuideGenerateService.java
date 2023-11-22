@@ -64,17 +64,19 @@ public class ExerciseGuideGenerateService implements GuideGenerateService { // T
 			return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(newExerciseGuide));
 		}
 		// 걸음 수 추가
-		if (exerciseAnalysisData.getType().equals(CommonCode.STEP_COUNT)) {
+		if (exerciseAnalysisData.getType().equals(CommonCode.STEP_COUNT) && existExerciseGuide.getStepCount() == 0) {
 			existExerciseGuide.changeAboutWalk(exerciseAnalysisData.needStepByTTS, exerciseAnalysisData.needStepByLastWeek,
 				walkGuideContent.getGuideLastWeek(), walkGuideContent.getGuideTTS(), exerciseAnalysisData.getUnit());
 			return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(existExerciseGuide));
 		}
-		//운동 추가
 		ExerciseCalorie exerciseCalorie = new ExerciseCalorie(exerciseAnalysisData.getType(), exerciseAnalysisData.getCalorie(),
 			exerciseAnalysisData.getUnit());
-		existExerciseGuide.changeExerciseCalories(exerciseCalorie);
-		return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(existExerciseGuide));
-
+		//운동 추가
+		if (!existExerciseGuide.getExerciseCalories().contains(exerciseCalorie)) {
+			existExerciseGuide.changeExerciseCalories(exerciseCalorie);
+			return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(existExerciseGuide));
+		}
+		return exerciseGuideMapper.toResponse(existExerciseGuide);
 	}
 
 	/**
