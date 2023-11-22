@@ -77,9 +77,9 @@ public class ExerciseGuide { // TODO 걸음 가이드, 칼로리 가이드로 �
 	public boolean isDuplicateAboutStepCount(int needStepByTTS, int needStepByLastWeek, String comparedToLastWeek, String content, int stepCount) {
 		if (this.needStepByTTS == needStepByTTS && this.needStepByLastWeek == needStepByLastWeek && this.comparedToLastWeek == comparedToLastWeek
 			&& this.content == content && this.stepCount == stepCount) {
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	/**
