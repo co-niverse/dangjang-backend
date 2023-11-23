@@ -52,4 +52,12 @@ public class SubGuide {
 	protected boolean isSameType(CommonCode type) {
 		return this.type.equals(type);
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof SubGuide subGuide) {
+			return this.type.equals(subGuide.getType());
+		}
+		return false;
+	}
 }
