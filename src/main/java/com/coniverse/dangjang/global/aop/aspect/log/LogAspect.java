@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class LogAspect {
 	private final RestTemplate restTemplate;
 	@Value("${fluentbit.server-log-url}")
-	private String url;
+	private String uri;
 
 	/**
 	 * presentation layer logging
@@ -83,7 +83,7 @@ public class LogAspect {
 
 		ServerLog serverLog = new ServerLog(group, joinPoint.getSignature(), end - start);
 		try {
-			restTemplate.postForEntity(url, serverLog, String.class);
+			restTemplate.postForEntity(uri, serverLog, String.class);
 		} catch (ResourceAccessException e) {
 			log.error("fluentbit is dead");
 		}
