@@ -27,7 +27,7 @@ import com.coniverse.dangjang.support.annotation.WithDangjangUser;
  */
 @WithDangjangUser
 class PointHistoryControllerTest extends ControllerTest {
-	private static String URL = "/api/point";
+	private static final String URI = "/api/v1/point";
 	@Autowired
 	private PointService pointService;
 	private List<PointProduct> products = 구매가능_포인트_상품_목록();
@@ -39,7 +39,7 @@ class PointHistoryControllerTest extends ControllerTest {
 		ProductListResponse response = new ProductListResponse(1000, products, descriptionListToEarnPoint);
 		when(pointService.getProducts(any())).thenReturn(response);
 		// when
-		ResultActions resultActions = get(mockMvc, URL);
+		ResultActions resultActions = get(mockMvc, URI);
 		// then
 		resultActions.andExpectAll(
 			status().isOk(),
@@ -60,7 +60,7 @@ class PointHistoryControllerTest extends ControllerTest {
 		String content = objectMapper.writeValueAsString(request);
 
 		// when
-		ResultActions resultActions = post(mockMvc, URL, content);
+		ResultActions resultActions = post(mockMvc, URI, content);
 		// then
 		resultActions.andExpectAll(
 			status().isOk(),
@@ -74,11 +74,10 @@ class PointHistoryControllerTest extends ControllerTest {
 	void 조건에_맞지않는_request로_포인트_상품_구매를_요청하면_예외를_던진다() throws Exception {
 		// given
 		UsePointRequest request = new UsePointRequest("010-22-0000", "CU오천원금액권", "이름", "코멘트");
-		
 		String content = objectMapper.writeValueAsString(request);
 
 		// when
-		ResultActions resultActions = post(mockMvc, URL, content);
+		ResultActions resultActions = post(mockMvc, URI, content);
 		// then
 		resultActions.andExpectAll(
 			status().isBadRequest(),
