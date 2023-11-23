@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Aspect
 @RequiredArgsConstructor
 @Slf4j
-@Profile({"!test", "!performance"})
+@Profile("!test & !performance")
 public class LogAspect {
 	private final RestTemplate restTemplate;
 	@Value("${fluentbit.server-log-url}")
