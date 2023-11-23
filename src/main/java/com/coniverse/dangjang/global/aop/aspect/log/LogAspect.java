@@ -4,6 +4,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
@@ -23,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Aspect
 @RequiredArgsConstructor
 @Slf4j
+@Profile({"!test", "!performance"})
 public class LogAspect {
 	private final RestTemplate restTemplate;
 	@Value("${fluentbit.server-log-url}")
