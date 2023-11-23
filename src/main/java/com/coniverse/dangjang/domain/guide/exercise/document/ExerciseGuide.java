@@ -72,7 +72,7 @@ public class ExerciseGuide { // TODO 걸음 가이드, 칼로리 가이드로 �
 	 * @param comparedToLastWeek 지난주 걸음수와 비교한 가이드
 	 * @param content            만보 대비 걸음수에 대한 가이드
 	 * @return 중복 여부
-	 * @since 1.6.0
+	 * @since 1.6.1
 	 */
 	public boolean isDuplicateAboutStepCount(int needStepByTTS, int needStepByLastWeek, String comparedToLastWeek, String content, int stepCount) {
 		if (this.needStepByTTS == needStepByTTS && this.needStepByLastWeek == needStepByLastWeek && this.comparedToLastWeek == comparedToLastWeek
@@ -87,7 +87,7 @@ public class ExerciseGuide { // TODO 걸음 가이드, 칼로리 가이드로 �
 	 *
 	 * @param exerciseCalorie 운동 칼로리
 	 * @return 중복 여부
-	 * @since 1.6.0
+	 * @since 1.6.1
 	 */
 	public boolean isDuplicateAboutExerciseCalories(ExerciseCalorie exerciseCalorie) {
 		return this.exerciseCalories.stream().filter(exercise -> exercise.type().equals(exerciseCalorie.type())).findFirst().isPresent();
