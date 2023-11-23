@@ -53,11 +53,12 @@ public class BloodSugarGuide {
 	 * @since 1.0.0
 	 */
 	public void addSubGuide(SubGuide subGuide) {
-		if (!isDuplicatedSubGuide(subGuide)) {
-			this.subGuides.add(subGuide);
-			plusAlertCount(subGuide.getAlert());
-			sortSubGuides();
+		if (isDuplicatedSubGuide(subGuide)) {
+			return;
 		}
+		this.subGuides.add(subGuide);
+		plusAlertCount(subGuide.getAlert());
+		sortSubGuides();
 	}
 
 	/**
@@ -80,19 +81,20 @@ public class BloodSugarGuide {
 	 * @since 1.0.0
 	 */
 	public void updateSubGuide(SubGuide updatedSubGuide, CommonCode prevType) {
-		if (!isDuplicatedSubGuide(updatedSubGuide)) {
-			SubGuide subGuide = getSubGuide(prevType);
-			updateAlertCount(subGuide.getAlert(), updatedSubGuide.getAlert());
-			subGuide.update(updatedSubGuide);
-			sortSubGuides();
+		if (isDuplicatedSubGuide(updatedSubGuide)) {
+			return;
 		}
+		SubGuide subGuide = getSubGuide(prevType);
+		updateAlertCount(subGuide.getAlert(), updatedSubGuide.getAlert());
+		subGuide.update(updatedSubGuide);
+		sortSubGuides();
 	}
 
 	/**
 	 * 서브 가이드가 중복인지 확인한다.
 	 *
 	 * @param subGuide 서브 가이드
-	 * @since 1.0.0
+	 * @since 1.6.1
 	 */
 	private boolean isDuplicatedSubGuide(SubGuide subGuide) {
 		return this.subGuides.stream()
