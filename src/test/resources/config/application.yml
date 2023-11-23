@@ -89,6 +89,8 @@ logging:
     web: trace
     given:
       apiversion: trace
+    de:
+      flapdoodle: off
 
 ---
 spring:
