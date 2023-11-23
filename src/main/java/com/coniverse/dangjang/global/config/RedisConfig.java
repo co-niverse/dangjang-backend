@@ -15,7 +15,7 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
  * @author EVE
  * @since 1.0.0
  */
-@Profile("!test")
+@Profile("!test & !performance")
 @Configuration
 @EnableRedisRepositories
 public class RedisConfig {

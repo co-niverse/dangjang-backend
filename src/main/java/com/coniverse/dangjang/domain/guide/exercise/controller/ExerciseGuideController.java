@@ -38,24 +38,6 @@ public class ExerciseGuideController {
 	 * @param date      조회하는 날짜
 	 * @param principal 유저 정보
 	 * @return 운동 가이드 응답
-	 * @since 1.0.0
-	 * @deprecated 1.6.0
-	 */
-	@Deprecated(since = "1.6.0")
-	@GetMapping
-	public ResponseEntity<SuccessSingleResponse<ExerciseGuideResponse>> get(@ValidLocalDate @RequestParam String date,
-		@AuthenticationPrincipal User principal) {
-		ExerciseGuideResponse response = exerciseGuideSearchService.findGuide(principal.getUsername(), date);
-		return ResponseEntity.ok()
-			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
-	}
-
-	/**
-	 * 운동 조회
-	 *
-	 * @param date      조회하는 날짜
-	 * @param principal 유저 정보
-	 * @return 운동 가이드 응답
 	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
