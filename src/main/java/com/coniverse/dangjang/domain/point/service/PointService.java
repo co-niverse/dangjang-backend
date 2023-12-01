@@ -1,6 +1,7 @@
 package com.coniverse.dangjang.domain.point.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -188,7 +189,7 @@ public class PointService {
 	 */
 	public ProductListResponse getProducts(String oauthId) {
 		int balancePoint = pointSearchService.findUserPointByOauthId(oauthId).getPoint();
-		List<PointProduct> productList = pointSearchService.findAllByType(PointType.USE);
+		List<PointProduct> productList = new ArrayList<>();
 		List<String> descriptionListToEarnPoint = pointSearchService.findAllByType(PointType.EARN).stream()
 			.map(PointProduct::getDescription)
 			.collect(Collectors.toList());
