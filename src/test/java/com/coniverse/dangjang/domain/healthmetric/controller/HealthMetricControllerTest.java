@@ -44,14 +44,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class HealthMetricControllerTest extends ControllerTest {
-	private static final String URI = "/api/v1/health-metric";
-	private static LocalDate 시작_날짜 = LocalDate.parse("2023-12-31");
-	private static LocalDate 마지막_날짜 = LocalDate.parse("2024-01-06");
-	private static LocalDate 생성_날짜 = LocalDate.of(2023, 12, 31);
-	private static List<BloodSugarMinMax> 혈당차트 = 혈당차트_생성(생성_날짜, 100, 200);
-	private static List<HealthMetricChartData> 체중차트 = 체중차트_생성(생성_날짜, 100);
-	private static List<HealthMetricChartData> 걸음수차트 = 걸음수차트_생성(생성_날짜, 10000);
-	private static List<HealthMetricChartData> 칼로리차트 = 칼로리차트_생성(생성_날짜, 400);
+	public static final String URL = "/api/health-metric";
+	public static LocalDate 시작_날짜 = LocalDate.parse("2023-12-31");
+	public static LocalDate 마지막_날짜 = LocalDate.parse("2024-01-06");
+	public static LocalDate 생성_날짜 = LocalDate.of(2023, 12, 31);
+	public static List<BloodSugarMinMax> 혈당차트 = 혈당차트_생성(생성_날짜, 100, 200);
+	public static List<HealthMetricChartData> 체중차트 = 체중차트_생성(생성_날짜, 100);
+	public static List<HealthMetricChartData> 걸음수차트 = 걸음수차트_생성(생성_날짜, 10000);
+	public static List<HealthMetricChartData> 칼로리차트 = 칼로리차트_생성(생성_날짜, 400);
 	private final HealthMetricResponse response = 건강지표_등록_응답();
 	private String postContent;
 	private String patchContent;
@@ -75,7 +75,7 @@ class HealthMetricControllerTest extends ControllerTest {
 		given(healthMetricRegisterService.register(any(), anyString())).willReturn(response);
 
 		// when
-		ResultActions resultActions = post(mockMvc, URI, postContent);
+		ResultActions resultActions = post(mockMvc, URL, postContent);
 
 		// then
 		resultActions.andExpectAll(
@@ -99,7 +99,7 @@ class HealthMetricControllerTest extends ControllerTest {
 		String content = objectMapper.writeValueAsString(request);
 
 		// when
-		ResultActions resultActions = post(mockMvc, URI, content);
+		ResultActions resultActions = post(mockMvc, URL, content);
 
 		// then
 		resultActions.andExpectAll(
@@ -118,7 +118,7 @@ class HealthMetricControllerTest extends ControllerTest {
 		String content = objectMapper.writeValueAsString(request);
 
 		// when
-		ResultActions resultActions = post(mockMvc, URI, content);
+		ResultActions resultActions = post(mockMvc, URL, content);
 
 		// then
 		resultActions.andExpectAll(
@@ -138,7 +138,7 @@ class HealthMetricControllerTest extends ControllerTest {
 		String content = objectMapper.writeValueAsString(request);
 
 		// when
-		ResultActions resultActions = post(mockMvc, URI, content);
+		ResultActions resultActions = post(mockMvc, URL, content);
 
 		// then
 		resultActions.andExpectAll(
@@ -158,7 +158,7 @@ class HealthMetricControllerTest extends ControllerTest {
 		String content = objectMapper.writeValueAsString(request);
 
 		// when
-		ResultActions resultActions = post(mockMvc, URI, content);
+		ResultActions resultActions = post(mockMvc, URL, content);
 
 		// then
 		resultActions.andExpectAll(
@@ -176,7 +176,7 @@ class HealthMetricControllerTest extends ControllerTest {
 		given(healthMetricRegisterService.update(any(), anyString())).willReturn(response);
 
 		// when
-		ResultActions resultActions = patch(mockMvc, URI, patchContent);
+		ResultActions resultActions = patch(mockMvc, URL, patchContent);
 
 		// then
 		resultActions.andExpectAll(
@@ -200,7 +200,7 @@ class HealthMetricControllerTest extends ControllerTest {
 		String content = objectMapper.writeValueAsString(request);
 
 		// when
-		ResultActions resultActions = patch(mockMvc, URI, content);
+		ResultActions resultActions = patch(mockMvc, URL, content);
 
 		// then
 		resultActions.andExpectAll(
@@ -220,7 +220,7 @@ class HealthMetricControllerTest extends ControllerTest {
 		params.add("endDate", 마지막_날짜.toString());
 
 		//when
-		ResultActions resultActions = get(mockMvc, URI, params);
+		ResultActions resultActions = get(mockMvc, URL, params);
 
 		//then
 		resultActions.andExpectAll(
@@ -243,7 +243,7 @@ class HealthMetricControllerTest extends ControllerTest {
 		params.add("endDate", 마지막_날짜.toString());
 
 		//when
-		ResultActions resultActions = get(mockMvc, URI, params);
+		ResultActions resultActions = get(mockMvc, URL, params);
 
 		//then
 		resultActions.andExpectAll(
@@ -256,7 +256,7 @@ class HealthMetricControllerTest extends ControllerTest {
 	@Test
 	void 건강지표_마지막_생성일을_전달한다() throws Exception {
 		//given
-		String subUrl = URI + "/last-date";
+		String subUrl = URL + "/last-date";
 		LocalDate lastDate = LocalDate.now();
 		HealthMetricLastDateResponse response = new HealthMetricLastDateResponse(lastDate);
 		given(healthMetricSearchService.findHealthMetricLastDate(any())).willReturn(response);
@@ -280,7 +280,7 @@ class HealthMetricControllerTest extends ControllerTest {
 		params.add("type", "아침식전");
 
 		// when
-		ResultActions resultActions = delete(mockMvc, URI, params);
+		ResultActions resultActions = delete(mockMvc, URL, params);
 
 		// then
 		resultActions.andExpectAll(
@@ -297,7 +297,7 @@ class HealthMetricControllerTest extends ControllerTest {
 		params.add("type", "아침식전");
 
 		// when
-		ResultActions resultActions = delete(mockMvc, URI, params);
+		ResultActions resultActions = delete(mockMvc, URL, params);
 
 		// then
 		resultActions.andExpectAll(
@@ -316,7 +316,7 @@ class HealthMetricControllerTest extends ControllerTest {
 		params.add("type", type);
 
 		// when
-		ResultActions resultActions = delete(mockMvc, URI, params);
+		ResultActions resultActions = delete(mockMvc, URL, params);
 
 		// then
 		resultActions.andExpectAll(

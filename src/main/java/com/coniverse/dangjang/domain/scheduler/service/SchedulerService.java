@@ -17,13 +17,13 @@ import com.coniverse.dangjang.domain.notification.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 스케쥴러
+ * SchedulerService
  *
  * @author EVE
  * @since 1.1.0
  */
-@Service
 @RequiredArgsConstructor
+@Service
 @EnableSchedulerLock(defaultLockAtMostFor = "PT10S")
 public class SchedulerService {
 	private final NotificationService notificationService;
@@ -41,6 +41,7 @@ public class SchedulerService {
 	@SchedulerLock(name = "SchedulerService_makeNotification", lockAtLeastFor = "PT60S", lockAtMostFor = "PT70S")
 	public void makeNotification() {
 		List<FcmMessage> fcmMessage = notificationService.makeAccessFcmMessage();
-		fcmMessage.forEach(notificationSendService::sendMessage);
+		fcmMessage.forEach(message -> notificationSendService.sendMessage(message));
+
 	}
 }

@@ -25,26 +25,26 @@ import com.coniverse.dangjang.support.annotation.WithDangjangUser;
 class WeightGuideControllerTest extends ControllerTest {
 	@Autowired
 	private WeightGuideSearchService weightGuideSearchService;
-	private static final String URI = "/api/v1/guide/weight";
-	private static final String CREATED_AT = "2023-12-31";
+	public static final String URL = "/api/guide/weight";
+	private static final String createdAt = "2023-12-31";
 	private static final String 등록되지_않은_날짜 = "3000-12-33";
 
 	@Test
 	void 체중_조회를_성공한다() throws Exception {
 		// given
-		WeightGuideResponse response = 체중_가이드_응답(CREATED_AT);
+		WeightGuideResponse response = 체중_가이드_응답(createdAt);
 		doReturn(response).when(weightGuideSearchService).findGuide(any(), any());
 		// when
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("date", "2023-12-31");
 
 		// when
-		ResultActions resultActions = get(mockMvc, URI, params);
+		ResultActions resultActions = get(mockMvc, URL, params);
 		// then
 		resultActions.andExpectAll(
 			status().isOk(),
 			jsonPath("$.message").value(HttpStatus.OK.getReasonPhrase()),
-			jsonPath("$.data.createdAt").value(CREATED_AT),
+			jsonPath("$.data.createdAt").value(createdAt),
 			jsonPath("$.data.title").value(response.title()),
 			jsonPath("$.data.content").value(response.content()),
 			jsonPath("$.data.weightDiff").value(response.weightDiff()),
@@ -56,14 +56,14 @@ class WeightGuideControllerTest extends ControllerTest {
 	@Test
 	void 유효하지_않는_날짜로_체중_조회를_실패한다() throws Exception {
 		// given
-		WeightGuideResponse response = 체중_가이드_응답(CREATED_AT);
+		WeightGuideResponse response = 체중_가이드_응답(createdAt);
 		doReturn(null).when(weightGuideSearchService).findGuide(any(), any());
 		// when
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("date", 등록되지_않은_날짜);
 
 		// when
-		ResultActions resultActions = get(mockMvc, URI, params);
+		ResultActions resultActions = get(mockMvc, URL, params);
 		// then
 		resultActions.andExpectAll(
 			status().isBadRequest(),

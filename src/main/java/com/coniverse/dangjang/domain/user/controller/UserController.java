@@ -44,6 +44,20 @@ public class UserController {
 	private final NotificationService notificationService;
 
 	/**
+	 * @param nickname 확인이 필요한 닉네임을 담아온다.
+	 * @return 닉네임이 중복되지 않았으면 true, 중복된 닉네임이면 false를 담은 DuplicateNicknameResponse 객체를 반환한다.
+	 * @since 1.0
+	 * @deprecated 1.6.0
+	 */
+	@Deprecated(since = "1.6.0")
+	@GetMapping("/duplicateNickname")
+	public ResponseEntity<SuccessSingleResponse<DuplicateNicknameResponse>> checkDuplicateNickname(
+		@RequestParam @Pattern(regexp = "^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]{1,8}$", message = "닉네임은 영어,한글,숫자 1~8글자 이내로 이루어져있어야 합니다.") @NotBlank(message = "닉네임은 1~8글자 이내여야 합니다.") String nickname) {
+		DuplicateNicknameResponse duplicateNicknameResponse = userSignupService.checkDuplicatedNickname(nickname);
+		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), duplicateNicknameResponse));
+	}
+
+	/**
 	 * 닉네임 중복 여부 확인
 	 *
 	 * @param nickname 확인이 필요한 닉네임
@@ -57,6 +71,20 @@ public class UserController {
 		DuplicateNicknameResponse duplicateNicknameResponse = userSignupService.checkDuplicatedNickname(nickname);
 		return ResponseEntity.ok()
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), duplicateNicknameResponse));
+	}
+
+	/**
+	 * Mypage에 필요한 정보를 조회한다.
+	 *
+	 * @return MypageResponse 사용자 닉네임과 포인트
+	 * @since 1.0.0
+	 * @deprecated 1.6.0
+	 */
+	@Deprecated(since = "1.6.0")
+	@GetMapping("/mypage")
+	public ResponseEntity<SuccessSingleResponse<MypageResponse>> getMyPage(@AuthenticationPrincipal User user) {
+		MypageResponse response = mypageService.getMypage(user.getUsername());
+		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
 
 	/**
@@ -79,6 +107,21 @@ public class UserController {
 	 *
 	 * @param user 사용자 정보
 	 * @return ResponseEntity
+	 * @since 1.0.0
+	 * @deprecated 1.6.0
+	 */
+	@Deprecated(since = "1.6.0")
+	@DeleteMapping("/withdrawal")
+	public ResponseEntity<?> withdraw(@AuthenticationPrincipal User user) {
+		userWithdrawalService.withdraw(user.getUsername());
+		return ResponseEntity.noContent().build();
+	}
+
+	/**
+	 * 회원 탈퇴
+	 *
+	 * @param user 사용자 정보
+	 * @return ResponseEntity
 	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
@@ -86,6 +129,22 @@ public class UserController {
 	public ResponseEntity<?> withdrawV1(@AuthenticationPrincipal User user) {
 		userWithdrawalService.withdraw(user.getUsername());
 		return ResponseEntity.noContent().build();
+	}
+
+	/**
+	 * fcmToken 저장 및 업데이트
+	 *
+	 * @param user    사용자 정보
+	 * @param request fcmToken
+	 * @return MyPageResponse 사용자 닉네임과 포인트
+	 * @since 1.0.0
+	 * @deprecated 1.6.0
+	 */
+	@Deprecated(since = "1.6.0")
+	@PostMapping("/fcmToken")
+	public ResponseEntity<SuccessSingleResponse<?>> postFcmToken(@AuthenticationPrincipal User user, @Valid @RequestBody PostFcmTokenRequest request) {
+		notificationService.saveOrUpdateFcmToken(request, user.getUsername());
+		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}
 
 	/**

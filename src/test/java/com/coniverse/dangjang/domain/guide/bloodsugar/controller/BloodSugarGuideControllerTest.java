@@ -25,7 +25,7 @@ import com.coniverse.dangjang.support.annotation.WithDangjangUser;
  */
 @WithDangjangUser
 class BloodSugarGuideControllerTest extends ControllerTest {
-	private static final String URI = "/api/v1/guide/blood-sugar";
+	public static final String URL = "/api/guide/blood-sugar";
 	private static final String createdAt = "2023-12-31";
 	@Autowired
 	private BloodSugarGuideSearchService bloodSugarGuideSearchService;
@@ -40,7 +40,7 @@ class BloodSugarGuideControllerTest extends ControllerTest {
 		params.add("date", createdAt);
 
 		// when
-		ResultActions resultActions = get(mockMvc, URI, params);
+		ResultActions resultActions = get(mockMvc, URL, params);
 
 		// then
 		resultActions.andExpectAll(
@@ -69,7 +69,7 @@ class BloodSugarGuideControllerTest extends ControllerTest {
 		params.add("date", createdAt);
 
 		// when
-		ResultActions resultActions = get(mockMvc, URI, params);
+		ResultActions resultActions = get(mockMvc, URL, params);
 
 		// then
 		resultActions.andExpectAll(

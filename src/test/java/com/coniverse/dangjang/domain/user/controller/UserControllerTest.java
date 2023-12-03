@@ -19,18 +19,15 @@ import com.coniverse.dangjang.support.annotation.WithDangjangUser;
  * @since 1.0.0
  */
 class UserControllerTest extends ControllerTest {
-	private static final String NICKNAME_URI = "/api/v1/user/duplicateNickname";
-	private static final String MY_PAGE_URI = "/api/v1/user/mypage";
-	private static final String WITHDRAWAL_URI = "/api/v1/user/withdrawal";
+	private static final String URI = "/api/user";
 
 	@Test
 	void 닉네임을_받아와_확인을_성공한다() throws Exception {
 		//given
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("nickname", "hello");
-
 		// when
-		ResultActions resultActions = get(mockMvc, NICKNAME_URI, params);
+		ResultActions resultActions = get(mockMvc, URI + "/duplicateNickname", params);
 
 		// then
 		resultActions.andExpectAll(
@@ -46,9 +43,8 @@ class UserControllerTest extends ControllerTest {
 		//given
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("nickname", nickname);
-
 		// when
-		ResultActions resultActions = get(mockMvc, NICKNAME_URI, params);
+		ResultActions resultActions = get(mockMvc, URI + "/duplicateNickname", params);
 
 		// then
 		resultActions.andExpectAll(
@@ -62,9 +58,10 @@ class UserControllerTest extends ControllerTest {
 	void 마이페이지에_필요한_정보를_전달한다() throws Exception {
 		//given
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		String subURL = "/mypage";
 
 		// when
-		ResultActions resultActions = get(mockMvc, MY_PAGE_URI, params);
+		ResultActions resultActions = get(mockMvc, URI + subURL, params);
 
 		// then
 		resultActions.andExpectAll(
@@ -76,8 +73,11 @@ class UserControllerTest extends ControllerTest {
 	@WithDangjangUser
 	@Test
 	void 회원탈퇴를_성공한다() throws Exception {
+		// given
+		String subUrl = "/withdrawal";
+
 		// when
-		ResultActions resultActions = delete(mockMvc, WITHDRAWAL_URI);
+		ResultActions resultActions = delete(mockMvc, URI + subUrl);
 
 		// then
 		resultActions.andExpectAll(

@@ -10,7 +10,6 @@ import com.coniverse.dangjang.domain.analysis.dto.healthMetric.WeightAnalysisDat
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
 import com.coniverse.dangjang.domain.code.enums.GroupCode;
 import com.coniverse.dangjang.domain.guide.common.dto.response.GuideResponse;
-import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
 import com.coniverse.dangjang.domain.guide.common.service.GuideGenerateService;
 import com.coniverse.dangjang.domain.guide.weight.document.WeightGuide;
 import com.coniverse.dangjang.domain.guide.weight.mapper.WeightMapper;
@@ -43,14 +42,8 @@ public class WeightGuideGenerateService implements GuideGenerateService {
 	public GuideResponse createGuide(AnalysisData analysisData) {
 		WeightAnalysisData data = (WeightAnalysisData)analysisData;
 		String content = createContent(data);
-		WeightGuide existWeightGuide;
-		try {
-			existWeightGuide = weightGuideSearchService.findByUserIdAndCreatedAt(data.getOauthId(), data.getCreatedAt().toString());
-		} catch (GuideNotFoundException e) {
-			WeightGuide weightGuide = weightMapper.toDocument(data, content);
-			return weightMapper.toResponse(mongoTemplate.save(weightGuide));
-		}
-		return weightMapper.toResponse(existWeightGuide);
+		WeightGuide weightGuide = weightMapper.toDocument(data, content);
+		return weightMapper.toResponse(mongoTemplate.save(weightGuide));
 	}
 
 	/**

@@ -32,6 +32,21 @@ public class NotificationController {
 	private final NotificationService notificationService;
 
 	/**
+	 * 알림 목록 조회
+	 *
+	 * @param user 사용자
+	 * @return notificationList 확인 안된 알림 목록
+	 * @since 1.0.0
+	 * @deprecated 1.6.0
+	 */
+	@Deprecated(since = "1.6.0")
+	@GetMapping
+	public ResponseEntity<SuccessSingleResponse<NotificationListResponse>> get(@AuthenticationPrincipal User user) {
+		NotificationListResponse response = new NotificationListResponse(notificationService.getNotificationList(user.getUsername()));
+		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
+	}
+
+	/**
 	 * 미확인 알림 목록 조회
 	 *
 	 * @param user 사용자 정보
@@ -44,6 +59,23 @@ public class NotificationController {
 		NotificationListResponse response = new NotificationListResponse(notificationService.getNotificationList(user.getUsername())); // TODO 객체 생성 이동
 		return ResponseEntity.ok()
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
+	}
+
+	/**
+	 * 확인된 알림 변경 요청
+	 * <p>
+	 * 클라이언트에서 사용자가 확인한 알림Id 목록을 서버로 전달,
+	 * 서버에서 알림 확인 여부를 변경한다.
+	 *
+	 * @param notificationIdList 알림Id 목록
+	 * @since 1.0.0
+	 * @deprecated 1.6.0
+	 */
+	@Deprecated(since = "1.6.0")
+	@PatchMapping
+	public ResponseEntity<SuccessSingleResponse<?>> patch(@Valid @RequestBody CheckNotificationIdRequest notificationIdList) {
+		notificationService.updateNotificationIsRead(notificationIdList);
+		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}
 
 	/**

@@ -28,7 +28,7 @@ import com.coniverse.dangjang.support.annotation.WithDangjangUser;
 class NotificationControllerTest extends ControllerTest {
 	@Autowired
 	private NotificationService notificationService;
-	private static final String URI = "/api/v1/notification";
+	private static final String URL = "/api/notification";
 
 	@Test
 	void 사용자의_알림목록을_조회하면_성공메세지를_반환한다() throws Exception {
@@ -36,7 +36,7 @@ class NotificationControllerTest extends ControllerTest {
 		List<NotificationResponse> response = 사용자_알림_목록();
 		given(notificationService.getNotificationList(any())).willReturn(response);
 		//when
-		ResultActions resultActions = get(mockMvc, URI);
+		ResultActions resultActions = get(mockMvc, URL);
 		//then
 		resultActions.andExpectAll(
 			status().isOk(),
@@ -55,7 +55,7 @@ class NotificationControllerTest extends ControllerTest {
 		CheckNotificationIdRequest request = 사용자_알림_확인요청_목록();
 		String content = objectMapper.writeValueAsString(request);
 		//when
-		ResultActions resultActions = patch(mockMvc, URI, content);
+		ResultActions resultActions = patch(mockMvc, URL, content);
 		//then
 		resultActions.andExpectAll(
 			status().isOk()
@@ -68,7 +68,7 @@ class NotificationControllerTest extends ControllerTest {
 		CheckNotificationIdRequest request = new CheckNotificationIdRequest(List.of());
 		String content = objectMapper.writeValueAsString(request);
 		//when
-		ResultActions resultActions = patch(mockMvc, URI, content);
+		ResultActions resultActions = patch(mockMvc, URL, content);
 		//then
 		resultActions.andExpectAll(
 			status().isBadRequest()

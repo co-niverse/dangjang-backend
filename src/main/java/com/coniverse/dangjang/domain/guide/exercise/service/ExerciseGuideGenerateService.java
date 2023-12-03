@@ -65,22 +65,16 @@ public class ExerciseGuideGenerateService implements GuideGenerateService { // T
 		}
 		// 걸음 수 추가
 		if (exerciseAnalysisData.getType().equals(CommonCode.STEP_COUNT)) {
-			if (!existExerciseGuide.isDuplicateAboutStepCount(exerciseAnalysisData.needStepByTTS, exerciseAnalysisData.needStepByLastWeek,
-				walkGuideContent.getGuideLastWeek(), walkGuideContent.getGuideTTS(), exerciseAnalysisData.getUnit())) {
-				existExerciseGuide.changeAboutWalk(exerciseAnalysisData.needStepByTTS, exerciseAnalysisData.needStepByLastWeek,
-					walkGuideContent.getGuideLastWeek(), walkGuideContent.getGuideTTS(), exerciseAnalysisData.getUnit());
-				return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(existExerciseGuide));
-			}
-		} else {
-			ExerciseCalorie exerciseCalorie = new ExerciseCalorie(exerciseAnalysisData.getType(), exerciseAnalysisData.getCalorie(),
-				exerciseAnalysisData.getUnit());
-			//운동 추가
-			if (!existExerciseGuide.isDuplicateAboutExerciseCalories(exerciseCalorie)) {
-				existExerciseGuide.changeExerciseCalories(exerciseCalorie);
-				return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(existExerciseGuide));
-			}
+			existExerciseGuide.changeAboutWalk(exerciseAnalysisData.needStepByTTS, exerciseAnalysisData.needStepByLastWeek,
+				walkGuideContent.getGuideLastWeek(), walkGuideContent.getGuideTTS(), exerciseAnalysisData.getUnit());
+			return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(existExerciseGuide));
 		}
-		return exerciseGuideMapper.toResponse(existExerciseGuide);
+		//운동 추가
+		ExerciseCalorie exerciseCalorie = new ExerciseCalorie(exerciseAnalysisData.getType(), exerciseAnalysisData.getCalorie(),
+			exerciseAnalysisData.getUnit());
+		existExerciseGuide.changeExerciseCalories(exerciseCalorie);
+		return exerciseGuideMapper.toResponse(exerciseGuideRepository.save(existExerciseGuide));
+
 	}
 
 	/**

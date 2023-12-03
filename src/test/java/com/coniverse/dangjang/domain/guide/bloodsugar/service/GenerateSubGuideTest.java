@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -32,6 +33,7 @@ import com.coniverse.dangjang.domain.user.entity.User;
  * @since 1.0.0
  */
 @SpringBootTest
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class GenerateSubGuideTest {
 	private static final User 전단계_환자 = 전단계_환자();
 	private static final User 당뇨_환자_강하제X_주사X = 당뇨_환자(false, false);
@@ -45,7 +47,7 @@ class GenerateSubGuideTest {
 	@MockBean
 	private BloodSugarGuideRepository bloodSugarGuideRepository;
 
-	static Stream<Arguments> provideHypoglycemia() {
+	private Stream<Arguments> provideHypoglycemia() {
 		return Stream.of(
 			Arguments.of(전단계_환자, CommonCode.EMPTY_STOMACH, "49", HypoglycemiaGuideFormat.NO_MEDICINE_AND_INJECTION),
 			Arguments.of(당뇨_환자_강하제X_주사X, CommonCode.AFTER_BREAKFAST, "1", HypoglycemiaGuideFormat.NO_MEDICINE_AND_INJECTION),
@@ -73,7 +75,7 @@ class GenerateSubGuideTest {
 		);
 	}
 
-	static Stream<Arguments> provideHypoglycemiaSuspect() {
+	private Stream<Arguments> provideHypoglycemiaSuspect() {
 		return Stream.of(
 			Arguments.of(전단계_환자, CommonCode.EMPTY_STOMACH, "50", 20),
 			Arguments.of(전단계_환자, CommonCode.AFTER_BREAKFAST, "80", 10),
@@ -100,7 +102,7 @@ class GenerateSubGuideTest {
 		);
 	}
 
-	static Stream<Arguments> provideNormal() {
+	private Stream<Arguments> provideNormal() {
 		return Stream.of(
 			Arguments.of(전단계_환자, CommonCode.EMPTY_STOMACH, "79"),
 			Arguments.of(전단계_환자, CommonCode.AFTER_BREAKFAST, "130"),
@@ -130,7 +132,7 @@ class GenerateSubGuideTest {
 		);
 	}
 
-	static Stream<Arguments> provideCaution() {
+	private Stream<Arguments> provideCaution() {
 		return Stream.of(
 			Arguments.of(전단계_환자, CommonCode.EMPTY_STOMACH, "100", false, false, -1),
 			Arguments.of(전단계_환자, CommonCode.AFTER_BREAKFAST, "199", false, true, -60),
@@ -161,7 +163,7 @@ class GenerateSubGuideTest {
 		);
 	}
 
-	static Stream<Arguments> provideWarning() {
+	private Stream<Arguments> provideWarning() {
 		return Stream.of(
 			Arguments.of(전단계_환자, CommonCode.EMPTY_STOMACH, "126", false, false, -27),
 			Arguments.of(전단계_환자, CommonCode.AFTER_BREAKFAST, "200", false, true, -61),

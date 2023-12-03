@@ -18,7 +18,7 @@ import com.coniverse.dangjang.support.ControllerTest;
  * @since 1.0.0
  */
 class AppLogControllerTest extends ControllerTest {
-	private static final String URI = "/api/v1/log";
+	private static final String URL = "/api/log";
 
 	@Test
 	void 로그를_등록하면_성공_메시지를_반환한다() throws Exception {
@@ -27,7 +27,7 @@ class AppLogControllerTest extends ControllerTest {
 		String content = objectMapper.writeValueAsString(request);
 
 		// when
-		ResultActions resultActions = post(mockMvc, URI, content);
+		ResultActions resultActions = post(mockMvc, URL, content);
 
 		// then
 		resultActions.andExpectAll(
@@ -45,7 +45,7 @@ class AppLogControllerTest extends ControllerTest {
 		String content = objectMapper.writeValueAsString(request);
 
 		// when
-		ResultActions resultActions = post(mockMvc, URI, content);
+		ResultActions resultActions = post(mockMvc, URL, content);
 
 		// then
 		resultActions.andExpectAll(
@@ -64,7 +64,7 @@ class AppLogControllerTest extends ControllerTest {
 		String content = objectMapper.writeValueAsString(request);
 
 		// when
-		ResultActions resultActions = post(mockMvc, URI, content);
+		ResultActions resultActions = post(mockMvc, URL, content);
 
 		// then
 		resultActions.andExpectAll(
@@ -83,7 +83,7 @@ class AppLogControllerTest extends ControllerTest {
 		String content = objectMapper.writeValueAsString(request);
 
 		// when
-		ResultActions resultActions = post(mockMvc, URI, content);
+		ResultActions resultActions = post(mockMvc, URL, content);
 
 		// then
 		resultActions.andExpectAll(
@@ -102,7 +102,7 @@ class AppLogControllerTest extends ControllerTest {
 		String content = objectMapper.writeValueAsString(request);
 
 		// when
-		ResultActions resultActions = post(mockMvc, URI, content);
+		ResultActions resultActions = post(mockMvc, URL, content);
 
 		// then
 		resultActions.andExpectAll(
@@ -121,7 +121,7 @@ class AppLogControllerTest extends ControllerTest {
 		String content = objectMapper.writeValueAsString(request);
 
 		// when
-		ResultActions resultActions = post(mockMvc, URI, content);
+		ResultActions resultActions = post(mockMvc, URL, content);
 
 		// then
 		resultActions.andExpectAll(
