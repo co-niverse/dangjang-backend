@@ -68,7 +68,6 @@ version:
 api:
   version:
     uri-prefix: /api
-    sharing-uri-prefix: true
 
 logging:
   level:
@@ -90,6 +89,8 @@ logging:
     web: trace
     given:
       apiversion: trace
+    de:
+      flapdoodle: off
 
 ---
 spring:

@@ -36,23 +36,6 @@ public class HealthConnectController {
 	 *
 	 * @param requests  건강 지표 request post dto n개
 	 * @param principal 유저 정보
-	 * @since 1.0.0
-	 * @deprecated 1.6.0
-	 */
-	@Deprecated(since = "1.6.0")
-	@PostMapping
-	public ResponseEntity<SuccessSingleResponse<?>> postHealthConnect(@Valid @RequestBody HealthConnectPostRequest requests,
-		@AuthenticationPrincipal User principal) {
-		String oauthId = principal.getUsername();
-		healthConnectService.registerHealthConnectData(requests, oauthId);
-		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
-	}
-
-	/**
-	 * health connect로 받은 건강 지표 데이터를 등록한다.
-	 *
-	 * @param requests  건강 지표 request post dto n개
-	 * @param principal 유저 정보
 	 * @since 1.6.0
 	 */
 	@ApiVersion("1")
@@ -63,23 +46,6 @@ public class HealthConnectController {
 		healthConnectService.registerHealthConnectData(requests, oauthId);
 		return ResponseEntity.ok()
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
-	}
-
-	/**
-	 * health connect 연동 여부를 확인한다.
-	 *
-	 * @param requests  health connect 연동 여부 데이터
-	 * @param principal 유저 정보
-	 * @since 1.0.0
-	 * @deprecated 1.6.0
-	 */
-	@Deprecated(since = "1.6.0")
-	@PatchMapping("/interlock")
-	public ResponseEntity<SuccessSingleResponse<?>> interlockHealthConnect(@Valid @RequestBody HealthConnectRegisterRequest requests,
-		@AuthenticationPrincipal User principal) {
-		String oauthId = principal.getUsername();
-		healthConnectService.interlockHealthConnect(requests, oauthId);
-		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), null));
 	}
 
 	/**

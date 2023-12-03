@@ -8,7 +8,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.coniverse.dangjang.domain.analysis.enums.Alert;
 import com.coniverse.dangjang.domain.code.enums.CommonCode;
-import com.coniverse.dangjang.domain.guide.common.exception.GuideAlreadyExistsException;
 import com.coniverse.dangjang.domain.guide.common.exception.GuideNotFoundException;
 
 import jakarta.persistence.Id;
@@ -54,10 +53,12 @@ public class BloodSugarGuide {
 	 * @since 1.0.0
 	 */
 	public void addSubGuide(SubGuide subGuide) {
-		verifySubGuideNonExistent(subGuide.getType());
+		if (isDuplicatedSubGuide(subGuide)) {
+			return;
+		}
 		this.subGuides.add(subGuide);
-		sortSubGuides();
 		plusAlertCount(subGuide.getAlert());
+		sortSubGuides();
 	}
 
 	/**
@@ -80,7 +81,9 @@ public class BloodSugarGuide {
 	 * @since 1.0.0
 	 */
 	public void updateSubGuide(SubGuide updatedSubGuide, CommonCode prevType) {
-		verifySubGuideNonExistent(updatedSubGuide.getType());
+		if (isDuplicatedSubGuide(updatedSubGuide)) {
+			return;
+		}
 		SubGuide subGuide = getSubGuide(prevType);
 		updateAlertCount(subGuide.getAlert(), updatedSubGuide.getAlert());
 		subGuide.update(updatedSubGuide);
@@ -88,17 +91,14 @@ public class BloodSugarGuide {
 	}
 
 	/**
-	 * 서브 가이드가 존재하는지 검증한다.
+	 * 서브 가이드가 중복인지 확인한다.
 	 *
-	 * @param type 서브 가이드 타입
-	 * @throws GuideAlreadyExistsException 이미 해당 가이드가 존재할 경우 발생한다.
-	 * @since 1.0.0
+	 * @param subGuide 서브 가이드
+	 * @since 1.6.1
 	 */
-	private void verifySubGuideNonExistent(CommonCode type) {
-		boolean exists = this.subGuides.stream().anyMatch(guide -> guide.isSameType(type));
-		if (exists) {
-			throw new GuideAlreadyExistsException();
-		}
+	private boolean isDuplicatedSubGuide(SubGuide subGuide) {
+		return this.subGuides.stream()
+			.anyMatch(s -> s.equals(subGuide));
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class BloodSugarGuide {
 	 */
 	private SubGuide getSubGuide(CommonCode type) {
 		return this.subGuides.stream()
-			.filter(guide -> guide.isSameType(type))
+			.filter(s -> s.isSameType(type))
 			.findFirst()
 			.orElseThrow(GuideNotFoundException::new);
 	}
@@ -149,7 +149,7 @@ public class BloodSugarGuide {
 	 */
 	private void plusAlertCount(String alert) {
 		this.todayGuides.stream()
-			.filter(guide -> guide.isSameAlert(alert))
+			.filter(s -> s.isSameAlert(alert))
 			.findFirst()
 			.ifPresent(TodayGuide::plusCount);
 	}
@@ -162,7 +162,7 @@ public class BloodSugarGuide {
 	 */
 	private void minusAlertCount(String alert) {
 		this.todayGuides.stream()
-			.filter(guide -> guide.isSameAlert(alert))
+			.filter(s -> s.isSameAlert(alert))
 			.findFirst()
 			.ifPresent(TodayGuide::minusCount);
 	}
