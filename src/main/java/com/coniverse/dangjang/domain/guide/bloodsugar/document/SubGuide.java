@@ -52,21 +52,4 @@ public class SubGuide {
 	protected boolean isSameType(CommonCode type) {
 		return this.type.equals(type);
 	}
-
-	/**
-	 * equals 메서드 overriding
-	 * <p>
-	 * 타입이 같으면 같은 서브 가이드로 취급한다.
-	 *
-	 * @param obj 비교할 객체
-	 * @return 같으면 true, 다르면 false
-	 * @since 1.6.1
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof SubGuide subGuide) {
-			return this.type.equals(subGuide.getType());
-		}
-		return false;
-	}
 }

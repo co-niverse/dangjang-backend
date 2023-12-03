@@ -38,6 +38,22 @@ public class PointController {
 	 * 포인트 상품 구매
 	 *
 	 * @param request 포인트 구매하고자 하는 내역 정보
+	 * @return response 사용자 구매 완료 내역
+	 * @since 1.0.0
+	 * @deprecated 1.6.0
+	 */
+	@Deprecated(since = "1.6.0")
+	@PostMapping
+	public ResponseEntity<SuccessSingleResponse<UsePointResponse>> purchaseProduct(@Valid @RequestBody UsePointRequest request,
+		@AuthenticationPrincipal User user) {
+		UsePointResponse response = pointService.purchaseProduct(user.getUsername(), request);
+		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
+	}
+
+	/**
+	 * 포인트 상품 구매
+	 *
+	 * @param request 포인트 구매하고자 하는 내역 정보
 	 * @param user    사용자 정보
 	 * @return response 사용자 구매 완료 내역
 	 * @since 1.6.0
@@ -49,6 +65,20 @@ public class PointController {
 		UsePointResponse response = pointService.purchaseProduct(user.getUsername(), request);
 		return ResponseEntity.ok()
 			.body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
+	}
+
+	/**
+	 * 구매 가능 포인트 상품 목록 조회
+	 *
+	 * @return response 사용자 포인트 잔액, 구매 가능한 상품 내역
+	 * @since 1.0.0
+	 * @deprecated 1.6.0
+	 */
+	@Deprecated(since = "1.6.0")
+	@GetMapping
+	public ResponseEntity<SuccessSingleResponse<ProductListResponse>> getProductList(@AuthenticationPrincipal User user) {
+		ProductListResponse response = pointService.getProducts(user.getUsername());
+		return ResponseEntity.ok(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
 	}
 
 	/**

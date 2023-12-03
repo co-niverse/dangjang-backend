@@ -22,8 +22,7 @@ import com.coniverse.dangjang.support.ControllerTest;
  * @since 1.3.0
  */
 class VersionControllerTest extends ControllerTest {
-	private static final String VERSION_URI = "/api/v1/version";
-	private static final String INTRO_URI = "/api/v1/version/intro";
+	private static final String URI = "/api/version";
 
 	@Autowired
 	private VersionService versionService;
@@ -35,7 +34,7 @@ class VersionControllerTest extends ControllerTest {
 		doReturn(versionResponse).when(versionService).getVersionResponse();
 
 		// when
-		ResultActions resultActions = get(mockMvc, INTRO_URI);
+		ResultActions resultActions = get(mockMvc, URI + "/intro");
 
 		// then
 		resultActions.andExpectAll(
@@ -55,7 +54,7 @@ class VersionControllerTest extends ControllerTest {
 		doReturn(versionResponse).when(versionService).saveVersion(any());
 
 		// when
-		ResultActions resultActions = post(mockMvc, VERSION_URI, content);
+		ResultActions resultActions = post(mockMvc, URI, content);
 
 		// then
 		resultActions.andExpectAll(
@@ -74,7 +73,7 @@ class VersionControllerTest extends ControllerTest {
 		String content = objectMapper.writeValueAsString(versionRequest);
 
 		// when
-		ResultActions resultActions = post(mockMvc, VERSION_URI, content);
+		ResultActions resultActions = post(mockMvc, URI, content);
 
 		// then
 		resultActions.andExpectAll(
@@ -93,7 +92,7 @@ class VersionControllerTest extends ControllerTest {
 		String content = objectMapper.writeValueAsString(versionRequest);
 
 		// when
-		ResultActions resultActions = post(mockMvc, VERSION_URI, content);
+		ResultActions resultActions = post(mockMvc, URI, content);
 
 		// then
 		resultActions.andExpectAll(
@@ -112,7 +111,7 @@ class VersionControllerTest extends ControllerTest {
 		String content = objectMapper.writeValueAsString(versionRequest);
 
 		// when
-		ResultActions resultActions = post(mockMvc, VERSION_URI, content);
+		ResultActions resultActions = post(mockMvc, URI, content);
 
 		// then
 		resultActions.andExpectAll(

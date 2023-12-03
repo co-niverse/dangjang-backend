@@ -22,7 +22,7 @@ import com.coniverse.dangjang.support.annotation.WithDangjangUser;
  */
 @WithDangjangUser
 class ExerciseGuideControllerTest extends ControllerTest {
-	private static final String URI = "/api/v1/guide/exercise";
+	private static final String URL = "/api/guide/exercise";
 	@Autowired
 	private ExerciseGuideSearchService exerciseGuideSearchService;
 
@@ -39,7 +39,7 @@ class ExerciseGuideControllerTest extends ControllerTest {
 		params.add("date", 조회_날짜);
 
 		//when
-		ResultActions resultActions = get(mockMvc, URI, params);
+		ResultActions resultActions = get(mockMvc, URL, params);
 		//then
 		resultActions.andExpectAll(
 			status().isOk(),
@@ -62,7 +62,7 @@ class ExerciseGuideControllerTest extends ControllerTest {
 		params.add("date", 유효하지_않는_날짜);
 
 		//when
-		ResultActions resultActions = get(mockMvc, URI, params);
+		ResultActions resultActions = get(mockMvc, URL, params);
 		//then
 		resultActions.andExpectAll(
 			status().isBadRequest(),

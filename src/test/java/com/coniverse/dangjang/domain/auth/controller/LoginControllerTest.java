@@ -24,9 +24,7 @@ import com.coniverse.dangjang.support.annotation.WithDangjangUser;
  * @since 1.0.0
  */
 class LoginControllerTest extends ControllerTest {
-	private static final String KAKAO_URI = "/api/v1/auth/kakao";
-	private static final String NAVER_URI = "/api/v1/auth/naver";
-	private static final String LOGOUT_URI = "/api/v1/auth/logout";
+	private static final String URI = "/api/auth";
 	private final LoginResponse response = 로그인_응답();
 	@Autowired
 	private OauthLoginService oauthLoginService;
@@ -43,7 +41,7 @@ class LoginControllerTest extends ControllerTest {
 		given(oauthLoginService.getAuthToken(any())).willReturn(authToken.getAccessToken());
 
 		// when
-		ResultActions resultActions = post(mockMvc, KAKAO_URI, content);
+		ResultActions resultActions = post(mockMvc, URI + "/kakao", content);
 
 		// then
 		resultActions.andExpectAll(
@@ -61,7 +59,7 @@ class LoginControllerTest extends ControllerTest {
 		String content = objectMapper.writeValueAsString(request);
 
 		// when
-		ResultActions resultActions = post(mockMvc, KAKAO_URI, content);
+		ResultActions resultActions = post(mockMvc, URI + "/kakao", content);
 
 		// then
 		resultActions.andExpectAll(
@@ -84,7 +82,7 @@ class LoginControllerTest extends ControllerTest {
 		given(oauthLoginService.getAuthToken(any())).willReturn(authToken.getAccessToken());
 
 		// when
-		ResultActions resultActions = post(mockMvc, NAVER_URI, content);
+		ResultActions resultActions = post(mockMvc, URI + "/naver", content);
 
 		// then
 		resultActions.andExpectAll(
@@ -101,7 +99,7 @@ class LoginControllerTest extends ControllerTest {
 		String content = objectMapper.writeValueAsString(request);
 
 		// when
-		ResultActions resultActions = post(mockMvc, NAVER_URI, content);
+		ResultActions resultActions = post(mockMvc, URI + "/naver", content);
 
 		// then
 		resultActions.andExpectAll(
@@ -115,10 +113,11 @@ class LoginControllerTest extends ControllerTest {
 	@WithDangjangUser
 	@Test
 	void 로그아웃을_성공한다() throws Exception {
+		String subURL = "/logout";
 		LogoutFcmTokenRequest request = new LogoutFcmTokenRequest("fcmToken");
 		String content = objectMapper.writeValueAsString(request);
 		// when
-		ResultActions resultActions = post(mockMvc, LOGOUT_URI, content);
+		ResultActions resultActions = post(mockMvc, URI + subURL, content);
 
 		// then
 		resultActions.andExpectAll(

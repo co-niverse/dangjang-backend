@@ -38,6 +38,23 @@ public class WeightGuideController {
 	 * @param date      조회하는 날짜
 	 * @param principal 유저 정보
 	 * @author EVE
+	 * @since 1.0.0
+	 * @deprecated 1.6.0
+	 */
+	@Deprecated(since = "1.6.0")
+	@GetMapping
+	public ResponseEntity<SuccessSingleResponse<WeightGuideResponse>> get(@ValidLocalDate @RequestParam String date,
+		@AuthenticationPrincipal User principal) {
+		WeightGuideResponse response = weightGuideSearchService.findGuide(principal.getUsername(), date);
+		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), response));
+	}
+
+	/**
+	 * 날짜별 체중 가이드 조회
+	 *
+	 * @param date      조회하는 날짜
+	 * @param principal 유저 정보
+	 * @author EVE
 	 * @since 1.6.0
 	 */
 	@ApiVersion("1")

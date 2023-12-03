@@ -30,6 +30,19 @@ public class VersionController {
 	private final VersionService versionService;
 
 	/**
+	 * 버전 정보를 GET 요청한다.
+	 *
+	 * @since 1.3.0
+	 * @deprecated 1.6.0
+	 */
+	@Deprecated(since = "1.6.0")
+	@GetMapping("/intro")
+	public ResponseEntity<SuccessSingleResponse<VersionResponse<?>>> getIntro() {
+		VersionResponse<?> versionResponse = versionService.getVersionResponse();
+		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), versionResponse));
+	}
+
+	/**
 	 * 버전 정보를 조회한다.
 	 *
 	 * @return 버전 정보
@@ -39,6 +52,19 @@ public class VersionController {
 	@GetMapping("/intro")
 	public ResponseEntity<SuccessSingleResponse<VersionResponse<?>>> getIntroV1() {
 		VersionResponse<?> versionResponse = versionService.getVersionResponse();
+		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), versionResponse));
+	}
+
+	/**
+	 * 버전 정보를 POST 요청한다.
+	 *
+	 * @since 1.3.0
+	 * @deprecated 1.6.0
+	 */
+	@Deprecated(since = "1.6.0")
+	@PostMapping
+	public ResponseEntity<SuccessSingleResponse<VersionResponse<?>>> postVersion(@Valid @RequestBody VersionRequest request) {
+		VersionResponse<?> versionResponse = versionService.saveVersion(request);
 		return ResponseEntity.ok().body(new SuccessSingleResponse<>(HttpStatus.OK.getReasonPhrase(), versionResponse));
 	}
 
