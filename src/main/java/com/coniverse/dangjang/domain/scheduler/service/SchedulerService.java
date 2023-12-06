@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock;
@@ -36,8 +35,9 @@ public class SchedulerService {
 	 *
 	 * @author EVE
 	 * @since 1.1.0
+	 * @deprecated 서버가 이전될 때까지 사용하지 않는다
 	 */
-	@Scheduled(cron = "0 0 18 * * *", zone = "Asia/Seoul")
+
 	@SchedulerLock(name = "SchedulerService_makeNotification", lockAtLeastFor = "PT60S", lockAtMostFor = "PT70S")
 	public void makeNotification() {
 		List<FcmMessage> fcmMessage = notificationService.makeAccessFcmMessage();
