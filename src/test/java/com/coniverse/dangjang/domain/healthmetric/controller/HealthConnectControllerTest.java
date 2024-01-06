@@ -20,7 +20,8 @@ import com.coniverse.dangjang.support.annotation.WithDangjangUser;
  */
 @WithDangjangUser
 class HealthConnectControllerTest extends ControllerTest {
-	public static final String URL = "/api/health-connect";
+	private static final String DATA_POST_URI = "/api/v1/health-connect";
+	private static final String INTERLOCK_POST_URI = "/api/v1/health-connect/interlock";
 
 	@Test
 	void 헬스_커넥트_데이터를_등록하면_성공_메시지를_반환한다() throws Exception {
@@ -30,7 +31,7 @@ class HealthConnectControllerTest extends ControllerTest {
 		String content = objectMapper.writeValueAsString(request);
 
 		// when
-		ResultActions resultActions = post(mockMvc, URL, content);
+		ResultActions resultActions = post(mockMvc, DATA_POST_URI, content);
 
 		// then
 		resultActions.andExpectAll(
@@ -45,9 +46,8 @@ class HealthConnectControllerTest extends ControllerTest {
 		// given
 		HealthConnectRegisterRequest request = 헬스_커넥트_연동_요청(true);
 		String content = objectMapper.writeValueAsString(request);
-		String subURL = "/interlock";
 		// when
-		ResultActions resultActions = patch(mockMvc, URL + subURL, content);
+		ResultActions resultActions = patch(mockMvc, INTERLOCK_POST_URI, content);
 
 		// then
 		resultActions.andExpectAll(

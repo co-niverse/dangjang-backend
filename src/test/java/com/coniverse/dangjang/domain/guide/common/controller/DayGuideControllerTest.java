@@ -28,7 +28,7 @@ import com.coniverse.dangjang.support.annotation.WithDangjangUser;
 class DayGuideControllerTest extends ControllerTest {
 	@Autowired
 	private DayGuideService dayGuideService;
-	private static final String URL = "/api/guide";
+	private static final String URI = "/api/v1/guide";
 	private User user = 유저_테오();
 	private String 테오_닉네임 = user.getNickname();
 	private String 조회_날짜 = "2023-12-31";
@@ -44,7 +44,7 @@ class DayGuideControllerTest extends ControllerTest {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("date", 조회_날짜);
 		//when
-		ResultActions resultActions = get(mockMvc, URL, params);
+		ResultActions resultActions = get(mockMvc, URI, params);
 		//then
 		resultActions.andExpectAll(
 			status().isOk(),
@@ -63,7 +63,7 @@ class DayGuideControllerTest extends ControllerTest {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("date", 유효하지_않은_날짜);
 		//when
-		ResultActions resultActions = get(mockMvc, URL, params);
+		ResultActions resultActions = get(mockMvc, URI, params);
 		//then
 		resultActions.andExpectAll(
 			status().isBadRequest(),
