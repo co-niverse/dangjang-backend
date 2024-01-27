@@ -1,6 +1,7 @@
 package com.coniverse.dangjang.domain.notification.service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -13,6 +14,7 @@ import com.coniverse.dangjang.domain.notification.dto.response.NotificationRespo
 import com.coniverse.dangjang.domain.notification.entity.Notification;
 import com.coniverse.dangjang.domain.notification.entity.NotificationType;
 import com.coniverse.dangjang.domain.notification.entity.UserFcmToken;
+import com.coniverse.dangjang.domain.notification.enums.FCMContent;
 import com.coniverse.dangjang.domain.notification.exception.InvalidFcmTokenException;
 import com.coniverse.dangjang.domain.notification.mapper.NotificationMapper;
 import com.coniverse.dangjang.domain.notification.repository.NotificationRepository;
@@ -141,24 +143,43 @@ public class NotificationService {
 	 */
 	public List<FcmMessage> makeAccessFcmMessage() {
 
-		//Todo : accessFcmMessage 생성 로직 분리 , title,Body Enum으로 관리
 		LocalDate date = LocalDate.now();
 		List<UserFcmToken> userFcmTokens = notificationSearchService.findNotAccessUserFcmToken(date);
-		List<String> fcmTokens = userFcmTokens.stream()
-			.map(userFcmToken -> userFcmToken.getFcmToken())
-			.collect(Collectors.toList());
-		String title = "오늘의 건강 상태는?"; //TODO : title, content Enum으로 관리
-		String content = "꾸준히 기록하고, 건강 상태를 비교해 봐요!";
 		NotificationType notificationType = notificationSearchService.findNotificationType("접속");
+		notificationRepository.saveAll(generateNotifications(userFcmTokens, date, notificationType));
+		return generateFcmMessage(userFcmTokens, date);
+	}
 
-		List<Notification> notifications = userFcmTokens.stream()
-			.map(fcmToken -> notificationMapper.toEntity(fcmToken.getUser(), title, content, date, notificationType))
+	/**
+	 * notification Entity 생성
+	 *
+	 * @param userFcmTokens : 토큰 리스트 , date : 보내는 날짜 , type : notification 타입
+	 * @return List<Notification> Notification Entity 리스트
+	 * @since 1.7.0
+	 */
+	public List<Notification> generateNotifications(List<UserFcmToken> userFcmTokens, LocalDate date, NotificationType type) {
+		return userFcmTokens.stream()
+			.map(fcmToken -> {
+				int compareDate = (int)ChronoUnit.DAYS.between(fcmToken.getUser().getAccessedAt(), date);
+				return notificationMapper.toEntity(fcmToken.getUser(), FCMContent.TITLE.getTitle(compareDate), FCMContent.BODY.getBody(compareDate), date,
+					type);
+			})
 			.collect(Collectors.toList());
+	}
 
-		notificationRepository.saveAll(notifications);
-
-		return fcmTokens.stream()
-			.map(token -> new FcmMessage(token, title, content))
-			.toList();
+	/**
+	 * 전달할 FcmMessage 생성
+	 *
+	 * @param userFcmTokens : 토큰 리스트 , date : 보내는 날짜
+	 * @return List<FcmMessage> FcmMessage 리스트
+	 * @since 1.7.0
+	 */
+	public List<FcmMessage> generateFcmMessage(List<UserFcmToken> userFcmTokens, LocalDate date) {
+		return userFcmTokens.stream()
+			.map(userFcmToken -> {
+				int compareDate = (int)ChronoUnit.DAYS.between(userFcmToken.getUser().getAccessedAt(), date);
+				return new FcmMessage(userFcmToken.getFcmToken(), FCMContent.TITLE.getTitle(compareDate), FCMContent.BODY.getBody(compareDate));
+			})
+			.collect(Collectors.toList());
 	}
 }
