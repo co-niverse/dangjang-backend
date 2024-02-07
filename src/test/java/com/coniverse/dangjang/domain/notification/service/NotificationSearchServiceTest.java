@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -31,6 +32,7 @@ import com.coniverse.dangjang.domain.user.repository.UserRepository;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
 class NotificationSearchServiceTest {
+
 	@Autowired
 	private NotificationSearchService notificationSearchService;
 	@Autowired
@@ -41,13 +43,13 @@ class NotificationSearchServiceTest {
 	private UserFcmTokenRepository userFcmTokenRepository;
 	@Autowired
 	private NotificationRepository notificationRepository;
+	private User 이브;
+	private User 테오;
 
 	@BeforeAll
 	void setUp() throws Exception {
-		User 이브 = userRepository.save(유저_이브());
-		이브.updateAccessedAt(LocalDate.now().minusDays(1));
-		userRepository.save(이브);
-		userRepository.save(유저_테오());
+		이브 = userRepository.save(유저_이브());
+		테오 = userRepository.save(유저_테오());
 		notificationTypeRepository.saveAll(알림_종류_목록());
 		userFcmTokenRepository.saveAll(사용자_fcmToken_엔티티_목록());
 	}
@@ -61,13 +63,23 @@ class NotificationSearchServiceTest {
 	}
 
 	@Test
-	void 오늘_접속_안한_유저의_fcmToken을_조회한다() {
+	void 기간별_접속_안한_유저의_fcmToken을_조회한다() {
 		//given
 		LocalDate date = LocalDate.now();
+		이브.updateAccessedAt(LocalDate.now().minusDays(1));
+		userRepository.save(이브);
+		테오.updateAccessedAt(LocalDate.now().minusDays(7));
+		userRepository.save(테오);
+
 		//when
 		List<UserFcmToken> userFcmTokens = notificationSearchService.findNotAccessUserFcmToken(date);
+
 		//then
-		assertThat(userFcmTokens).hasSize(1);
+		assertThat(userFcmTokens).hasSize(2);
+		List<UserFcmToken> expectedTokens = 사용자_fcmToken_엔티티_목록();
+		assertThat(userFcmTokens).extracting(UserFcmToken::getFcmToken)
+			.containsExactlyInAnyOrderElementsOf(expectedTokens.stream().map(UserFcmToken::getFcmToken).collect(Collectors.toList()));
+
 	}
 
 	@Test
