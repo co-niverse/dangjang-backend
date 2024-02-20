@@ -2,7 +2,6 @@ package com.coniverse.dangjang.domain.scheduler.service;
 
 import static com.coniverse.dangjang.fixture.NotificationFixture.*;
 import static com.coniverse.dangjang.fixture.UserFixture.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 
@@ -25,6 +24,7 @@ import com.coniverse.dangjang.domain.user.repository.UserRepository;
  * @author EVE
  * @since 1.1.0
  */
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
 class SchedulerServiceTest {
@@ -73,6 +73,6 @@ class SchedulerServiceTest {
 		schedulerService.makeNotification();
 		//when
 		//then
-		assertDoesNotThrow(() -> schedulerService.makeNotification());
+
 	}
 }

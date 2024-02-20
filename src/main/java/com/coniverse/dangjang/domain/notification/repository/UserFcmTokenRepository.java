@@ -20,12 +20,13 @@ import com.coniverse.dangjang.domain.notification.entity.UserFcmToken;
 public interface UserFcmTokenRepository extends JpaRepository<UserFcmToken, FcmId> {
 	/**
 	 * 접속하지 않은, 유저의 fcmToken을 조회한다.
+	 * 최근 접속일이 1일 전, 3일 전, 일주일 전, 2주 전, 한달 전인 유저들만 조회한다.
 	 *
-	 * @param date 조회 날짜
+	 * @param compareDate 비교 날짜
 	 * @since 1.1.0
 	 */
-	@Query("SELECT utk FROM UserFcmToken utk where utk.user.accessedAt < :date")
-	List<UserFcmToken> findNotAccessUserFcmToken(@Param("date") LocalDate date);
+	@Query(value = "SELECT utk FROM UserFcmToken utk WHERE FUNCTION('TIMESTAMPDIFF', DAY,  utk.user.accessedAt , :compareDate ) IN (1, 3, 7, 14, 30)")
+	List<UserFcmToken> findNotAccessUserFcmToken(@Param("compareDate") LocalDate compareDate);
 
 	/**
 	 * FcmId로 UserFcmToken을 조회한다

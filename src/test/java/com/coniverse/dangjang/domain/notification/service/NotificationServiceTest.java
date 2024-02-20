@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -22,6 +24,7 @@ import com.coniverse.dangjang.domain.notification.dto.request.CheckNotificationI
 import com.coniverse.dangjang.domain.notification.dto.response.NotificationResponse;
 import com.coniverse.dangjang.domain.notification.entity.Notification;
 import com.coniverse.dangjang.domain.notification.entity.UserFcmToken;
+import com.coniverse.dangjang.domain.notification.enums.FCMContent;
 import com.coniverse.dangjang.domain.notification.repository.NotificationRepository;
 import com.coniverse.dangjang.domain.notification.repository.NotificationTypeRepository;
 import com.coniverse.dangjang.domain.notification.repository.UserFcmTokenRepository;
@@ -31,12 +34,6 @@ import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 
-/**
- * NotificationService Test
- *
- * @author EVE
- * @since 1.1.0
- */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest
@@ -51,6 +48,8 @@ class NotificationServiceTest {
 	private UserFcmTokenRepository userFcmTokenRepository;
 	@Autowired
 	private NotificationTypeRepository notificationTypeRepository;
+	@Autowired
+	private NotificationService notificationServiceMock;
 
 	private User 테오;
 	private User 이브;
@@ -68,10 +67,9 @@ class NotificationServiceTest {
 		테오 = userRepository.save(유저_테오());
 		테오_아이디 = 테오.getOauthId();
 		이브 = userRepository.save(유저_이브());
-		이브.updateAccessedAt(LocalDate.now().minusDays(1));
-		userRepository.save(이브);
 		userFcmTokenRepository.save(사용자_fcmToken_엔티티(이브_fcmToken, 이브, deviceId));
 		notificationRepository.saveAll(사용자_알림_엔티티_목록(테오));
+
 	}
 
 	@AfterAll
@@ -164,16 +162,20 @@ class NotificationServiceTest {
 		assertThat(userFcmTokenRepository.findUserFcmTokenByFcmId(테오_아이디, postFcmTokenRequest.deviceId())).isEmpty();
 	}
 
+	@Transactional
 	@Order(700)
-	@Test
-	void 접속하지_않는_유저를_위한_FcmMessage를_생성한다() {
+	@ParameterizedTest
+	@ValueSource(ints = {1, 3, 7, 14, 30})
+	void 접속하지_않는_기간별_유저를_위한_FcmMessage를_생성한다(int day) {
 		//given
+		이브.updateAccessedAt(LocalDate.now().minusDays(day));
+		userRepository.save(이브);
 
 		//when
-		List<FcmMessage> fcmMessages = notificationService.makeAccessFcmMessage();
+		List<FcmMessage> fcmMessages = notificationServiceMock.makeAccessFcmMessage();
 		//then
-		assertThat(fcmMessages.get(0).title()).isEqualTo("오늘의 건강 상태는?");
-		assertThat(fcmMessages.get(0).body()).isEqualTo("꾸준히 기록하고, 건강 상태를 비교해 봐요!");
+		assertThat(fcmMessages.get(0).title()).isEqualTo(FCMContent.TITLE.getTitle(day));
+		assertThat(fcmMessages.get(0).body()).isEqualTo(FCMContent.BODY.getTitle(day));
 		assertThat(fcmMessages.get(0).registrationToken()).isEqualTo(이브_fcmToken);
 	}
 
