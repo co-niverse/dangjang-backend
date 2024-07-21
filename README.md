@@ -1,4 +1,4 @@
-# <img src="./src/readme/당장로고.png" width="50" alt="당장로고">  당장 서비스
+# 당장 서비스
 
 # 문서 제목
 
