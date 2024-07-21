@@ -13,18 +13,6 @@
     - [4.3. ERD](##4.3-ERD)
     - [4.4. AWS ARCHITECTURE](##4.4-AWS-ARCHITECTURE)
 
-## 1. 프로젝트 소개
-
-여기서 프로젝트 소개 내용을 작성합니다.
-
-## 2. 기능 소개
-
-여기서 기능 소개 내용을 작성합니다.
-
-## 3. 설치 방법
-
-여기서 설치 방법을 작성합니다.
-
 ## 1. 서비스 소개
 
 [당장 - 당뇨 관리, 혈당, 식단, 기록, 체중, 운동 - Google Play 앱](https://play.google.com/store/apps/details?id=com.dangjang.android&hl=ko-KR)
