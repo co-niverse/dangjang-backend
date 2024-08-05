@@ -48,17 +48,6 @@ public class UserSearchService {
 	}
 
 	/**
-	 * User와 UserPoint를 left 조인하여 조회
-	 *
-	 * @param oauthId 사용자 PK
-	 * @return User 사용자
-	 * @since 1.0.0
-	 */
-	public User findJoinUserPoint(String oauthId) {
-		return userRepository.findJoinUserPoint(oauthId).orElseThrow(NonExistentUserException::new);
-	}
-
-	/**
 	 * 헬스커넥트 연동 여부를 조회한다.
 	 *
 	 * @param oauthId 사용자 PK
