@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.coniverse.dangjang.domain.point.dto.response.UserPointResponse;
 import com.coniverse.dangjang.domain.point.entity.PointProduct;
-import com.coniverse.dangjang.domain.point.entity.UserPoint;
 import com.coniverse.dangjang.domain.point.enums.PointType;
 import com.coniverse.dangjang.domain.point.exception.InvalidPointException;
+import com.coniverse.dangjang.domain.point.repository.PointHistoryRepository;
 import com.coniverse.dangjang.domain.point.repository.PointProductRepository;
-import com.coniverse.dangjang.domain.point.repository.UserPointRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +23,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PointSearchService {
 	private final PointProductRepository pointProductRepository;
-	private final UserPointRepository userPointRepository;
+
+	private final PointHistoryRepository pointHistoryRepository;
 
 	/**
 	 * 포인트 상품 조회
@@ -49,12 +50,21 @@ public class PointSearchService {
 	/**
 	 * 사용자 포인트 조회
 	 *
-	 * @param oauthId 사용자 아이디
-	 * @since 1.0.0
+	 * @since 1.6.0
 	 */
-	public UserPoint findUserPointByOauthId(String oauthId) {
-		return userPointRepository.findById(oauthId)
-			.orElseThrow(() -> new InvalidPointException("유저의 포인트 테이블이 없습니다."));
+	public UserPointResponse findUserPoint(String oauthId) {
+		UserPointResponse userPoint = pointHistoryRepository.findUserPoint(oauthId).orElse(new UserPointResponse(oauthId, 0));
+		return userPoint;
+	}
+
+	/**
+	 * 모든 사용자 포인트 조회
+	 *
+	 * @since 1.6.0
+	 */
+	public List<UserPointResponse> findAllUserPoint() {
+		List<UserPointResponse> allUserPoint = pointHistoryRepository.findAllUserPoint();
+		return allUserPoint;
 	}
 
 }
