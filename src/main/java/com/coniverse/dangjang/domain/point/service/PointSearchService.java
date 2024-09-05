@@ -12,6 +12,7 @@ import com.coniverse.dangjang.domain.point.repository.PointHistoryRepository;
 import com.coniverse.dangjang.domain.point.repository.PointProductRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 포인트 관련 Search Service
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PointSearchService {
 	private final PointProductRepository pointProductRepository;
 
@@ -62,8 +64,15 @@ public class PointSearchService {
 	 *
 	 * @since 1.6.0
 	 */
-	public List<UserPointResponse> findAllUserPoint() {
-		List<UserPointResponse> allUserPoint = pointHistoryRepository.findAllUserPoint();
+	public List<UserPointResponse> findAllUserPoint(int limit, int offset) {
+		long startTime = System.currentTimeMillis();
+		log.info("checkTime test DB - start : " + startTime);
+		List<UserPointResponse> allUserPoint = pointHistoryRepository.findAllUserPoint(limit, offset);
+		long endTime = System.currentTimeMillis();
+		long duration = (endTime - startTime); // 밀리초 단위
+		log.info("checkTime test DB - end : " + endTime);
+		log.info("checkTime test DB - duration : " + duration);
+
 		return allUserPoint;
 	}
 

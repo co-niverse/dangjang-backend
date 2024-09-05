@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.coniverse.dangjang.domain.healthmetric.enums.HealthConnect;
 import com.coniverse.dangjang.domain.user.entity.User;
+import com.coniverse.dangjang.domain.user.entity.UserAccess;
 import com.coniverse.dangjang.domain.user.exception.NonExistentUserException;
+import com.coniverse.dangjang.domain.user.repository.UserAccessRepository;
 import com.coniverse.dangjang.domain.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class UserSearchService {
 	private final UserRepository userRepository;
+	private final UserAccessRepository userAccessRepository;
 
 	/**
 	 * PK로 유저를 조회한다.
@@ -55,5 +58,14 @@ public class UserSearchService {
 	 */
 	public HealthConnect findInterlockHealthConnect(String oauthId) {
 		return userRepository.findHealthConnectByOauthId(oauthId);
+	}
+
+	/**
+	 * 사용자의 최근 접속일을 조회한다.
+	 *
+	 * @since 1.6.0
+	 */
+	public UserAccess findUserAccessByOauthId(String oauthId) {
+		return userAccessRepository.findFirstByOauthIdOrderByLastAccessDateDesc(oauthId);
 	}
 }

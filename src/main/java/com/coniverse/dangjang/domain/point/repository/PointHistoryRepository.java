@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.coniverse.dangjang.domain.point.dto.response.UserPointResponse;
 import com.coniverse.dangjang.domain.point.entity.PointHistory;
@@ -26,7 +27,7 @@ public interface PointHistoryRepository extends JpaRepository<PointHistory, Poin
 	 */
 
 	@Query(name = "findAllUserPoint", nativeQuery = true)
-	List<UserPointResponse> findAllUserPoint();
+	List<UserPointResponse> findAllUserPoint(@Param("limit") int limit, @Param("offset") int offset);
 
 	/**
 	 * 사용자 포인트 조회

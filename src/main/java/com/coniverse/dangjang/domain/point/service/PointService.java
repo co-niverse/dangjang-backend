@@ -202,8 +202,10 @@ public class PointService {
 	 * @return List<UserPointResponse> 모든 유저별 포인트 조회 응답
 	 * @since 1.6.0
 	 */
-	public List<UserPointResponse> getAllUserPoint() {
-		return pointSearchService.findAllUserPoint();
+	public List<UserPointResponse> getAllUserPoint(int page) {
+		int limit = 100;
+		int offset = (page - 1) * limit;
+		return pointSearchService.findAllUserPoint(limit, offset);
 
 	}
 }

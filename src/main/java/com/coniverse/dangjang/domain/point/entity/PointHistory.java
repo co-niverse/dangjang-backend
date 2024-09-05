@@ -37,7 +37,8 @@ import lombok.NoArgsConstructor;
 			+ "    select oauth_id, SUM(change_point) as totalPoint  "
 			+ "    from POINT_HISTORY "
 			+ "    group by oauth_id "
-			+ ") p on u.oauth_id = p.oauth_id;",
+			+ ") p on u.oauth_id = p.oauth_id "
+			+ " LIMIT :limit OFFSET :offset",
 	resultSetMapping = "mapToUserPointResponse"
 )
 @SqlResultSetMapping(
