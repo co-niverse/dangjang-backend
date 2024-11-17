@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/0b65609e-0fa3-4372-8946-ebb8c17ee812)
+![dangjang](https://github.com/user-attachments/assets/0b65609e-0fa3-4372-8946-ebb8c17ee812)
 
 <div align=center>
 
@@ -29,7 +29,8 @@
 
 ### 1-2. 주요 기능
 
-<img src="./src/readme/당장 기능소개.png" width="1000" alt="당장 기능소개">
+![feature](https://github.com/user-attachments/assets/e2fb3fe5-95ff-4772-8a2d-cbb8c42885fc)
+
 
 ► 건강 데이터 자동 기록
 
