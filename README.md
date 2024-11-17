@@ -1,5 +1,6 @@
+![image](https://github.com/user-attachments/assets/0b65609e-0fa3-4372-8946-ebb8c17ee812)
+
 <div align=center>
-    <img src="https://github.com/user-attachments/assets/e2c2ba0c-f146-483e-bd19-bed7fe06d229" height=700>
 
   # Dangjang Backend API Server
 
