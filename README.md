@@ -1,67 +1,75 @@
-# 당장 서비스
+<div align=center>
+    <img src="https://github.com/user-attachments/assets/e2c2ba0c-f146-483e-bd19-bed7fe06d229" height=700>
+
+  # Dangjang Backend API Server
+
+</div>
 
 ## 목차
 
-- [1. 서비스 소개](#1-서비스-소개)
-- [2. 서비스 기능 소개](#2-서비스-기능-소개)
+- [1. 서비스 개요](#1-서비스-개요)
+    - [1-1. 서비스 소개](#1-1-서비스-소개)
+    - [1-2. 주요 기능](#1-2-주요-기능)
+    - [1-3. 개발 환경](#1-3-개발-환경)
+- [2. 서비스 설계](#2-서비스-설계)
+    - [2-1. use case](#2-1-use-case)
+    - [2-2. ERD](#2-2-erd)
+    - [2-3. CI/CD 파이프라인](#2-3-cicd-파이프라인)
+    - [2-4. AWS 아키텍처](#2-4-aws-아키텍처)
 - [3. 서비스 성과](#3-서비스-성과)
-- [4. 서비스 설계](#4-서비스-설계)
-    - [4.1. USE CASE](##4.1-USE-CASE)
-    - [4.2. ARCHITECTURE](##4.2-ARCHITECTURE)
-    - [4.3. ERD](##4.3-ERD)
-    - [4.4. AWS ARCHITECTURE](##4.4-AWS-ARCHITECTURE)
 
-## 1. 서비스 소개
+## 1. 서비스 개요
+
+### 1-1. 서비스 소개
 
 [당장 - 당뇨 관리, 혈당, 식단, 기록, 체중, 운동 - Google Play 앱](https://play.google.com/store/apps/details?id=com.dangjang.android&hl=ko-KR)
 
-<img src="./src/readme/당장소개.png" width="1000" alt="당장 소개 이미지">
 당장은 당뇨를 편리하게 기록하고 개선할 수 있도록 가이드를 제공하는 서비스입니다. 혈당, 체중, 운동, 식단 관리에 대한 건강 가이드를 통해 사용자의 생활 습관 관리를 돕고, 당뇨 관리를 조금 더 편하게 할 수 있는 사회를 만들고자 합니다.
 
-## 2. 서비스 기능 소개
+### 1-2. 주요 기능
 
 <img src="./src/readme/당장 기능소개.png" width="1000" alt="당장 기능소개">
 
+► 건강 데이터 자동 기록
 
-주요 기능은 헬스커넥트 연동을 통한 건강 데이터 자동 기록, 건강 데이터 분석을 통한 가이드, 건강 데이터를 한 눈에 파악할 수 있는 건강 차트가 있습니다.
+Google Health Connect 연동을 통해 스마트 워치, 삼성 헬스, 디바이스 내 건강 데이터(혈당, 체중, 운동, 칼로리)를 자동으로 불러옵니다.
 
-► 건강 데이터를 자동으로 기록해요.
+► 맞춤 건강 가이드 제공
 
-아직 건강 데이터로 수기로 입력하시나요? ‘당장’에서 자동으로 기록된 건강 데이터를 확인해 보세요. 핸드폰뿐만 아니라 스마트 워치, 삼성 헬스에서 수집한 데이터도 자동으로 기록할 수 있습니다!
+내분비내과 교수와 협업한 내용을 바탕으로 기록된 건강 데이터에 대해 가이드를 제공합니다.
 
-► 건강 데이터를 분석해서 가이드를 제공해요.
+► 건강 차트
 
-내분비내과 교수와 협업한 내용을 바탕으로 기록된 건강 데이터에 대해 전문적인 가이드를 전달해 드리고 있어요. 가이드를 보고 어떤 부분이 관리가 부족한지, 관리를 잘하고 있는지 쉽게 파악할 수 있어요
+주 단위의 건강 데이터 변화를 차트로 시각화해서 제공합니다. 혈당, 체중, 운동, 칼로리 변화 추이를 한 눈에 확인할 수 있습니다.
 
-► 다양한 방식으로 지급되는 포인트!
+► 포인트 제공
 
-당뇨도 관리하고 포인트도 얻고 일석이조! 쌓인 포인트는 기프티콘으로 교환할 수 있어요. 자세한 내용은 앱에서 확인하세요.
+당뇨를 관리하며 포인트를 얻을 수 있고, 쌓인 포인트로 기프티콘 교환이 가능합니다.
 
-► 혈당, 체중, 칼로리 등 건강 데이터 변화를 한 눈에 확인해요.
+### 1-3. 개발 환경
+- **Android**: Kotlin, OkHttp3, Retrofit2, Google Health Connect API, FCM, MVVM, Clean Architecture, Multi Module, Hilt, Coroutine, Flow, Databinding, ViewModel, Navigation
+- **Backend**: Java, Spring Boot, JPA, MySQL, MongoDB, Redis, AWS, Docker, SonarQube, Github Actions
 
-주 단위의 건강 데이터 변화를 차트로 시각화해서 제공하고 있어요. 나의 건강 추이를 한 눈에 보면서 ‘당장’과 함께 꾸준히 개선해 보아요!
+## 2. 서비스 설계
+
+### 2-1. use case
+
+![use case](https://github.com/user-attachments/assets/6cc5fb13-3bd4-4974-b02e-d5645c0d904c)
+
+### 2-2. ERD
+
+![erd](https://github.com/user-attachments/assets/4046e584-f252-4625-a0c3-bf7cbe567ccb)
+
+### 2-3. CI/CD 파이프라인
+
+![server_ci_cd_workflow](https://github.com/co-niverse/dangjang-devops/assets/101033262/1235a308-c1c3-4a85-b15d-1bc149013d54)
+
+### 2-4. AWS 아키텍처
+
+![aws_architecture_v4.0](https://github.com/co-niverse/dangjang-devops/assets/101033262/9afde7ac-3b69-44c1-a56b-a2fbb3950ac4)
 
 ## 3. 서비스 성과
 
-<img src="./src/readme/유저수.png" width="500" alt="유저수">
+![service result](https://github.com/user-attachments/assets/4e824365-7864-4ecb-952b-c63a93798b23)
 
 DAU 10명 , WAU 220명 , MAU 570명 성과를 달성하였습니다.
-
-## 4. 서비스 설계
-
-### 4.1. USE CASE
-
-<img src="./src/readme/usecase.png" width="500" alt="usecase">
-
-### 4.2. ARCHITECTURE
-
-<img src="./src/readme/아키텍처.png" width="500" alt="아키텍처">
-
-### 4.3. ERD
-
-<img src="./src/readme/당장ERD.png" width="1000" alt="당장ERD">
-
-### 4.4. AWS ARCHITECTURE
-
-<img src="./src/readme/aws.png" width="1000" alt="aws">
-
